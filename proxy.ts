@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
 
   if (pathname !== pathname.toLowerCase()) {
@@ -11,20 +11,20 @@ export function middleware(request: NextRequest) {
   }
 
   const url = request.nextUrl.clone();
-  const hasTrailingSlash = pathname.endsWith('/') && pathname !== '/';
+  const hasTrailingSlash = pathname.endsWith("/") && pathname !== "/";
 
   if (hasTrailingSlash) {
     url.pathname = pathname.slice(0, -1);
     return NextResponse.redirect(url, 301);
   }
 
-  if (pathname.includes('//')) {
-    url.pathname = pathname.replace(/\/+/g, '/');
+  if (pathname.includes("//")) {
+    url.pathname = pathname.replace(/\/+/g, "/");
     return NextResponse.redirect(url, 301);
   }
 
-  if (pathname.startsWith('/www.')) {
-    url.pathname = pathname.replace('/www.', '/');
+  if (pathname.startsWith("/www.")) {
+    url.pathname = pathname.replace("/www.", "/");
     return NextResponse.redirect(url, 301);
   }
 
@@ -32,7 +32,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
-  ],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };

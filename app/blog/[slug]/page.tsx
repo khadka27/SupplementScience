@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import { supabase, Post } from '@/lib/supabase';
 import BlogPostContent from '@/components/blog/BlogPostContent';
-import { generateBlogPostSchema, generateBreadcrumbSchema } from '@/lib/schema';
+import { generateBlogPostSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/schema';
 
 export const dynamic = 'force-static';
 export const revalidate = 21600;
@@ -127,6 +127,8 @@ export default async function BlogPostPage({ params }: Props) {
     { name: post.title, url: `${baseUrl}/blog/${post.slug}` }
   ]);
 
+  const faqSchema = post.faqs ? generateFAQSchema(post.faqs) : null;
+
   return (
     <>
       <script
@@ -137,6 +139,12 @@ export default async function BlogPostPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       <BlogPostContent post={post} relatedPosts={relatedPosts} />
     </>
   );

@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
@@ -52,13 +52,22 @@ export type Post = {
   featured_image_alt?: string;
   author_id?: string;
   category_id?: string;
-  status: 'draft' | 'published' | 'scheduled';
+  status: "draft" | "published" | "scheduled";
   published_at?: string;
   updated_at: string;
   created_at: string;
   read_time_minutes: number;
   view_count: number;
   is_featured: boolean;
+  sources?: Array<{
+    title: string;
+    url: string;
+    description?: string;
+  }>;
+  faqs?: Array<{
+    question: string;
+    answer: string;
+  }>;
   author?: Author;
   category?: Category;
   tags?: Tag[];
