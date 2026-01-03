@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { Post, Category } from "@/lib/supabase"; // Using types for compatibility
+import { Post, Category } from "@/lib/types";
 import {
   Card,
   CardContent,
@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Home, ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 async function getPopularPosts(): Promise<any[]> {
   const data = await prisma.post.findMany({
@@ -109,10 +110,10 @@ export default async function NotFound() {
             {popularPosts.map((post) => (
               <Link key={post.id} href={`/blog/${post.slug}`}>
                 <Card className="h-full hover:shadow-lg transition-shadow duration-300">
-                  {post.featured_image_url && (
+                  {post.featuredImageUrl && (
                     <div className="relative w-full aspect-video overflow-hidden rounded-t-lg">
                       <Image
-                        src={post.featured_image_url}
+                        src={post.featuredImageUrl}
                         alt={post.title}
                         fill
                         className="object-cover"
@@ -134,7 +135,7 @@ export default async function NotFound() {
 
                   <CardContent>
                     <p className="text-xs text-muted-foreground">
-                      {post.read_time_minutes} min read
+                      {post.readTimeMinutes} min read
                     </p>
                   </CardContent>
                 </Card>

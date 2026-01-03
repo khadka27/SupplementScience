@@ -106,6 +106,11 @@ export default async function Home() {
                 About Us
               </Button>
             </Link>
+            <Link href="/admin/blog/new">
+              <Button variant="secondary" size="lg">
+                Create Article (CMS)
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

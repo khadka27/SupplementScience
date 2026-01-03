@@ -1,0 +1,147 @@
+import Link from "next/link";
+import {
+  Microscope,
+  Twitter,
+  Facebook,
+  Instagram,
+  Youtube,
+  Mail,
+} from "lucide-react";
+
+export function Footer() {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="bg-muted/30 border-t border-border mt-20">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+          <div className="md:col-span-2 space-y-6">
+            <Link href="/" className="flex items-center gap-2">
+              <div className="bg-primary text-primary-foreground p-1.5 rounded-lg">
+                <Microscope className="w-5 h-5" />
+              </div>
+              <span className="text-xl font-bold font-heading uppercase tracking-tighter">
+                Supplement<span className="text-primary">Science</span>
+              </span>
+            </Link>
+            <p className="text-muted-foreground text-base max-w-md leading-relaxed">
+              Advancing human health through rigorous, evidence-based research
+              on supplements, nutrition, and personalized wellness strategies.
+              Every article is cited from peer-reviewed journals.
+            </p>
+            <div className="flex items-center gap-4">
+              <a
+                href="#"
+                className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all"
+              >
+                <Twitter className="w-4 h-4" />
+              </a>
+              <a
+                href="#"
+                className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all"
+              >
+                <Youtube className="w-4 h-4" />
+              </a>
+              <a
+                href="#"
+                className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a
+                href="#"
+                className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all"
+              >
+                <Mail className="w-4 h-4" />
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="font-bold mb-6 uppercase text-xs tracking-widest text-primary">
+              Information
+            </h4>
+            <ul className="space-y-4 text-sm">
+              <li>
+                <Link
+                  href="/blog"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Latest Articles
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Our Ethos
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/editorial-policy"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Editorial Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/medical-disclaimer"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Medical Disclaimer
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-bold mb-6 uppercase text-xs tracking-widest text-primary">
+              Support
+            </h4>
+            <ul className="space-y-4 text-sm">
+              <li>
+                <Link
+                  href="/privacy"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/terms"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Terms of Service
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/contact"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Contact Expert
+                </Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-6">
+          <p className="text-sm text-muted-foreground font-medium">
+            © {currentYear} SupplementScience. Empowering health through data.
+          </p>
+          <div className="flex items-center gap-6">
+            <span className="flex items-center gap-1.5 text-xs text-muted-foreground bg-accent/50 px-3 py-1.5 rounded-full border border-border">
+              <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+              Database Real-time Sync
+            </span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
