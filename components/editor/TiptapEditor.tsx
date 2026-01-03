@@ -33,6 +33,7 @@ const TiptapEditor = ({
   placeholder = "Press '/' for commands...",
 }: TiptapEditorProps) => {
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       StarterKit,
       Placeholder.configure({
