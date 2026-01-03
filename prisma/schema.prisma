@@ -70,11 +70,12 @@ model Post {
   sources Json? @default("[]")
   faqs    Json? @default("[]")
 
-  authorId   String?   @map("author_id")
-  author     Author?   @relation(fields: [authorId], references: [id])
-  categoryId String?   @map("category_id")
-  category   Category? @relation(fields: [categoryId], references: [id])
-  tags       PostTag[]
+  authorId     String?   @map("author_id")
+  author       Author?   @relation(fields: [authorId], references: [id])
+  customAuthor String?   @map("custom_author")
+  categoryId   String?   @map("category_id")
+  category     Category? @relation(fields: [categoryId], references: [id])
+  tags         PostTag[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

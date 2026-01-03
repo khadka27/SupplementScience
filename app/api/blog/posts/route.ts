@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     } = body;
 
     // Basic validation
-    if (!title || !slug || !content || !authorId || !categoryId) {
+    if (!title || !slug || !content) {
       return new NextResponse("Missing required fields", { status: 400 });
     }
 
@@ -37,8 +37,9 @@ export async function POST(req: Request) {
         excerpt,
         content,
         featuredImageUrl,
-        authorId,
-        categoryId,
+        authorId: authorId || null,
+        categoryId: categoryId || null,
+        // customAuthor, // Need to add this to schema first
         status,
         publishedAt: status === "published" ? new Date() : null,
       },
