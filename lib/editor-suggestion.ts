@@ -13,7 +13,11 @@ export const suggestion = {
     return {
       onStart: (props: any) => {
         component = new ReactRenderer(CommandList, {
-          props,
+          props: {
+            ...props,
+            editor: props.editor,
+            range: props.range,
+          },
           editor: props.editor,
         });
 

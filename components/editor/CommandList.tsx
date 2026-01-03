@@ -17,6 +17,8 @@ import {
 export interface CommandListProps {
   items: any[];
   command: (item: any) => void;
+  editor: any;
+  range: any;
 }
 
 const CommandList = forwardRef((props: CommandListProps, ref) => {
@@ -26,7 +28,17 @@ const CommandList = forwardRef((props: CommandListProps, ref) => {
     const item = props.items[index];
 
     if (item) {
-      props.command(item);
+      if (item.command) {
+        try {
+          item.command({ editor: props.editor, range: props.range });
+        } catch (e) {
+          console.error("Error executing command:", e);
+        }
+      } else {
+        // Fallback if command is missing, though here we expect it.
+        console.warn("Item has no command function");
+        props.command(item); // Try default just in case
+      }
     }
   };
 

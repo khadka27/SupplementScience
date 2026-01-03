@@ -34,9 +34,14 @@ const formSchema = z.object({
   slug: z.string().min(3, "Slug must be at least 3 characters"),
   excerpt: z.string().optional(),
   content: z.string().min(10, "Content is too short"),
-  featuredImageUrl: z.string().url("Must be a valid URL").optional().or(z.literal("")),
-  authorId: z.string().min(1, "Please select an author"),
-  categoryId: z.string().min(1, "Please select a category"),
+  featuredImageUrl: z
+    .string()
+    .url("Must be a valid URL")
+    .optional()
+    .or(z.literal("")),
+  authorId: z.string().optional().or(z.literal("")),
+  categoryId: z.string().optional().or(z.literal("")),
+  customAuthor: z.string().optional().or(z.literal("")),
   status: z.enum(["draft", "published"]),
 });
 
@@ -45,7 +50,10 @@ interface BlogEditorFormProps {
   categories: Category[];
 }
 
-export default function BlogEditorForm({ authors, categories }: BlogEditorFormProps) {
+export default function BlogEditorForm({
+  authors,
+  categories,
+}: BlogEditorFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -69,7 +77,7 @@ export default function BlogEditorForm({ authors, categories }: BlogEditorFormPr
       // In a real app, you would call an API route here
       // For this demo, let's pretend it's saved
       console.log("Saving post:", values);
-      
+
       const response = await fetch("/api/blog/posts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -90,11 +98,16 @@ export default function BlogEditorForm({ authors, categories }: BlogEditorFormPr
 
   const generateSlug = () => {
     const title = form.getValues("title");
+    if (!title) return;
+
     const slug = title
       .toLowerCase()
-      .replace(/[^\w ]+/g, "")
-      .replace(/ +/g, "-");
-    form.setValue("slug", slug);
+      .trim()
+      .replace(/[^\w\s-]/g, "")
+      .replace(/[\s_-]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+    form.setValue("slug", slug, { shouldValidate: true });
   };
 
   return (
@@ -215,7 +228,7 @@ export default function BlogEditorForm({ authors, categories }: BlogEditorFormPr
                   name="authorId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Author</FormLabel>
+                      <FormLabel>Author (Optional)</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -240,10 +253,27 @@ export default function BlogEditorForm({ authors, categories }: BlogEditorFormPr
 
                 <FormField
                   control={form.control}
+                  name="customAuthor"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Or Author Name</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Enter author name manually"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
                   name="categoryId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Category</FormLabel>
+                      <FormLabel>Category (Optional)</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -290,11 +320,7 @@ export default function BlogEditorForm({ authors, categories }: BlogEditorFormPr
             </Card>
 
             <div className="flex flex-col gap-2">
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isSubmitting}
-              >
+              <Button type="submit" className="w-full" disabled={isSubmitting}>
                 {isSubmitting ? (
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
