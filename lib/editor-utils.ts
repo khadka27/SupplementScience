@@ -19,12 +19,7 @@ export const getSuggestionItems = ({ query }: { query: string }) => {
       searchTerms: ["p", "paragraph"],
       icon: Text,
       command: ({ editor, range }: any) => {
-        editor
-          .chain()
-          .focus()
-          .deleteRange(range)
-          .toggleNode("paragraph", "paragraph")
-          .run();
+        editor.chain().focus().deleteRange(range).setParagraph().run();
       },
     },
     {
