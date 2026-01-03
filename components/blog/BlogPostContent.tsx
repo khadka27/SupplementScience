@@ -60,7 +60,7 @@ export default function BlogPostContent({
   return (
     <div className="min-h-screen bg-background relative pb-20">
       {/* Scroll Progress Bar */}
-      <div className="fixed top-0 left-0 w-full h-1.5 bg-transparent z-[100]">
+      <div className="fixed top-0 left-0 w-full h-1.5 bg-transparent z-100">
         <div
           className="h-full bg-primary transition-all duration-150 ease-out shadow-[0_0_10px_rgba(var(--primary),0.5)]"
           style={{ width: `${scrollProgress}%` }}
@@ -156,7 +156,7 @@ export default function BlogPostContent({
 
         {/* Featured Image */}
         {post.featuredImageUrl && (
-          <div className="relative w-full aspect-[21/9] mb-16 rounded-3xl overflow-hidden shadow-2xl ring-1 ring-border/10 max-w-6xl mx-auto">
+          <div className="relative w-full aspect-21/9 mb-16 rounded-3xl overflow-hidden shadow-2xl ring-1 ring-border/10 max-w-6xl mx-auto">
             <Image
               src={post.featuredImageUrl}
               alt={post.featuredImageAlt || post.title}
@@ -165,7 +165,7 @@ export default function BlogPostContent({
               priority
               sizes="(max-width: 1400px) 100vw, 1400px"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent pointer-events-none" />
           </div>
         )}
 
@@ -211,14 +211,20 @@ export default function BlogPostContent({
 
               <div
                 className="prose prose-lg dark:prose-invert max-w-none 
-                prose-headings:font-bold prose-headings:tracking-tight prose-headings:scroll-mt-32
-                prose-h1:text-4xl prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:pb-2 prose-h2:border-b prose-h2:border-border/50
-                prose-h3:text-2xl prose-h3:mt-8
-                prose-p:leading-relaxed prose-p:text-muted-foreground prose-p:mb-6
-                prose-a:text-primary prose-a:font-semibold prose-a:no-underline hover:prose-a:underline
-                prose-img:rounded-2xl prose-img:shadow-xl prose-img:my-10
-                prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-muted/20 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:italic
-                prose-li:marker:text-primary"
+                prose-headings:font-bold prose-headings:tracking-tight prose-headings:scroll-mt-32 prose-headings:text-foreground
+                prose-h1:text-4xl lg:prose-h1:text-5xl
+                prose-h2:text-3xl prose-h2:mt-14 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-border/40
+                prose-h3:text-2xl prose-h3:mt-10 prose-h3:mb-4 prose-h3:font-semibold
+                prose-p:leading-8 prose-p:text-muted-foreground prose-p:mb-8 prose-p:text-[1.1rem]
+                prose-a:text-primary prose-a:font-semibold prose-a:no-underline hover:prose-a:text-primary/80 prose-a:transition-colors prose-a:decoration-primary/30 prose-a:underline-offset-4 hover:prose-a:underline
+                prose-strong:font-bold prose-strong:text-foreground
+                prose-ul:my-8 prose-ul:list-disc prose-ul:pl-8
+                prose-ol:my-8 prose-ol:list-decimal prose-ol:pl-8
+                prose-li:my-3 prose-li:marker:text-primary prose-li:text-muted-foreground
+                prose-img:rounded-3xl prose-img:shadow-2xl prose-img:my-12 prose-img:border prose-img:border-border/50
+                prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-muted/20 prose-blockquote:py-6 prose-blockquote:px-8 prose-blockquote:rounded-r-2xl prose-blockquote:italic prose-blockquote:text-xl prose-blockquote:font-medium prose-blockquote:text-foreground/80
+                prose-code:bg-muted/50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:font-mono prose-code:text-sm prose-code:font-semibold prose-code:text-primary prose-code:before:content-none prose-code:after:content-none
+                prose-pre:bg-muted/50 prose-pre:backdrop-blur-sm prose-pre:border prose-pre:border-border/50 prose-pre:rounded-2xl prose-pre:p-6"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
 
@@ -291,7 +297,7 @@ export default function BlogPostContent({
               <Separator className="my-16" />
 
               {/* Author Box Large */}
-              <div className="bg-gradient-to-br from-muted/50 to-background border border-border rounded-3xl p-8 shadow-sm">
+              <div className="bg-linear-to-br from-muted/50 to-background border border-border rounded-3xl p-8 shadow-sm">
                 {post.author && <AuthorBox author={post.author} />}
               </div>
 

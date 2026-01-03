@@ -10,6 +10,7 @@ const nextConfig = {
         protocol: "https",
         hostname: "www.bigfootdigital.co.uk",
       },
+      
     ],
   },
 };
