@@ -32,7 +32,7 @@ export const getSuggestionItems = ({ query }: { query: string }) => {
           .chain()
           .focus()
           .deleteRange(range)
-          .setNode("heading", { level: 1 })
+          .toggleHeading({ level: 1 })
           .run();
       },
     },
@@ -46,7 +46,7 @@ export const getSuggestionItems = ({ query }: { query: string }) => {
           .chain()
           .focus()
           .deleteRange(range)
-          .setNode("heading", { level: 2 })
+          .toggleHeading({ level: 2 })
           .run();
       },
     },
@@ -60,7 +60,7 @@ export const getSuggestionItems = ({ query }: { query: string }) => {
           .chain()
           .focus()
           .deleteRange(range)
-          .setNode("heading", { level: 3 })
+          .toggleHeading({ level: 3 })
           .run();
       },
     },
