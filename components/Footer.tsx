@@ -7,6 +7,7 @@ import {
   Youtube,
   Mail,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -95,6 +96,26 @@ export function Footer() {
                 </Link>
               </li>
             </ul>
+          </div>
+
+          <div className="space-y-6">
+            <h4 className="font-bold uppercase text-xs tracking-widest text-primary">
+              Newsletter
+            </h4>
+            <p className="text-sm text-muted-foreground">
+              Get the latest science-backed supplement news delivered to your
+              inbox.
+            </p>
+            <div className="flex gap-2">
+              <input
+                type="email"
+                placeholder="Email address"
+                className="bg-background border border-border rounded-lg px-4 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-primary/20"
+              />
+              <Button size="sm" className="shrink-0">
+                Join
+              </Button>
+            </div>
           </div>
 
           <div>

@@ -1,0 +1,24 @@
+﻿components/editor/TiptapEditor.tsx(4,28): error TS2307: Cannot find module '@tiptap/react/menus' or its corresponding type declarations.
+  There are types at 'D:/office/SupplementScience/node_modules/@tiptap/react/dist/menus/index.d.ts', but this result could not be resolved under your current 'moduleResolution' setting. Consider updating to 'node16', 'nodenext', or 'bundler'.
+components/editor/TiptapEditor.tsx(11,28): error TS2307: Cannot find module '@/lib/editor-suggestion' or its corresponding type declarations.
+components/editor/TiptapEditor.tsx(21,24): error TS2307: Cannot find module '@/components/ui/button' or its corresponding type declarations.
+components/editor/TiptapEditor.tsx(22,27): error TS2307: Cannot find module '@/components/ui/separator' or its corresponding type declarations.
+components/editor/TiptapEditor.tsx(93,5): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/editor/TiptapEditor.tsx(95,9): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/editor/TiptapEditor.tsx(100,11): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/editor/TiptapEditor.tsx(106,13): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/editor/TiptapEditor.tsx(108,11): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/editor/TiptapEditor.tsx(114,13): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/editor/TiptapEditor.tsx(116,11): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/editor/TiptapEditor.tsx(122,13): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/editor/TiptapEditor.tsx(124,11): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/editor/TiptapEditor.tsx(125,11): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/editor/TiptapEditor.tsx(131,13): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/editor/TiptapEditor.tsx(136,7): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/editor/TiptapEditor.tsx(138,7): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/editor/TiptapEditor.tsx(139,9): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+components/editor/TiptapEditor.tsx(142,9): error TS17004: Cannot use JSX unless the '--jsx' flag is provided.
+node_modules/.pnpm/@tiptap+react@3.14.0_@float_34fe65420fd98382102c1f587a210fa8/node_modules/@tiptap/react/dist/index.d.ts(5,8): error TS1259: Module '"D:/office/SupplementScience/node_modules/.pnpm/@types+react@19.2.7/node_modules/@types/react/index"' can only be default-imported using the 'esModuleInterop' flag
+node_modules/.pnpm/@tiptap+react@3.14.0_@float_34fe65420fd98382102c1f587a210fa8/node_modules/@tiptap/react/dist/index.d.ts(89,20): error TS2344: Type 'T' does not satisfy the constraint 'keyof IntrinsicElements | JSXElementConstructor<any>'.
+  Type 'string | number | symbol' is not assignable to type 'keyof IntrinsicElements | JSXElementConstructor<any>'.
+    Type 'string' is not assignable to type 'keyof IntrinsicElements | JSXElementConstructor<any>'.

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEditor, EditorContent, BubbleMenu } from "@tiptap/react";
+import { useEditor, EditorContent } from "@tiptap/react";
+import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
@@ -93,8 +94,7 @@ const TiptapEditor = ({
       {editor && (
         <BubbleMenu
           editor={editor}
-          tippyOptions={{ duration: 100 }}
-          className="flex items-center gap-1 p-1 bg-popover border border-border rounded-md shadow-md animate-in fade-in zoom-in"
+          className="flex items-center gap-1 p-1 bg-popover border border-border rounded-md shadow-md animate-in fade-in zoom-in duration-100"
         >
           <Button
             variant="ghost"
