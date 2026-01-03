@@ -1,110 +1,119 @@
-import { Post } from './supabase';
+import { Post } from "./types";
 
 export function generateOrganizationSchema(baseUrl: string) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: 'Your Site Name',
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Your Site Name",
     url: baseUrl,
     logo: `${baseUrl}/logo.png`,
     sameAs: [
-      'https://facebook.com/yourpage',
-      'https://twitter.com/yourpage',
-      'https://instagram.com/yourpage'
-    ]
+      "https://facebook.com/yourpage",
+      "https://twitter.com/yourpage",
+      "https://instagram.com/yourpage",
+    ],
   };
 }
 
 export function generateWebsiteSchema(baseUrl: string) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'Your Site Name',
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Your Site Name",
     url: baseUrl,
     potentialAction: {
-      '@type': 'SearchAction',
+      "@type": "SearchAction",
       target: `${baseUrl}/search?q={search_term_string}`,
-      'query-input': 'required name=search_term_string'
-    }
+      "query-input": "required name=search_term_string",
+    },
   };
 }
 
 export function generateBlogPostSchema(post: Post, baseUrl: string) {
-  const imageUrl = post.featured_image_url || `${baseUrl}/og-default.jpg`;
+  const imageUrl = post.featuredImageUrl || `${baseUrl}/og-default.jpg`;
 
   return {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
     headline: post.title,
-    description: post.meta_description || post.excerpt || '',
+    description: post.metaDescription || post.excerpt || "",
     image: [imageUrl],
-    datePublished: post.published_at,
-    dateModified: post.updated_at,
-    author: post.author ? {
-      '@type': 'Person',
-      name: post.author.name,
-      url: `${baseUrl}/author/${post.author.slug}`,
-      ...(post.author.avatar_url && { image: post.author.avatar_url })
-    } : undefined,
+    datePublished: post.publishedAt?.toISOString(),
+    dateModified: post.updatedAt.toISOString(),
+    author: post.author
+      ? {
+          "@type": "Person",
+          name: post.author.name,
+          url: `${baseUrl}/author/${post.author.slug}`,
+          ...(post.author.avatarUrl && { image: post.author.avatarUrl }),
+        }
+      : undefined,
     publisher: {
-      '@type': 'Organization',
-      name: 'Your Site Name',
+      "@type": "Organization",
+      name: "Your Site Name",
       logo: {
-        '@type': 'ImageObject',
-        url: `${baseUrl}/logo.png`
-      }
+        "@type": "ImageObject",
+        url: `${baseUrl}/logo.png`,
+      },
     },
     mainEntityOfPage: {
-      '@type': 'WebPage',
-      '@id': `${baseUrl}/blog/${post.slug}`
+      "@type": "WebPage",
+      "@id": `${baseUrl}/blog/${post.slug}`,
     },
     ...(post.category && {
-      articleSection: post.category.name
+      articleSection: post.category.name,
     }),
-    ...(post.tags && post.tags.length > 0 && {
-      keywords: post.tags.map(tag => tag.name).join(', ')
-    }),
+    ...(post.tags &&
+      post.tags.length > 0 && {
+        keywords: post.tags.map((tag: any) => tag.name).join(", "),
+      }),
     wordCount: post.content ? post.content.split(/\s+/).length : 0,
-    timeRequired: `PT${post.read_time_minutes}M`
+    timeRequired: `PT${post.readTimeMinutes}M`,
   };
 }
 
 export function generateAuthorSchema(author: any, baseUrl: string) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
+    "@context": "https://schema.org",
+    "@type": "Person",
     name: author.name,
     url: `${baseUrl}/author/${author.slug}`,
     description: author.bio,
-    image: author.avatar_url,
-    sameAs: author.social_links ? Object.values(author.social_links).filter(Boolean) : []
+    image: author.avatarUrl,
+    sameAs: author.socialLinks
+      ? (Object.values(author.socialLinks).filter(Boolean) as string[])
+      : [],
   };
 }
 
-export function generateBreadcrumbSchema(items: Array<{ name: string; url: string }>) {
+export function generateBreadcrumbSchema(
+  items: Array<{ name: string; url: string }>
+) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
     itemListElement: items.map((item, index) => ({
-      '@type': 'ListItem',
+      "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: item.url
-    }))
+      item: item.url,
+    })),
   };
 }
 
-export function generateFAQSchema(faqs: Array<{ question: string; answer: string }>) {
+export function generateFAQSchema(
+  faqs: Array<{ question: string; answer: string }>
+) {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: faqs.map(faq => ({
-      '@type': 'Question',
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
       name: faq.question,
       acceptedAnswer: {
-        '@type': 'Answer',
-        text: faq.answer
-      }
-    }))
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
   };
 }

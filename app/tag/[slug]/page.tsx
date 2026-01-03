@@ -1,10 +1,10 @@
-import { notFound } from 'next/navigation';
-import { Metadata } from 'next';
-import prisma from '@/lib/prisma';
-import { Tag, Post } from '@/lib/supabase'; // Using types for compatibility
-import BlogList from '@/components/blog/BlogList';
+import { notFound } from "next/navigation";
+import { Metadata } from "next";
+import prisma from "@/lib/prisma";
+import { Tag, Post } from "@/lib/types";
+import BlogList from "@/components/blog/BlogList";
 
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 export const revalidate = 43200;
 
 type Props = {
@@ -14,8 +14,8 @@ type Props = {
 async function getTag(slug: string): Promise<any | null> {
   const data = await prisma.tag.findUnique({
     where: {
-      slug
-    }
+      slug,
+    },
   });
 
   return data;
@@ -26,37 +26,37 @@ async function getTagPosts(tagId: string): Promise<any[]> {
     where: {
       tagId,
       post: {
-        status: 'published',
+        status: "published",
         publishedAt: {
-          lte: new Date()
-        }
-      }
+          lte: new Date(),
+        },
+      },
     },
     include: {
       post: {
         include: {
           author: {
-            select: { name: true, slug: true, avatarUrl: true }
+            select: { name: true, slug: true, avatarUrl: true },
           },
           category: {
-            select: { name: true, slug: true }
+            select: { name: true, slug: true },
           },
           tags: {
             include: {
               tag: {
-                select: { name: true, slug: true }
-              }
-            }
-          }
-        }
-      }
+                select: { name: true, slug: true },
+              },
+            },
+          },
+        },
+      },
     },
     orderBy: {
       post: {
-        publishedAt: 'desc'
-      }
+        publishedAt: "desc",
+      },
     },
-    take: 50
+    take: 50,
   });
 
   return data
@@ -64,7 +64,7 @@ async function getTagPosts(tagId: string): Promise<any[]> {
     .filter(Boolean)
     .map((post: any) => ({
       ...post,
-      tags: post.tags?.map((pt: any) => pt.tag).filter(Boolean) || []
+      tags: post.tags?.map((pt: any) => pt.tag).filter(Boolean) || [],
     }));
 }
 
@@ -73,21 +73,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!tag) {
     return {
-      title: 'Tag Not Found'
+      title: "Tag Not Found",
     };
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yoursite.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
   const url = `${baseUrl}/tag/${tag.slug}`;
 
-  if (tag.post_count < 3) {
+  if (tag.postCount < 3) {
     return {
       title: tag.name,
       description: tag.description || `Articles tagged with ${tag.name}`,
       robots: {
         index: false,
-        follow: true
-      }
+        follow: true,
+      },
     };
   }
 
@@ -95,19 +95,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${tag.name} | Blog`,
     description: tag.description || `Browse articles tagged with ${tag.name}`,
     alternates: {
-      canonical: url
+      canonical: url,
     },
     openGraph: {
       title: tag.name,
       description: tag.description || `Browse articles tagged with ${tag.name}`,
       url: url,
-      type: 'website'
+      type: "website",
     },
     twitter: {
-      card: 'summary',
+      card: "summary",
       title: tag.name,
-      description: tag.description || `Browse articles tagged with ${tag.name}`
-    }
+      description: tag.description || `Browse articles tagged with ${tag.name}`,
+    },
   };
 }
 
@@ -115,17 +115,17 @@ export async function generateStaticParams() {
   const tags = await prisma.tag.findMany({
     where: {
       postCount: {
-        gte: 3
-      }
+        gte: 3,
+      },
     },
     select: {
-      slug: true
+      slug: true,
     },
-    take: 200
+    take: 200,
   });
 
   return tags.map((tag) => ({
-    slug: tag.slug
+    slug: tag.slug,
   }));
 }
 
@@ -143,7 +143,9 @@ export default async function TagPage({ params }: Props) {
       <div className="mb-12">
         <h1 className="text-4xl md:text-5xl font-bold mb-4">#{tag.name}</h1>
         {tag.description && (
-          <p className="text-lg text-muted-foreground max-w-3xl">{tag.description}</p>
+          <p className="text-lg text-muted-foreground max-w-3xl">
+            {tag.description}
+          </p>
         )}
       </div>
       <BlogList posts={posts} />

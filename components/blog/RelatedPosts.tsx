@@ -1,9 +1,9 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { format } from 'date-fns';
-import { Clock } from 'lucide-react';
-import { Post } from '@/lib/supabase';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import Image from "next/image";
+import Link from "next/link";
+import { format } from "date-fns";
+import { Clock } from "lucide-react";
+import { Post } from "@/lib/types";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface RelatedPostsProps {
   posts: Post[];
@@ -20,10 +20,10 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
         {posts.map((post) => (
           <Link key={post.id} href={`/blog/${post.slug}`}>
             <Card className="h-full hover:shadow-lg transition-shadow duration-300">
-              {post.featured_image_url && (
+              {post.featuredImageUrl && (
                 <div className="relative w-full aspect-video overflow-hidden rounded-t-lg">
                   <Image
-                    src={post.featured_image_url}
+                    src={post.featuredImageUrl}
                     alt={post.title}
                     fill
                     className="object-cover"
@@ -33,20 +33,22 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
               )}
 
               <CardHeader>
-                <CardTitle className="text-lg line-clamp-2">{post.title}</CardTitle>
+                <CardTitle className="text-lg line-clamp-2">
+                  {post.title}
+                </CardTitle>
               </CardHeader>
 
               <CardContent>
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  {post.published_at && (
-                    <time dateTime={post.published_at}>
-                      {format(new Date(post.published_at), 'MMM d')}
+                  {post.publishedAt && (
+                    <time dateTime={post.publishedAt.toISOString()}>
+                      {format(new Date(post.publishedAt), "MMM d")}
                     </time>
                   )}
                   <span>•</span>
                   <div className="flex items-center gap-1">
                     <Clock className="w-3 h-3" />
-                    <span>{post.read_time_minutes} min</span>
+                    <span>{post.readTimeMinutes} min</span>
                   </div>
                 </div>
               </CardContent>

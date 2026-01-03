@@ -1,6 +1,6 @@
 import Link from "next/link";
 import prisma from "@/lib/prisma";
-import { Post, Category } from "@/lib/supabase"; // Using types for compatibility
+import { Post, Category } from "@/lib/types";
 import BlogList from "@/components/blog/BlogList";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -125,8 +125,8 @@ export default async function Home() {
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-muted-foreground">
-                        {category.post_count}{" "}
-                        {category.post_count === 1 ? "article" : "articles"}
+                        {category.postCount}{" "}
+                        {category.postCount === 1 ? "article" : "articles"}
                       </p>
                     </CardContent>
                   </Card>

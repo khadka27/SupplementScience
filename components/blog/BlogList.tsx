@@ -1,10 +1,16 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { format } from 'date-fns';
-import { Clock, Calendar } from 'lucide-react';
-import { Post } from '@/lib/supabase';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import Image from "next/image";
+import Link from "next/link";
+import { format } from "date-fns";
+import { Clock, Calendar } from "lucide-react";
+import { Post } from "@/lib/types";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 interface BlogListProps {
   posts: Post[];
@@ -30,11 +36,11 @@ export default function BlogList({ posts, title }: BlogListProps) {
         {posts.map((post) => (
           <Link key={post.id} href={`/blog/${post.slug}`}>
             <Card className="h-full hover:shadow-lg transition-shadow duration-300">
-              {post.featured_image_url && (
+              {post.featuredImageUrl && (
                 <div className="relative w-full aspect-video overflow-hidden rounded-t-lg">
                   <Image
-                    src={post.featured_image_url}
-                    alt={post.featured_image_alt || post.title}
+                    src={post.featuredImageUrl}
+                    alt={post.featuredImageAlt || post.title}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -62,10 +68,10 @@ export default function BlogList({ posts, title }: BlogListProps) {
                 <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
                   {post.author && (
                     <div className="flex items-center gap-1">
-                      {post.author.avatar_url && (
+                      {post.author.avatarUrl && (
                         <div className="relative w-5 h-5 rounded-full overflow-hidden">
                           <Image
-                            src={post.author.avatar_url}
+                            src={post.author.avatarUrl}
                             alt={post.author.name}
                             fill
                             className="object-cover"
@@ -76,18 +82,18 @@ export default function BlogList({ posts, title }: BlogListProps) {
                     </div>
                   )}
 
-                  {post.published_at && (
+                  {post.publishedAt && (
                     <div className="flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
-                      <time dateTime={post.published_at}>
-                        {format(new Date(post.published_at), 'MMM d, yyyy')}
+                      <time dateTime={post.publishedAt.toISOString()}>
+                        {format(new Date(post.publishedAt), "MMM d, yyyy")}
                       </time>
                     </div>
                   )}
 
                   <div className="flex items-center gap-1">
                     <Clock className="w-3 h-3" />
-                    <span>{post.read_time_minutes} min</span>
+                    <span>{post.readTimeMinutes} min</span>
                   </div>
                 </div>
               </CardContent>

@@ -1,7 +1,7 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { Author } from '@/lib/supabase';
-import { Card, CardContent } from '@/components/ui/card';
+import Image from "next/image";
+import Link from "next/link";
+import { Author } from "@/lib/types";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface AuthorBoxProps {
   author: Author;
@@ -12,10 +12,10 @@ export default function AuthorBox({ author }: AuthorBoxProps) {
     <Card className="mb-8">
       <CardContent className="pt-6">
         <div className="flex gap-4">
-          {author.avatar_url && (
+          {author.avatarUrl && (
             <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
               <Image
-                src={author.avatar_url}
+                src={author.avatarUrl}
                 alt={author.name}
                 fill
                 className="object-cover"

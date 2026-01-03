@@ -1,31 +1,60 @@
-import Link from 'next/link';
-import { supabase, Post, Category } from '@/lib/supabase';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Home, ArrowLeft } from 'lucide-react';
-import Image from 'next/image';
+import prisma from "@/lib/prisma";
+import { Post, Category } from "@/lib/supabase"; // Using types for compatibility
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Home, ArrowLeft } from "lucide-react";
+import Image from "next/image";
 
-async function getPopularPosts(): Promise<Post[]> {
-  const { data } = await supabase
-    .from('posts')
-    .select('id, title, slug, excerpt, featured_image_url, read_time_minutes')
-    .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
-    .order('view_count', { ascending: false })
-    .limit(3);
+async function getPopularPosts(): Promise<any[]> {
+  const data = await prisma.post.findMany({
+    where: {
+      status: "published",
+      publishedAt: {
+        lte: new Date(),
+      },
+    },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      excerpt: true,
+      featuredImageUrl: true,
+      readTimeMinutes: true,
+    },
+    orderBy: {
+      viewCount: "desc",
+    },
+    take: 3,
+  });
 
-  return (data || []) as Post[];
+  return data || [];
 }
 
-async function getCategories(): Promise<Category[]> {
-  const { data } = await supabase
-    .from('categories')
-    .select('id, name, slug')
-    .gte('post_count', 1)
-    .order('post_count', { ascending: false })
-    .limit(6);
+async function getCategories(): Promise<any[]> {
+  const data = await prisma.category.findMany({
+    where: {
+      postCount: {
+        gte: 1,
+      },
+    },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+    },
+    orderBy: {
+      postCount: "desc",
+    },
+    take: 6,
+  });
 
-  return (data || []) as Category[];
+  return data || [];
 }
 
 export default async function NotFound() {
@@ -93,7 +122,9 @@ export default async function NotFound() {
                   )}
 
                   <CardHeader>
-                    <CardTitle className="text-lg line-clamp-2">{post.title}</CardTitle>
+                    <CardTitle className="text-lg line-clamp-2">
+                      {post.title}
+                    </CardTitle>
                     {post.excerpt && (
                       <CardDescription className="line-clamp-2">
                         {post.excerpt}

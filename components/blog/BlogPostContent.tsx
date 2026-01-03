@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
 import { Clock, Calendar } from "lucide-react";
-import { Post } from "@/lib/supabase";
+import { Post } from "@/lib/types";
 import AuthorBox from "./AuthorBox";
 import RelatedPosts from "./RelatedPosts";
 import Breadcrumbs from "./Breadcrumbs";
@@ -56,36 +56,35 @@ export default function BlogPostContent({
           )}
 
           <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-            {post.published_at && (
+            {post.publishedAt && (
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
-                <time dateTime={post.published_at}>
-                  {format(new Date(post.published_at), "MMMM d, yyyy")}
+                <time dateTime={post.publishedAt.toISOString()}>
+                  {format(new Date(post.publishedAt), "MMMM d, yyyy")}
                 </time>
               </div>
             )}
 
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4" />
-              <span>{post.read_time_minutes} min read</span>
+              <span>{post.readTimeMinutes} min read</span>
             </div>
           </div>
 
-          {post.updated_at &&
-            post.published_at &&
-            post.updated_at !== post.published_at && (
+          {post.updatedAt &&
+            post.publishedAt &&
+            post.updatedAt.getTime() !== post.publishedAt.getTime() && (
               <div className="mt-2 text-sm text-muted-foreground">
-                Last updated:{" "}
-                {format(new Date(post.updated_at), "MMMM d, yyyy")}
+                Last updated: {format(new Date(post.updatedAt), "MMMM d, yyyy")}
               </div>
             )}
         </header>
 
-        {post.featured_image_url && (
+        {post.featuredImageUrl && (
           <div className="relative w-full aspect-video mb-8 rounded-lg overflow-hidden">
             <Image
-              src={post.featured_image_url}
-              alt={post.featured_image_alt || post.title}
+              src={post.featuredImageUrl}
+              alt={post.featuredImageAlt || post.title}
               fill
               className="object-cover"
               priority

@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import prisma from "@/lib/prisma";
-import { Post } from "@/lib/supabase"; // We'll update this type later to match Prisma if needed
+import { Post } from "@/lib/types";
 import BlogPostContent from "@/components/blog/BlogPostContent";
 import {
   generateBlogPostSchema,
@@ -92,35 +92,35 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
   const url = `${baseUrl}/blog/${post.slug}`;
-  const imageUrl = post.featured_image_url || `${baseUrl}/og-default.jpg`;
+  const imageUrl = post.featuredImageUrl || `${baseUrl}/og-default.jpg`;
 
   return {
-    title: post.meta_title || post.title,
-    description: post.meta_description || post.excerpt || "",
+    title: post.metaTitle || post.title,
+    description: post.metaDescription || post.excerpt || "",
     alternates: {
       canonical: url,
     },
     openGraph: {
-      title: post.meta_title || post.title,
-      description: post.meta_description || post.excerpt || "",
+      title: post.metaTitle || post.title,
+      description: post.metaDescription || post.excerpt || "",
       url: url,
       type: "article",
-      publishedTime: post.published_at,
-      modifiedTime: post.updated_at,
+      publishedTime: post.publishedAt?.toISOString(),
+      modifiedTime: post.updatedAt.toISOString(),
       authors: post.author ? [post.author.name] : [],
       images: [
         {
           url: imageUrl,
           width: 1200,
           height: 630,
-          alt: post.featured_image_alt || post.title,
+          alt: post.featuredImageAlt || post.title,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: post.meta_title || post.title,
-      description: post.meta_description || post.excerpt || "",
+      title: post.metaTitle || post.title,
+      description: post.metaDescription || post.excerpt || "",
       images: [imageUrl],
     },
   };
@@ -152,7 +152,7 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
-  const relatedPosts = await getRelatedPosts(post.category_id, post.id);
+  const relatedPosts = await getRelatedPosts(post.categoryId, post.id);
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
 
   const blogPostSchema = generateBlogPostSchema(post, baseUrl);

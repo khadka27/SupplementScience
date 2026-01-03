@@ -1,63 +1,67 @@
-import prisma from '@/lib/prisma';
-import { Post } from '@/lib/supabase'; // Using types for compatibility
-import BlogList from '@/components/blog/BlogList';
+import { Metadata } from "next";
+import prisma from "@/lib/prisma";
+import { Post } from "@/lib/types";
+import BlogList from "@/components/blog/BlogList";
 
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 export const revalidate = 43200;
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yoursite.com';
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
 
 export const metadata: Metadata = {
-  title: 'Blog | Your Site Name',
-  description: 'Discover expert articles, guides, and insights about supplements and health.',
+  title: "Blog | Your Site Name",
+  description:
+    "Discover expert articles, guides, and insights about supplements and health.",
   alternates: {
-    canonical: `${baseUrl}/blog`
+    canonical: `${baseUrl}/blog`,
   },
   openGraph: {
-    title: 'Blog | Your Site Name',
-    description: 'Discover expert articles, guides, and insights about supplements and health.',
+    title: "Blog | Your Site Name",
+    description:
+      "Discover expert articles, guides, and insights about supplements and health.",
     url: `${baseUrl}/blog`,
-    type: 'website'
+    type: "website",
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Blog | Your Site Name',
-    description: 'Discover expert articles, guides, and insights about supplements and health.'
-  }
+    card: "summary_large_image",
+    title: "Blog | Your Site Name",
+    description:
+      "Discover expert articles, guides, and insights about supplements and health.",
+  },
 };
 
 async function getPosts(): Promise<any[]> {
   const data = await prisma.post.findMany({
     where: {
-      status: 'published',
+      status: "published",
       publishedAt: {
-        lte: new Date()
-      }
+        lte: new Date(),
+      },
     },
     include: {
       author: {
-        select: { name: true, slug: true, avatarUrl: true }
+        select: { name: true, slug: true, avatarUrl: true },
       },
       category: {
-        select: { name: true, slug: true }
+        select: { name: true, slug: true },
       },
       tags: {
         include: {
           tag: {
-            select: { name: true, slug: true }
-          }
-        }
-      }
+            select: { name: true, slug: true },
+          },
+        },
+      },
     },
     orderBy: {
-      publishedAt: 'desc'
+      publishedAt: "desc",
     },
-    take: 50
+    take: 50,
   });
 
-  return (data || []).map(post => ({
+  return (data || []).map((post) => ({
     ...post,
-    tags: post.tags?.map((pt: any) => pt.tag).filter(Boolean) || []
+    tags: post.tags?.map((pt: any) => pt.tag).filter(Boolean) || [],
   }));
 }
 
