@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
 import { Clock, Calendar } from "lucide-react";
-import { Post } from "@/lib/types";
+import { Post, Source } from "@/lib/types";
 import AuthorBox from "./AuthorBox";
 import RelatedPosts from "./RelatedPosts";
 import Breadcrumbs from "./Breadcrumbs";
@@ -107,7 +107,7 @@ export default function BlogPostContent({
               <h2 className="text-2xl font-bold m-0!">Scientific Citations</h2>
             </div>
             <div className="space-y-4">
-              {post.sources.map((source, index) => (
+              {post.sources.map((source: Source, index: number) => (
                 <div key={index} className="flex gap-4 group">
                   <span className="text-muted-foreground/50 font-mono text-sm mt-0.5">
                     [{index + 1}]
