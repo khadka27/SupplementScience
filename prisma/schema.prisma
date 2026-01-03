@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Author {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  bio         String?  @db.Text
+  avatarUrl   String?  @map("avatar_url")
+  email       String?
+  socialLinks Json?    @default("{}") @map("social_links")
+  posts       Post[]
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("authors")
+}
+
+model Category {
+  id              String   @id @default(uuid())
+  name            String
+  slug            String   @unique
+  description     String?  @db.Text
+  metaTitle       String?  @map("meta_title")
+  metaDescription String?  @map("meta_description")
+  imageUrl        String?  @map("image_url")
+  postCount       Int      @default(0) @map("post_count")
+  posts           Post[]
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("categories")
+}
+
+model Tag {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?   @db.Text
+  postCount   Int       @default(0) @map("post_count")
+  posts       PostTag[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@map("tags")
+}
+
+model Post {
+  id               String    @id @default(uuid())
+  title            String
+  slug             String    @unique
+  metaTitle        String?   @map("meta_title")
+  metaDescription  String?   @map("meta_description")
+  content          String    @db.Text
+  excerpt          String?   @db.Text
+  featuredImageUrl String?   @map("featured_image_url")
+  featuredImageAlt String?   @map("featured_image_alt")
+  status           String    @default("draft")
+  publishedAt      DateTime? @map("published_at")
+  readTimeMinutes  Int       @default(5) @map("read_time_minutes")
+  viewCount        Int       @default(0) @map("view_count")
+  isFeatured       Boolean   @default(false) @map("is_featured")
+
+  // New features
+  sources Json? @default("[]")
+  faqs    Json? @default("[]")
+
+  authorId   String?   @map("author_id")
+  author     Author?   @relation(fields: [authorId], references: [id])
+  categoryId String?   @map("category_id")
+  category   Category? @relation(fields: [categoryId], references: [id])
+  tags       PostTag[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("posts")
+}
+
+model PostTag {
+  postId String @map("post_id")
+  tagId  String @map("tag_id")
+  post   Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([postId, tagId])
+  @@map("post_tags")
+}

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { supabase, Tag, Post } from '@/lib/supabase';
+import prisma from '@/lib/prisma';
+import { Tag, Post } from '@/lib/supabase'; // Using types for compatibility
 import BlogList from '@/components/blog/BlogList';
 
 export const dynamic = 'force-static';
@@ -10,35 +11,53 @@ type Props = {
   params: { slug: string };
 };
 
-async function getTag(slug: string): Promise<Tag | null> {
-  const { data, error } = await supabase
-    .from('tags')
-    .select('*')
-    .eq('slug', slug)
-    .maybeSingle();
+async function getTag(slug: string): Promise<any | null> {
+  const data = await prisma.tag.findUnique({
+    where: {
+      slug
+    }
+  });
 
-  if (error || !data) return null;
-  return data as Tag;
+  return data;
 }
 
-async function getTagPosts(tagId: string): Promise<Post[]> {
-  const { data } = await supabase
-    .from('post_tags')
-    .select(`
-      post:posts(
-        *,
-        author:authors(name, slug, avatar_url),
-        category:categories(name, slug),
-        tags:post_tags(tag:tags(name, slug))
-      )
-    `)
-    .eq('tag_id', tagId)
-    .eq('post.status', 'published')
-    .lte('post.published_at', new Date().toISOString())
-    .order('post.published_at', { ascending: false })
-    .limit(50);
-
-  if (!data) return [];
+async function getTagPosts(tagId: string): Promise<any[]> {
+  const data = await prisma.postTag.findMany({
+    where: {
+      tagId,
+      post: {
+        status: 'published',
+        publishedAt: {
+          lte: new Date()
+        }
+      }
+    },
+    include: {
+      post: {
+        include: {
+          author: {
+            select: { name: true, slug: true, avatarUrl: true }
+          },
+          category: {
+            select: { name: true, slug: true }
+          },
+          tags: {
+            include: {
+              tag: {
+                select: { name: true, slug: true }
+              }
+            }
+          }
+        }
+      }
+    },
+    orderBy: {
+      post: {
+        publishedAt: 'desc'
+      }
+    },
+    take: 50
+  });
 
   return data
     .map((item: any) => item.post)
@@ -46,7 +65,7 @@ async function getTagPosts(tagId: string): Promise<Post[]> {
     .map((post: any) => ({
       ...post,
       tags: post.tags?.map((pt: any) => pt.tag).filter(Boolean) || []
-    })) as Post[];
+    }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -93,13 +112,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const { data: tags } = await supabase
-    .from('tags')
-    .select('slug')
-    .gte('post_count', 3)
-    .limit(200);
+  const tags = await prisma.tag.findMany({
+    where: {
+      postCount: {
+        gte: 3
+      }
+    },
+    select: {
+      slug: true
+    },
+    take: 200
+  });
 
-  return (tags || []).map((tag) => ({
+  return tags.map((tag) => ({
     slug: tag.slug
   }));
 }

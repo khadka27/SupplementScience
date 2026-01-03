@@ -1,55 +1,79 @@
-import Link from 'next/link';
-import { supabase, Post, Category } from '@/lib/supabase';
-import BlogList from '@/components/blog/BlogList';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight } from 'lucide-react';
+import Link from "next/link";
+import prisma from "@/lib/prisma";
+import { Post, Category } from "@/lib/supabase"; // Using types for compatibility
+import BlogList from "@/components/blog/BlogList";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowRight } from "lucide-react";
 
-export const dynamic = 'force-static';
+export const dynamic = "force-static";
 export const revalidate = 43200;
 
-async function getFeaturedPosts(): Promise<Post[]> {
-  const { data } = await supabase
-    .from('posts')
-    .select(`
-      *,
-      author:authors(name, slug, avatar_url),
-      category:categories(name, slug)
-    `)
-    .eq('status', 'published')
-    .eq('is_featured', true)
-    .lte('published_at', new Date().toISOString())
-    .order('published_at', { ascending: false })
-    .limit(3);
+async function getFeaturedPosts(): Promise<any[]> {
+  const data = await prisma.post.findMany({
+    where: {
+      status: "published",
+      isFeatured: true,
+      publishedAt: {
+        lte: new Date(),
+      },
+    },
+    include: {
+      author: {
+        select: { name: true, slug: true, avatarUrl: true },
+      },
+      category: {
+        select: { name: true, slug: true },
+      },
+    },
+    orderBy: {
+      publishedAt: "desc",
+    },
+    take: 3,
+  });
 
-  return (data || []) as Post[];
+  return data || [];
 }
 
-async function getRecentPosts(): Promise<Post[]> {
-  const { data } = await supabase
-    .from('posts')
-    .select(`
-      *,
-      author:authors(name, slug, avatar_url),
-      category:categories(name, slug)
-    `)
-    .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
-    .order('published_at', { ascending: false })
-    .limit(6);
+async function getRecentPosts(): Promise<any[]> {
+  const data = await prisma.post.findMany({
+    where: {
+      status: "published",
+      publishedAt: {
+        lte: new Date(),
+      },
+    },
+    include: {
+      author: {
+        select: { name: true, slug: true, avatarUrl: true },
+      },
+      category: {
+        select: { name: true, slug: true },
+      },
+    },
+    orderBy: {
+      publishedAt: "desc",
+    },
+    take: 6,
+  });
 
-  return (data || []) as Post[];
+  return data || [];
 }
 
-async function getCategories(): Promise<Category[]> {
-  const { data } = await supabase
-    .from('categories')
-    .select('*')
-    .gte('post_count', 1)
-    .order('post_count', { ascending: false })
-    .limit(6);
+async function getCategories(): Promise<any[]> {
+  const data = await prisma.category.findMany({
+    where: {
+      postCount: {
+        gte: 1,
+      },
+    },
+    orderBy: {
+      postCount: "desc",
+    },
+    take: 6,
+  });
 
-  return (data || []) as Category[];
+  return data || [];
 }
 
 export default async function Home() {
@@ -67,7 +91,8 @@ export default async function Home() {
             Evidence-Based Health Information
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Discover expert articles about supplements, nutrition, and wellness backed by scientific research.
+            Discover expert articles about supplements, nutrition, and wellness
+            backed by scientific research.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link href="/blog">
@@ -88,7 +113,9 @@ export default async function Home() {
       {categories.length > 0 && (
         <section className="py-16 px-4 bg-muted/30">
           <div className="container mx-auto max-w-6xl">
-            <h2 className="text-3xl font-bold mb-8 text-center">Browse by Category</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center">
+              Browse by Category
+            </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {categories.map((category) => (
                 <Link key={category.id} href={`/category/${category.slug}`}>
@@ -98,7 +125,8 @@ export default async function Home() {
                     </CardHeader>
                     <CardContent>
                       <p className="text-sm text-muted-foreground">
-                        {category.post_count} {category.post_count === 1 ? 'article' : 'articles'}
+                        {category.post_count}{" "}
+                        {category.post_count === 1 ? "article" : "articles"}
                       </p>
                     </CardContent>
                   </Card>
@@ -113,7 +141,9 @@ export default async function Home() {
         <section className="py-16">
           <BlogList
             posts={postsToShow}
-            title={featuredPosts.length > 0 ? 'Featured Articles' : 'Latest Articles'}
+            title={
+              featuredPosts.length > 0 ? "Featured Articles" : "Latest Articles"
+            }
           />
           <div className="text-center mt-12">
             <Link href="/blog">
@@ -134,7 +164,8 @@ export default async function Home() {
               Your blog is ready! Add your first post to get started.
             </p>
             <p className="text-sm text-muted-foreground">
-              Check out the QUICK_START.md file for instructions on adding content.
+              Check out the QUICK_START.md file for instructions on adding
+              content.
             </p>
           </div>
         </section>

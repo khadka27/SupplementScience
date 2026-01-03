@@ -1,5 +1,5 @@
-import { Metadata } from 'next';
-import { supabase, Post } from '@/lib/supabase';
+import prisma from '@/lib/prisma';
+import { Post } from '@/lib/supabase'; // Using types for compatibility
 import BlogList from '@/components/blog/BlogList';
 
 export const dynamic = 'force-static';
@@ -26,24 +26,39 @@ export const metadata: Metadata = {
   }
 };
 
-async function getPosts(): Promise<Post[]> {
-  const { data } = await supabase
-    .from('posts')
-    .select(`
-      *,
-      author:authors(name, slug, avatar_url),
-      category:categories(name, slug),
-      tags:post_tags(tag:tags(name, slug))
-    `)
-    .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
-    .order('published_at', { ascending: false })
-    .limit(50);
+async function getPosts(): Promise<any[]> {
+  const data = await prisma.post.findMany({
+    where: {
+      status: 'published',
+      publishedAt: {
+        lte: new Date()
+      }
+    },
+    include: {
+      author: {
+        select: { name: true, slug: true, avatarUrl: true }
+      },
+      category: {
+        select: { name: true, slug: true }
+      },
+      tags: {
+        include: {
+          tag: {
+            select: { name: true, slug: true }
+          }
+        }
+      }
+    },
+    orderBy: {
+      publishedAt: 'desc'
+    },
+    take: 50
+  });
 
-  return ((data || []) as any[]).map(post => ({
+  return (data || []).map(post => ({
     ...post,
     tags: post.tags?.map((pt: any) => pt.tag).filter(Boolean) || []
-  })) as Post[];
+  }));
 }
 
 export default async function BlogPage() {

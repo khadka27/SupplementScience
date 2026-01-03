@@ -1,46 +1,69 @@
 import { MetadataRoute } from 'next';
-import { supabase } from '@/lib/supabase';
+import prisma from '@/lib/prisma';
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yoursite.com';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const { data: posts } = await supabase
-    .from('posts')
-    .select('slug, updated_at, published_at')
-    .eq('status', 'published')
-    .lte('published_at', new Date().toISOString())
-    .order('published_at', { ascending: false })
-    .limit(1000);
+  const posts = await prisma.post.findMany({
+    where: {
+      status: 'published',
+      publishedAt: {
+        lte: new Date()
+      }
+    },
+    select: {
+      slug: true,
+      updatedAt: true
+    },
+    orderBy: {
+      publishedAt: 'desc'
+    },
+    take: 1000
+  });
 
-  const { data: categories } = await supabase
-    .from('categories')
-    .select('slug, updated_at')
-    .gte('post_count', 1)
-    .limit(100);
+  const categories = await prisma.category.findMany({
+    where: {
+      postCount: {
+        gte: 1
+      }
+    },
+    select: {
+      slug: true,
+      updatedAt: true
+    },
+    take: 100
+  });
 
-  const { data: tags } = await supabase
-    .from('tags')
-    .select('slug, updated_at')
-    .gte('post_count', 3)
-    .limit(200);
+  const tags = await prisma.tag.findMany({
+    where: {
+      postCount: {
+        gte: 3
+      }
+    },
+    select: {
+      slug: true,
+      updatedAt: true
+    },
+    take: 200
+  });
 
-  const postUrls = (posts || []).map((post) => ({
+  const postUrls = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.updated_at),
+    lastModified: post.updatedAt,
     changeFrequency: 'monthly' as const,
     priority: 0.8
   }));
 
-  const categoryUrls = (categories || []).map((category) => ({
+  const categoryUrls = categories.map((category) => ({
     url: `${baseUrl}/category/${category.slug}`,
-    lastModified: new Date(category.updated_at),
+    lastModified: category.updatedAt,
     changeFrequency: 'weekly' as const,
     priority: 0.7
   }));
 
-  const tagUrls = (tags || []).map((tag) => ({
+  const tagUrls = tags.map((tag) => ({
     url: `${baseUrl}/tag/${tag.slug}`,
-    lastModified: new Date(tag.updated_at),
+    lastModified: tag.updatedAt,
     changeFrequency: 'weekly' as const,
     priority: 0.5
   }));

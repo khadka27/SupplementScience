@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
-import { supabase, Category, Post } from '@/lib/supabase';
+import prisma from '@/lib/prisma';
+import { Category, Post } from '@/lib/supabase'; // Using types for compatibility
 import BlogList from '@/components/blog/BlogList';
 
 export const dynamic = 'force-static';
@@ -10,36 +11,50 @@ type Props = {
   params: { slug: string };
 };
 
-async function getCategory(slug: string): Promise<Category | null> {
-  const { data, error } = await supabase
-    .from('categories')
-    .select('*')
-    .eq('slug', slug)
-    .maybeSingle();
+async function getCategory(slug: string): Promise<any | null> {
+  const data = await prisma.category.findUnique({
+    where: {
+      slug
+    }
+  });
 
-  if (error || !data) return null;
-  return data as Category;
+  return data;
 }
 
-async function getCategoryPosts(categoryId: string): Promise<Post[]> {
-  const { data } = await supabase
-    .from('posts')
-    .select(`
-      *,
-      author:authors(name, slug, avatar_url),
-      category:categories(name, slug),
-      tags:post_tags(tag:tags(name, slug))
-    `)
-    .eq('status', 'published')
-    .eq('category_id', categoryId)
-    .lte('published_at', new Date().toISOString())
-    .order('published_at', { ascending: false })
-    .limit(50);
+async function getCategoryPosts(categoryId: string): Promise<any[]> {
+  const data = await prisma.post.findMany({
+    where: {
+      status: 'published',
+      categoryId,
+      publishedAt: {
+        lte: new Date()
+      }
+    },
+    include: {
+      author: {
+        select: { name: true, slug: true, avatarUrl: true }
+      },
+      category: {
+        select: { name: true, slug: true }
+      },
+      tags: {
+        include: {
+          tag: {
+            select: { name: true, slug: true }
+          }
+        }
+      }
+    },
+    orderBy: {
+      publishedAt: 'desc'
+    },
+    take: 50
+  });
 
-  return ((data || []) as any[]).map(post => ({
+  return (data || []).map(post => ({
     ...post,
     tags: post.tags?.map((pt: any) => pt.tag).filter(Boolean) || []
-  })) as Post[];
+  }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -83,12 +98,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const { data: categories } = await supabase
-    .from('categories')
-    .select('slug')
-    .limit(100);
+  const categories = await prisma.category.findMany({
+    select: {
+      slug: true
+    },
+    take: 100
+  });
 
-  return (categories || []).map((category) => ({
+  return categories.map((category) => ({
     slug: category.slug
   }));
 }
