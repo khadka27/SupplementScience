@@ -50,42 +50,29 @@ export default function TableOfContents() {
   if (toc.length === 0) return null;
 
   return (
-    <div className="bg-muted/30 rounded-xl p-6 mb-8 border border-border/50">
-      <div className="flex items-center gap-2 mb-4 text-primary font-bold">
-        <List className="w-5 h-5" />
-        <h2 className="text-lg m-0!">Table of Contents</h2>
-      </div>
-      <nav className="space-y-1">
-        {toc.map((item) => (
-          <a
-            key={item.id}
-            href={`#${item.id}`}
-            onClick={(e) => {
-              e.preventDefault();
-              document
-                .getElementById(item.id)
-                ?.scrollIntoView({ behavior: "smooth" });
-            }}
-            className={cn(
-              "flex items-center gap-2 py-1.5 px-3 rounded-md transition-colors text-sm hover:bg-muted group",
-              item.level === 3 && "ml-4",
-              activeId === item.id
-                ? "text-primary font-medium bg-muted/50"
-                : "text-muted-foreground"
-            )}
-          >
-            <ChevronRight
-              className={cn(
-                "w-3 h-3 transition-transform",
-                activeId === item.id
-                  ? "rotate-90 text-primary"
-                  : "text-muted-foreground/30 group-hover:text-muted-foreground"
-              )}
-            />
-            {item.text}
-          </a>
-        ))}
-      </nav>
-    </div>
+    <nav className="space-y-0.5 relative">
+      {/* Optional: Add a continuous vertical line background if desired, but individual item borders work well for 'active' state indication in a rail */}
+      {toc.map((item) => (
+        <a
+          key={item.id}
+          href={`#${item.id}`}
+          onClick={(e) => {
+            e.preventDefault();
+            document
+              .getElementById(item.id)
+              ?.scrollIntoView({ behavior: "smooth" });
+          }}
+          className={cn(
+            "block py-2 pr-4 text-sm transition-all duration-200 border-l-2 pl-4",
+            item.level === 3 && "pl-8",
+            activeId === item.id
+              ? "border-primary text-primary font-semibold bg-primary/5"
+              : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
+          )}
+        >
+          {item.text}
+        </a>
+      ))}
+    </nav>
   );
 }

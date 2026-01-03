@@ -212,15 +212,16 @@ export default function BlogPostContent({
               <div
                 className="prose prose-lg dark:prose-invert max-w-none 
                 prose-headings:font-bold prose-headings:tracking-tight prose-headings:scroll-mt-32 prose-headings:text-foreground
-                prose-h1:text-4xl lg:prose-h1:text-5xl
-                prose-h2:text-3xl prose-h2:mt-14 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-border/40
-                prose-h3:text-2xl prose-h3:mt-10 prose-h3:mb-4 prose-h3:font-semibold
-                prose-p:leading-8 prose-p:text-muted-foreground prose-p:mb-8 prose-p:text-[1.1rem]
+                prose-h1:text-4xl lg:prose-h1:text-6xl lg:prose-h1:leading-tight
+                prose-h2:text-3xl md:prose-h2:text-4xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b prose-h2:border-border/40 prose-h2:font-extrabold
+                prose-h3:text-2xl md:prose-h3:text-3xl prose-h3:mt-10 prose-h3:mb-4 prose-h3:font-bold
+                prose-h4:text-xl md:prose-h4:text-2xl prose-h4:mt-8 prose-h4:mb-4 prose-h4:font-bold
+                prose-p:leading-loose prose-p:text-muted-foreground prose-p:mb-8 prose-p:text-lg md:prose-p:text-xl
                 prose-a:text-primary prose-a:font-semibold prose-a:no-underline hover:prose-a:text-primary/80 prose-a:transition-colors prose-a:decoration-primary/30 prose-a:underline-offset-4 hover:prose-a:underline
-                prose-strong:font-bold prose-strong:text-foreground
-                prose-ul:my-8 prose-ul:list-disc prose-ul:pl-8
-                prose-ol:my-8 prose-ol:list-decimal prose-ol:pl-8
-                prose-li:my-3 prose-li:marker:text-primary prose-li:text-muted-foreground
+                prose-strong:font-bold prose-strong:text-foreground prose-strong:text-lg
+                prose-ul:my-8 prose-ul:list-disc prose-ul:pl-8 prose-ul:space-y-3
+                prose-ol:my-8 prose-ol:list-decimal prose-ol:pl-8 prose-ol:space-y-3
+                prose-li:text-lg md:prose-li:text-xl prose-li:text-muted-foreground prose-li:marker:text-primary prose-li:marker:font-bold
                 prose-img:rounded-3xl prose-img:shadow-2xl prose-img:my-12 prose-img:border prose-img:border-border/50
                 prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-muted/20 prose-blockquote:py-6 prose-blockquote:px-8 prose-blockquote:rounded-r-2xl prose-blockquote:italic prose-blockquote:text-xl prose-blockquote:font-medium prose-blockquote:text-foreground/80
                 prose-code:bg-muted/50 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:font-mono prose-code:text-sm prose-code:font-semibold prose-code:text-primary prose-code:before:content-none prose-code:after:content-none

@@ -9,7 +9,7 @@ import {
   Link as LinkIcon,
   Check,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
 interface ShareButtonsProps {
@@ -27,11 +27,15 @@ export default function ShareButtons({
 }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
 
-  // Use a default URL if window is undefined (SSR)
-  const baseUrl =
-    typeof window !== "undefined"
-      ? window.location.origin
-      : process.env.NEXT_PUBLIC_BASE_URL || "https://supplementscience.com";
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const baseUrl = mounted
+    ? window.location.origin
+    : process.env.NEXT_PUBLIC_BASE_URL || "https://supplementscience.com";
 
   const url = `${baseUrl}/blog/${slug}`;
   const encodedUrl = encodeURIComponent(url);
@@ -63,6 +67,10 @@ export default function ShareButtons({
       color: "hover:text-red-500 hover:bg-red-500/10",
     },
   ];
+
+  if (!mounted) {
+    return null; // or return a skeleton/placeholder to avoid layout shift, but null avoids mismatch
+  }
 
   const handleCopyLink = async () => {
     try {
