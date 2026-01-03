@@ -1,0 +1,100 @@
+import Image from 'next/image';
+import Link from 'next/link';
+import { format } from 'date-fns';
+import { Clock, Calendar } from 'lucide-react';
+import { Post } from '@/lib/supabase';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+
+interface BlogListProps {
+  posts: Post[];
+  title?: string;
+}
+
+export default function BlogList({ posts, title }: BlogListProps) {
+  if (posts.length === 0) {
+    return (
+      <div className="container mx-auto px-4 py-12">
+        <p className="text-center text-muted-foreground">No articles found.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container mx-auto px-4 py-12">
+      {title && (
+        <h2 className="text-3xl md:text-4xl font-bold mb-8">{title}</h2>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {posts.map((post) => (
+          <Link key={post.id} href={`/blog/${post.slug}`}>
+            <Card className="h-full hover:shadow-lg transition-shadow duration-300">
+              {post.featured_image_url && (
+                <div className="relative w-full aspect-video overflow-hidden rounded-t-lg">
+                  <Image
+                    src={post.featured_image_url}
+                    alt={post.featured_image_alt || post.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                </div>
+              )}
+
+              <CardHeader>
+                {post.category && (
+                  <Badge variant="secondary" className="w-fit mb-2">
+                    {post.category.name}
+                  </Badge>
+                )}
+
+                <CardTitle className="line-clamp-2">{post.title}</CardTitle>
+
+                {post.excerpt && (
+                  <CardDescription className="line-clamp-2">
+                    {post.excerpt}
+                  </CardDescription>
+                )}
+              </CardHeader>
+
+              <CardContent>
+                <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+                  {post.author && (
+                    <div className="flex items-center gap-1">
+                      {post.author.avatar_url && (
+                        <div className="relative w-5 h-5 rounded-full overflow-hidden">
+                          <Image
+                            src={post.author.avatar_url}
+                            alt={post.author.name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+                      <span>{post.author.name}</span>
+                    </div>
+                  )}
+
+                  {post.published_at && (
+                    <div className="flex items-center gap-1">
+                      <Calendar className="w-3 h-3" />
+                      <time dateTime={post.published_at}>
+                        {format(new Date(post.published_at), 'MMM d, yyyy')}
+                      </time>
+                    </div>
+                  )}
+
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    <span>{post.read_time_minutes} min</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
