@@ -33,6 +33,11 @@ async function getPost(slug: string): Promise<any | null> {
           tag: true,
         },
       },
+      _count: {
+        select: {
+          tags: true,
+        },
+      },
     },
   });
 
@@ -44,6 +49,44 @@ async function getPost(slug: string): Promise<any | null> {
   };
 
   return post;
+}
+
+async function getAdjacentPosts(currentPostId: string, publishedAt: Date) {
+  const [prev, next] = await Promise.all([
+    prisma.post.findFirst({
+      where: {
+        status: "published",
+        publishedAt: {
+          lt: publishedAt,
+        },
+      },
+      orderBy: {
+        publishedAt: "desc",
+      },
+      select: {
+        title: true,
+        slug: true,
+        featuredImageUrl: true,
+      },
+    }),
+    prisma.post.findFirst({
+      where: {
+        status: "published",
+        publishedAt: {
+          gt: publishedAt,
+        },
+      },
+      orderBy: {
+        publishedAt: "asc",
+      },
+      select: {
+        title: true,
+        slug: true,
+        featuredImageUrl: true,
+      },
+    }),
+  ]);
+  return { prev, next };
 }
 
 async function getRelatedPosts(
@@ -71,6 +114,11 @@ async function getRelatedPosts(
       featuredImageUrl: true,
       publishedAt: true,
       readTimeMinutes: true,
+      category: {
+        select: {
+          name: true,
+        },
+      },
     },
     orderBy: {
       publishedAt: "desc",
@@ -155,6 +203,8 @@ export default async function BlogPostPage({ params }: Props) {
   }
 
   const relatedPosts = await getRelatedPosts(post.categoryId, post.id);
+  const adjacentPosts = await getAdjacentPosts(post.id, post.publishedAt);
+
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
 
   const blogPostSchema = generateBlogPostSchema(post, baseUrl);
@@ -186,7 +236,12 @@ export default async function BlogPostPage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
-      <BlogPostContent post={post} relatedPosts={relatedPosts} />
+      <BlogPostContent
+        post={post}
+        relatedPosts={relatedPosts}
+        prevPost={adjacentPosts.prev}
+        nextPost={adjacentPosts.next}
+      />
     </>
   );
 }

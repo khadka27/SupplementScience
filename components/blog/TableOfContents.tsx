@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { ChevronRight, List } from "lucide-react";
 
 interface TOCItem {
   id: string;
@@ -50,8 +49,10 @@ export default function TableOfContents() {
   if (toc.length === 0) return null;
 
   return (
-    <nav className="space-y-0.5 relative">
-      {/* Optional: Add a continuous vertical line background if desired, but individual item borders work well for 'active' state indication in a rail */}
+    <nav className="relative flex flex-col gap-3 text-sm">
+      {/* Active Indicator Bar */}
+      <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-border/40 rounded-full" />
+
       {toc.map((item) => (
         <a
           key={item.id}
@@ -63,13 +64,16 @@ export default function TableOfContents() {
               ?.scrollIntoView({ behavior: "smooth" });
           }}
           className={cn(
-            "block py-2 pr-4 text-sm transition-all duration-200 border-l-2 pl-4",
-            item.level === 3 && "pl-8",
+            "relative pl-4 transition-all duration-300 hover:text-primary leading-relaxed block",
+            item.level === 3 && "pl-8 text-xs",
             activeId === item.id
-              ? "border-primary text-primary font-semibold bg-primary/5"
-              : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
+              ? "text-primary font-bold scale-105 origin-left"
+              : "text-muted-foreground"
           )}
         >
+          {activeId === item.id && (
+            <span className="absolute left-0 top-1/2 -translate-y-1/2 w-[2px] h-full bg-primary rounded-full transition-all duration-300" />
+          )}
           {item.text}
         </a>
       ))}

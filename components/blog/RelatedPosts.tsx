@@ -1,9 +1,16 @@
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
-import { Clock } from "lucide-react";
+import { Clock, Calendar } from "lucide-react";
 import { Post } from "@/lib/types";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 interface RelatedPostsProps {
   posts: Post[];
@@ -13,46 +20,62 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
   if (posts.length === 0) return null;
 
   return (
-    <div className="my-12">
-      <h2 className="text-2xl font-bold mb-6">Related Articles</h2>
-
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {posts.map((post) => (
-          <Link key={post.id} href={`/blog/${post.slug}`}>
-            <Card className="h-full hover:shadow-lg transition-shadow duration-300">
+    <div className="my-16">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {posts.map((post, index) => (
+          <Link
+            key={post.id}
+            href={`/blog/${post.slug}`}
+            className="group h-full block"
+          >
+            <article className="h-full flex flex-col space-y-4">
               {post.featuredImageUrl && (
-                <div className="relative w-full aspect-video overflow-hidden rounded-t-lg">
+                <div className="relative w-full aspect-video overflow-hidden rounded-2xl border border-border/50 shadow-sm group-hover:shadow-xl transition-all duration-300">
                   <Image
                     src={post.featuredImageUrl}
                     alt={post.title}
                     fill
-                    className="object-cover"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
+                  {post.category && (
+                    <div className="absolute top-4 left-4">
+                      <Badge
+                        variant="secondary"
+                        className="bg-background/90 backdrop-blur-sm text-xs font-bold shadow-sm"
+                      >
+                        {post.category.name}
+                      </Badge>
+                    </div>
+                  )}
                 </div>
               )}
 
-              <CardHeader>
-                <CardTitle className="text-lg line-clamp-2">
-                  {post.title}
-                </CardTitle>
-              </CardHeader>
-
-              <CardContent>
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <div className="flex-1 flex flex-col space-y-3">
+                <div className="flex items-center gap-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                   {post.publishedAt && (
                     <time dateTime={post.publishedAt.toISOString()}>
-                      {format(new Date(post.publishedAt), "MMM d")}
+                      {format(new Date(post.publishedAt), "MMM d, yyyy")}
                     </time>
                   )}
-                  <span>•</span>
-                  <div className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" />
-                    <span>{post.readTimeMinutes} min</span>
-                  </div>
                 </div>
-              </CardContent>
-            </Card>
+
+                <h4 className="text-xl font-bold leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                  {post.title}
+                </h4>
+
+                {post.excerpt && (
+                  <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed mb-4 flex-1">
+                    {post.excerpt}
+                  </p>
+                )}
+
+                <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground pt-2">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>{post.readTimeMinutes} min read</span>
+                </div>
+              </div>
+            </article>
           </Link>
         ))}
       </div>
