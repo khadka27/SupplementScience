@@ -108,3 +108,18 @@ model Subscriber {
 
   @@map("subscribers")
 }
+
+model Admin {
+  id        String    @id @default(uuid())
+  username  String    @unique
+  password  String
+  name      String?
+  email     String?
+  role      String    @default("admin")
+  isActive  Boolean   @default(true) @map("is_active")
+  lastLogin DateTime? @map("last_login")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+
+  @@map("admins")
+}
