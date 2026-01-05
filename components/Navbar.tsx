@@ -35,9 +35,10 @@ import {
 
 const navItems = [
   { name: "Home", href: "/" },
-  { name: "All Articles", href: "/blog" },
+  { name: "Blog", href: "/blog" },
   { name: "Categories", href: "/#categories" },
   { name: "About", href: "/about" },
+  { name: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
@@ -109,10 +110,21 @@ export function Navbar() {
                 <DropdownMenuLabel>Admin Panel</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
+                  <Link href="/admin" className="cursor-pointer">
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/admin/blogs" className="cursor-pointer">
+                    All Blogs
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link href="/admin/blog/new" className="cursor-pointer">
                     Write Article
                   </Link>
                 </DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                   <Link href="/admin/categories" className="cursor-pointer">
                     Categories
@@ -129,6 +141,11 @@ export function Navbar() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/blog" className="cursor-pointer">
+                    View Public Blog
+                  </Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link href="/admin/settings" className="cursor-pointer">
                     <Settings className="w-4 h-4 mr-2" />
@@ -196,12 +213,22 @@ export function Navbar() {
               <div className="mt-auto space-y-4 pb-8">
                 {session ? (
                   <>
-                    <Link href="/admin/blog/new" className="block">
+                    <Link href="/admin" className="block">
                       <Button className="w-full rounded-xl py-6" size="lg">
-                        Write Article
+                        Admin Dashboard
                       </Button>
                     </Link>
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-2 gap-2">
+                      <Link href="/admin/blogs" className="block">
+                        <Button variant="outline" className="w-full" size="sm">
+                          All Blogs
+                        </Button>
+                      </Link>
+                      <Link href="/admin/blog/new" className="block">
+                        <Button variant="outline" className="w-full" size="sm">
+                          New Post
+                        </Button>
+                      </Link>
                       <Link href="/admin/categories" className="block">
                         <Button variant="outline" className="w-full" size="sm">
                           Categories
@@ -215,6 +242,11 @@ export function Navbar() {
                       <Link href="/admin/authors" className="block">
                         <Button variant="outline" className="w-full" size="sm">
                           Authors
+                        </Button>
+                      </Link>
+                      <Link href="/blog" className="block">
+                        <Button variant="outline" className="w-full" size="sm">
+                          View Blog
                         </Button>
                       </Link>
                     </div>
