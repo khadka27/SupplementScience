@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { AdminLayout } from "@/components/admin/AdminLayout";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import {
@@ -144,17 +145,19 @@ export default function AdminSettingsPage() {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
-      </div>
+      <AdminLayout>
+        <div className="flex items-center justify-center h-full">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </AdminLayout>
     );
   }
 
   return (
-    <div className="min-h-screen pt-32 pb-20">
-      <div className="container mx-auto max-w-4xl px-4 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Admin Settings</h1>
+    <AdminLayout>
+      <div className="space-y-6">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight">Account Settings</h2>
           <p className="text-muted-foreground">
             Manage your account and credentials
           </p>
@@ -163,7 +166,6 @@ export default function AdminSettingsPage() {
         {message && (
           <Alert
             variant={message.type === "error" ? "destructive" : "default"}
-            className="mb-6"
           >
             {message.type === "success" ? (
               <CheckCircle2 className="h-4 w-4" />
@@ -175,7 +177,7 @@ export default function AdminSettingsPage() {
         )}
 
         {/* Profile Information */}
-        <Card className="mb-6">
+        <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <User className="w-5 h-5" />
@@ -332,6 +334,6 @@ export default function AdminSettingsPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </AdminLayout>
   );
 }
