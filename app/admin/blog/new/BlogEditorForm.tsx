@@ -238,7 +238,7 @@ export default function BlogEditorForm({
                   name="status"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Status</FormLabel>
+                      <FormLabel>Status *</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -260,38 +260,10 @@ export default function BlogEditorForm({
 
                 <FormField
                   control={form.control}
-                  name="authorId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Author (Optional)</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select author" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {authors.map((author) => (
-                            <SelectItem key={author.id} value={author.id}>
-                              {author.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
                   name="categoryId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Category (Optional)</FormLabel>
+                      <FormLabel>Category</FormLabel>
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
@@ -316,62 +288,32 @@ export default function BlogEditorForm({
 
                 <FormField
                   control={form.control}
-                  name="tagIds"
-                  render={() => (
+                  name="authorId"
+                  render={({ field }) => (
                     <FormItem>
-                      <div className="mb-4">
-                        <FormLabel>Tags *</FormLabel>
-                        <FormDescription>
-                          Select at least one tag for your post
-                        </FormDescription>
-                      </div>
-                      <div className="space-y-2 max-h-48 overflow-y-auto border rounded-md p-4">
-                        {tags.map((tag) => (
-                          <FormField
-                            key={tag.id}
-                            control={form.control}
-                            name="tagIds"
-                            render={({ field }) => {
-                              return (
-                                <FormItem
-                                  key={tag.id}
-                                  className="flex flex-row items-start space-x-3 space-y-0"
-                                >
-                                  <FormControl>
-                                    <Checkbox
-                                      checked={field.value?.includes(tag.id)}
-                                      onCheckedChange={(checked) => {
-                                        return checked
-                                          ? field.onChange([
-                                              ...field.value,
-                                              tag.id,
-                                            ])
-                                          : field.onChange(
-                                              field.value?.filter(
-                                                (value) => value !== tag.id
-                                              )
-                                            );
-                                      }}
-                                    />
-                                  </FormControl>
-                                  <FormLabel className="font-normal cursor-pointer">
-                                    {tag.name}
-                                  </FormLabel>
-                                </FormItem>
-                              );
-                            }}
-                          />
-                        ))}
-                      </div>
+                      <FormLabel>Author</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select author" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {authors.map((author) => (
+                            <SelectItem key={author.id} value={author.id}>
+                              {author.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </CardContent>
-            </Card>
 
-            <Card>
-              <CardContent className="pt-6 space-y-4">
                 <FormField
                   control={form.control}
                   name="featuredImageUrl"
@@ -391,24 +333,94 @@ export default function BlogEditorForm({
               </CardContent>
             </Card>
 
-            <div className="flex flex-col gap-2">
-              <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Save className="mr-2 h-4 w-4" />
-                )}
-                Save Post
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                className="w-full"
-                onClick={() => router.back()}
-              >
-                Cancel
-              </Button>
-            </div>
+            <Card>
+              <CardContent className="pt-6">
+                <FormField
+                  control={form.control}
+                  name="tagIds"
+                  render={() => (
+                    <FormItem>
+                      <div className="mb-3">
+                        <FormLabel>Tags *</FormLabel>
+                        <FormDescription className="text-xs">
+                          Select at least one tag
+                        </FormDescription>
+                      </div>
+                      <div className="space-y-2 max-h-64 overflow-y-auto border rounded-md p-3 bg-muted/30">
+                        {tags.length === 0 ? (
+                          <p className="text-sm text-muted-foreground text-center py-4">
+                            No tags available. Create tags first.
+                          </p>
+                        ) : (
+                          tags.map((tag) => (
+                            <FormField
+                              key={tag.id}
+                              control={form.control}
+                              name="tagIds"
+                              render={({ field }) => {
+                                return (
+                                  <FormItem
+                                    key={tag.id}
+                                    className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-2 hover:bg-accent transition-colors"
+                                  >
+                                    <FormControl>
+                                      <Checkbox
+                                        checked={field.value?.includes(tag.id)}
+                                        onCheckedChange={(checked) => {
+                                          return checked
+                                            ? field.onChange([
+                                                ...field.value,
+                                                tag.id,
+                                              ])
+                                            : field.onChange(
+                                                field.value?.filter(
+                                                  (value) => value !== tag.id
+                                                )
+                                              );
+                                        }}
+                                      />
+                                    </FormControl>
+                                    <FormLabel className="font-normal cursor-pointer flex-1">
+                                      {tag.name}
+                                    </FormLabel>
+                                  </FormItem>
+                                );
+                              }}
+                            />
+                          ))
+                        )}
+                      </div>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="pt-6 space-y-2">
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <Save className="mr-2 h-4 w-4" />
+                  )}
+                  {isEditing ? "Update Post" : "Save Post"}
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => router.push("/admin/blogs")}
+                >
+                  Cancel
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </form>
