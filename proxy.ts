@@ -52,7 +52,34 @@ export async function proxy(request: NextRequest) {
 
     if (session) {
       const url = request.nextUrl.clone();
-      url.pathname = "/admin/blog/new";
+      url.pathname = "/admin";
+      return NextResponse.redirect(url);
+    }
+  }
+
+  // Redirect authenticated admin from public pages to admin panel
+  const publicPages = [
+    "/",
+    "/blog",
+    "/about",
+    "/contact",
+    "/privacy",
+    "/terms",
+    "/editorial-policy",
+    "/medical-disclaimer",
+  ];
+  const isPublicPage =
+    publicPages.includes(pathname) ||
+    pathname.startsWith("/blog/") ||
+    pathname.startsWith("/category/") ||
+    pathname.startsWith("/tag/");
+
+  if (isPublicPage) {
+    const session = await auth();
+
+    if (session) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/admin";
       return NextResponse.redirect(url);
     }
   }

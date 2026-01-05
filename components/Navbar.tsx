@@ -114,6 +114,22 @@ export function Navbar() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
+                  <Link href="/admin/categories" className="cursor-pointer">
+                    Categories
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/admin/tags" className="cursor-pointer">
+                    Tags
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/admin/authors" className="cursor-pointer">
+                    Authors
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
                   <Link href="/admin/settings" className="cursor-pointer">
                     <Settings className="w-4 h-4 mr-2" />
                     Settings
@@ -185,6 +201,23 @@ export function Navbar() {
                         Write Article
                       </Button>
                     </Link>
+                    <div className="grid grid-cols-3 gap-2">
+                      <Link href="/admin/categories" className="block">
+                        <Button variant="outline" className="w-full" size="sm">
+                          Categories
+                        </Button>
+                      </Link>
+                      <Link href="/admin/tags" className="block">
+                        <Button variant="outline" className="w-full" size="sm">
+                          Tags
+                        </Button>
+                      </Link>
+                      <Link href="/admin/authors" className="block">
+                        <Button variant="outline" className="w-full" size="sm">
+                          Authors
+                        </Button>
+                      </Link>
+                    </div>
                     <Link href="/admin/settings" className="block">
                       <Button
                         variant="outline"
