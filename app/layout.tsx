@@ -74,9 +74,6 @@ export const metadata: Metadata = {
 
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider } from "@/components/AuthProvider";
-import { Navbar } from "@/components/Navbar";
-import { Footer } from "@/components/Footer";
-
 import { Toaster } from "@/components/ui/sonner";
 
 export default function RootLayout({
@@ -139,11 +136,7 @@ export default function RootLayout({
               <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px]" />
             </div>
 
-            <div className="flex flex-col min-h-screen">
-              <Navbar />
-              <main className="grow pt-24">{children}</main>
-              <Footer />
-            </div>
+            {children}
             <Toaster />
           </ThemeProvider>
         </AuthProvider>

@@ -32,11 +32,11 @@ export async function GET() {
       },
     });
 
-    // Get popular posts (by views)
+    // Get popular posts (by view count)
     const popularPosts = await prisma.post.findMany({
       take: 5,
       where: { status: "PUBLISHED" },
-      orderBy: { views: "desc" },
+      orderBy: { viewCount: "desc" },
       include: {
         author: true,
         category: true,

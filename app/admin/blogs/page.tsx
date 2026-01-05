@@ -57,7 +57,7 @@ interface Post {
   slug: string;
   excerpt: string;
   status: string;
-  views: number;
+  viewCount: number;
   createdAt: string;
   updatedAt: string;
   author: { name: string; slug: string } | null;
@@ -282,7 +282,7 @@ export default function BlogsManagementPage() {
                         <span>•</span>
                         <span className="flex items-center gap-1">
                           <Eye className="h-3 w-3" />
-                          {post.views} views
+                          {post.viewCount} views
                         </span>
                         <span>•</span>
                         <span>

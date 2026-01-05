@@ -139,13 +139,6 @@ export default function AdminDashboardPage() {
   return (
     <AdminLayout>
       <div className="space-y-6">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-          <p className="text-muted-foreground">
-            Welcome back! Here's an overview of your blog.
-          </p>
-        </div>
-
         {/* Stats Grid */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {statCards.map((stat) => {
@@ -201,7 +194,7 @@ export default function AdminDashboardPage() {
                       </div>
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
                         <Eye className="h-4 w-4" />
-                        {post.views}
+                        {post.viewCount}
                       </div>
                     </div>
                   ))
