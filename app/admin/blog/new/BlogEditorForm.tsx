@@ -74,8 +74,6 @@ export default function BlogEditorForm({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     try {
-      // In a real app, you would call an API route here
-      // For this demo, let's pretend it's saved
       console.log("Saving post:", values);
 
       const response = await fetch("/api/blog/posts", {
@@ -84,13 +82,23 @@ export default function BlogEditorForm({
         body: JSON.stringify(values),
       });
 
-      if (!response.ok) throw new Error("Failed to save");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage =
+          errorData.error || `Failed to save (${response.status})`;
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      console.log("Post created:", data);
 
       toast.success("Post created successfully!");
       router.push("/blog");
     } catch (error) {
-      toast.error("Something went wrong. Please try again.");
-      console.error(error);
+      const errorMessage =
+        error instanceof Error ? error.message : "Something went wrong";
+      toast.error(errorMessage);
+      console.error("Save error:", error);
     } finally {
       setIsSubmitting(false);
     }

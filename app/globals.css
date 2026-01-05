@@ -158,6 +158,23 @@
   .custom-scrollbar::-webkit-scrollbar-thumb {
     @apply bg-border rounded-full hover:bg-muted-foreground/30 transition-colors;
   }
+
+  /* Thin scrollbar utility */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+
+  .scrollbar-thumb-primary\/30::-webkit-scrollbar-thumb {
+    @apply bg-primary/30;
+  }
+
+  .scrollbar-thumb-primary\/50:hover::-webkit-scrollbar-thumb {
+    @apply bg-primary/50;
+  }
+
+  .scrollbar-track-transparent::-webkit-scrollbar-track {
+    background: transparent;
+  }
 }
 
 /* Tiptap Editor Styles */
@@ -207,6 +224,118 @@
 
 .tiptap img {
   @apply rounded-lg my-6 max-w-full h-auto;
+}
+
+.tiptap table {
+  @apply border-collapse table-auto w-full my-6 text-xs;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.tiptap th {
+  @apply border border-border bg-muted font-bold px-2 py-1.5 text-left text-[10px];
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.tiptap td {
+  @apply border border-border px-2 py-1.5 text-[11px];
+  line-height: 1.4;
+}
+
+.tiptap tr:hover {
+  @apply bg-muted/20;
+  transition: none;
+}
+
+/* Table cell selection */
+.tiptap .selectedCell {
+  @apply bg-primary/20;
+}
+
+/* Blog Post Table Styles - Optimized for readability */
+.prose table {
+  @apply w-full border-collapse my-6 text-xs;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-font-smoothing: antialiased;
+  will-change: auto;
+  contain: layout style paint;
+}
+
+.prose thead {
+  @apply bg-muted border-b-2 border-border;
+}
+
+.prose th {
+  @apply border border-border bg-muted font-bold px-2 py-1.5 text-left text-[10px] uppercase tracking-wide;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.prose td {
+  @apply border border-border px-2 py-1.5 text-[11px];
+  vertical-align: top;
+  line-height: 1.4;
+}
+
+.prose tbody tr {
+  @apply border-b border-border;
+  transition: none;
+}
+
+.prose tbody tr:hover {
+  @apply bg-muted/20;
+}
+
+.prose tbody tr:last-child {
+  @apply border-b-0;
+}
+
+/* Responsive table wrapper */
+.prose table {
+  display: block;
+  max-height: 80vh;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.prose table::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.prose table::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+.prose table::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 4px;
+}
+
+.prose table::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+@media (max-width: 768px) {
+  .prose table {
+    @apply text-[10px];
+    max-height: 70vh;
+  }
+
+  .prose th,
+  .prose td {
+    @apply px-1.5 py-1;
+    font-size: 9px;
+  }
 }
 
 /* ========================================

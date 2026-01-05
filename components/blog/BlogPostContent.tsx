@@ -17,6 +17,7 @@ import {
   Menu,
   List,
   ArrowRight,
+  AlertTriangle,
 } from "lucide-react";
 import { Post, Source } from "@/lib/types";
 import AuthorBox from "./AuthorBox";
@@ -123,7 +124,7 @@ export default function BlogPostContent({
 
         {/* Modern Hero Section with Image Background */}
         {post.featuredImageUrl ? (
-          <header className="relative w-full overflow-hidden rounded-3xl border border-border/20 dark:border-white/10 mb-16 max-w-7xl mx-auto">
+          <header className="relative w-full overflow-hidden rounded-3xl border-2 border-green-200/40 dark:border-green-800/40 mb-16 max-w-7xl mx-auto shadow-2xl">
             {/* Background Image with Strong Blur */}
             <div className="absolute inset-0">
               <Image
@@ -134,8 +135,8 @@ export default function BlogPostContent({
                 priority
                 sizes="100vw"
               />
-              {/* Light mode: subtle white overlay, Dark mode: subtle black overlay */}
-              <div className="absolute inset-0 bg-white/60 dark:bg-black/60" />
+              {/* Wellness-friendly gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-br from-green-50/90 via-emerald-50/85 to-teal-50/90 dark:from-green-950/85 dark:via-emerald-950/80 dark:to-teal-950/85" />
             </div>
 
             {/* Content Over Image */}
@@ -201,7 +202,15 @@ export default function BlogPostContent({
                   {post.publishedAt && (
                     <span className="flex items-center gap-2 rounded-full bg-gray-100/80 dark:bg-white/10 backdrop-blur-sm px-4 py-2 text-sm text-gray-700 dark:text-white/80 border border-gray-200 dark:border-white/10 shadow-sm">
                       <Calendar className="w-4 h-4" />
+                      Published{" "}
                       {format(new Date(post.publishedAt), "MMM d, yyyy")}
+                    </span>
+                  )}
+
+                  {post.updatedAt && post.updatedAt !== post.createdAt && (
+                    <span className="flex items-center gap-2 rounded-full bg-blue-100/80 dark:bg-blue-900/30 backdrop-blur-sm px-4 py-2 text-sm text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 shadow-sm">
+                      <Info className="w-4 h-4" />
+                      Updated {format(new Date(post.updatedAt), "MMM d, yyyy")}
                     </span>
                   )}
 
@@ -209,6 +218,23 @@ export default function BlogPostContent({
                     <Clock className="w-4 h-4" />
                     {post.readTimeMinutes} min read
                   </span>
+
+                  {post.author && post.author.bio && (
+                    <span className="flex items-center gap-2 rounded-full bg-green-100/80 dark:bg-green-900/30 backdrop-blur-sm px-4 py-2 text-sm text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800 shadow-sm">
+                      <svg
+                        className="w-4 h-4"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      Expert Reviewed
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -311,12 +337,14 @@ export default function BlogPostContent({
           <aside className="hidden lg:block lg:col-span-3 relative animate-in fade-in slide-in-from-left-8 duration-700 delay-700">
             <div className="sticky top-28">
               {/* TOC Section */}
-              <div className="bg-gradient-to-br from-primary/5 to-primary/3 backdrop-blur-sm p-6 rounded-2xl border border-primary/20 shadow-sm">
-                <div className="flex items-center gap-2 font-black text-sm text-foreground mb-5 uppercase tracking-wide">
+              <div className="bg-gradient-to-br from-primary/5 to-primary/3 backdrop-blur-sm p-6 rounded-2xl border border-primary/20 shadow-sm max-h-[calc(100vh-8rem)] flex flex-col">
+                <div className="flex items-center gap-2 font-black text-sm text-foreground mb-5 uppercase tracking-wide shrink-0">
                   <List className="w-4 h-4 text-primary" />
                   <span>Contents</span>
                 </div>
-                <TableOfContents />
+                <div className="overflow-y-auto overflow-x-hidden pr-2 scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent hover:scrollbar-thumb-primary/50">
+                  <TableOfContents />
+                </div>
               </div>
             </div>
           </aside>
@@ -332,7 +360,62 @@ export default function BlogPostContent({
                   </div>
                   <span>Table of Contents</span>
                 </h3>
-                <TableOfContents />
+                <div className="max-h-[60vh] overflow-y-auto overflow-x-hidden pr-2 scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
+                  <TableOfContents />
+                </div>
+              </div>
+
+              {/* Quick Summary Card */}
+              {post.excerpt && (
+                <div className="mb-12 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 border-2 border-green-200 dark:border-green-800 rounded-2xl p-6 shadow-lg">
+                  <div className="flex items-start gap-3 mb-4">
+                    <div className="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
+                      <svg
+                        className="w-5 h-5 text-green-600 dark:text-green-400"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-black text-green-900 dark:text-green-100 mb-2">
+                        Quick Summary
+                      </h3>
+                      <p className="text-sm text-green-800 dark:text-green-200 leading-relaxed">
+                        {post.excerpt}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-green-700 dark:text-green-300 font-medium">
+                    <Clock className="w-4 h-4" />
+                    <span>{post.readTimeMinutes} min read</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Medical Disclaimer */}
+              <div className="mb-12 bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-500 rounded-lg p-5 shadow-md">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                  <div>
+                    <h4 className="text-sm font-bold text-amber-900 dark:text-amber-100 mb-1">
+                      Medical Disclaimer
+                    </h4>
+                    <p className="text-xs text-amber-800 dark:text-amber-200 leading-relaxed">
+                      This article is for informational purposes only and does
+                      not constitute medical advice. Always consult with a
+                      qualified healthcare professional before starting any new
+                      supplement regimen.
+                    </p>
+                  </div>
+                </div>
               </div>
 
               {/* Main Article Content */}
@@ -353,8 +436,7 @@ export default function BlogPostContent({
                 prose-blockquote:border-l-[6px] prose-blockquote:border-primary prose-blockquote:bg-gradient-to-r prose-blockquote:from-muted/40 prose-blockquote:to-transparent prose-blockquote:py-8 prose-blockquote:px-10 prose-blockquote:rounded-r-3xl prose-blockquote:italic prose-blockquote:text-2xl prose-blockquote:font-serif prose-blockquote:text-gray-800 dark:prose-blockquote:text-foreground/90 prose-blockquote:shadow-md prose-blockquote:my-10
                 prose-code:bg-muted/60 prose-code:px-2.5 prose-code:py-1.5 prose-code:rounded-lg prose-code:font-mono prose-code:text-sm prose-code:font-bold prose-code:text-primary prose-code:before:content-none prose-code:after:content-none prose-code:border prose-code:border-border/50
                 prose-pre:bg-gradient-to-br prose-pre:from-zinc-950 prose-pre:to-zinc-900 prose-pre:text-zinc-50 prose-pre:border-2 prose-pre:border-border/50 prose-pre:rounded-2xl prose-pre:p-7 prose-pre:shadow-2xl prose-pre:my-10
-                prose-hr:border-t-2 prose-hr:border-primary/30 prose-hr:my-16
-                prose-table:border prose-table:border-border/50 prose-table:rounded-xl prose-table:overflow-hidden prose-table:shadow-md"
+                prose-hr:border-t-2 prose-hr:border-primary/30 prose-hr:my-16"
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(prepareContent(post.content)),
                 }}
