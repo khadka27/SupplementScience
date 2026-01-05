@@ -13,18 +13,18 @@ export function processContent(html: string): string {
 
   // 1. Wrap tables in responsive containers
   processed = processed.replaceAll(
-    /<table>/g,
+    "<table>",
     '<div class="overflow-x-auto rounded-lg border border-border my-8"><table class="w-full">'
   );
-  processed = processed.replaceAll(/<\/table>/g, "</table></div>");
+  processed = processed.replaceAll("</table>", "</table></div>");
 
   // 2. Enhance HR tags
   processed = processed.replaceAll(
-    /<hr>/g,
+    "<hr>",
     '<hr class="my-16 border-t-2 border-primary/20" />'
   );
   processed = processed.replaceAll(
-    /<hr\/>/g,
+    "<hr/>",
     '<hr class="my-16 border-t-2 border-primary/20" />'
   );
 
@@ -42,7 +42,7 @@ export function processContent(html: string): string {
 
   // 5. Add target="_blank" to external links (security best practice)
   processed = processed.replaceAll(
-    /<a href="http/g,
+    '<a href="http',
     '<a target="_blank" rel="noopener noreferrer" href="http'
   );
 
