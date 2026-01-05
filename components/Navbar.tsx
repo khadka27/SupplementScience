@@ -36,7 +36,7 @@ import {
 const navItems = [
   { name: "Home", href: "/" },
   { name: "Blog", href: "/blog" },
-  { name: "Categories", href: "/#categories" },
+  { name: "Categories", href: "/categories" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ];
