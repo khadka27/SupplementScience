@@ -43,7 +43,7 @@ export function Navbar() {
           : "bg-transparent py-5 border-transparent"
       )}
     >
-      <div className="container mx-auto px-4 flex items-center justify-between">
+      <div className="container mx-auto max-w-6xl px-4 lg:px-8 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
           <div className="bg-primary text-primary-foreground p-1.5 rounded-lg transition-transform group-hover:rotate-12">
             <Microscope className="w-6 h-6" />
