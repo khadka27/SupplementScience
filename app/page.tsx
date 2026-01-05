@@ -1,10 +1,29 @@
 import Link from "next/link";
+import Image from "next/image";
 import prisma from "@/lib/prisma";
 import { Post, Category } from "@/lib/types";
 import BlogList from "@/components/blog/BlogList";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  ArrowRight,
+  ShieldCheck,
+  BookOpen,
+  Clock,
+  TrendingUp,
+  CheckCircle2,
+  Sparkles,
+  Heart,
+  Brain,
+  Dumbbell,
+  Moon,
+  Shield,
+  Leaf,
+  Zap,
+  Mail,
+} from "lucide-react";
 
 export const dynamic = "force-static";
 export const revalidate = 43200;
@@ -81,97 +100,369 @@ export default async function Home() {
   const recentPosts = await getRecentPosts();
   const categories = await getCategories();
 
-  const postsToShow = featuredPosts.length > 0 ? featuredPosts : recentPosts;
+  const mainFeaturedPost = featuredPosts[0] || recentPosts[0];
+  const postsToShow = recentPosts.slice(0, 6);
+
+  const categoryIcons: Record<string, any> = {
+    "Muscle & Strength": Dumbbell,
+    "Sleep & Stress": Moon,
+    Immunity: Shield,
+    "Gut Health": Heart,
+    "Brain Health": Brain,
+    "Skin & Hair": Sparkles,
+    "Weight Loss": TrendingUp,
+    Vitamins: Leaf,
+  };
 
   return (
     <div className="min-h-screen">
-      <section className="bg-gradient-to-b from-muted/50 to-background py-20 px-4">
-        <div className="container mx-auto max-w-4xl text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">
-            Evidence-Based Health Information
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Discover expert articles about supplements, nutrition, and wellness
-            backed by scientific research.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link href="/blog">
-              <Button size="lg">
-                Browse Articles
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
-            <Link href="/about">
-              <Button variant="outline" size="lg">
-                About Us
-              </Button>
-            </Link>
-            <Link href="/admin/blog/new">
-              <Button variant="secondary" size="lg">
-                Create Article (CMS)
-              </Button>
-            </Link>
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-green-950 dark:via-emerald-950 dark:to-teal-950 py-20 px-4 overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.2),transparent)]" />
+        </div>
+
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <div className="text-center mb-12">
+            {/* Trust Badge */}
+            <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-green-200 dark:border-green-800 mb-6 shadow-sm">
+              <ShieldCheck className="w-4 h-4 text-green-600 dark:text-green-400" />
+              <span className="text-sm font-medium text-green-900 dark:text-green-100">
+                Evidence-Based • Updated Weekly • Beginner-Friendly
+              </span>
+            </div>
+
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 bg-gradient-to-r from-green-700 to-emerald-600 dark:from-green-400 dark:to-emerald-400 bg-clip-text text-transparent leading-tight">
+              Science-Backed Supplement Guides for Real Results
+            </h1>
+
+            <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+              Understand what works, how to take it safely, and what to avoid —
+              based on research, not hype.
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/blog">
+                <Button
+                  size="lg"
+                  className="bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl transition-all"
+                >
+                  <BookOpen className="mr-2 w-5 h-5" />
+                  Browse Supplements
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+              <Link href="/about">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-green-600 text-green-700 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-950/50"
+                >
+                  Beginner Guides
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
+      {/* Featured Post */}
+      {mainFeaturedPost && (
+        <section className="py-16 px-4 -mt-8 relative z-20">
+          <div className="container mx-auto max-w-6xl">
+            <div className="flex items-center gap-2 mb-8">
+              <Sparkles className="w-6 h-6 text-amber-500" />
+              <h2 className="text-3xl font-bold">Featured Guide</h2>
+            </div>
+
+            <Link href={`/blog/${mainFeaturedPost.slug}`}>
+              <Card className="group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-white to-green-50/50 dark:from-gray-950 dark:to-green-950/20">
+                <div className="grid md:grid-cols-2 gap-0">
+                  {/* Image */}
+                  {mainFeaturedPost.featuredImageUrl && (
+                    <div className="relative h-64 md:h-full overflow-hidden">
+                      <Image
+                        src={mainFeaturedPost.featuredImageUrl}
+                        alt={mainFeaturedPost.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    </div>
+                  )}
+
+                  {/* Content */}
+                  <div className="p-8 md:p-12 flex flex-col justify-center">
+                    {mainFeaturedPost.category && (
+                      <Badge className="w-fit mb-4 bg-green-600 text-white">
+                        {mainFeaturedPost.category.name}
+                      </Badge>
+                    )}
+
+                    <h3 className="text-3xl md:text-4xl font-bold mb-4 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">
+                      {mainFeaturedPost.title}
+                    </h3>
+
+                    {mainFeaturedPost.excerpt && (
+                      <p className="text-lg text-muted-foreground mb-6 leading-relaxed">
+                        {mainFeaturedPost.excerpt}
+                      </p>
+                    )}
+
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        {mainFeaturedPost.readTimeMinutes} min read
+                      </div>
+                      {mainFeaturedPost.publishedAt && (
+                        <span>
+                          {new Date(
+                            mainFeaturedPost.publishedAt
+                          ).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </Link>
+          </div>
+        </section>
+      )}
+
+      {/* Categories */}
       {categories.length > 0 && (
         <section className="py-16 px-4 bg-muted/30">
           <div className="container mx-auto max-w-6xl">
-            <h2 className="text-3xl font-bold mb-8 text-center">
-              Browse by Category
+            <h2 className="text-3xl font-bold mb-4 text-center">
+              Explore by Goal
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {categories.map((category) => (
-                <Link key={category.id} href={`/category/${category.slug}`}>
-                  <Card className="hover:shadow-lg transition-shadow duration-300 h-full">
-                    <CardHeader>
-                      <CardTitle className="text-lg">{category.name}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground">
-                        {category.postCount}{" "}
-                        {category.postCount === 1 ? "article" : "articles"}
-                      </p>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
+            <p className="text-center text-muted-foreground mb-10">
+              Find supplement guides tailored to your health objectives
+            </p>
+
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {categories.map((category) => {
+                const Icon = categoryIcons[category.name] || Leaf;
+                return (
+                  <Link key={category.id} href={`/category/${category.slug}`}>
+                    <Card className="group hover:shadow-lg hover:border-green-300 dark:hover:border-green-700 transition-all duration-300 h-full cursor-pointer">
+                      <CardContent className="p-6 text-center">
+                        <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center group-hover:bg-green-200 dark:group-hover:bg-green-800/50 transition-colors">
+                          <Icon className="w-6 h-6 text-green-600 dark:text-green-400" />
+                        </div>
+                        <h3 className="font-bold text-lg mb-2 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">
+                          {category.name}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {category.postCount}{" "}
+                          {category.postCount === 1 ? "guide" : "guides"}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
       )}
 
+      {/* Quick Filters */}
+      <section className="py-12 px-4 bg-white dark:bg-gray-950">
+        <div className="container mx-auto max-w-6xl">
+          <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wide mb-4 text-center">
+            Quick Topics
+          </h3>
+          <div className="flex flex-wrap justify-center gap-3">
+            {[
+              "Beginner",
+              "Dosage",
+              "Side Effects",
+              "Best Supplements",
+              "Men",
+              "Women",
+              "Athletes",
+              "Safety",
+            ].map((topic) => (
+              <Link key={topic} href={`/blog?q=${topic.toLowerCase()}`}>
+                <Badge
+                  variant="outline"
+                  className="px-4 py-2 hover:bg-green-50 dark:hover:bg-green-950/50 hover:border-green-300 dark:hover:border-green-700 cursor-pointer transition-colors text-sm"
+                >
+                  {topic}
+                </Badge>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Latest Articles */}
       {postsToShow.length > 0 && (
-        <section className="py-16">
-          <BlogList
-            posts={postsToShow}
-            title={
-              featuredPosts.length > 0 ? "Featured Articles" : "Latest Articles"
-            }
-          />
-          <div className="text-center mt-12">
-            <Link href="/blog">
-              <Button variant="outline" size="lg">
-                View All Articles
-                <ArrowRight className="ml-2 w-4 h-4" />
-              </Button>
-            </Link>
+        <section className="py-16 px-4">
+          <div className="container mx-auto max-w-6xl">
+            <div className="flex items-center justify-between mb-10">
+              <div>
+                <h2 className="text-3xl font-bold mb-2">Latest Articles</h2>
+                <p className="text-muted-foreground">
+                  Fresh research and supplement guides
+                </p>
+              </div>
+              <Link href="/blog">
+                <Button variant="ghost" className="hidden md:flex">
+                  View All
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
+            </div>
+
+            <BlogList posts={postsToShow} />
+
+            <div className="text-center mt-12">
+              <Link href="/blog">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-green-600 text-green-700 dark:text-green-400"
+                >
+                  View All Articles
+                  <ArrowRight className="ml-2 w-4 h-4" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </section>
       )}
 
-      {postsToShow.length === 0 && (
+      {/* Editor's Picks */}
+      <section className="py-16 px-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20">
+        <div className="container mx-auto max-w-6xl">
+          <div className="flex items-center gap-2 mb-8">
+            <CheckCircle2 className="w-6 h-6 text-green-600 dark:text-green-400" />
+            <h2 className="text-3xl font-bold">Top Picks This Month</h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              {
+                title: "Best Supplements for Better Sleep",
+                icon: Moon,
+                category: "Sleep",
+              },
+              {
+                title: "Creatine Guide: Benefits, Dosage & Side Effects",
+                icon: Dumbbell,
+                category: "Strength",
+              },
+              {
+                title: "Magnesium: Which Type Should You Choose?",
+                icon: Sparkles,
+                category: "Minerals",
+              },
+              {
+                title: "Omega-3: What to Look For (EPA/DHA)",
+                icon: Heart,
+                category: "Heart Health",
+              },
+            ].map((pick, index) => (
+              <Link key={index} href="/blog">
+                <Card className="group hover:shadow-lg hover:border-green-300 dark:hover:border-green-700 transition-all cursor-pointer">
+                  <CardContent className="p-6 flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center shrink-0 group-hover:bg-green-200 dark:group-hover:bg-green-800/50 transition-colors">
+                      <pick.icon className="w-6 h-6 text-green-600 dark:text-green-400" />
+                    </div>
+                    <div>
+                      <Badge variant="outline" className="mb-2 text-xs">
+                        {pick.category}
+                      </Badge>
+                      <h3 className="font-bold text-lg group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">
+                        {pick.title}
+                      </h3>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Trust & Safety */}
+      <section className="py-16 px-4 bg-white dark:bg-gray-950">
+        <div className="container mx-auto max-w-4xl text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 mb-6">
+            <ShieldCheck className="w-8 h-8 text-green-600 dark:text-green-400" />
+          </div>
+
+          <h2 className="text-3xl font-bold mb-4">Our Promise</h2>
+          <p className="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto leading-relaxed">
+            We publish evidence-based supplement guides written for real people.
+            Articles are updated regularly and include safety tips, dosage
+            guidance, and references.
+          </p>
+
+          <div className="inline-flex items-center gap-2 px-6 py-3 bg-amber-50 dark:bg-amber-950/20 border-l-4 border-amber-500 rounded-lg">
+            <Shield className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0" />
+            <p className="text-sm text-amber-900 dark:text-amber-200 font-medium text-left">
+              <strong>Disclaimer:</strong> This site does not provide medical
+              advice. Always consult a healthcare professional.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter */}
+      <section className="py-16 px-4 bg-gradient-to-br from-green-600 to-emerald-600 text-white">
+        <div className="container mx-auto max-w-3xl text-center">
+          <Mail className="w-12 h-12 mx-auto mb-6 opacity-90" />
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            Get Supplement Guides That Actually Help
+          </h2>
+          <p className="text-lg mb-8 text-green-50">
+            Weekly summaries, dosage guides, and new research updates — no spam.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+            <Input
+              type="email"
+              placeholder="Enter your email"
+              className="bg-white/10 border-white/30 text-white placeholder:text-white/60 focus:bg-white/20"
+            />
+            <Button
+              size="lg"
+              className="bg-white text-green-600 hover:bg-green-50 font-bold whitespace-nowrap"
+            >
+              Subscribe
+            </Button>
+          </div>
+
+          <p className="text-xs text-green-100 mt-4">
+            Join 10,000+ readers • Unsubscribe anytime
+          </p>
+        </div>
+      </section>
+
+      {/* Empty State */}
+      {postsToShow.length === 0 && !mainFeaturedPost && (
         <section className="py-16 px-4">
           <div className="container mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-bold mb-4">Welcome to Your Blog</h2>
+            <h2 className="text-2xl font-bold mb-4">
+              Welcome to Your Supplement Blog
+            </h2>
             <p className="text-muted-foreground mb-6">
               Your blog is ready! Add your first post to get started.
             </p>
-            <p className="text-sm text-muted-foreground">
-              Check out the QUICK_START.md file for instructions on adding
-              content.
-            </p>
+            <Link href="/admin/blog/new">
+              <Button size="lg" className="bg-green-600 hover:bg-green-700">
+                Create Your First Article
+              </Button>
+            </Link>
           </div>
         </section>
       )}
