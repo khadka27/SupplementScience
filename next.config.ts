@@ -4,13 +4,12 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.pexels.com",
+        hostname: "**",
       },
       {
-        protocol: "https",
-        hostname: "www.bigfootdigital.co.uk",
+        protocol: "http",
+        hostname: "**",
       },
-      
     ],
   },
 };

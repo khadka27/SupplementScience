@@ -117,118 +117,196 @@ export default function BlogPostContent({
 
       <div className="container mx-auto px-4 py-8 max-w-[1400px]">
         {/* Top Navigation */}
-        <div className="flex items-center justify-between mb-12 animate-in fade-in slide-in-from-top-4 duration-700">
+        <div className="flex items-center justify-between mb-8 animate-in fade-in slide-in-from-top-4 duration-700 max-w-7xl mx-auto px-4">
           <Breadcrumbs items={breadcrumbItems} />
         </div>
 
-        {/* Hero Header */}
-        <header className="mb-20 text-center max-w-5xl mx-auto relative">
-          <div className="absolute inset-0 -top-20 bg-gradient-to-b from-primary/5 via-primary/3 to-transparent rounded-[4rem] blur-3xl -z-10" />
+        {/* Modern Hero Section with Image Background */}
+        {post.featuredImageUrl ? (
+          <header className="relative w-full overflow-hidden rounded-3xl border border-border/20 dark:border-white/10 mb-16 max-w-7xl mx-auto">
+            {/* Background Image with Strong Blur */}
+            <div className="absolute inset-0">
+              <Image
+                src={post.featuredImageUrl}
+                alt={post.featuredImageAlt || post.title}
+                fill
+                className="object-cover blur-[8px]"
+                priority
+                sizes="100vw"
+              />
+              {/* Light mode: subtle white overlay, Dark mode: subtle black overlay */}
+              <div className="absolute inset-0 bg-white/60 dark:bg-black/60" />
+            </div>
 
-          {post.category && (
-            <Link
-              href={`/category/${post.category.slug}`}
-              className="inline-block mb-8 hover:opacity-80 transition-opacity animate-in fade-in zoom-in duration-500 delay-100"
-            >
-              <Badge
-                variant="secondary"
-                className="px-5 py-2 text-sm font-bold rounded-full uppercase tracking-wider bg-gradient-to-r from-primary/10 to-primary/5 text-primary hover:from-primary/20 hover:to-primary/10 border border-primary/20 shadow-sm"
-              >
-                {post.category.name}
-              </Badge>
-            </Link>
-          )}
-
-          <h1
-            ref={titleRef}
-            className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-10 leading-[1.08] tracking-tight bg-gradient-to-br from-foreground via-foreground to-foreground/80 bg-clip-text text-balance animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200"
-          >
-            {post.title}
-          </h1>
-
-          {post.excerpt && (
-            <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground/90 mb-12 leading-relaxed max-w-4xl mx-auto text-balance font-medium animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
-              {post.excerpt}
-            </p>
-          )}
-
-          {/* Author & Meta Data */}
-          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-6 max-w-4xl mx-auto animate-in fade-in duration-700 delay-500">
-            {post.author && (
-              <div className="flex items-center gap-4 bg-gradient-to-r from-muted/40 to-muted/20 backdrop-blur-sm px-6 py-4 rounded-2xl border border-border/60 shadow-lg hover:shadow-xl transition-all group">
-                {post.author.avatarUrl ? (
-                  <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-background ring-2 ring-primary/30 shadow-md group-hover:ring-primary/50 transition-all">
-                    <Image
-                      src={post.author.avatarUrl}
-                      alt={post.author.name}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 text-primary flex items-center justify-center font-black text-xl ring-2 ring-primary/30">
-                    {post.author.name.charAt(0)}
-                  </div>
-                )}
-                <div className="text-left">
+            {/* Content Over Image */}
+            <div className="relative px-6 py-12 sm:px-10 sm:py-16 lg:px-14 lg:py-20">
+              <div className="max-w-4xl">
+                {/* Category Badge */}
+                {post.category && (
                   <Link
-                    href={`/author/${post.author.slug}`}
-                    className="font-bold text-foreground hover:text-primary transition-colors block text-base leading-tight"
+                    href={`/category/${post.category.slug}`}
+                    className="inline-block mb-5 hover:scale-105 transition-transform animate-in fade-in zoom-in duration-500 delay-100"
                   >
-                    {post.author.name}
+                    <Badge
+                      variant="secondary"
+                      className="px-4 py-2 text-xs sm:text-sm font-bold rounded-full uppercase tracking-wider bg-primary/10 backdrop-blur-md text-primary dark:bg-white/10 dark:text-white border border-primary/30 dark:border-white/20 shadow-lg hover:bg-primary/20 dark:hover:bg-white/20"
+                    >
+                      {post.category.name}
+                    </Badge>
                   </Link>
-                  <div className="text-xs text-muted-foreground font-medium mt-1">
-                    Medical Reviewer
-                  </div>
-                </div>
-              </div>
-            )}
+                )}
 
-            <div className="flex items-center gap-4 bg-gradient-to-r from-primary/5 to-primary/10 backdrop-blur-sm px-8 py-4 rounded-2xl border border-primary/20 shadow-lg">
-              {post.publishedAt && (
-                <div className="flex items-center gap-2.5">
-                  <div className="p-1.5 bg-primary/10 rounded-lg">
-                    <Calendar className="w-4 h-4 text-primary" />
-                  </div>
-                  <time
-                    dateTime={post.publishedAt.toISOString()}
-                    className="font-bold text-foreground text-sm"
-                  >
-                    {format(new Date(post.publishedAt), "MMM d, yyyy")}
-                  </time>
+                {/* Title - Responsive Typography with Dark Text in Light Mode */}
+                <h1
+                  ref={titleRef}
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight text-gray-900 dark:text-white mb-5"
+                >
+                  {post.title}
+                </h1>
+
+                {/* Subtitle - Dark in Light Mode, Light in Dark Mode */}
+                {post.excerpt && (
+                  <p className="text-base sm:text-lg md:text-xl text-gray-700 dark:text-white/80 leading-relaxed max-w-3xl">
+                    {post.excerpt}
+                  </p>
+                )}
+
+                {/* Meta Row - Theme Aware */}
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {post.author && (
+                    <div className="flex items-center gap-2 rounded-full bg-gray-100/80 dark:bg-white/10 backdrop-blur-sm px-4 py-2 text-sm text-gray-700 dark:text-white/80 border border-gray-200 dark:border-white/10 shadow-sm">
+                      {post.author.avatarUrl ? (
+                        <div className="relative w-6 h-6 rounded-full overflow-hidden">
+                          <Image
+                            src={post.author.avatarUrl}
+                            alt={post.author.name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div className="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">
+                          {post.author.name.charAt(0)}
+                        </div>
+                      )}
+                      <Link
+                        href={`/author/${post.author.slug}`}
+                        className="font-medium hover:text-primary dark:hover:text-white transition-colors"
+                      >
+                        {post.author.name}
+                      </Link>
+                    </div>
+                  )}
+
+                  {post.publishedAt && (
+                    <span className="flex items-center gap-2 rounded-full bg-gray-100/80 dark:bg-white/10 backdrop-blur-sm px-4 py-2 text-sm text-gray-700 dark:text-white/80 border border-gray-200 dark:border-white/10 shadow-sm">
+                      <Calendar className="w-4 h-4" />
+                      {format(new Date(post.publishedAt), "MMM d, yyyy")}
+                    </span>
+                  )}
+
+                  <span className="flex items-center gap-2 rounded-full bg-gray-100/80 dark:bg-white/10 backdrop-blur-sm px-4 py-2 text-sm text-gray-700 dark:text-white/80 border border-gray-200 dark:border-white/10 shadow-sm">
+                    <Clock className="w-4 h-4" />
+                    {post.readTimeMinutes} min read
+                  </span>
                 </div>
-              )}
-              <div className="w-px h-5 bg-primary/30" />
-              <div className="flex items-center gap-2.5">
-                <div className="p-1.5 bg-primary/10 rounded-lg">
-                  <Clock className="w-4 h-4 text-primary" />
-                </div>
-                <span className="font-bold text-foreground text-sm">
-                  {post.readTimeMinutes} min
-                </span>
               </div>
             </div>
-          </div>
-        </header>
+          </header>
+        ) : (
+          /* Fallback Header Without Image */
+          <header className="mb-20 text-center max-w-5xl mx-auto relative">
+            <div className="absolute inset-0 -top-20 bg-gradient-to-b from-primary/5 via-primary/3 to-transparent rounded-[4rem] blur-3xl -z-10" />
 
-        {/* Featured Image */}
-        {post.featuredImageUrl && (
-          <div className="relative w-full aspect-[21/9] mb-24 rounded-[2rem] overflow-hidden shadow-2xl ring-1 ring-border/20 max-w-5xl mx-auto animate-in fade-in zoom-in-95 duration-1000 delay-500 group">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-primary/5 mix-blend-overlay z-10 pointer-events-none" />
-            <Image
-              src={post.featuredImageUrl}
-              alt={post.featuredImageAlt || post.title}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-              priority
-              sizes="(max-width: 1400px) 100vw, 1400px"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-background/10 pointer-events-none z-20" />
-          </div>
+            {post.category && (
+              <Link
+                href={`/category/${post.category.slug}`}
+                className="inline-block mb-8 hover:opacity-80 transition-opacity animate-in fade-in zoom-in duration-500 delay-100"
+              >
+                <Badge
+                  variant="secondary"
+                  className="px-5 py-2 text-sm font-bold rounded-full uppercase tracking-wider bg-gradient-to-r from-primary/10 to-primary/5 text-primary hover:from-primary/20 hover:to-primary/10 border border-primary/20 shadow-sm"
+                >
+                  {post.category.name}
+                </Badge>
+              </Link>
+            )}
+
+            <h1
+              ref={titleRef}
+              className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-10 leading-[1.08] tracking-tight bg-gradient-to-br from-foreground via-foreground to-foreground/80 bg-clip-text text-balance animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200"
+            >
+              {post.title}
+            </h1>
+
+            {post.excerpt && (
+              <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground/90 mb-12 leading-relaxed max-w-4xl mx-auto text-balance font-medium animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+                {post.excerpt}
+              </p>
+            )}
+
+            {/* Author & Meta Data */}
+            <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-6 max-w-4xl mx-auto animate-in fade-in duration-700 delay-500">
+              {post.author && (
+                <div className="flex items-center gap-4 bg-gradient-to-r from-muted/40 to-muted/20 backdrop-blur-sm px-6 py-4 rounded-2xl border border-border/60 shadow-lg hover:shadow-xl transition-all group">
+                  {post.author.avatarUrl ? (
+                    <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-background ring-2 ring-primary/30 shadow-md group-hover:ring-primary/50 transition-all">
+                      <Image
+                        src={post.author.avatarUrl}
+                        alt={post.author.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary/20 to-primary/10 text-primary flex items-center justify-center font-black text-xl ring-2 ring-primary/30">
+                      {post.author.name.charAt(0)}
+                    </div>
+                  )}
+                  <div className="text-left">
+                    <Link
+                      href={`/author/${post.author.slug}`}
+                      className="font-bold text-foreground hover:text-primary transition-colors block text-base leading-tight"
+                    >
+                      {post.author.name}
+                    </Link>
+                    <div className="text-xs text-muted-foreground font-medium mt-1">
+                      Medical Reviewer
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex items-center gap-4 bg-gradient-to-r from-primary/5 to-primary/10 backdrop-blur-sm px-8 py-4 rounded-2xl border border-primary/20 shadow-lg">
+                {post.publishedAt && (
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-1.5 bg-primary/10 rounded-lg">
+                      <Calendar className="w-4 h-4 text-primary" />
+                    </div>
+                    <time
+                      dateTime={post.publishedAt.toISOString()}
+                      className="font-bold text-foreground text-sm"
+                    >
+                      {format(new Date(post.publishedAt), "MMM d, yyyy")}
+                    </time>
+                  </div>
+                )}
+                <div className="w-px h-5 bg-primary/30" />
+                <div className="flex items-center gap-2.5">
+                  <div className="p-1.5 bg-primary/10 rounded-lg">
+                    <Clock className="w-4 h-4 text-primary" />
+                  </div>
+                  <span className="font-bold text-foreground text-sm">
+                    {post.readTimeMinutes} min
+                  </span>
+                </div>
+              </div>
+            </div>
+          </header>
         )}
 
         {/* Main Grid Layout with Left Sidebar */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 max-w-7xl mx-auto px-4 lg:px-8 mt-12">
           {/* LEFT SIDEBAR: Table of Contents */}
           <aside className="hidden lg:block lg:col-span-3 relative animate-in fade-in slide-in-from-left-8 duration-700 delay-700">
             <div className="sticky top-28">
@@ -245,7 +323,7 @@ export default function BlogPostContent({
 
           {/* MAIN CONTENT Area */}
           <main className="lg:col-span-9 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500">
-            <article>
+            <article className="max-w-4xl">
               {/* Mobile TOC */}
               <div className="lg:hidden mb-16 bg-gradient-to-br from-primary/5 via-primary/3 to-transparent p-7 rounded-2xl border border-primary/20 shadow-md backdrop-blur-sm">
                 <h3 className="font-black text-lg mb-5 flex items-center gap-3 text-foreground">
@@ -262,20 +340,20 @@ export default function BlogPostContent({
                 className="prose prose-lg dark:prose-invert max-w-none
                 prose-headings:font-black prose-headings:tracking-tight prose-headings:scroll-mt-28 prose-headings:text-gray-900 dark:prose-headings:text-foreground
                 prose-h1:text-4xl lg:prose-h1:text-5xl lg:prose-h1:leading-[1.1]
-                prose-h2:text-3xl md:prose-h2:text-4xl prose-h2:mt-20 prose-h2:mb-8 prose-h2:pb-5 prose-h2:border-b-2 prose-h2:border-primary/30 prose-h2:font-black
-                prose-h3:text-2xl md:prose-h3:text-3xl prose-h3:mt-14 prose-h3:mb-5 prose-h3:font-black
-                prose-h4:text-xl md:prose-h4:text-2xl prose-h4:mt-10 prose-h4:mb-4 prose-h4:font-bold
-                prose-p:leading-[1.8] prose-p:text-gray-700 dark:prose-p:text-muted-foreground prose-p:mb-7 prose-p:text-[1.125rem] md:prose-p:text-[1.2rem]
+                prose-h2:text-3xl md:prose-h2:text-4xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b-2 prose-h2:border-primary/30 prose-h2:font-black
+                prose-h3:text-2xl md:prose-h3:text-3xl prose-h3:mt-12 prose-h3:mb-4 prose-h3:font-black
+                prose-h4:text-xl md:prose-h4:text-2xl prose-h4:mt-8 prose-h4:mb-3 prose-h4:font-bold
+                prose-p:leading-[1.8] prose-p:text-gray-700 dark:prose-p:text-muted-foreground prose-p:mb-6 prose-p:text-[1.125rem] md:prose-p:text-[1.2rem]
                 prose-a:text-primary prose-a:font-bold prose-a:no-underline hover:prose-a:text-primary/80 prose-a:transition-colors prose-a:decoration-primary/40 prose-a:underline-offset-4 hover:prose-a:underline
                 prose-strong:font-black prose-strong:text-gray-900 dark:prose-strong:text-foreground prose-strong:text-[1.15rem]
-                prose-ul:my-10 prose-ul:list-disc prose-ul:pl-8 prose-ul:space-y-4
-                prose-ol:my-10 prose-ol:list-decimal prose-ol:pl-8 prose-ol:space-y-4
+                prose-ul:my-8 prose-ul:list-disc prose-ul:pl-8 prose-ul:space-y-3
+                prose-ol:my-8 prose-ol:list-decimal prose-ol:pl-8 prose-ol:space-y-3
                 prose-li:text-[1.1rem] md:prose-li:text-[1.15rem] prose-li:text-gray-700 dark:prose-li:text-muted-foreground prose-li:marker:text-primary prose-li:marker:font-black prose-li:leading-[1.75]
-                prose-img:rounded-3xl prose-img:shadow-2xl prose-img:my-16 prose-img:border-2 prose-img:border-border/40
-                prose-blockquote:border-l-[6px] prose-blockquote:border-primary prose-blockquote:bg-gradient-to-r prose-blockquote:from-muted/40 prose-blockquote:to-transparent prose-blockquote:py-10 prose-blockquote:px-12 prose-blockquote:rounded-r-3xl prose-blockquote:italic prose-blockquote:text-2xl prose-blockquote:font-serif prose-blockquote:text-gray-800 dark:prose-blockquote:text-foreground/90 prose-blockquote:shadow-md
+                prose-img:rounded-3xl prose-img:shadow-2xl prose-img:my-12 prose-img:border-2 prose-img:border-border/40
+                prose-blockquote:border-l-[6px] prose-blockquote:border-primary prose-blockquote:bg-gradient-to-r prose-blockquote:from-muted/40 prose-blockquote:to-transparent prose-blockquote:py-8 prose-blockquote:px-10 prose-blockquote:rounded-r-3xl prose-blockquote:italic prose-blockquote:text-2xl prose-blockquote:font-serif prose-blockquote:text-gray-800 dark:prose-blockquote:text-foreground/90 prose-blockquote:shadow-md prose-blockquote:my-10
                 prose-code:bg-muted/60 prose-code:px-2.5 prose-code:py-1.5 prose-code:rounded-lg prose-code:font-mono prose-code:text-sm prose-code:font-bold prose-code:text-primary prose-code:before:content-none prose-code:after:content-none prose-code:border prose-code:border-border/50
-                prose-pre:bg-gradient-to-br prose-pre:from-zinc-950 prose-pre:to-zinc-900 prose-pre:text-zinc-50 prose-pre:border-2 prose-pre:border-border/50 prose-pre:rounded-2xl prose-pre:p-7 prose-pre:shadow-2xl
-                prose-hr:border-t-2 prose-hr:border-primary/30 prose-hr:my-20
+                prose-pre:bg-gradient-to-br prose-pre:from-zinc-950 prose-pre:to-zinc-900 prose-pre:text-zinc-50 prose-pre:border-2 prose-pre:border-border/50 prose-pre:rounded-2xl prose-pre:p-7 prose-pre:shadow-2xl prose-pre:my-10
+                prose-hr:border-t-2 prose-hr:border-primary/30 prose-hr:my-16
                 prose-table:border prose-table:border-border/50 prose-table:rounded-xl prose-table:overflow-hidden prose-table:shadow-md"
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(prepareContent(post.content)),
@@ -284,7 +362,7 @@ export default function BlogPostContent({
 
               {/* Citations / Sources */}
               {post.sources && post.sources.length > 0 && (
-                <div className="mt-28 bg-gradient-to-br from-muted/30 via-muted/20 to-transparent border-2 border-border/60 rounded-3xl p-10 overflow-hidden relative group hover:border-primary/30 transition-all shadow-lg hover:shadow-xl">
+                <div className="mt-20 bg-gradient-to-br from-muted/30 via-muted/20 to-transparent border-2 border-border/60 rounded-3xl p-10 overflow-hidden relative group hover:border-primary/30 transition-all shadow-lg hover:shadow-xl">
                   <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-primary via-primary/70 to-primary/40 group-hover:w-2.5 transition-all" />
                   <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors" />
 
@@ -336,7 +414,7 @@ export default function BlogPostContent({
 
               {/* Tags */}
               {post.tags && post.tags.length > 0 && (
-                <div className="my-20">
+                <div className="my-16">
                   <h4 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-7 flex items-center gap-2">
                     <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
                     <span>Related Topics</span>
