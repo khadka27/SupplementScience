@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { Menu, X, Microscope, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "./ModeToggle";
+import { SearchBar } from "./SearchBar";
 import { cn } from "@/lib/utils";
 import {
   Sheet,
@@ -72,6 +73,7 @@ export function Navbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
+          <SearchBar />
           <ModeToggle />
           <Link href="/admin/blog/new">
             <Button size="sm" className="rounded-full px-5">
@@ -96,6 +98,12 @@ export function Navbar() {
                   <span>SupplementScience</span>
                 </SheetTitle>
               </SheetHeader>
+
+              {/* Mobile Search */}
+              <div className="mb-6">
+                <SearchBar />
+              </div>
+
               <nav className="flex flex-col gap-4">
                 {navItems.map((item) => (
                   <Link

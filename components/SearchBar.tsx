@@ -31,7 +31,10 @@ export function SearchBar() {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
         setIsOpen(false);
       }
     };
@@ -50,7 +53,9 @@ export function SearchBar() {
 
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+        const response = await fetch(
+          `/api/search?q=${encodeURIComponent(query)}`
+        );
         const data = await response.json();
         setResults(data.results || []);
         setIsOpen(true);
@@ -72,9 +77,12 @@ export function SearchBar() {
   };
 
   const getMatchColor = (percentage: number) => {
-    if (percentage >= 90) return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400";
-    if (percentage >= 70) return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400";
-    if (percentage >= 60) return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400";
+    if (percentage >= 90)
+      return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400";
+    if (percentage >= 70)
+      return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400";
+    if (percentage >= 60)
+      return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400";
     return "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400";
   };
 
@@ -126,7 +134,10 @@ export function SearchBar() {
                       </h4>
                       <Badge
                         variant="secondary"
-                        className={cn("text-xs shrink-0", getMatchColor(result.matchPercentage))}
+                        className={cn(
+                          "text-xs shrink-0",
+                          getMatchColor(result.matchPercentage)
+                        )}
                       >
                         {result.matchPercentage}% match
                       </Badge>
