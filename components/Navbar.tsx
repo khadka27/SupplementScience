@@ -3,7 +3,16 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, Microscope, ChevronRight } from "lucide-react";
+import { useSession, signOut } from "next-auth/react";
+import {
+  Menu,
+  X,
+  Microscope,
+  ChevronRight,
+  LogOut,
+  Settings,
+  User,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "./ModeToggle";
 import { SearchBar } from "./SearchBar";
@@ -15,6 +24,14 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -25,6 +42,7 @@ const navItems = [
 
 export function Navbar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
   const [scrolled, setScrolled] = React.useState(false);
 
   React.useEffect(() => {
@@ -75,11 +93,49 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-4">
           <SearchBar />
           <ModeToggle />
-          <Link href="/admin/blog/new">
-            <Button size="sm" className="rounded-full px-5">
-              Write Article
-            </Button>
-          </Link>
+          {session ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="rounded-full gap-2"
+                >
+                  <User className="w-4 h-4" />
+                  {session.user?.name || "Admin"}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuLabel>Admin Panel</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/admin/blog/new" className="cursor-pointer">
+                    Write Article
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/admin/settings" className="cursor-pointer">
+                    <Settings className="w-4 h-4 mr-2" />
+                    Settings
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                  className="cursor-pointer text-red-600 dark:text-red-400"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link href="/admin/login">
+              <Button size="sm" className="rounded-full px-5">
+                Admin Login
+              </Button>
+            </Link>
+          )}
         </div>
 
         {/* Mobile Navigation */}
@@ -122,11 +178,40 @@ export function Navbar() {
                 ))}
               </nav>
               <div className="mt-auto space-y-4 pb-8">
-                <Link href="/admin/blog/new" className="block">
-                  <Button className="w-full rounded-xl py-6" size="lg">
-                    Write Article
-                  </Button>
-                </Link>
+                {session ? (
+                  <>
+                    <Link href="/admin/blog/new" className="block">
+                      <Button className="w-full rounded-xl py-6" size="lg">
+                        Write Article
+                      </Button>
+                    </Link>
+                    <Link href="/admin/settings" className="block">
+                      <Button
+                        variant="outline"
+                        className="w-full rounded-xl py-6"
+                        size="lg"
+                      >
+                        <Settings className="w-5 h-5 mr-2" />
+                        Settings
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="destructive"
+                      className="w-full rounded-xl py-6"
+                      size="lg"
+                      onClick={() => signOut({ callbackUrl: "/" })}
+                    >
+                      <LogOut className="w-5 h-5 mr-2" />
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <Link href="/admin/login" className="block">
+                    <Button className="w-full rounded-xl py-6" size="lg">
+                      Admin Login
+                    </Button>
+                  </Link>
+                )}
                 <p className="text-center text-xs text-muted-foreground font-medium">
                   Evidence-based wellness.
                 </p>
