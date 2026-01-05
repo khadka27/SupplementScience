@@ -25,6 +25,7 @@ import RelatedPosts from "./RelatedPosts";
 import Breadcrumbs from "./Breadcrumbs";
 import TableOfContents from "./TableOfContents";
 import ShareButtons from "./ShareButtons";
+import { NewsletterForm } from "@/components/NewsletterForm";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
@@ -233,6 +234,19 @@ export default function BlogPostContent({
                         />
                       </svg>
                       Expert Reviewed
+                    </span>
+                  )}
+
+                  {/* Reviewed By Badge */}
+                  {(post as any).reviewedBy && (
+                    <span className="flex items-center gap-2 rounded-full bg-purple-100/80 dark:bg-purple-900/30 backdrop-blur-sm px-4 py-2 text-sm text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 shadow-sm">
+                      <Microscope className="w-4 h-4" />
+                      Reviewed by {(post as any).reviewedBy}
+                      {(post as any).reviewedAt &&
+                        ` (${format(
+                          new Date((post as any).reviewedAt),
+                          "MMM yyyy"
+                        )})`}
                     </span>
                   )}
                 </div>
@@ -524,6 +538,11 @@ export default function BlogPostContent({
                 <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-colors" />
                 <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl" />
                 {post.author && <AuthorBox author={post.author} />}
+              </div>
+
+              {/* Newsletter Subscription */}
+              <div className="mt-16">
+                <NewsletterForm />
               </div>
 
               {/* New Prev/Next Navigation */}

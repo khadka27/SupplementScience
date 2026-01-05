@@ -62,11 +62,17 @@ model Post {
   featuredImageAlt String?   @map("featured_image_alt")
   status           String    @default("draft")
   publishedAt      DateTime? @map("published_at")
+  scheduledFor     DateTime? @map("scheduled_for")
   readTimeMinutes  Int       @default(5) @map("read_time_minutes")
   viewCount        Int       @default(0) @map("view_count")
   isFeatured       Boolean   @default(false) @map("is_featured")
 
-  // New features
+  // Trust & credibility features
+  reviewedBy String?   @map("reviewed_by")
+  reviewedAt DateTime? @map("reviewed_at")
+  references Json?     @default("[]")
+
+  // Content structure features
   sources Json? @default("[]")
   faqs    Json? @default("[]")
 
@@ -91,4 +97,14 @@ model PostTag {
 
   @@id([postId, tagId])
   @@map("post_tags")
+}
+
+model Subscriber {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  isActive     Boolean  @default(true) @map("is_active")
+  subscribedAt DateTime @default(now()) @map("subscribed_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("subscribers")
 }
