@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog Content Styling Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Simulate your blog styles */
+      .prose {
+        max-width: 65ch;
+      }
+
+      /* Info boxes */
+      [data-infobox="tip"] {
+        background: #dbeafe;
+        border-left: 4px solid #3b82f6;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        border-radius: 0 0.75rem 0.75rem 0;
+      }
+      [data-infobox="warning"] {
+        background: #fef3c7;
+        border-left: 4px solid #f59e0b;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        border-radius: 0 0.75rem 0.75rem 0;
+      }
+      [data-infobox="success"] {
+        background: #d1fae5;
+        border-left: 4px solid #10b981;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        border-radius: 0 0.75rem 0.75rem 0;
+      }
+      [data-infobox="info"] {
+        background: #e9d5ff;
+        border-left: 4px solid #a855f7;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        border-radius: 0 0.75rem 0.75rem 0;
+      }
+
+      /* Checklist */
+      ul.checklist {
+        list-style: none;
+        padding-left: 0;
+      }
+      ul.checklist li::before {
+        content: "✅";
+        margin-right: 0.75rem;
+        font-size: 1.25rem;
+      }
+
+      /* Features */
+      ul.features {
+        list-style: none;
+        padding-left: 0;
+      }
+      ul.features li {
+        display: flex;
+        gap: 0.75rem;
+        background: #f3f4f6;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      ul.features li::before {
+        content: "🎯";
+        font-size: 1.5rem;
+      }
+
+      /* Steps */
+      ol.steps {
+        list-style: none;
+        counter-reset: step;
+        padding-left: 0;
+      }
+      ol.steps li {
+        counter-increment: step;
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      ol.steps li::before {
+        content: counter(step);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        background: #000;
+        color: #fff;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      /* Highlight */
+      .highlight {
+        background: #fef08a;
+        padding: 0 0.25rem;
+        border-radius: 0.25rem;
+      }
+
+      /* Pull quote */
+      .pull-quote {
+        font-size: 1.875rem;
+        font-style: italic;
+        text-align: center;
+        margin: 3rem 0;
+        padding: 2rem 0;
+        border-top: 4px solid #e5e7eb;
+        border-bottom: 4px solid #e5e7eb;
+        font-family: Georgia, serif;
+      }
+
+      /* Stat box */
+      .stat-box {
+        text-align: center;
+        padding: 2rem;
+        background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+        border-radius: 1rem;
+        border: 1px solid #d1d5db;
+        margin: 2rem 0;
+      }
+      .stat-box .number {
+        font-size: 4rem;
+        font-weight: bold;
+        color: #000;
+      }
+      .stat-box .label {
+        color: #6b7280;
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 0.5rem;
+      }
+
+      /* Comparison */
+      .comparison-table {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+      .comparison-card {
+        border: 1px solid #e5e7eb;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+      }
+      .comparison-card h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+        color: #000;
+      }
+    </style>
+  </head>
+  <body class="bg-white p-8">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="text-4xl font-bold mb-8">Blog Content Styling Preview</h1>
+
+      <div class="prose">
+        <p class="text-xl mb-8">
+          This is a preview of all available custom styles for your blog
+          content. Copy the HTML examples below and paste them into your blog
+          posts.
+        </p>
+
+        <hr class="my-8 border-t-2 border-gray-300" />
+
+        <h2 class="text-3xl font-bold mb-6">1. Info Boxes</h2>
+
+        <div data-infobox="tip">
+          <strong>💡 Tip:</strong> This is a helpful tip in a blue info box!
+        </div>
+
+        <div data-infobox="warning">
+          <strong>⚠️ Warning:</strong> This is a warning in a yellow box!
+        </div>
+
+        <div data-infobox="success">
+          <strong>✅ Success:</strong> This is a success message in a green box!
+        </div>
+
+        <div data-infobox="info">
+          <strong>ℹ️ Info:</strong> This is general information in a purple box!
+        </div>
+
+        <pre
+          class="bg-gray-100 p-4 rounded mt-4 text-sm overflow-x-auto"
+        ><code>&lt;div data-infobox="tip"&gt;
+  &lt;strong&gt;💡 Tip:&lt;/strong&gt; Your content here
+&lt;/div&gt;</code></pre>
+
+        <hr class="my-8 border-t-2 border-gray-300" />
+
+        <h2 class="text-3xl font-bold mb-6">2. Checklist</h2>
+
+        <ul class="checklist">
+          <li>First item gets a ✅ automatically</li>
+          <li>Second item also gets a ✅</li>
+          <li>All items in this list get checkmarks</li>
+        </ul>
+
+        <pre
+          class="bg-gray-100 p-4 rounded mt-4 text-sm overflow-x-auto"
+        ><code>&lt;ul class="checklist"&gt;
+  &lt;li&gt;Your item here&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+        <hr class="my-8 border-t-2 border-gray-300" />
+
+        <h2 class="text-3xl font-bold mb-6">3. Feature List</h2>
+
+        <ul class="features">
+          <li>
+            <strong>Feature One</strong> - Each feature appears in a card with a
+            target emoji
+          </li>
+          <li>
+            <strong>Feature Two</strong> - Styled beautifully with hover effects
+          </li>
+          <li>
+            <strong>Feature Three</strong> - Perfect for highlighting key points
+          </li>
+        </ul>
+
+        <pre
+          class="bg-gray-100 p-4 rounded mt-4 text-sm overflow-x-auto"
+        ><code>&lt;ul class="features"&gt;
+  &lt;li&gt;&lt;strong&gt;Feature:&lt;/strong&gt; Description&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+        <hr class="my-8 border-t-2 border-gray-300" />
+
+        <h2 class="text-3xl font-bold mb-6">4. Numbered Steps</h2>
+
+        <ol class="steps">
+          <li>This is step 1 with a circular numbered badge</li>
+          <li>This is step 2, continuing the sequence</li>
+          <li>This is step 3, perfect for tutorials</li>
+        </ol>
+
+        <pre
+          class="bg-gray-100 p-4 rounded mt-4 text-sm overflow-x-auto"
+        ><code>&lt;ol class="steps"&gt;
+  &lt;li&gt;Your step here&lt;/li&gt;
+&lt;/ol&gt;</code></pre>
+
+        <hr class="my-8 border-t-2 border-gray-300" />
+
+        <h2 class="text-3xl font-bold mb-6">5. Highlight Text</h2>
+
+        <p>
+          This is regular text with
+          <span class="highlight">highlighted important text</span> in the
+          middle.
+        </p>
+
+        <pre
+          class="bg-gray-100 p-4 rounded mt-4 text-sm overflow-x-auto"
+        ><code>&lt;span class="highlight"&gt;important text&lt;/span&gt;</code></pre>
+
+        <hr class="my-8 border-t-2 border-gray-300" />
+
+        <h2 class="text-3xl font-bold mb-6">6. Pull Quote</h2>
+
+        <p class="pull-quote">
+          "This is a beautiful pull quote that stands out from the rest of the
+          content."
+        </p>
+
+        <pre
+          class="bg-gray-100 p-4 rounded mt-4 text-sm overflow-x-auto"
+        ><code>&lt;p class="pull-quote"&gt;
+  "Your quote here"
+&lt;/p&gt;</code></pre>
+
+        <hr class="my-8 border-t-2 border-gray-300" />
+
+        <h2 class="text-3xl font-bold mb-6">7. Statistics Box</h2>
+
+        <div class="stat-box">
+          <div class="number">10+</div>
+          <div class="label">Professional Templates</div>
+        </div>
+
+        <pre
+          class="bg-gray-100 p-4 rounded mt-4 text-sm overflow-x-auto"
+        ><code>&lt;div class="stat-box"&gt;
+  &lt;div class="number"&gt;10+&lt;/div&gt;
+  &lt;div class="label"&gt;Professional Templates&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+        <hr class="my-8 border-t-2 border-gray-300" />
+
+        <h2 class="text-3xl font-bold mb-6">8. Comparison Table</h2>
+
+        <div class="comparison-table">
+          <div class="comparison-card">
+            <h3>Option A</h3>
+            <p>Description of option A with its features and benefits.</p>
+          </div>
+          <div class="comparison-card">
+            <h3>Option B</h3>
+            <p>Description of option B with its features and benefits.</p>
+          </div>
+        </div>
+
+        <pre
+          class="bg-gray-100 p-4 rounded mt-4 text-sm overflow-x-auto"
+        ><code>&lt;div class="comparison-table"&gt;
+  &lt;div class="comparison-card"&gt;
+    &lt;h3&gt;Option A&lt;/h3&gt;
+    &lt;p&gt;Description&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+        <hr class="my-8 border-t-2 border-gray-300" />
+
+        <div class="bg-gray-50 p-8 rounded-lg mt-12">
+          <h2 class="text-2xl font-bold mb-4">🎉 Usage Instructions</h2>
+          <ol class="space-y-2">
+            <li>1. Copy the HTML code from the examples above</li>
+            <li>
+              2. Paste it into your blog post content (in the database or
+              editor)
+            </li>
+            <li>3. Refresh your blog page to see the styled content</li>
+            <li>4. Customize the text to match your needs</li>
+          </ol>
+
+          <div class="mt-6 p-4 bg-blue-50 rounded border-l-4 border-blue-500">
+            <strong>💡 Tip:</strong> Mix and match these styles to create
+            engaging, professional blog posts!
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

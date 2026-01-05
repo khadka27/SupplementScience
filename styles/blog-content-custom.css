@@ -1,0 +1,313 @@
+/**
+ * Custom Blog Content Styles
+ * Add these styles to your app/globals.css file
+ * 
+ * These styles enhance the appearance of blog post content,
+ * especially for technical posts like CertifyPro
+ */
+
+/* ========================================
+   ENHANCED TABLES
+   ======================================== */
+article table {
+  @apply w-full border-collapse my-12 rounded-lg overflow-hidden shadow-md;
+}
+
+article table thead {
+  @apply bg-primary/10;
+}
+
+article table th {
+  @apply px-6 py-4 text-left font-bold text-foreground border-b-2 border-primary/20;
+}
+
+article table td {
+  @apply px-6 py-4 border-b border-border/30 text-muted-foreground;
+}
+
+article table tbody tr {
+  @apply hover:bg-muted/30 transition-colors;
+}
+
+article table tbody tr:last-child td {
+  @apply border-b-0;
+}
+
+/* ========================================
+   CUSTOM INFO BOXES & CALLOUTS
+   ======================================== */
+article .info-box {
+  @apply bg-blue-50 dark:bg-blue-950/30 border-l-4 border-blue-500 p-6 my-8 rounded-r-xl shadow-sm;
+}
+
+article .info-box-icon {
+  @apply text-2xl mb-2 block;
+}
+
+article .warning-box {
+  @apply bg-yellow-50 dark:bg-yellow-950/30 border-l-4 border-yellow-500 p-6 my-8 rounded-r-xl shadow-sm;
+}
+
+article .success-box {
+  @apply bg-green-50 dark:bg-green-950/30 border-l-4 border-green-500 p-6 my-8 rounded-r-xl shadow-sm;
+}
+
+article .danger-box {
+  @apply bg-red-50 dark:bg-red-950/30 border-l-4 border-red-500 p-6 my-8 rounded-r-xl shadow-sm;
+}
+
+article .tip-box {
+  @apply bg-purple-50 dark:bg-purple-950/30 border-l-4 border-purple-500 p-6 my-8 rounded-r-xl shadow-sm;
+}
+
+/* ========================================
+   ENHANCED HORIZONTAL RULES
+   ======================================== */
+article hr {
+  @apply my-16 border-t-2 border-primary/30 rounded-full;
+}
+
+/* Fancy HR with gradient */
+article hr.fancy {
+  @apply border-0 h-1 bg-gradient-to-r from-transparent via-primary to-transparent;
+}
+
+/* ========================================
+   CODE BLOCKS & INLINE CODE
+   ======================================== */
+article code {
+  @apply bg-muted/70 dark:bg-muted/50 px-2 py-1 rounded-md font-mono text-sm font-semibold text-primary;
+}
+
+article pre {
+  @apply bg-gray-900 dark:bg-gray-950 text-gray-100 rounded-2xl p-6 my-8 shadow-lg border border-border/20 overflow-x-auto;
+}
+
+article pre code {
+  @apply bg-transparent text-gray-100 p-0 text-sm;
+}
+
+/* ========================================
+   SPECIAL TEXT STYLES
+   ======================================== */
+
+/* Highlight important text */
+article .highlight {
+  @apply bg-yellow-200 dark:bg-yellow-900/50 px-1 py-0.5 rounded;
+}
+
+/* Featured text box */
+article .feature-text {
+  @apply text-2xl font-bold text-primary my-8 p-6 bg-primary/5 rounded-xl border border-primary/20;
+}
+
+/* Pull quote */
+article .pull-quote {
+  @apply text-3xl font-serif italic text-center my-12 py-8 border-y-4 border-primary/20 text-foreground/80;
+}
+
+/* ========================================
+   BUTTONS & CALL-TO-ACTIONS IN CONTENT
+   ======================================== */
+article .cta-button {
+  @apply inline-block bg-primary text-primary-foreground font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 no-underline;
+}
+
+article .cta-button-outline {
+  @apply inline-block border-2 border-primary text-primary font-bold px-8 py-4 rounded-full hover:bg-primary hover:text-primary-foreground transition-all duration-300 no-underline;
+}
+
+/* ========================================
+   ENHANCED LISTS
+   ======================================== */
+
+/* Checklist style */
+article ul.checklist {
+  @apply list-none pl-0 space-y-3;
+}
+
+article ul.checklist li::before {
+  content: "✅";
+  @apply mr-3 text-green-500 text-xl;
+}
+
+/* Feature list with custom bullets */
+article ul.features {
+  @apply list-none pl-0 space-y-4;
+}
+
+article ul.features li {
+  @apply flex items-start gap-3 bg-muted/30 p-4 rounded-lg border border-border/30;
+}
+
+article ul.features li::before {
+  content: "🎯";
+  @apply text-2xl flex-shrink-0;
+}
+
+/* Numbered steps */
+article ol.steps {
+  @apply list-none counter-reset-item pl-0 space-y-6;
+}
+
+article ol.steps li {
+  @apply flex items-start gap-4 counter-increment-item;
+}
+
+article ol.steps li::before {
+  content: counter(item);
+  @apply flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground font-bold flex-shrink-0;
+}
+
+/* ========================================
+   EMOJI & ICON STYLING
+   ======================================== */
+article .emoji-large {
+  @apply text-4xl;
+}
+
+article .icon-inline {
+  @apply inline-block w-6 h-6 mx-1 align-middle;
+}
+
+/* ========================================
+   COMPARISON TABLES
+   ======================================== */
+article .comparison-table {
+  @apply grid grid-cols-2 gap-6 my-12;
+}
+
+article .comparison-card {
+  @apply border border-border/50 rounded-xl p-6 hover:shadow-lg transition-shadow;
+}
+
+article .comparison-card h3 {
+  @apply text-2xl font-bold mb-4 text-primary;
+}
+
+/* ========================================
+   PRICING BOXES
+   ======================================== */
+article .pricing-box {
+  @apply border-2 border-primary/30 rounded-2xl p-8 my-8 text-center hover:border-primary hover:shadow-xl transition-all;
+}
+
+article .pricing-box .price {
+  @apply text-5xl font-bold text-primary my-4;
+}
+
+article .pricing-box .features {
+  @apply text-left space-y-2 my-6;
+}
+
+/* ========================================
+   IMAGE ENHANCEMENTS
+   ======================================== */
+article img {
+  @apply rounded-2xl shadow-lg my-12 border border-border/20;
+}
+
+article .img-caption {
+  @apply text-sm text-muted-foreground italic text-center mt-2;
+}
+
+/* Side-by-side images */
+article .image-grid {
+  @apply grid grid-cols-2 gap-6 my-12;
+}
+
+/* ========================================
+   BLOCKQUOTES ENHANCED
+   ======================================== */
+article blockquote {
+  @apply border-l-4 border-primary bg-muted/30 py-6 px-10 rounded-r-2xl italic text-2xl font-serif text-foreground/90 shadow-sm my-12;
+}
+
+article blockquote footer {
+  @apply text-base not-italic text-muted-foreground mt-4 font-sans;
+}
+
+article blockquote cite {
+  @apply font-semibold;
+}
+
+/* ========================================
+   FAQ SECTION STYLING
+   ======================================== */
+article .faq-item {
+  @apply border-b border-border/30 py-6 last:border-b-0;
+}
+
+article .faq-question {
+  @apply text-xl font-bold text-foreground mb-3;
+}
+
+article .faq-answer {
+  @apply text-muted-foreground leading-relaxed;
+}
+
+/* ========================================
+   STATISTICS & METRICS
+   ======================================== */
+article .stat-box {
+  @apply text-center p-8 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl border border-primary/20 my-6;
+}
+
+article .stat-box .number {
+  @apply text-6xl font-bold text-primary;
+}
+
+article .stat-box .label {
+  @apply text-muted-foreground mt-2 text-sm uppercase tracking-wider;
+}
+
+/* ========================================
+   ALERT BOXES
+   ======================================== */
+article .alert {
+  @apply p-6 rounded-xl my-8 border-l-4;
+}
+
+article .alert-info {
+  @apply bg-blue-50 dark:bg-blue-950/30 border-blue-500;
+}
+
+article .alert-success {
+  @apply bg-green-50 dark:bg-green-950/30 border-green-500;
+}
+
+article .alert-warning {
+  @apply bg-yellow-50 dark:bg-yellow-950/30 border-yellow-500;
+}
+
+article .alert-danger {
+  @apply bg-red-50 dark:bg-red-950/30 border-red-500;
+}
+
+/* ========================================
+   VIDEO EMBEDS
+   ======================================== */
+article .video-wrapper {
+  @apply relative w-full aspect-video my-12 rounded-2xl overflow-hidden shadow-xl border border-border/20;
+}
+
+article .video-wrapper iframe {
+  @apply absolute top-0 left-0 w-full h-full;
+}
+
+/* ========================================
+   RESPONSIVE TYPOGRAPHY ADJUSTMENTS
+   ======================================== */
+@media (max-width: 768px) {
+  article h2 {
+    @apply text-2xl;
+  }
+  
+  article h3 {
+    @apply text-xl;
+  }
+  
+  article .pull-quote {
+    @apply text-xl;
+  }
+}

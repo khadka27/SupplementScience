@@ -1,9 +1,11 @@
 "use client";
 
+import DOMPurify from "isomorphic-dompurify";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
+import { prepareContent } from "@/lib/content-processor";
 import {
   Clock,
   Calendar,
@@ -30,8 +32,16 @@ import { cn } from "@/lib/utils";
 interface BlogPostContentProps {
   post: Post;
   relatedPosts?: Post[];
-  prevPost?: { title: string; slug: string; featuredImageUrl?: string | null } | null;
-  nextPost?: { title: string; slug: string; featuredImageUrl?: string | null } | null;
+  prevPost?: {
+    title: string;
+    slug: string;
+    featuredImageUrl?: string | null;
+  } | null;
+  nextPost?: {
+    title: string;
+    slug: string;
+    featuredImageUrl?: string | null;
+  } | null;
 }
 
 export default function BlogPostContent({
@@ -80,17 +90,22 @@ export default function BlogPostContent({
         )}
       >
         <div className="container mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
-            <h2 className="font-bold text-lg truncate max-w-2xl text-foreground/90">
-              {post.title}
-            </h2>
-            <div className="flex items-center gap-4">
-               {post.author && (
-                <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
-                    <span>{post.author.name}</span>
-                </div>
-               )}
-               <ShareButtons title={post.title} slug={post.slug} orientation="horizontal" className="hidden sm:flex" />
-            </div>
+          <h2 className="font-bold text-lg truncate max-w-2xl text-foreground/90">
+            {post.title}
+          </h2>
+          <div className="flex items-center gap-4">
+            {post.author && (
+              <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground">
+                <span>{post.author.name}</span>
+              </div>
+            )}
+            <ShareButtons
+              title={post.title}
+              slug={post.slug}
+              orientation="horizontal"
+              className="hidden sm:flex"
+            />
+          </div>
         </div>
         <div className="absolute bottom-0 left-0 w-full h-0.5 bg-muted">
           <div
@@ -122,7 +137,7 @@ export default function BlogPostContent({
             </Link>
           )}
 
-          <h1 
+          <h1
             ref={titleRef}
             className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-8 leading-[1.1] tracking-tight text-foreground text-balance animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200"
           >
@@ -256,12 +271,15 @@ export default function BlogPostContent({
                 prose-strong:font-bold prose-strong:text-foreground prose-strong:text-lg
                 prose-ul:my-8 prose-ul:list-disc prose-ul:pl-8 prose-ul:space-y-3
                 prose-ol:my-8 prose-ol:list-decimal prose-ol:pl-8 prose-ol:space-y-3
-                prose-li:text-lg md:prose-li:text-xl prose-li:text-muted-foreground prose-li:marker:text-primary prose-li:marker:font-bold
+                prose-li:text-lg md:prose-li:text-xl prose-li:text-muted-foreground prose-li:marker:text-primary prose-li:marker:font-bold prose-li:leading-relaxed
                 prose-img:rounded-3xl prose-img:shadow-xl prose-img:my-12 prose-img:border prose-img:border-border/50
                 prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:bg-muted/30 prose-blockquote:py-8 prose-blockquote:px-10 prose-blockquote:rounded-r-2xl prose-blockquote:italic prose-blockquote:text-2xl prose-blockquote:font-serif prose-blockquote:text-foreground/90 prose-blockquote:shadow-sm
                 prose-code:bg-muted/50 prose-code:px-2 prose-code:py-1 prose-code:rounded-md prose-code:font-mono prose-code:text-sm prose-code:font-bold prose-code:text-primary prose-code:before:content-none prose-code:after:content-none
-                prose-pre:bg-zinc-950 prose-pre:text-zinc-50 prose-pre:border prose-pre:border-border/50 prose-pre:rounded-2xl prose-pre:p-6 prose-pre:shadow-lg"
-                dangerouslySetInnerHTML={{ __html: post.content }}
+                prose-pre:bg-zinc-950 prose-pre:text-zinc-50 prose-pre:border prose-pre:border-border/50 prose-pre:rounded-2xl prose-pre:p-6 prose-pre:shadow-lg
+                prose-hr:border-t-2 prose-hr:border-primary/30 prose-hr:my-16"
+                dangerouslySetInnerHTML={{
+                  __html: DOMPurify.sanitize(prepareContent(post.content)),
+                }}
               />
 
               {/* Citations / Sources */}
@@ -270,7 +288,7 @@ export default function BlogPostContent({
                   <div className="absolute top-0 left-0 w-1.5 h-full bg-primary/40 group-hover:bg-primary transition-colors" />
                   <div className="flex items-center gap-3 mb-8 text-foreground/80">
                     <div className="bg-primary/10 p-2 rounded-full">
-                       <Microscope className="w-6 h-6 text-primary" />
+                      <Microscope className="w-6 h-6 text-primary" />
                     </div>
                     <h3 className="text-2xl font-bold m-0 tracking-tight">
                       Scientific Sources
@@ -280,7 +298,7 @@ export default function BlogPostContent({
                     {post.sources.map((source: Source, index: number) => (
                       <div key={index} className="flex gap-4 group/source">
                         <span className="text-muted-foreground/60 font-mono text-sm mt-0.5 shrink-0 w-6">
-                          {String(index + 1).padStart(2, '0')}.
+                          {String(index + 1).padStart(2, "0")}.
                         </span>
                         <div className="flex-1">
                           <a
@@ -339,41 +357,52 @@ export default function BlogPostContent({
                 {post.author && <AuthorBox author={post.author} />}
               </div>
 
-               {/* New Prev/Next Navigation */}
-               <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-border pt-12">
-                   {prevPost ? (
-                       <Link
-                         href={`/blog/${prevPost.slug}`}
-                         className="group flex flex-col items-start text-left space-y-3 p-6 rounded-2xl border border-border/50 hover:bg-muted/30 transition-all hover:border-primary/30"
-                       >
-                           <div className="flex items-center gap-2 text-muted-foreground text-sm font-medium group-hover:text-primary">
-                               <ArrowLeft className="w-4 h-4" /> Previous Article
-                           </div>
-                           <h4 className="text-lg font-bold group-hover:text-primary transition-colors line-clamp-2">
-                               {prevPost.title}
-                           </h4>
-                       </Link>
-                   ) : <div />}
+              {/* New Prev/Next Navigation */}
+              <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-border pt-12">
+                {prevPost ? (
+                  <Link
+                    href={`/blog/${prevPost.slug}`}
+                    className="group flex flex-col items-start text-left space-y-3 p-6 rounded-2xl border border-border/50 hover:bg-muted/30 transition-all hover:border-primary/30"
+                  >
+                    <div className="flex items-center gap-2 text-muted-foreground text-sm font-medium group-hover:text-primary">
+                      <ArrowLeft className="w-4 h-4" /> Previous Article
+                    </div>
+                    <h4 className="text-lg font-bold group-hover:text-primary transition-colors line-clamp-2">
+                      {prevPost.title}
+                    </h4>
+                  </Link>
+                ) : (
+                  <div />
+                )}
 
-                   {nextPost ? (
-                       <Link
-                         href={`/blog/${nextPost.slug}`}
-                         className="group flex flex-col items-end text-right space-y-3 p-6 rounded-2xl border border-border/50 hover:bg-muted/30 transition-all hover:border-primary/30"
-                       >
-                           <div className="flex items-center gap-2 text-muted-foreground text-sm font-medium group-hover:text-primary">
-                               Next Article <ArrowRight className="w-4 h-4" />
-                           </div>
-                           <h4 className="text-lg font-bold group-hover:text-primary transition-colors line-clamp-2">
-                               {nextPost.title}
-                           </h4>
-                       </Link>
-                   ) : <div />}
-               </div>
+                {nextPost ? (
+                  <Link
+                    href={`/blog/${nextPost.slug}`}
+                    className="group flex flex-col items-end text-right space-y-3 p-6 rounded-2xl border border-border/50 hover:bg-muted/30 transition-all hover:border-primary/30"
+                  >
+                    <div className="flex items-center gap-2 text-muted-foreground text-sm font-medium group-hover:text-primary">
+                      Next Article <ArrowRight className="w-4 h-4" />
+                    </div>
+                    <h4 className="text-lg font-bold group-hover:text-primary transition-colors line-clamp-2">
+                      {nextPost.title}
+                    </h4>
+                  </Link>
+                ) : (
+                  <div />
+                )}
+              </div>
 
               <div className="mt-24">
                 <div className="flex items-center justify-between mb-10">
-                   <h3 className="text-3xl font-bold tracking-tight">Read Next</h3>
-                   <Link href="/blog" className="text-primary hover:underline font-medium">View all articles</Link>
+                  <h3 className="text-3xl font-bold tracking-tight">
+                    Read Next
+                  </h3>
+                  <Link
+                    href="/blog"
+                    className="text-primary hover:underline font-medium"
+                  >
+                    View all articles
+                  </Link>
                 </div>
                 {relatedPosts && relatedPosts.length > 0 ? (
                   <RelatedPosts posts={relatedPosts} />

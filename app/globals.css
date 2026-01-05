@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -147,7 +148,7 @@
   .text-balance {
     text-wrap: balance;
   }
-  
+
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
   }
@@ -206,4 +207,154 @@
 
 .tiptap img {
   @apply rounded-lg my-6 max-w-full h-auto;
+}
+
+/* ========================================
+   CUSTOM BLOG CONTENT STYLES
+   ======================================== */
+
+/* Enhanced Tables */
+article table {
+  @apply w-full border-collapse my-12 rounded-lg overflow-hidden shadow-md;
+}
+
+article table thead {
+  @apply bg-primary/10;
+}
+
+article table th {
+  @apply px-6 py-4 text-left font-bold text-foreground border-b-2 border-primary/20;
+}
+
+article table td {
+  @apply px-6 py-4 border-b border-border/30 text-muted-foreground;
+}
+
+article table tbody tr {
+  @apply hover:bg-muted/30 transition-colors;
+}
+
+article table tbody tr:last-child td {
+  @apply border-b-0;
+}
+
+/* Custom Info Boxes */
+article .info-box {
+  @apply bg-blue-50 dark:bg-blue-950/30 border-l-4 border-blue-500 p-6 my-8 rounded-r-xl shadow-sm;
+}
+
+article .warning-box {
+  @apply bg-yellow-50 dark:bg-yellow-950/30 border-l-4 border-yellow-500 p-6 my-8 rounded-r-xl shadow-sm;
+}
+
+article .success-box {
+  @apply bg-green-50 dark:bg-green-950/30 border-l-4 border-green-500 p-6 my-8 rounded-r-xl shadow-sm;
+}
+
+article .tip-box {
+  @apply bg-purple-50 dark:bg-purple-950/30 border-l-4 border-purple-500 p-6 my-8 rounded-r-xl shadow-sm;
+}
+
+/* Enhanced HR */
+article hr {
+  @apply my-16 border-t-2 border-primary/30 rounded-full;
+}
+
+/* Checklist Style */
+article ul.checklist {
+  @apply list-none pl-0 space-y-3;
+}
+
+article ul.checklist li::before {
+  content: "✅";
+  @apply mr-3 text-green-500 text-xl;
+}
+
+/* Feature List */
+article ul.features {
+  @apply list-none pl-0 space-y-4;
+}
+
+article ul.features li {
+  @apply flex items-start gap-3 bg-muted/30 p-4 rounded-lg border border-border/30;
+}
+
+article ul.features li::before {
+  content: "🎯";
+  @apply text-2xl flex-shrink-0;
+}
+
+/* Numbered Steps */
+article ol.steps {
+  list-style: none;
+  counter-reset: step-counter;
+  @apply pl-0 space-y-6;
+}
+
+article ol.steps li {
+  counter-increment: step-counter;
+  @apply flex items-start gap-4;
+}
+
+article ol.steps li::before {
+  content: counter(step-counter);
+  @apply flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground font-bold flex-shrink-0;
+}
+
+/* Highlight Text */
+article .highlight {
+  @apply bg-yellow-200 dark:bg-yellow-900/50 px-1 py-0.5 rounded;
+}
+
+/* Pull Quote */
+article .pull-quote {
+  @apply text-3xl font-serif italic text-center my-12 py-8 border-y-4 border-primary/20 text-foreground/80;
+}
+
+/* CTA Buttons */
+article .cta-button {
+  @apply inline-block bg-primary text-primary-foreground font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 no-underline;
+}
+
+article .cta-button-outline {
+  @apply inline-block border-2 border-primary text-primary font-bold px-8 py-4 rounded-full hover:bg-primary hover:text-primary-foreground transition-all duration-300 no-underline;
+}
+
+/* Comparison Layout */
+article .comparison-table {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-6 my-12;
+}
+
+article .comparison-card {
+  @apply border border-border/50 rounded-xl p-6 hover:shadow-lg transition-shadow;
+}
+
+article .comparison-card h3 {
+  @apply text-2xl font-bold mb-4 text-primary;
+}
+
+/* Statistics Box */
+article .stat-box {
+  @apply text-center p-8 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl border border-primary/20 my-6;
+}
+
+article .stat-box .number {
+  @apply text-6xl font-bold text-primary;
+}
+
+article .stat-box .label {
+  @apply text-muted-foreground mt-2 text-sm uppercase tracking-wider;
+}
+
+/* FAQ Styling */
+article .faq-item {
+  @apply border-b border-border/30 py-6 last:border-b-0;
+}
+
+article .faq-question {
+  @apply text-xl font-bold text-foreground mb-3;
+}
+
+article .faq-answer {
+  @apply text-muted-foreground leading-relaxed;
 }
