@@ -210,69 +210,230 @@
 }
 
 /* ========================================
-   CUSTOM BLOG CONTENT STYLES
+   🎨 AWESOME SUPPLEMENT BLOG STYLES
+   Interactive, Vibrant, User-Friendly Design
    ======================================== */
 
-/* Enhanced Tables */
+/* Smooth Animations */
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(34, 197, 94, 0.4);
+  }
+}
+
+@keyframes gradient-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Enhanced Tables - Vibrant & Interactive */
 article table {
-  @apply w-full border-collapse my-12 rounded-lg overflow-hidden shadow-md;
+  @apply w-full border-collapse my-12 rounded-2xl overflow-hidden shadow-2xl;
+  animation: slideInUp 0.6s ease-out;
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.05),
+    rgba(59, 130, 246, 0.05)
+  );
 }
 
 article table thead {
-  @apply bg-primary/10;
+  background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+  @apply text-white;
 }
 
 article table th {
-  @apply px-6 py-4 text-left font-bold text-foreground border-b-2 border-primary/20;
+  @apply px-6 py-5 text-left font-extrabold uppercase tracking-wider text-sm;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 article table td {
-  @apply px-6 py-4 border-b border-border/30 text-muted-foreground;
+  @apply px-6 py-4 border-b border-border/20 text-foreground transition-all duration-300;
 }
 
 article table tbody tr {
-  @apply hover:bg-muted/30 transition-colors;
+  @apply hover:bg-gradient-to-r hover:from-green-50 hover:to-blue-50 dark:hover:from-green-950/20 dark:hover:to-blue-950/20 transition-all duration-300 cursor-pointer;
+  transform: scale(1);
+}
+
+article table tbody tr:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);
 }
 
 article table tbody tr:last-child td {
   @apply border-b-0;
 }
 
-/* Custom Info Boxes */
-article .info-box {
-  @apply bg-blue-50 dark:bg-blue-950/30 border-l-4 border-blue-500 p-6 my-8 rounded-r-xl shadow-sm;
+/* 🎨 Vibrant Info Boxes with Gradients & Icons */
+article .info-box,
+article [data-infobox="info"] {
+  background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+  border-left: 6px solid #3b82f6;
+  @apply p-8 my-10 rounded-2xl shadow-xl dark:bg-gradient-to-br dark:from-blue-950/40 dark:to-purple-950/40 transform transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl;
+  animation: slideInUp 0.5s ease-out;
+  position: relative;
+  overflow: hidden;
 }
 
-article .warning-box {
-  @apply bg-yellow-50 dark:bg-yellow-950/30 border-l-4 border-yellow-500 p-6 my-8 rounded-r-xl shadow-sm;
+article .info-box::before,
+article [data-infobox="info"]::before {
+  content: "ℹ️";
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 3rem;
+  opacity: 0.15;
 }
 
-article .success-box {
-  @apply bg-green-50 dark:bg-green-950/30 border-l-4 border-green-500 p-6 my-8 rounded-r-xl shadow-sm;
+article .warning-box,
+article [data-infobox="warning"] {
+  background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+  border-left: 6px solid #f59e0b;
+  @apply p-8 my-10 rounded-2xl shadow-xl dark:bg-gradient-to-br dark:from-yellow-950/40 dark:to-orange-950/40 transform transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl;
+  animation: slideInUp 0.5s ease-out 0.1s backwards;
 }
 
-article .tip-box {
-  @apply bg-purple-50 dark:bg-purple-950/30 border-l-4 border-purple-500 p-6 my-8 rounded-r-xl shadow-sm;
+article .warning-box::before,
+article [data-infobox="warning"]::before {
+  content: "⚠️";
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 3rem;
+  opacity: 0.15;
 }
 
-/* Enhanced HR */
+article .success-box,
+article [data-infobox="success"] {
+  background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+  border-left: 6px solid #10b981;
+  @apply p-8 my-10 rounded-2xl shadow-xl dark:bg-gradient-to-br dark:from-green-950/40 dark:to-emerald-950/40 transform transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl;
+  animation: slideInUp 0.5s ease-out 0.2s backwards;
+}
+
+article .success-box::before,
+article [data-infobox="success"]::before {
+  content: "✅";
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 3rem;
+  opacity: 0.15;
+}
+
+article .tip-box,
+article [data-infobox="tip"] {
+  background: linear-gradient(135deg, #fae8ff 0%, #e9d5ff 100%);
+  border-left: 6px solid #a855f7;
+  @apply p-8 my-10 rounded-2xl shadow-xl dark:bg-gradient-to-br dark:from-purple-950/40 dark:to-pink-950/40 transform transition-all duration-500 hover:scale-[1.02] hover:shadow-2xl;
+  animation: slideInUp 0.5s ease-out 0.3s backwards;
+}
+
+article .tip-box::before,
+article [data-infobox="tip"]::before {
+  content: "💡";
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  font-size: 3rem;
+  opacity: 0.15;
+}
+
+/* 🌈 Enhanced HR with Gradient */
 article hr {
-  @apply my-16 border-t-2 border-primary/30 rounded-full;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #10b981,
+    #06b6d4,
+    #10b981,
+    transparent
+  );
+  border: none;
+  @apply my-20 rounded-full;
+  animation: gradient-shift 3s ease infinite;
+  background-size: 200% 200%;
 }
 
-/* Checklist Style */
+/* ✅ Checklist Style - Vibrant & Animated */
 article ul.checklist {
-  @apply list-none pl-0 space-y-3;
+  @apply list-none pl-0 space-y-4;
+}
+
+article ul.checklist li {
+  @apply flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg;
+  animation: slideInUp 0.4s ease-out;
 }
 
 article ul.checklist li::before {
   content: "✅";
-  @apply mr-3 text-green-500 text-xl;
+  @apply text-3xl flex-shrink-0;
+  filter: drop-shadow(0 2px 4px rgba(34, 197, 94, 0.3));
+  animation: pulse-glow 2s ease-in-out infinite;
 }
 
-/* Feature List */
+/* 🎯 Feature List - Card Style with Hover Effects */
 article ul.features {
-  @apply list-none pl-0 space-y-4;
+  @apply list-none pl-0 space-y-5 my-12;
+}
+
+article ul.features li {
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.05),
+    rgba(147, 51, 234, 0.05)
+  );
+  @apply flex items-start gap-5 p-6 rounded-2xl border-2 border-transparent hover:border-blue-500 dark:hover:border-blue-400 transform transition-all duration-500 hover:scale-[1.03] hover:shadow-2xl cursor-pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+article ul.features li::before {
+  content: "🎯";
+  @apply text-4xl flex-shrink-0;
+  filter: drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3));
+}
+
+article ul.features li::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(59, 130, 246, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+article ul.features li:hover::after {
+  left: 100%;
 }
 
 article ul.features li {
@@ -284,77 +445,622 @@ article ul.features li::before {
   @apply text-2xl flex-shrink-0;
 }
 
-/* Numbered Steps */
+/* 🔢 Numbered Steps - Vibrant Gradient Badges */
 article ol.steps {
   list-style: none;
   counter-reset: step-counter;
-  @apply pl-0 space-y-6;
+  @apply pl-0 space-y-8 my-12;
 }
 
 article ol.steps li {
   counter-increment: step-counter;
-  @apply flex items-start gap-4;
+  @apply flex items-start gap-6 p-6 rounded-2xl bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-950/20 dark:to-purple-950/20 transform transition-all duration-500 hover:scale-[1.02] hover:shadow-xl;
+  animation: slideInUp 0.5s ease-out;
 }
 
 article ol.steps li::before {
   content: counter(step-counter);
-  @apply flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground font-bold flex-shrink-0;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  @apply flex items-center justify-center w-14 h-14 rounded-2xl text-white font-black text-2xl flex-shrink-0 shadow-lg;
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
 }
 
-/* Highlight Text */
+/* ⭐ Highlight Text - Animated Glow */
 article .highlight {
-  @apply bg-yellow-200 dark:bg-yellow-900/50 px-1 py-0.5 rounded;
+  background: linear-gradient(135deg, #fef08a, #fde047);
+  @apply px-3 py-1 rounded-lg font-semibold transform transition-all duration-300 hover:scale-105;
+  box-shadow: 0 2px 8px rgba(250, 204, 21, 0.3);
+  animation: pulse-glow 2s ease-in-out infinite;
 }
 
-/* Pull Quote */
+/* 💬 Pull Quote - Elegant & Eye-catching */
 article .pull-quote {
-  @apply text-3xl font-serif italic text-center my-12 py-8 border-y-4 border-primary/20 text-foreground/80;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.05),
+    rgba(147, 51, 234, 0.05)
+  );
+  @apply text-4xl font-serif italic text-center my-16 py-12 px-8 border-y-4 rounded-2xl text-foreground shadow-xl transform transition-all duration-500 hover:scale-[1.02];
+  border-image: linear-gradient(90deg, #3b82f6, #8b5cf6, #3b82f6) 1;
+  position: relative;
 }
 
-/* CTA Buttons */
+article .pull-quote::before {
+  content: "\201C";
+  @apply absolute -top-8 left-8 text-8xl text-blue-500 opacity-20;
+}
+
+article .pull-quote::after {
+  content: "\201D";
+  @apply absolute -bottom-8 right-8 text-8xl text-purple-500 opacity-20;
+}
+
+/* 🚀 CTA Buttons - Vibrant Gradients with Hover Effects */
 article .cta-button {
-  @apply inline-block bg-primary text-primary-foreground font-bold px-8 py-4 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 no-underline;
+  background: linear-gradient(135deg, #10b981, #06b6d4);
+  @apply inline-block text-white font-bold px-10 py-5 rounded-full shadow-2xl transform transition-all duration-500 hover:scale-110 no-underline relative overflow-hidden;
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+}
+
+article .cta-button:hover {
+  box-shadow: 0 15px 40px rgba(16, 185, 129, 0.5);
+}
+
+article .cta-button::before {
+  content: "";
+  @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-500;
+}
+
+article .cta-button:hover::before {
+  opacity: 0.2;
 }
 
 article .cta-button-outline {
-  @apply inline-block border-2 border-primary text-primary font-bold px-8 py-4 rounded-full hover:bg-primary hover:text-primary-foreground transition-all duration-300 no-underline;
+  @apply inline-block text-foreground font-bold px-10 py-5 rounded-full transform transition-all duration-500 hover:scale-110 hover:shadow-xl no-underline;
+  background: linear-gradient(white, white) padding-box,
+    linear-gradient(135deg, #10b981, #06b6d4) border-box;
+  border: 3px solid transparent;
 }
 
-/* Comparison Layout */
+article .cta-button-outline:hover {
+  background: linear-gradient(135deg, #10b981, #06b6d4);
+  color: white;
+}
+
+/* 📊 Comparison Layout - Side by Side Cards */
 article .comparison-table {
-  @apply grid grid-cols-1 md:grid-cols-2 gap-6 my-12;
+  @apply grid grid-cols-1 md:grid-cols-2 gap-8 my-16;
 }
 
 article .comparison-card {
-  @apply border border-border/50 rounded-xl p-6 hover:shadow-lg transition-shadow;
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.05),
+    rgba(59, 130, 246, 0.05)
+  );
+  @apply border-2 border-transparent hover:border-blue-500 rounded-3xl p-8 transform transition-all duration-500 hover:scale-105 hover:shadow-2xl cursor-pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+article .comparison-card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+article .comparison-card:hover::before {
+  opacity: 1;
 }
 
 article .comparison-card h3 {
-  @apply text-2xl font-bold mb-4 text-primary;
+  background: linear-gradient(135deg, #10b981, #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  @apply text-3xl font-black mb-6;
 }
 
-/* Statistics Box */
+/* 📈 Statistics Box - Animated Numbers */
 article .stat-box {
-  @apply text-center p-8 bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl border border-primary/20 my-6;
+  background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+  @apply text-center p-12 rounded-3xl my-10 transform transition-all duration-500 hover:scale-105 hover:rotate-1 cursor-pointer;
+  box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3);
+  animation: slideInUp 0.6s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+article .stat-box::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.2),
+    transparent 70%
+  );
+  animation: gradient-shift 4s ease infinite;
 }
 
 article .stat-box .number {
-  @apply text-6xl font-bold text-primary;
+  @apply text-8xl font-black text-white relative z-10;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  animation: pulse-glow 2s ease-in-out infinite;
 }
 
 article .stat-box .label {
-  @apply text-muted-foreground mt-2 text-sm uppercase tracking-wider;
+  @apply text-white/90 mt-4 text-lg uppercase tracking-widest font-bold relative z-10;
 }
 
-/* FAQ Styling */
+/* ❓ FAQ Styling - Accordion Style */
 article .faq-item {
-  @apply border-b border-border/30 py-6 last:border-b-0;
+  @apply border-b-2 py-8 last:border-b-0 transition-all duration-300 px-6 rounded-xl;
+  border-color: #10b981;
+}
+
+article .faq-item:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.1),
+    rgba(6, 182, 212, 0.1)
+  );
+}
+
+@media (prefers-color-scheme: dark) {
+  article .faq-item:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(16, 185, 129, 0.2),
+      rgba(6, 182, 212, 0.2)
+    );
+  }
 }
 
 article .faq-question {
-  @apply text-xl font-bold text-foreground mb-3;
+  @apply text-2xl font-black text-foreground mb-4 flex items-start gap-3 cursor-pointer;
+}
+
+article .faq-question::before {
+  content: "Q:";
+  background: linear-gradient(135deg, #10b981, #06b6d4);
+  @apply inline-block px-4 py-2 rounded-lg text-white font-black text-sm flex-shrink-0;
 }
 
 article .faq-answer {
-  @apply text-muted-foreground leading-relaxed;
+  @apply text-muted-foreground leading-relaxed text-lg pl-14;
+}
+
+article .faq-answer::before {
+  content: "A:";
+  @apply inline-block mr-3 font-bold text-blue-600 dark:text-blue-400;
+}
+
+/* ========================================
+   💊 SUPPLEMENT-SPECIFIC COMPONENTS
+   Nutrition Facts, Dosage, Ingredients etc.
+   ======================================== */
+
+/* 🧪 Supplement Card/Box */
+article .supplement-card {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  @apply rounded-3xl p-8 my-12 text-white shadow-2xl transform transition-all duration-500 hover:scale-105 hover:rotate-1;
+  box-shadow: 0 20px 60px rgba(16, 185, 129, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+article .supplement-card::before {
+  content: "💊";
+  @apply absolute -right-8 -top-8 text-9xl opacity-10;
+}
+
+article .supplement-card h3 {
+  @apply text-3xl font-black mb-4 text-white;
+}
+
+/* 📊 Nutrition Facts Table - FDA Style */
+article .nutrition-facts {
+  background: white;
+  @apply border-4 border-black rounded-xl p-6 my-12 shadow-2xl;
+  font-family: "Helvetica", "Arial", sans-serif;
+}
+
+article .nutrition-facts h3 {
+  @apply text-4xl font-black border-b-8 border-black pb-2 mb-4;
+}
+
+article .nutrition-facts .serving-size {
+  @apply text-sm font-bold border-b-2 border-black py-2;
+}
+
+article .nutrition-facts .nutrition-row {
+  @apply flex justify-between py-2 border-b border-gray-400;
+}
+
+article .nutrition-facts .nutrition-row.bold {
+  @apply font-black border-b-4 border-black;
+}
+
+article .nutrition-facts .daily-value {
+  @apply text-xs text-right mt-4 border-t-4 border-black pt-2;
+}
+
+/* 💊 Dosage Box - Interactive */
+article .dosage-box {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  @apply rounded-3xl p-8 my-12 text-white shadow-2xl transform transition-all duration-500 hover:scale-105;
+  box-shadow: 0 20px 60px rgba(59, 130, 246, 0.4);
+  position: relative;
+}
+
+article .dosage-box::before {
+  content: "💊";
+  @apply absolute right-8 top-8 text-7xl opacity-20;
+}
+
+article .dosage-box h4 {
+  @apply text-2xl font-black mb-6 text-white;
+}
+
+article .dosage-box .dose {
+  @apply text-6xl font-black mb-4;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+article .dosage-box .frequency {
+  @apply text-xl opacity-90;
+}
+
+/* 🧬 Ingredient Card - Modern Design */
+article .ingredient-card {
+  @apply bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-2xl p-6 my-6 border-2 border-transparent hover:border-purple-500 transform transition-all duration-500 hover:scale-105 hover:shadow-xl;
+  position: relative;
+  overflow: hidden;
+}
+
+article .ingredient-card::before {
+  content: "🧬";
+  @apply absolute right-6 top-6 text-5xl opacity-20;
+}
+
+article .ingredient-card h4 {
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  @apply text-2xl font-black mb-3;
+}
+
+article .ingredient-card .amount {
+  @apply text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2;
+}
+
+article .ingredient-card .benefit {
+  @apply text-sm text-muted-foreground;
+}
+
+/* ⚠️ Side Effects Warning */
+article .side-effects {
+  background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
+  @apply border-l-8 border-orange-500 rounded-r-3xl p-8 my-12 shadow-xl dark:bg-gradient-to-br dark:from-orange-950/40 dark:to-red-950/40;
+  position: relative;
+}
+
+article .side-effects::before {
+  content: "⚠️";
+  @apply absolute right-8 top-8 text-7xl opacity-20;
+}
+
+article .side-effects h4 {
+  @apply text-3xl font-black text-orange-800 dark:text-orange-400 mb-6;
+}
+
+article .side-effects ul {
+  @apply list-disc pl-6 space-y-2;
+}
+
+/* 🌟 Benefits Grid - Visual Cards */
+article .benefits-grid {
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-12;
+}
+
+article .benefit-card {
+  background: linear-gradient(
+    135deg,
+    rgba(34, 197, 94, 0.1),
+    rgba(6, 182, 212, 0.1)
+  );
+  @apply rounded-2xl p-6 text-center transform transition-all duration-500 hover:scale-110 hover:shadow-2xl border-2 border-transparent hover:border-green-500 cursor-pointer;
+}
+
+article .benefit-card .icon {
+  @apply text-6xl mb-4;
+  filter: drop-shadow(0 4px 8px rgba(34, 197, 94, 0.3));
+}
+
+article .benefit-card h5 {
+  @apply text-xl font-black mb-3 text-green-700 dark:text-green-400;
+}
+
+article .benefit-card p {
+  @apply text-sm text-muted-foreground;
+}
+
+/* 📉 vs 📈 Before/After Comparison */
+article .before-after {
+  @apply grid grid-cols-1 md:grid-cols-2 gap-8 my-12;
+}
+
+article .before-box {
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  @apply rounded-3xl p-8 border-4 border-red-500 shadow-xl;
+}
+
+article .before-box h4 {
+  @apply text-2xl font-black text-red-700 mb-4;
+}
+
+article .before-box::before {
+  content: "📉";
+  @apply text-6xl opacity-20 float-right;
+}
+
+article .after-box {
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  @apply rounded-3xl p-8 border-4 border-green-500 shadow-xl;
+}
+
+article .after-box h4 {
+  @apply text-2xl font-black text-green-700 mb-4;
+}
+
+article .after-box::before {
+  content: "📈";
+  @apply text-6xl opacity-20 float-right;
+}
+
+/* 🎖️ Rating/Review Stars */
+article .rating {
+  @apply flex items-center gap-2 text-3xl my-4;
+}
+
+article .rating .star {
+  color: #fbbf24;
+  filter: drop-shadow(0 2px 4px rgba(251, 191, 36, 0.5));
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* 💰 Price Tag - Attractive */
+article .price-tag {
+  background: linear-gradient(135deg, #10b981, #059669);
+  @apply inline-block px-8 py-4 rounded-2xl text-white font-black text-4xl shadow-2xl transform hover:scale-110 transition-all duration-300;
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+}
+
+article .price-tag .currency {
+  @apply text-2xl align-super;
+}
+
+article .price-tag .period {
+  @apply text-lg font-normal opacity-80;
+}
+
+/* 🔬 Research Badge */
+article .research-backed {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  @apply inline-flex items-center gap-3 px-6 py-3 rounded-full text-white font-bold shadow-lg;
+}
+
+article .research-backed::before {
+  content: "🔬";
+  @apply text-2xl;
+}
+
+/* ✨ Interactive Tooltip */
+article .tooltip {
+  @apply relative inline-block border-b-2 border-dotted border-blue-500 cursor-help;
+}
+
+article .tooltip:hover::after {
+  content: attr(data-tooltip);
+  @apply absolute left-1/2 -translate-x-1/2 -top-12 bg-gray-900 text-white px-4 py-2 rounded-lg text-sm whitespace-nowrap z-50;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: slideInUp 0.3s ease-out;
+}
+
+/* ========================
+   📚 Enhanced Blog Reading Experience
+   ======================== */
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 120px;
+}
+
+/* Better text selection */
+article ::selection {
+  background: rgba(16, 185, 129, 0.2);
+  color: inherit;
+}
+
+/* Focus visible for accessibility */
+article a:focus-visible,
+article button:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2 ring-offset-background rounded-md;
+}
+
+/* Paragraph first letter styling for featured paragraphs */
+article .drop-cap::first-letter {
+  @apply float-left text-6xl font-black leading-none mr-2 text-primary;
+  line-height: 0.8;
+  padding: 0.1em 0.1em 0 0;
+}
+
+/* Reading progress indicator styles */
+article mark {
+  @apply bg-yellow-200 dark:bg-yellow-900/40 px-1 py-0.5 rounded;
+}
+
+/* Better link hover states within content */
+article a {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+article a:hover {
+  transform: translateY(-1px);
+}
+
+/* Image captions */
+article figure {
+  @apply my-12;
+}
+
+article figcaption {
+  @apply text-center text-sm text-muted-foreground mt-3 italic font-medium;
+}
+
+/* Keyboard navigation indicator */
+article *:focus-visible {
+  @apply outline-none ring-2 ring-primary ring-offset-2;
+}
+
+/* Better spacing for nested lists */
+article ul ul,
+article ol ul,
+article ul ol,
+article ol ol {
+  @apply mt-3 mb-0;
+}
+
+/* Sticky elements smooth behavior */
+.sticky {
+  position: sticky;
+  top: 7rem;
+}
+
+/* Print styles for blog posts */
+@media print {
+  article .share-buttons,
+  article .floating-bar,
+  article nav {
+    display: none !important;
+  }
+
+  article {
+    @apply text-black bg-white;
+  }
+
+  article a {
+    @apply text-black underline;
+  }
+
+  article a::after {
+    content: " (" attr(href) ")";
+    @apply text-xs;
+  }
+}
+
+/* Loading skeleton animation */
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.05) 25%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  @apply rounded-lg;
+}
+
+/* Enhanced blockquote styling */
+article blockquote p:first-of-type::before {
+  content: '"';
+  @apply text-5xl text-primary/30 absolute -left-4 -top-2;
+}
+
+article blockquote p:last-of-type::after {
+  content: '"';
+  @apply text-5xl text-primary/30;
+}
+
+/* Better table responsiveness */
+@media (max-width: 768px) {
+  article table {
+    @apply block overflow-x-auto whitespace-nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Floating action improvements */
+.floating-element {
+  @apply transition-all duration-300 ease-out;
+  will-change: transform;
+}
+
+.floating-element:hover {
+  transform: translateY(-2px);
+  @apply shadow-xl;
+}
+
+/* Content fade-in on scroll */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Gradient text effect */
+.gradient-text {
+  @apply bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent;
+}
+
+/* Glass morphism effect */
+.glass {
+  @apply bg-white/70 dark:bg-black/30 backdrop-blur-xl border border-white/20;
+}
+
+/* Pulse animation for important elements */
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.pulse-soft {
+  animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

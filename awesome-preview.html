@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎨 Awesome Supplement Blog Styles - Interactive Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Animations */
+      @keyframes slideInUp {
+        from {
+          transform: translateY(20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 40px rgba(34, 197, 94, 0.4);
+        }
+      }
+
+      @keyframes gradient-shift {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      /* Import all styles from globals.css */
+      article hr {
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          #10b981,
+          #06b6d4,
+          #10b981,
+          transparent
+        );
+        border: none;
+        margin: 5rem 0;
+        border-radius: 9999px;
+        animation: gradient-shift 3s ease infinite;
+        background-size: 200% 200%;
+      }
+
+      [data-infobox] {
+        padding: 2rem;
+        margin: 2.5rem 0;
+        border-radius: 1rem;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        animation: slideInUp 0.5s ease-out;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.5s;
+      }
+
+      [data-infobox]:hover {
+        transform: scale(1.02);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
+      }
+
+      [data-infobox="info"] {
+        background: linear-gradient(135deg, #dbeafe, #e0e7ff);
+        border-left: 6px solid #3b82f6;
+      }
+
+      [data-infobox="info"]::before {
+        content: "ℹ️";
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        font-size: 3rem;
+        opacity: 0.15;
+      }
+
+      [data-infobox="success"] {
+        background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+        border-left: 6px solid #10b981;
+      }
+
+      [data-infobox="success"]::before {
+        content: "✅";
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        font-size: 3rem;
+        opacity: 0.15;
+      }
+
+      [data-infobox="warning"] {
+        background: linear-gradient(135deg, #fef3c7, #fed7aa);
+        border-left: 6px solid #f59e0b;
+      }
+
+      [data-infobox="warning"]::before {
+        content: "⚠️";
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        font-size: 3rem;
+        opacity: 0.15;
+      }
+
+      [data-infobox="tip"] {
+        background: linear-gradient(135deg, #fae8ff, #e9d5ff);
+        border-left: 6px solid #a855f7;
+      }
+
+      [data-infobox="tip"]::before {
+        content: "💡";
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        font-size: 3rem;
+        opacity: 0.15;
+      }
+
+      .checklist {
+        list-style: none;
+        padding-left: 0;
+        margin: 2rem 0;
+      }
+
+      .checklist li {
+        display: flex;
+        align-items: start;
+        gap: 1rem;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 0.75rem;
+        background: linear-gradient(to right, #d1fae5, #a7f3d0);
+        transition: all 0.3s;
+        animation: slideInUp 0.4s ease-out;
+      }
+
+      .checklist li:hover {
+        transform: scale(1.02);
+        box-shadow: 0 10px 20px rgba(16, 185, 129, 0.2);
+      }
+
+      .checklist li::before {
+        content: "✅";
+        font-size: 2rem;
+        animation: pulse-glow 2s ease-in-out infinite;
+      }
+
+      .supplement-card {
+        background: linear-gradient(135deg, #10b981, #059669);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        margin: 3rem 0;
+        color: white;
+        box-shadow: 0 20px 60px rgba(16, 185, 129, 0.4);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.5s;
+      }
+
+      .supplement-card:hover {
+        transform: scale(1.05) rotate(1deg);
+      }
+
+      .supplement-card::before {
+        content: "💊";
+        position: absolute;
+        right: -2rem;
+        top: -2rem;
+        font-size: 10rem;
+        opacity: 0.1;
+      }
+
+      .dosage-box {
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        border-radius: 1.5rem;
+        padding: 2rem;
+        margin: 3rem 0;
+        color: white;
+        box-shadow: 0 20px 60px rgba(59, 130, 246, 0.4);
+        position: relative;
+        transition: all 0.5s;
+      }
+
+      .dosage-box:hover {
+        transform: scale(1.05);
+      }
+
+      .dosage-box::before {
+        content: "💊";
+        position: absolute;
+        right: 2rem;
+        top: 2rem;
+        font-size: 5rem;
+        opacity: 0.2;
+      }
+
+      .stat-box {
+        background: linear-gradient(135deg, #10b981, #06b6d4);
+        text-align: center;
+        padding: 3rem;
+        border-radius: 1.5rem;
+        margin: 2.5rem 0;
+        box-shadow: 0 20px 60px rgba(16, 185, 129, 0.3);
+        transition: all 0.5s;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stat-box:hover {
+        transform: scale(1.05) rotate(1deg);
+      }
+
+      .stat-box .number {
+        font-size: 5rem;
+        font-weight: 900;
+        color: white;
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        animation: pulse-glow 2s ease-in-out infinite;
+      }
+
+      .stat-box .label {
+        color: rgba(255, 255, 255, 0.9);
+        margin-top: 1rem;
+        font-size: 1.125rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-weight: bold;
+      }
+
+      .benefits-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin: 3rem 0;
+      }
+
+      .benefit-card {
+        background: linear-gradient(
+          135deg,
+          rgba(34, 197, 94, 0.1),
+          rgba(6, 182, 212, 0.1)
+        );
+        border-radius: 1rem;
+        padding: 1.5rem;
+        text-align: center;
+        border: 2px solid transparent;
+        transition: all 0.5s;
+        cursor: pointer;
+      }
+
+      .benefit-card:hover {
+        transform: scale(1.1);
+        box-shadow: 0 20px 40px rgba(16, 185, 129, 0.2);
+        border-color: #10b981;
+      }
+
+      .benefit-card .icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        filter: drop-shadow(0 4px 8px rgba(34, 197, 94, 0.3));
+      }
+
+      .cta-button {
+        display: inline-block;
+        background: linear-gradient(135deg, #10b981, #06b6d4);
+        color: white;
+        font-weight: bold;
+        padding: 1.25rem 2.5rem;
+        border-radius: 9999px;
+        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        transition: all 0.5s;
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .cta-button:hover {
+        transform: scale(1.1);
+        box-shadow: 0 15px 40px rgba(16, 185, 129, 0.5);
+      }
+
+      .rating {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 2rem;
+        margin: 1rem 0;
+      }
+
+      .rating .star {
+        color: #fbbf24;
+        filter: drop-shadow(0 2px 4px rgba(251, 191, 36, 0.5));
+        animation: pulse-glow 2s ease-in-out infinite;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gradient-to-br from-blue-50 via-white to-green-50 min-h-screen p-8"
+  >
+    <div class="max-w-5xl mx-auto">
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <h1
+          class="text-6xl font-black mb-4 bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent"
+        >
+          🎨 Awesome Supplement Blog Styles
+        </h1>
+        <p class="text-2xl text-gray-600">
+          Interactive • Vibrant • User-Friendly
+        </p>
+      </div>
+
+      <!-- Section 1: Info Boxes -->
+      <section class="mb-20">
+        <h2 class="text-4xl font-black mb-8">💬 Interactive Info Boxes</h2>
+
+        <div data-infobox="info">
+          <strong>💡 Did You Know:</strong> This supplement can boost your
+          energy by 40%!
+        </div>
+
+        <div data-infobox="success">
+          <strong>✅ Clinically Proven:</strong> 95% of users report improved
+          energy levels!
+        </div>
+
+        <div data-infobox="warning">
+          <strong>⚠️ Important:</strong> Always consult your doctor before
+          starting any supplement.
+        </div>
+
+        <div data-infobox="tip">
+          <strong>💡 Pro Tip:</strong> Take with food for better absorption!
+        </div>
+      </section>
+
+      <hr />
+
+      <!-- Section 2: Checklist -->
+      <section class="mb-20">
+        <h2 class="text-4xl font-black mb-8">✅ Animated Checklist</h2>
+
+        <ul class="checklist">
+          <li>
+            <strong>Boosts Energy</strong> - Feel energized throughout the day
+          </li>
+          <li>
+            <strong>Improves Focus</strong> - Enhanced mental clarity and
+            concentration
+          </li>
+          <li>
+            <strong>Supports Immunity</strong> - Strengthens your natural
+            defenses
+          </li>
+          <li>
+            <strong>100% Natural</strong> - No artificial ingredients or
+            additives
+          </li>
+        </ul>
+      </section>
+
+      <hr />
+
+      <!-- Section 3: Supplement Card -->
+      <section class="mb-20">
+        <h2 class="text-4xl font-black mb-8">💊 Supplement Card</h2>
+
+        <div class="supplement-card">
+          <h3 class="text-3xl font-black mb-4">Vitamin D3 + K2 Premium</h3>
+          <p class="text-xl mb-4">Advanced bone and immune support formula</p>
+          <ul class="space-y-2">
+            <li>✨ 5000 IU Vitamin D3</li>
+            <li>✨ 100 mcg Vitamin K2 (MK-7)</li>
+            <li>✨ Supports calcium absorption</li>
+            <li>✨ Third-party tested for purity</li>
+          </ul>
+        </div>
+      </section>
+
+      <hr />
+
+      <!-- Section 4: Benefits Grid -->
+      <section class="mb-20">
+        <h2 class="text-4xl font-black mb-8">🌟 Benefits Grid</h2>
+
+        <div class="benefits-grid">
+          <div class="benefit-card">
+            <div class="icon">💪</div>
+            <h5 class="text-xl font-black mb-2 text-green-700">
+              Stronger Bones
+            </h5>
+            <p class="text-gray-600">Improves bone density and strength</p>
+          </div>
+
+          <div class="benefit-card">
+            <div class="icon">🧠</div>
+            <h5 class="text-xl font-black mb-2 text-green-700">
+              Mental Clarity
+            </h5>
+            <p class="text-gray-600">Enhances cognitive function</p>
+          </div>
+
+          <div class="benefit-card">
+            <div class="icon">❤️</div>
+            <h5 class="text-xl font-black mb-2 text-green-700">Heart Health</h5>
+            <p class="text-gray-600">Supports cardiovascular wellness</p>
+          </div>
+
+          <div class="benefit-card">
+            <div class="icon">🛡️</div>
+            <h5 class="text-xl font-black mb-2 text-green-700">
+              Immune Support
+            </h5>
+            <p class="text-gray-600">Boosts immune system</p>
+          </div>
+
+          <div class="benefit-card">
+            <div class="icon">😊</div>
+            <h5 class="text-xl font-black mb-2 text-green-700">Better Mood</h5>
+            <p class="text-gray-600">Supports emotional well-being</p>
+          </div>
+
+          <div class="benefit-card">
+            <div class="icon">⚡</div>
+            <h5 class="text-xl font-black mb-2 text-green-700">More Energy</h5>
+            <p class="text-gray-600">Sustained energy all day</p>
+          </div>
+        </div>
+      </section>
+
+      <hr />
+
+      <!-- Section 5: Dosage Box -->
+      <section class="mb-20">
+        <h2 class="text-4xl font-black mb-8">💊 Dosage Information</h2>
+
+        <div class="dosage-box">
+          <h4 class="text-2xl font-black mb-6">Recommended Dosage</h4>
+          <div class="text-6xl font-black mb-4">2 Capsules</div>
+          <div class="text-xl mb-4">Once daily with breakfast</div>
+          <p>For best results, take consistently for at least 30 days.</p>
+        </div>
+      </section>
+
+      <hr />
+
+      <!-- Section 6: Statistics -->
+      <section class="mb-20">
+        <h2 class="text-4xl font-black mb-8">📊 Impressive Statistics</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="stat-box">
+            <div class="number">10,000+</div>
+            <div class="label">Happy Customers</div>
+          </div>
+
+          <div class="stat-box">
+            <div class="number">95%</div>
+            <div class="label">Satisfaction Rate</div>
+          </div>
+
+          <div class="stat-box">
+            <div class="number">4.9/5</div>
+            <div class="label">Average Rating</div>
+          </div>
+        </div>
+      </section>
+
+      <hr />
+
+      <!-- Section 7: Rating -->
+      <section class="mb-20">
+        <h2 class="text-4xl font-black mb-8">⭐ Customer Rating</h2>
+
+        <div class="rating">
+          <span class="star">⭐</span>
+          <span class="star">⭐</span>
+          <span class="star">⭐</span>
+          <span class="star">⭐</span>
+          <span class="star">⭐</span>
+          <span class="text-2xl text-gray-700 ml-4">4.9/5 (1,247 reviews)</span>
+        </div>
+
+        <div class="mt-6 p-8 bg-white rounded-2xl shadow-lg">
+          <p class="text-2xl italic text-gray-700 mb-4">
+            "This supplement changed my life. I have more energy and feel
+            healthier than ever!"
+          </p>
+          <p class="text-gray-500">- Sarah M., Verified Customer</p>
+        </div>
+      </section>
+
+      <hr />
+
+      <!-- Section 8: CTA -->
+      <section class="mb-20 text-center">
+        <h2 class="text-4xl font-black mb-8">🚀 Call to Action</h2>
+
+        <a href="#" class="cta-button text-xl"> Order Now - Save 20% Today! </a>
+
+        <p class="mt-6 text-gray-600">
+          <span class="text-2xl font-bold">✓</span> Free Shipping<br />
+          <span class="text-2xl font-bold">✓</span> 60-Day Money-Back
+          Guarantee<br />
+          <span class="text-2xl font-bold">✓</span> Third-Party Tested
+        </p>
+      </section>
+
+      <!-- Footer -->
+      <div
+        class="text-center mt-20 p-8 bg-gradient-to-r from-green-100 to-blue-100 rounded-3xl"
+      >
+        <h3 class="text-3xl font-black mb-4">🎉 Ready to Use!</h3>
+        <p class="text-xl text-gray-700">
+          Copy any HTML from the guide and paste into your blog posts.
+        </p>
+        <p class="mt-4 text-gray-600">
+          See <strong>AWESOME_SUPPLEMENT_STYLES.md</strong> for complete
+          documentation!
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
