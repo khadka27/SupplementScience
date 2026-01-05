@@ -6,6 +6,7 @@ import {
   generateWebsiteSchema,
 } from "@/lib/schema";
 import Script from "next/script";
+import { headers } from "next/headers";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
@@ -87,6 +88,11 @@ export default function RootLayout({
   const organizationSchema = generateOrganizationSchema(baseUrl);
   const websiteSchema = generateWebsiteSchema(baseUrl);
 
+  // Check if current route is admin
+  const headersList = headers();
+  const pathname = headersList.get("x-pathname") || "";
+  const isAdminRoute = pathname.startsWith("/admin");
+
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -140,9 +146,11 @@ export default function RootLayout({
             </div>
 
             <div className="flex flex-col min-h-screen">
-              <Navbar />
-              <main className="grow pt-24">{children}</main>
-              <Footer />
+              {!isAdminRoute && <Navbar />}
+              <main className={isAdminRoute ? "grow" : "grow pt-24"}>
+                {children}
+              </main>
+              {!isAdminRoute && <Footer />}
             </div>
             <Toaster />
           </ThemeProvider>

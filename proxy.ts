@@ -5,6 +5,10 @@ import { auth } from "@/lib/auth";
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Add pathname to headers for layout detection
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", pathname);
+
   // Proxy functionality: URL normalization
   // Convert to lowercase
   if (pathname !== pathname.toLowerCase()) {
@@ -84,7 +88,11 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  return NextResponse.next();
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 }
 
 export const config = {

@@ -157,16 +157,16 @@ export default function AdminSettingsPage() {
     <AdminLayout>
       <div className="space-y-6">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Account Settings</h2>
+          <h2 className="text-3xl font-bold tracking-tight">
+            Account Settings
+          </h2>
           <p className="text-muted-foreground">
             Manage your account and credentials
           </p>
         </div>
 
         {message && (
-          <Alert
-            variant={message.type === "error" ? "destructive" : "default"}
-          >
+          <Alert variant={message.type === "error" ? "destructive" : "default"}>
             {message.type === "success" ? (
               <CheckCircle2 className="h-4 w-4" />
             ) : (
