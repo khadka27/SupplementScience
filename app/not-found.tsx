@@ -15,7 +15,7 @@ import Link from "next/link";
 async function getPopularPosts(): Promise<any[]> {
   const data = await prisma.post.findMany({
     where: {
-      status: "published",
+      status: "PUBLISHED",
       publishedAt: {
         lte: new Date(),
       },

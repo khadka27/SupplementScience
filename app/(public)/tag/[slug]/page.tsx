@@ -26,7 +26,7 @@ async function getTagPosts(tagId: string): Promise<any[]> {
     where: {
       tagId,
       post: {
-        status: "published",
+        status: "PUBLISHED",
         publishedAt: {
           lte: new Date(),
         },

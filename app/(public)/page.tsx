@@ -31,7 +31,7 @@ export const revalidate = 43200;
 async function getFeaturedPosts(): Promise<any[]> {
   const data = await prisma.post.findMany({
     where: {
-      status: "published",
+      status: "PUBLISHED",
       isFeatured: true,
       publishedAt: {
         lte: new Date(),
@@ -57,7 +57,7 @@ async function getFeaturedPosts(): Promise<any[]> {
 async function getRecentPosts(): Promise<any[]> {
   const data = await prisma.post.findMany({
     where: {
-      status: "published",
+      status: "PUBLISHED",
       publishedAt: {
         lte: new Date(),
       },

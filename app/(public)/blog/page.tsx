@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 async function getPosts(): Promise<any[]> {
   const data = await prisma.post.findMany({
     where: {
-      status: "published",
+      status: "PUBLISHED",
       publishedAt: {
         lte: new Date(),
       },

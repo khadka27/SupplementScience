@@ -20,7 +20,7 @@ async function getPost(slug: string): Promise<any | null> {
   const data = await prisma.post.findFirst({
     where: {
       slug,
-      status: "published",
+      status: "PUBLISHED",
       publishedAt: {
         lte: new Date(),
       },

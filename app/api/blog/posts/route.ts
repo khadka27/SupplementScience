@@ -44,10 +44,10 @@ export async function GET(req: Request) {
     return NextResponse.json(posts);
   } catch (error) {
     console.error("[POSTS_GET] Error:", error);
-    return new NextResponse(
-      JSON.stringify({ error: "Internal Error" }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return new NextResponse(JSON.stringify({ error: "Internal Error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
 
@@ -62,16 +62,28 @@ export async function POST(req: Request) {
       featuredImageUrl,
       authorId,
       categoryId,
+      tagIds,
       status,
+      readTimeMinutes,
     } = body;
 
-    console.log("Received post data:", { title, slug, status });
+    console.log("Received post data:", { title, slug, status, tagIds });
 
     // Basic validation
     if (!title || !slug || !content) {
       return new NextResponse(
         JSON.stringify({
           error: "Missing required fields: title, slug, or content",
+        }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
+    // Validate tags
+    if (!tagIds || !Array.isArray(tagIds) || tagIds.length === 0) {
+      return new NextResponse(
+        JSON.stringify({
+          error: "At least one tag is required",
         }),
         { status: 400, headers: { "Content-Type": "application/json" } }
       );
@@ -99,8 +111,9 @@ export async function POST(req: Request) {
         excerpt: excerpt || null,
         content,
         featuredImageUrl: featuredImageUrl || null,
-        status: status || "draft",
-        publishedAt: status === "published" ? new Date() : null,
+        status: status?.toUpperCase() || "DRAFT",
+        publishedAt: status?.toLowerCase() === "published" ? new Date() : null,
+        readTimeMinutes: readTimeMinutes || 5,
         ...(authorId && {
           author: {
             connect: { id: authorId },
@@ -111,6 +124,16 @@ export async function POST(req: Request) {
             connect: { id: categoryId },
           },
         }),
+        tags: {
+          create: tagIds.map((tagId: string) => ({
+            tag: {
+              connect: { id: tagId },
+            },
+          })),
+        },
+      },
+      include: {
+        tags: true,
       },
     });
 

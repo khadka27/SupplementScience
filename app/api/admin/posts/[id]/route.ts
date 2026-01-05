@@ -2,37 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  try {
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    await prisma.post.delete({
-      where: { id: params.id },
-    });
-
-    return NextResponse.json({ message: "Post deleted successfully" });
-  } catch (error) {
-    console.error("Error deleting post:", error);
-    return NextResponse.json(
-      { error: "Failed to delete post" },
-      { status: 500 }
-    );
-  }
-}
-
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const post = await prisma.post.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: {
         author: true,
         category: true,
@@ -49,6 +26,123 @@ export async function GET(
     console.error("Error fetching post:", error);
     return NextResponse.json(
       { error: "Failed to fetch post" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { id } = await params;
+    const body = await request.json();
+    const {
+      title,
+      slug,
+      excerpt,
+      content,
+      featuredImageUrl,
+      authorId,
+      categoryId,
+      tagIds,
+      status,
+      readTimeMinutes,
+    } = body;
+
+    // Check if slug is being changed and if it already exists
+    if (slug) {
+      const existingPost = await prisma.post.findUnique({
+        where: { slug },
+      });
+
+      if (existingPost && existingPost.id !== id) {
+        return NextResponse.json(
+          { error: "Slug already exists. Please use a different slug." },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Update the post
+    const post = await prisma.post.update({
+      where: { id },
+      data: {
+        title,
+        slug,
+        excerpt: excerpt || null,
+        content,
+        featuredImageUrl: featuredImageUrl || null,
+        status: status?.toUpperCase() || "DRAFT",
+        publishedAt: status?.toLowerCase() === "published" ? new Date() : null,
+        readTimeMinutes: readTimeMinutes || 5,
+        ...(authorId && {
+          author: {
+            connect: { id: authorId },
+          },
+        }),
+        ...(categoryId && {
+          category: {
+            connect: { id: categoryId },
+          },
+        }),
+        ...(tagIds &&
+          Array.isArray(tagIds) && {
+            tags: {
+              deleteMany: {},
+              create: tagIds.map((tagId: string) => ({
+                tag: {
+                  connect: { id: tagId },
+                },
+              })),
+            },
+          }),
+      },
+      include: {
+        author: true,
+        category: true,
+        tags: true,
+      },
+    });
+
+    return NextResponse.json(post);
+  } catch (error) {
+    console.error("Error updating post:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error occurred";
+    return NextResponse.json(
+      { error: "Failed to update post", details: errorMessage },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { id } = await params;
+    await prisma.post.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ message: "Post deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting post:", error);
+    return NextResponse.json(
+      { error: "Failed to delete post" },
       { status: 500 }
     );
   }

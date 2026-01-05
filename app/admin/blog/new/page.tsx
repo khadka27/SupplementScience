@@ -11,6 +11,10 @@ export default async function NewBlogPostPage() {
     orderBy: { name: "asc" },
   });
 
+  const tags = await prisma.tag.findMany({
+    orderBy: { name: "asc" },
+  });
+
   return (
     <AdminLayout>
       <div className="space-y-6">
@@ -23,7 +27,7 @@ export default async function NewBlogPostPage() {
           </p>
         </div>
 
-        <BlogEditorForm authors={authors} categories={categories} />
+        <BlogEditorForm authors={authors} categories={categories} tags={tags} />
       </div>
     </AdminLayout>
   );

@@ -24,7 +24,7 @@ async function getCategory(slug: string): Promise<any | null> {
 async function getCategoryPosts(categoryId: string): Promise<any[]> {
   const data = await prisma.post.findMany({
     where: {
-      status: "published",
+      status: "PUBLISHED",
       categoryId,
       publishedAt: {
         lte: new Date(),

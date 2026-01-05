@@ -2,9 +2,9 @@ export type Author = {
   id: string;
   name: string;
   slug: string;
-  bio?: string;
-  avatarUrl?: string;
-  email?: string;
+  bio?: string | null;
+  avatarUrl?: string | null;
+  email?: string | null;
   socialLinks?: any;
   createdAt: Date;
   updatedAt: Date;
@@ -14,10 +14,10 @@ export type Category = {
   id: string;
   name: string;
   slug: string;
-  description?: string;
-  metaTitle?: string;
-  metaDescription?: string;
-  imageUrl?: string;
+  description?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  imageUrl?: string | null;
   postCount: number;
   createdAt: Date;
   updatedAt: Date;
@@ -27,7 +27,7 @@ export type Tag = {
   id: string;
   name: string;
   slug: string;
-  description?: string;
+  description?: string | null;
   postCount: number;
   createdAt: Date;
   updatedAt: Date;

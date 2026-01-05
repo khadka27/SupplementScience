@@ -6,6 +6,11 @@ datasource db {
   provider = "postgresql"
 }
 
+enum PostStatus {
+  DRAFT
+  PUBLISHED
+}
+
 model Author {
   id          String   @id @default(uuid())
   name        String
@@ -51,21 +56,21 @@ model Tag {
 }
 
 model Post {
-  id               String    @id @default(uuid())
+  id               String     @id @default(uuid())
   title            String
-  slug             String    @unique
-  metaTitle        String?   @map("meta_title")
-  metaDescription  String?   @map("meta_description")
-  content          String    @db.Text
-  excerpt          String?   @db.Text
-  featuredImageUrl String?   @map("featured_image_url")
-  featuredImageAlt String?   @map("featured_image_alt")
-  status           String    @default("draft")
-  publishedAt      DateTime? @map("published_at")
-  scheduledFor     DateTime? @map("scheduled_for")
-  readTimeMinutes  Int       @default(5) @map("read_time_minutes")
-  viewCount        Int       @default(0) @map("view_count")
-  isFeatured       Boolean   @default(false) @map("is_featured")
+  slug             String     @unique
+  metaTitle        String?    @map("meta_title")
+  metaDescription  String?    @map("meta_description")
+  content          String     @db.Text
+  excerpt          String?    @db.Text
+  featuredImageUrl String?    @map("featured_image_url")
+  featuredImageAlt String?    @map("featured_image_alt")
+  status           PostStatus @default(DRAFT)
+  publishedAt      DateTime?  @map("published_at")
+  scheduledFor     DateTime?  @map("scheduled_for")
+  readTimeMinutes  Int        @default(5) @map("read_time_minutes")
+  viewCount        Int        @default(0) @map("view_count")
+  isFeatured       Boolean    @default(false) @map("is_featured")
 
   // Trust & credibility features
   reviewedBy String?   @map("reviewed_by")

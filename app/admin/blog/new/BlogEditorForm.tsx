@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Author, Category } from "@/lib/types";
+import { Author, Category, Tag } from "@/lib/types";
 import TiptapEditor from "@/components/editor/TiptapEditor";
 import {
   Form,
@@ -26,8 +26,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { Save, Loader2, Globe } from "lucide-react";
+
+// Calculate read time based on word count (avg 200 words per minute)
+const calculateReadTime = (content: string): number => {
+  const text = content.replace(/<[^>]*>/g, ""); // Remove HTML tags
+  const words = text.trim().split(/\s+/).length;
+  const minutes = Math.ceil(words / 200);
+  return Math.max(1, minutes); // Minimum 1 minute
+};
 
 const formSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters"),
@@ -42,44 +51,59 @@ const formSchema = z.object({
   authorId: z.string().optional().or(z.literal("")),
   categoryId: z.string().optional().or(z.literal("")),
   customAuthor: z.string().optional().or(z.literal("")),
+  tagIds: z.array(z.string()).min(1, "Please select at least one tag"),
   status: z.enum(["draft", "published"]),
 });
 
 interface BlogEditorFormProps {
   authors: Author[];
   categories: Category[];
+  tags: Tag[];
+  initialData?: any;
 }
 
 export default function BlogEditorForm({
   authors,
   categories,
+  tags,
+  initialData,
 }: BlogEditorFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const isEditing = !!initialData;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      title: "",
-      slug: "",
-      excerpt: "",
-      content: "",
-      featuredImageUrl: "",
-      authorId: authors[0]?.id || "",
-      categoryId: categories[0]?.id || "",
-      status: "draft",
+      title: initialData?.title || "",
+      slug: initialData?.slug || "",
+      excerpt: initialData?.excerpt || "",
+      content: initialData?.content || "",
+      featuredImageUrl: initialData?.featuredImageUrl || "",
+      tagIds: initialData?.tags?.map((t: any) => t.tagId) || [],
+      authorId: initialData?.authorId || authors[0]?.id || "",
+      categoryId: initialData?.categoryId || categories[0]?.id || "",
+      status: initialData?.status?.toLowerCase() || "draft",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     try {
-      console.log("Saving post:", values);
+      // Calculate read time from content
+      const readTimeMinutes = calculateReadTime(values.content);
 
-      const response = await fetch("/api/blog/posts", {
-        method: "POST",
+      console.log(isEditing ? "Updating post:" : "Creating post:", values);
+
+      const url = isEditing
+        ? `/api/admin/posts/${initialData.id}`
+        : "/api/blog/posts";
+      const method = isEditing ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
+        body: JSON.stringify({ ...values, readTimeMinutes }),
       });
 
       if (!response.ok) {
@@ -90,10 +114,13 @@ export default function BlogEditorForm({
       }
 
       const data = await response.json();
-      console.log("Post created:", data);
+      console.log(isEditing ? "Post updated:" : "Post created:", data);
 
-      toast.success("Post created successfully!");
-      router.push("/blog");
+      toast.success(
+        isEditing ? "Post updated successfully!" : "Post created successfully!"
+      );
+      router.push("/admin/blogs");
+      router.refresh();
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Something went wrong";
@@ -261,23 +288,6 @@ export default function BlogEditorForm({
 
                 <FormField
                   control={form.control}
-                  name="customAuthor"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Or Author Name</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Enter author name manually"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
                   name="categoryId"
                   render={({ field }) => (
                     <FormItem>
@@ -299,6 +309,60 @@ export default function BlogEditorForm({
                           ))}
                         </SelectContent>
                       </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="tagIds"
+                  render={() => (
+                    <FormItem>
+                      <div className="mb-4">
+                        <FormLabel>Tags *</FormLabel>
+                        <FormDescription>
+                          Select at least one tag for your post
+                        </FormDescription>
+                      </div>
+                      <div className="space-y-2 max-h-48 overflow-y-auto border rounded-md p-4">
+                        {tags.map((tag) => (
+                          <FormField
+                            key={tag.id}
+                            control={form.control}
+                            name="tagIds"
+                            render={({ field }) => {
+                              return (
+                                <FormItem
+                                  key={tag.id}
+                                  className="flex flex-row items-start space-x-3 space-y-0"
+                                >
+                                  <FormControl>
+                                    <Checkbox
+                                      checked={field.value?.includes(tag.id)}
+                                      onCheckedChange={(checked) => {
+                                        return checked
+                                          ? field.onChange([
+                                              ...field.value,
+                                              tag.id,
+                                            ])
+                                          : field.onChange(
+                                              field.value?.filter(
+                                                (value) => value !== tag.id
+                                              )
+                                            );
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormLabel className="font-normal cursor-pointer">
+                                    {tag.name}
+                                  </FormLabel>
+                                </FormItem>
+                              );
+                            }}
+                          />
+                        ))}
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
