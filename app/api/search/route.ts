@@ -73,7 +73,10 @@ export async function GET(req: Request) {
         matchScore = 90;
       }
       // Title contains query as whole word = 80%
-      else if (titleLower.includes(` ${searchQuery} `) || titleLower.includes(` ${searchQuery}`)) {
+      else if (
+        titleLower.includes(` ${searchQuery} `) ||
+        titleLower.includes(` ${searchQuery}`)
+      ) {
         matchScore = 80;
       }
       // Title contains query = 70%
