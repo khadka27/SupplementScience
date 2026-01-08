@@ -434,23 +434,49 @@ export default function BlogPostContent({
 
               {/* Main Article Content */}
               <div
-                className="prose prose-lg dark:prose-invert max-w-none
-                prose-headings:font-black prose-headings:tracking-tight prose-headings:scroll-mt-28 prose-headings:text-gray-900 dark:prose-headings:text-foreground
-                prose-h1:text-4xl lg:prose-h1:text-5xl lg:prose-h1:leading-[1.1]
-                prose-h2:text-3xl md:prose-h2:text-4xl prose-h2:mt-16 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b-2 prose-h2:border-primary/30 prose-h2:font-black
-                prose-h3:text-2xl md:prose-h3:text-3xl prose-h3:mt-12 prose-h3:mb-4 prose-h3:font-black
-                prose-h4:text-xl md:prose-h4:text-2xl prose-h4:mt-8 prose-h4:mb-3 prose-h4:font-bold
-                prose-p:leading-[1.8] prose-p:text-gray-700 dark:prose-p:text-muted-foreground prose-p:mb-6 prose-p:text-[1.125rem] md:prose-p:text-[1.2rem]
-                prose-a:text-primary prose-a:font-bold prose-a:no-underline hover:prose-a:text-primary/80 prose-a:transition-colors prose-a:decoration-primary/40 prose-a:underline-offset-4 hover:prose-a:underline
-                prose-strong:font-black prose-strong:text-gray-900 dark:prose-strong:text-foreground prose-strong:text-[1.15rem]
-                prose-ul:my-8 prose-ul:list-disc prose-ul:pl-8 prose-ul:space-y-3
-                prose-ol:my-8 prose-ol:list-decimal prose-ol:pl-8 prose-ol:space-y-3
-                prose-li:text-[1.1rem] md:prose-li:text-[1.15rem] prose-li:text-gray-700 dark:prose-li:text-muted-foreground prose-li:marker:text-primary prose-li:marker:font-black prose-li:leading-[1.75]
-                prose-img:rounded-3xl prose-img:shadow-2xl prose-img:my-12 prose-img:border-2 prose-img:border-border/40
-                prose-blockquote:border-l-[6px] prose-blockquote:border-primary prose-blockquote:bg-gradient-to-r prose-blockquote:from-muted/40 prose-blockquote:to-transparent prose-blockquote:py-8 prose-blockquote:px-10 prose-blockquote:rounded-r-3xl prose-blockquote:italic prose-blockquote:text-2xl prose-blockquote:font-serif prose-blockquote:text-gray-800 dark:prose-blockquote:text-foreground/90 prose-blockquote:shadow-md prose-blockquote:my-10
-                prose-code:bg-muted/60 prose-code:px-2.5 prose-code:py-1.5 prose-code:rounded-lg prose-code:font-mono prose-code:text-sm prose-code:font-bold prose-code:text-primary prose-code:before:content-none prose-code:after:content-none prose-code:border prose-code:border-border/50
-                prose-pre:bg-gradient-to-br prose-pre:from-zinc-950 prose-pre:to-zinc-900 prose-pre:text-zinc-50 prose-pre:border-2 prose-pre:border-border/50 prose-pre:rounded-2xl prose-pre:p-7 prose-pre:shadow-2xl prose-pre:my-10
-                prose-hr:border-t-2 prose-hr:border-primary/30 prose-hr:my-16"
+                className="prose prose-lg dark:prose-invert max-w-none blog-content-enhanced
+                /* === HEADINGS === */
+                prose-headings:font-bold prose-headings:tracking-tight prose-headings:scroll-mt-28
+                prose-h1:text-[2.5rem] prose-h1:leading-[1.2] prose-h1:mb-4 prose-h1:mt-8 prose-h1:font-bold prose-h1:text-[var(--text)]
+                prose-h2:text-[1.75rem] prose-h2:leading-[1.3] prose-h2:mt-10 prose-h2:mb-4 prose-h2:font-bold prose-h2:text-[var(--text)] prose-h2:border-b-2 prose-h2:border-[var(--border)] prose-h2:pb-2
+                prose-h3:text-[1.375rem] prose-h3:leading-[1.4] prose-h3:mt-8 prose-h3:mb-3 prose-h3:font-semibold prose-h3:text-[var(--text)] prose-h3:flex prose-h3:items-center prose-h3:gap-2 prose-h3:before:content-['▸'] prose-h3:before:text-[var(--primary)]
+                prose-h4:text-[1.125rem] prose-h4:leading-[1.5] prose-h4:mt-6 prose-h4:mb-2 prose-h4:font-semibold prose-h4:text-[var(--text)]
+                prose-h5:text-[1rem] prose-h5:leading-[1.6] prose-h5:mt-4 prose-h5:mb-2 prose-h5:font-semibold prose-h5:text-[var(--text)]
+                
+                /* === PARAGRAPHS === */
+                prose-p:text-[1.125rem] prose-p:leading-[1.75] prose-p:mb-5 prose-p:text-[var(--text)]
+                
+                /* === LINKS === */
+                prose-a:text-[var(--link)] prose-a:underline prose-a:decoration-2 prose-a:underline-offset-4 prose-a:font-medium hover:prose-a:text-[var(--link-hover)] prose-a:transition-colors
+                
+                /* === STRONG/BOLD === */
+                prose-strong:font-bold prose-strong:text-[var(--text)]
+                
+                /* === LISTS - FIX DOUBLE DOTS === */
+                prose-ul:my-5 prose-ul:pl-6 prose-ul:list-disc
+                prose-ol:my-5 prose-ol:pl-6 prose-ol:list-decimal
+                prose-li:my-2.5 prose-li:text-[1.125rem] prose-li:leading-[1.7] prose-li:text-[var(--text)] prose-li:marker:text-[var(--primary)]
+                prose-ul:prose-li:pl-0 prose-ol:prose-li:pl-0
+                prose-li:prose-li:marker:font-normal
+                
+                /* === IMAGES === */
+                prose-img:rounded-2xl prose-img:shadow-lg prose-img:my-8 prose-img:border-2 prose-img:border-[var(--border)] prose-img:mx-auto
+                
+                /* === BLOCKQUOTES === */
+                prose-blockquote:border-l-[5px] prose-blockquote:border-[var(--accent)] prose-blockquote:bg-[var(--accent-soft)] prose-blockquote:py-4 prose-blockquote:px-5 prose-blockquote:rounded-r-xl prose-blockquote:my-7 prose-blockquote:text-[1.125rem] prose-blockquote:leading-[1.7] prose-blockquote:text-[var(--text)] prose-blockquote:not-italic
+                
+                /* === CODE === */
+                prose-code:bg-[rgba(229,194,135,0.25)] prose-code:px-2 prose-code:py-0.5 prose-code:rounded-md prose-code:text-[0.9375rem] prose-code:font-mono prose-code:text-[var(--text)] prose-code:before:content-none prose-code:after:content-none
+                prose-pre:bg-[#1e1e1e] prose-pre:text-[#f5f5f5] prose-pre:rounded-2xl prose-pre:p-5 prose-pre:my-6 prose-pre:text-[0.9375rem] prose-pre:leading-[1.6] prose-pre:overflow-x-auto
+                
+                /* === HORIZONTAL RULES === */
+                prose-hr:border-0 prose-hr:h-[1px] prose-hr:bg-[var(--border)] prose-hr:my-8
+                
+                /* === TABLES === */
+                prose-table:w-full prose-table:my-7 prose-table:rounded-2xl prose-table:overflow-hidden prose-table:bg-[var(--surface)]
+                prose-thead:bg-[var(--surface-2)]
+                prose-th:px-4 prose-th:py-3.5 prose-th:text-left prose-th:font-semibold prose-th:text-[0.9375rem] prose-th:text-[var(--text)]
+                prose-td:px-4 prose-td:py-3.5 prose-td:border-t prose-td:border-[var(--border)] prose-td:text-[0.9375rem] prose-td:text-[var(--text)]"
                 dangerouslySetInnerHTML={{
                   __html: DOMPurify.sanitize(prepareContent(post.content)),
                 }}

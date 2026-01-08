@@ -122,6 +122,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${inter.variable} ${outfit.variable} font-sans antialiased min-h-screen relative`}
+        suppressHydrationWarning={true}
       >
         <AuthProvider>
           <ThemeProvider
