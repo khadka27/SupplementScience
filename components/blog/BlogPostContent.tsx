@@ -201,7 +201,10 @@ export default function BlogPostContent({
                   )}
 
                   {post.publishedAt && (
-                    <span className="flex items-center gap-2 rounded-full bg-gray-100/80 dark:bg-white/10 backdrop-blur-sm px-4 py-2 text-sm text-gray-700 dark:text-white/80 border border-gray-200 dark:border-white/10 shadow-sm">
+                    <span
+                      className="flex items-center gap-2 rounded-full bg-gray-100/80 dark:bg-white/10 backdrop-blur-sm px-4 py-2 text-sm text-gray-700 dark:text-white/80 border border-gray-200 dark:border-white/10 shadow-sm"
+                      suppressHydrationWarning
+                    >
                       <Calendar className="w-4 h-4" />
                       Published{" "}
                       {format(new Date(post.publishedAt), "MMM d, yyyy")}
@@ -209,7 +212,10 @@ export default function BlogPostContent({
                   )}
 
                   {post.updatedAt && post.updatedAt !== post.createdAt && (
-                    <span className="flex items-center gap-2 rounded-full bg-blue-100/80 dark:bg-blue-900/30 backdrop-blur-sm px-4 py-2 text-sm text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 shadow-sm">
+                    <span
+                      className="flex items-center gap-2 rounded-full bg-blue-100/80 dark:bg-blue-900/30 backdrop-blur-sm px-4 py-2 text-sm text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800 shadow-sm"
+                      suppressHydrationWarning
+                    >
                       <Info className="w-4 h-4" />
                       Updated {format(new Date(post.updatedAt), "MMM d, yyyy")}
                     </span>
@@ -326,6 +332,7 @@ export default function BlogPostContent({
                     <time
                       dateTime={post.publishedAt.toISOString()}
                       className="font-bold text-foreground text-sm"
+                      suppressHydrationWarning
                     >
                       {format(new Date(post.publishedAt), "MMM d, yyyy")}
                     </time>
