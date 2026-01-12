@@ -124,8 +124,6 @@ export default async function NotFound() {
           </div>
         </div>
       )}
-
-      
     </div>
   );
 }
