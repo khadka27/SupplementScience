@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import prisma from "@/lib/prisma";
-import { Post } from "@/lib/types";
 import BlogPostContent from "@/components/blog/BlogPostContent";
 import {
   generateBlogPostSchema,
@@ -13,14 +12,31 @@ export const dynamic = "force-static";
 export const revalidate = 21600;
 
 type Props = {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; "review-slug": string }>;
 };
 
-async function getPost(slug: string): Promise<any | null> {
-  const data = await prisma.post.findFirst({
+async function getCategory(slug: string): Promise<any | null> {
+  const data = await prisma.category.findUnique({
     where: {
       slug,
+    },
+  });
+
+  return data;
+}
+
+async function getReviewPost(
+  categorySlug: string,
+  reviewSlug: string
+): Promise<any | null> {
+  const category = await getCategory(categorySlug);
+  if (!category) return null;
+
+  const data = await prisma.post.findFirst({
+    where: {
+      slug: reviewSlug,
       status: "PUBLISHED",
+      categoryId: category.id,
       publishedAt: {
         lte: new Date(),
       },
@@ -33,68 +49,27 @@ async function getPost(slug: string): Promise<any | null> {
           tag: true,
         },
       },
-      _count: {
-        select: {
-          tags: true,
-        },
-      },
     },
   });
 
   if (!data) return null;
 
-  const post = {
+  return {
     ...data,
+    metaTitle: data.metaTitle ?? undefined,
+    metaDescription: data.metaDescription ?? undefined,
+    excerpt: data.excerpt ?? undefined,
+    featuredImageUrl: data.featuredImageUrl ?? undefined,
+    featuredImageAlt: data.featuredImageAlt ?? undefined,
+    publishedAt: data.publishedAt ?? undefined,
     tags: data.tags?.map((pt: any) => pt.tag).filter(Boolean) || [],
-  };
-
-  return post;
-}
-
-async function getAdjacentPosts(currentPostId: string, publishedAt: Date) {
-  const [prev, next] = await Promise.all([
-    prisma.post.findFirst({
-      where: {
-        status: "PUBLISHED",
-        publishedAt: {
-          lt: publishedAt,
-        },
-      },
-      orderBy: {
-        publishedAt: "desc",
-      },
-      select: {
-        title: true,
-        slug: true,
-        featuredImageUrl: true,
-      },
-    }),
-    prisma.post.findFirst({
-      where: {
-        status: "PUBLISHED",
-        publishedAt: {
-          gt: publishedAt,
-        },
-      },
-      orderBy: {
-        publishedAt: "asc",
-      },
-      select: {
-        title: true,
-        slug: true,
-        featuredImageUrl: true,
-      },
-    }),
-  ]);
-  return { prev, next };
+  } as any;
 }
 
 async function getRelatedPosts(
-  categoryId?: string,
-  currentPostId?: string
+  categoryId: string,
+  currentPostId: string
 ): Promise<any[]> {
-  if (!categoryId) return [];
-
   const data = await prisma.post.findMany({
     where: {
       status: "PUBLISHED",
@@ -117,6 +92,7 @@ async function getRelatedPosts(
       category: {
         select: {
           name: true,
+          slug: true,
         },
       },
     },
@@ -130,17 +106,17 @@ async function getRelatedPosts(
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const post = await getPost(slug);
+  const { slug, "review-slug": reviewSlug } = await params;
+  const post = await getReviewPost(slug, reviewSlug);
 
   if (!post) {
     return {
-      title: "Post Not Found",
+      title: "Review Not Found",
     };
   }
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
-  const url = `${baseUrl}/blog/${post.slug}`;
+  const url = `${baseUrl}/category/${slug}/${reviewSlug}`;
   const imageUrl = post.featuredImageUrl || `${baseUrl}/og-default.jpg`;
 
   return {
@@ -176,46 +152,63 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const posts = await prisma.post.findMany({
-    where: {
-      status: "PUBLISHED",
-      publishedAt: {
-        lte: new Date(),
-      },
-    },
+  // Generate params for all category review combinations
+  const categories = await prisma.category.findMany({
     select: {
       slug: true,
+      id: true,
     },
-    take: 1000,
+    take: 100,
   });
 
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  const params: Array<{ slug: string; "review-slug": string }> = [];
+
+  for (const category of categories) {
+    const posts = await prisma.post.findMany({
+      where: {
+        status: "PUBLISHED",
+        categoryId: category.id,
+        publishedAt: {
+          lte: new Date(),
+        },
+      },
+      select: {
+        slug: true,
+      },
+      take: 50, // Limit per category to avoid too many static params
+    });
+
+    for (const post of posts) {
+      params.push({
+        slug: category.slug,
+        "review-slug": post.slug,
+      });
+    }
+  }
+
+  return params;
 }
 
-export default async function BlogPostPage({ params }: Props) {
-  const { slug } = await params;
-  const post = await getPost(slug);
+export default async function CategoryReviewPage({ params }: Props) {
+  const { slug, "review-slug": reviewSlug } = await params;
+  const post = await getReviewPost(slug, reviewSlug);
 
   if (!post) {
     notFound();
   }
 
-  const relatedPosts = await getRelatedPosts(post.categoryId, post.id);
-  const adjacentPosts = await getAdjacentPosts(post.id, post.publishedAt);
+  const relatedPosts = await getRelatedPosts(post.categoryId!, post.id);
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
 
   const blogPostSchema = generateBlogPostSchema(post, baseUrl);
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: baseUrl },
-    { name: "Blog", url: `${baseUrl}/blog` },
     {
-      name: post.category?.name || "Uncategorized",
-      url: `${baseUrl}/category/${post.category?.slug}`,
+      name: post.category?.name || "Category",
+      url: `${baseUrl}/category/${slug}`,
     },
-    { name: post.title, url: `${baseUrl}/blog/${post.slug}` },
+    { name: post.title, url: `${baseUrl}/category/${slug}/${reviewSlug}` },
   ]);
 
   const faqSchema = post.faqs ? generateFAQSchema(post.faqs) : null;
@@ -239,9 +232,10 @@ export default async function BlogPostPage({ params }: Props) {
       <BlogPostContent
         post={post}
         relatedPosts={relatedPosts}
-        prevPost={adjacentPosts.prev}
-        nextPost={adjacentPosts.next}
+        prevPost={null}
+        nextPost={null}
       />
     </>
   );
 }
+

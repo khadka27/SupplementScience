@@ -15,7 +15,7 @@ export async function GET(req: Request) {
     // Search posts by title and content
     const posts = await prisma.post.findMany({
       where: {
-        status: "published",
+        status: "PUBLISHED",
         publishedAt: {
           lte: new Date(),
         },

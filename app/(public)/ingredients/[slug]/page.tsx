@@ -1,29 +1,35 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import prisma from "@/lib/prisma";
-import { Post } from "@/lib/types";
 import BlogPostContent from "@/components/blog/BlogPostContent";
-import {
-  generateBlogPostSchema,
-  generateBreadcrumbSchema,
-  generateFAQSchema,
-} from "@/lib/schema";
+import { generateBlogPostSchema, generateBreadcrumbSchema } from "@/lib/schema";
 
 export const dynamic = "force-static";
-export const revalidate = 21600;
+export const revalidate = 43200;
 
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
-async function getPost(slug: string): Promise<any | null> {
+// Ingredients are stored as Posts with a special tag or category pattern
+// For now, we'll search by slug pattern matching "ingredient-" prefix
+// You may want to create a separate Ingredient model in the future
+async function getIngredientPost(slug: string) {
+  // Option 1: Search by slug pattern (if you use "ingredient-{slug}" format)
+  // Option 2: Search by category slug "ingredients"
+  // Option 3: Search by tag "ingredient"
+
   const data = await prisma.post.findFirst({
     where: {
-      slug,
+      slug: slug, // or `ingredient-${slug}` if you use prefix
       status: "PUBLISHED",
       publishedAt: {
         lte: new Date(),
       },
+      // If you have a category for ingredients:
+      // category: {
+      //   slug: "ingredients"
+      // }
     },
     include: {
       author: true,
@@ -33,114 +39,35 @@ async function getPost(slug: string): Promise<any | null> {
           tag: true,
         },
       },
-      _count: {
-        select: {
-          tags: true,
-        },
-      },
     },
   });
 
   if (!data) return null;
 
-  const post = {
+  return {
     ...data,
+    metaTitle: data.metaTitle ?? undefined,
+    metaDescription: data.metaDescription ?? undefined,
+    excerpt: data.excerpt ?? undefined,
+    featuredImageUrl: data.featuredImageUrl ?? undefined,
+    featuredImageAlt: data.featuredImageAlt ?? undefined,
+    publishedAt: data.publishedAt ?? undefined,
     tags: data.tags?.map((pt: any) => pt.tag).filter(Boolean) || [],
-  };
-
-  return post;
-}
-
-async function getAdjacentPosts(currentPostId: string, publishedAt: Date) {
-  const [prev, next] = await Promise.all([
-    prisma.post.findFirst({
-      where: {
-        status: "PUBLISHED",
-        publishedAt: {
-          lt: publishedAt,
-        },
-      },
-      orderBy: {
-        publishedAt: "desc",
-      },
-      select: {
-        title: true,
-        slug: true,
-        featuredImageUrl: true,
-      },
-    }),
-    prisma.post.findFirst({
-      where: {
-        status: "PUBLISHED",
-        publishedAt: {
-          gt: publishedAt,
-        },
-      },
-      orderBy: {
-        publishedAt: "asc",
-      },
-      select: {
-        title: true,
-        slug: true,
-        featuredImageUrl: true,
-      },
-    }),
-  ]);
-  return { prev, next };
-}
-
-async function getRelatedPosts(
-  categoryId?: string,
-  currentPostId?: string
-): Promise<any[]> {
-  if (!categoryId) return [];
-
-  const data = await prisma.post.findMany({
-    where: {
-      status: "PUBLISHED",
-      categoryId,
-      id: {
-        not: currentPostId,
-      },
-      publishedAt: {
-        lte: new Date(),
-      },
-    },
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      excerpt: true,
-      featuredImageUrl: true,
-      publishedAt: true,
-      readTimeMinutes: true,
-      category: {
-        select: {
-          name: true,
-        },
-      },
-    },
-    orderBy: {
-      publishedAt: "desc",
-    },
-    take: 3,
-  });
-
-  return data || [];
+  } as any;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPost(slug);
+  const post = await getIngredientPost(slug);
 
   if (!post) {
     return {
-      title: "Post Not Found",
+      title: "Ingredient Not Found",
     };
   }
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
-  const url = `${baseUrl}/blog/${post.slug}`;
+  const url = `${baseUrl}/ingredients/${slug}`;
   const imageUrl = post.featuredImageUrl || `${baseUrl}/og-default.jpg`;
 
   return {
@@ -176,12 +103,26 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
+  // Fetch all ingredient posts
+  // Adjust this query based on how you identify ingredient posts
   const posts = await prisma.post.findMany({
     where: {
       status: "PUBLISHED",
       publishedAt: {
         lte: new Date(),
       },
+      // If you have a category for ingredients:
+      // category: {
+      //   slug: "ingredients"
+      // }
+      // Or if you use a tag:
+      // tags: {
+      //   some: {
+      //     tag: {
+      //       slug: "ingredient"
+      //     }
+      //   }
+      // }
     },
     select: {
       slug: true,
@@ -194,31 +135,22 @@ export async function generateStaticParams() {
   }));
 }
 
-export default async function BlogPostPage({ params }: Props) {
+export default async function IngredientPage({ params }: Props) {
   const { slug } = await params;
-  const post = await getPost(slug);
+  const post = await getIngredientPost(slug);
 
   if (!post) {
     notFound();
   }
-
-  const relatedPosts = await getRelatedPosts(post.categoryId, post.id);
-  const adjacentPosts = await getAdjacentPosts(post.id, post.publishedAt);
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
 
   const blogPostSchema = generateBlogPostSchema(post, baseUrl);
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: baseUrl },
-    { name: "Blog", url: `${baseUrl}/blog` },
-    {
-      name: post.category?.name || "Uncategorized",
-      url: `${baseUrl}/category/${post.category?.slug}`,
-    },
-    { name: post.title, url: `${baseUrl}/blog/${post.slug}` },
+    { name: "Ingredients", url: `${baseUrl}/ingredients` },
+    { name: post.title, url: `${baseUrl}/ingredients/${slug}` },
   ]);
-
-  const faqSchema = post.faqs ? generateFAQSchema(post.faqs) : null;
 
   return (
     <>
@@ -230,17 +162,11 @@ export default async function BlogPostPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      {faqSchema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-        />
-      )}
       <BlogPostContent
         post={post}
-        relatedPosts={relatedPosts}
-        prevPost={adjacentPosts.prev}
-        nextPost={adjacentPosts.next}
+        relatedPosts={[]}
+        prevPost={null}
+        nextPost={null}
       />
     </>
   );

@@ -12,6 +12,9 @@ import {
   Mail,
   Settings,
   LogOut,
+  Star,
+  BookOpen,
+  FlaskConical,
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import { Button } from "@/components/ui/button";
@@ -33,6 +36,21 @@ const sidebarItems = [
     title: "New Blog",
     href: "/admin/blog/new",
     icon: FileText,
+  },
+  {
+    title: "New Review",
+    href: "/admin/reviews/new",
+    icon: Star,
+  },
+  {
+    title: "New Guide",
+    href: "/admin/guides/new",
+    icon: BookOpen,
+  },
+  {
+    title: "New Ingredient",
+    href: "/admin/ingredients/new",
+    icon: FlaskConical,
   },
   {
     title: "Categories",

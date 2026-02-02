@@ -6,7 +6,7 @@ const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://yoursite.com';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await prisma.post.findMany({
     where: {
-      status: 'published',
+      status: 'PUBLISHED',
       publishedAt: {
         lte: new Date()
       }
