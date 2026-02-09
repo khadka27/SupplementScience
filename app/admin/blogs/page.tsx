@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import {
@@ -64,7 +64,7 @@ interface Post {
   category: { name: string; slug: string } | null;
 }
 
-export default function BlogsManagementPage() {
+function BlogsManagementContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [posts, setPosts] = useState<Post[]>([]);
@@ -102,7 +102,7 @@ export default function BlogsManagementPage() {
     // Filter by status
     if (statusFilter !== "all") {
       filtered = filtered.filter(
-        (post) => post.status.toLowerCase() === statusFilter
+        (post) => post.status.toLowerCase() === statusFilter,
       );
     }
 
@@ -111,7 +111,7 @@ export default function BlogsManagementPage() {
       filtered = filtered.filter(
         (post) =>
           post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          post.excerpt?.toLowerCase().includes(searchQuery.toLowerCase())
+          post.excerpt?.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
@@ -325,7 +325,7 @@ export default function BlogsManagementPage() {
                               post.id,
                               post.status === "PUBLISHED"
                                 ? "DRAFT"
-                                : "PUBLISHED"
+                                : "PUBLISHED",
                             )
                           }
                           disabled={changingStatus === post.id}
@@ -386,5 +386,21 @@ export default function BlogsManagementPage() {
         </AlertDialogContent>
       </AlertDialog>
     </AdminLayout>
+  );
+}
+
+export default function BlogsManagementPage() {
+  return (
+    <Suspense
+      fallback={
+        <AdminLayout>
+          <div className="flex items-center justify-center h-full">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+          </div>
+        </AdminLayout>
+      }
+    >
+      <BlogsManagementContent />
+    </Suspense>
   );
 }

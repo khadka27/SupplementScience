@@ -110,8 +110,6 @@ export default function MedicalDisclaimerPage() {
 
         {/* Content Sections */}
         <div className="space-y-8">
-        {/* Content Sections */}
-        <div className="space-y-8">
           <Card>
             <CardContent className="pt-8">
               <div className="flex items-start gap-4 mb-4">
@@ -125,10 +123,10 @@ export default function MedicalDisclaimerPage() {
                 </div>
               </div>
               <p className="text-muted-foreground leading-relaxed">
-                The content on this website is provided for general informational
-                and educational purposes only. It is not intended to be a
-                substitute for professional medical advice, diagnosis, or
-                treatment.
+                The content on this website is provided for general
+                informational and educational purposes only. It is not intended
+                to be a substitute for professional medical advice, diagnosis,
+                or treatment.
               </p>
             </CardContent>
           </Card>
@@ -140,14 +138,16 @@ export default function MedicalDisclaimerPage() {
                   <AlertTriangle className="w-5 h-5 text-red-700 dark:text-red-300" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold mb-4">Not Medical Advice</h2>
+                  <h2 className="text-2xl font-bold mb-4">
+                    Not Medical Advice
+                  </h2>
                 </div>
               </div>
               <p className="text-muted-foreground leading-relaxed">
                 The information on this website should not be considered medical
                 advice. We are not healthcare providers, and nothing on this
-                website should be construed as medical advice or as an attempt to
-                practice medicine.
+                website should be construed as medical advice or as an attempt
+                to practice medicine.
               </p>
             </CardContent>
           </Card>
@@ -165,11 +165,11 @@ export default function MedicalDisclaimerPage() {
                 </div>
               </div>
               <p className="text-muted-foreground leading-relaxed">
-                Always seek the advice of your physician or other qualified health
-                provider with any questions you may have regarding a medical
-                condition or supplement use. Never disregard professional medical
-                advice or delay seeking it because of something you have read on
-                this website.
+                Always seek the advice of your physician or other qualified
+                health provider with any questions you may have regarding a
+                medical condition or supplement use. Never disregard
+                professional medical advice or delay seeking it because of
+                something you have read on this website.
               </p>
             </CardContent>
           </Card>
@@ -188,9 +188,9 @@ export default function MedicalDisclaimerPage() {
               </div>
               <p className="text-muted-foreground leading-relaxed">
                 The effects of supplements and health interventions can vary
-                significantly from person to person. Individual results may differ
-                based on various factors including age, health status, genetics,
-                lifestyle, and other individual circumstances.
+                significantly from person to person. Individual results may
+                differ based on various factors including age, health status,
+                genetics, lifestyle, and other individual circumstances.
               </p>
             </CardContent>
           </Card>
@@ -215,8 +215,8 @@ export default function MedicalDisclaimerPage() {
                     •
                   </span>
                   <span>
-                    Consult with your healthcare provider, especially if you have
-                    existing medical conditions
+                    Consult with your healthcare provider, especially if you
+                    have existing medical conditions
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
@@ -233,7 +233,8 @@ export default function MedicalDisclaimerPage() {
                     •
                   </span>
                   <span>
-                    Be aware of potential drug interactions and contraindications
+                    Be aware of potential drug interactions and
+                    contraindications
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
@@ -259,13 +260,15 @@ export default function MedicalDisclaimerPage() {
                   <AlertCircle className="w-5 h-5 text-red-700 dark:text-red-300" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold mb-4">Medical Emergencies</h2>
+                  <h2 className="text-2xl font-bold mb-4">
+                    Medical Emergencies
+                  </h2>
                 </div>
               </div>
               <p className="text-muted-foreground leading-relaxed font-medium">
-                If you think you may have a medical emergency, call your doctor or
-                emergency services immediately. Do not rely on information from
-                this website in emergency situations.
+                If you think you may have a medical emergency, call your doctor
+                or emergency services immediately. Do not rely on information
+                from this website in emergency situations.
               </p>
             </CardContent>
           </Card>
@@ -309,7 +312,8 @@ export default function MedicalDisclaimerPage() {
               <p className="text-muted-foreground leading-relaxed">
                 Statements regarding dietary supplements have not been evaluated
                 by the Food and Drug Administration and are not intended to
-                diagnose, treat, cure, or prevent any disease or health condition.
+                diagnose, treat, cure, or prevent any disease or health
+                condition.
               </p>
             </CardContent>
           </Card>
@@ -321,8 +325,8 @@ export default function MedicalDisclaimerPage() {
               </h2>
               <p className="text-muted-foreground leading-relaxed">
                 We may reference or link to third-party websites, research
-                studies, or other sources. We are not responsible for the accuracy
-                or reliability of third-party information.
+                studies, or other sources. We are not responsible for the
+                accuracy or reliability of third-party information.
               </p>
             </CardContent>
           </Card>
@@ -340,9 +344,10 @@ export default function MedicalDisclaimerPage() {
                 </div>
               </div>
               <p className="text-muted-foreground leading-relaxed">
-                To the fullest extent permitted by law, we disclaim all liability
-                for any injury, loss, or damage resulting from your use of this
-                website or reliance on any information provided herein.
+                To the fullest extent permitted by law, we disclaim all
+                liability for any injury, loss, or damage resulting from your
+                use of this website or reliance on any information provided
+                herein.
               </p>
             </CardContent>
           </Card>

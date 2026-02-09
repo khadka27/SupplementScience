@@ -1,0 +1,85 @@
+﻿
+> nextjs@0.1.0 build D:\office\SupplementScience
+> next build
+
+[1m[38;2;173;127;168mΓû▓ Next.js 16.1.1[39m[22m (Turbopack)
+- Environments: .env
+
+[37m[1m [22m[39m Creating an optimized production build ...
+[32m[1mΓ£ô[22m[39m Compiled successfully in 13.3s
+[37m[1m [22m[39m Running TypeScript ...
+[37m[1m [22m[39m Collecting page data using 7 workers ...
+node.exe : Error 
+[PrismaClientInitializationError]: 
+`PrismaClient` needs to be constructed 
+with a non-empty, valid 
+`PrismaClientOptions`:
+At C:\Users\Abish\AppData\Roaming\npm\p
+npm.ps1:24 char:5
++     & "node$exe"  "$basedir/node_modu
+les/pnpm/bin/pnpm.cjs" $args
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpeci 
+   fied: (Error [PrismaCl...ClientOpt  
+  ions`::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCo 
+   mmandError
+ 
+
+```
+new PrismaClient({
+  ...
+})
+```
+
+or
+
+```
+constructor() {
+  super({ ... });
+}
+```
+          
+    at module evaluation (D:\office\Sup
+plementScience\.next\server\chunks\[roo
+t-of-the-server]__ff530157._.js:1:1338)
+    at instantiateModule (D:\office\Sup
+plementScience\.next\server\chunks\[tur
+bopack]_runtime.js:740:9)
+    at 
+getOrInstantiateModuleFromParent (D:\of
+fice\SupplementScience\.next\server\chu
+nks\[turbopack]_runtime.js:763:12)
+    at Context.esmImport [as i] (D:\off
+ice\SupplementScience\.next\server\chun
+ks\[turbopack]_runtime.js:228:20)
+    at module evaluation (D:\office\Sup
+plementScience\.next\server\chunks\_c40
+f6e93._.js:404:61036)
+    at instantiateModule (D:\office\Sup
+plementScience\.next\server\chunks\[tur
+bopack]_runtime.js:740:9)
+    at 
+getOrInstantiateModuleFromParent (D:\of
+fice\SupplementScience\.next\server\chu
+nks\[turbopack]_runtime.js:763:12)
+    at Context.esmImport [as i] (D:\off
+ice\SupplementScience\.next\server\chun
+ks\[turbopack]_runtime.js:228:20)
+    at module evaluation (D:\office\Sup
+plementScience\.next\server\chunks\[roo
+t-of-the-server]__ff530157._.js:1:1721)
+ {
+  clientVersion: '7.2.0',
+  errorCode: undefined,
+  retryable: undefined
+}
+
+> Build error occurred
+Error: Failed to collect page data for 
+/api/admin/dashboard
+    at [3mignore-listed frames[23m {
+  type: 'Error'
+}
+ΓÇëELIFECYCLEΓÇë Command failed with exit code 1.

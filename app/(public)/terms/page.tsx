@@ -74,9 +74,6 @@ export default function TermsPage() {
 
         {/* Content Sections */}
         <div className="space-y-8">
-
-        {/* Content Sections */}
-        <div className="space-y-8">
           <Card>
             <CardContent className="pt-8">
               <div className="flex items-start gap-4 mb-4">
@@ -84,7 +81,9 @@ export default function TermsPage() {
                   <Globe className="w-5 h-5 text-blue-700 dark:text-blue-300" />
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold mb-4">Use of Our Website</h2>
+                  <h2 className="text-2xl font-bold mb-4">
+                    Use of Our Website
+                  </h2>
                 </div>
               </div>
               <p className="text-muted-foreground mb-4">
@@ -110,7 +109,9 @@ export default function TermsPage() {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary mt-1">•</span>
-                  <span>Attempt to gain unauthorized access to our systems</span>
+                  <span>
+                    Attempt to gain unauthorized access to our systems
+                  </span>
                 </li>
               </ul>
             </CardContent>
@@ -169,8 +170,8 @@ export default function TermsPage() {
               </div>
               <p className="text-muted-foreground leading-relaxed">
                 Our website and content are provided on an "as is" basis without
-                warranties of any kind. We do not guarantee that our website will
-                be error-free or uninterrupted.
+                warranties of any kind. We do not guarantee that our website
+                will be error-free or uninterrupted.
               </p>
             </CardContent>
           </Card>
@@ -190,8 +191,8 @@ export default function TermsPage() {
               <p className="text-muted-foreground leading-relaxed">
                 To the fullest extent permitted by law, SupplementScience shall
                 not be liable for any indirect, incidental, special,
-                consequential, or punitive damages resulting from your use of our
-                website.
+                consequential, or punitive damages resulting from your use of
+                our website.
               </p>
             </CardContent>
           </Card>
@@ -207,9 +208,9 @@ export default function TermsPage() {
                 </div>
               </div>
               <p className="text-muted-foreground leading-relaxed">
-                Our website may contain links to third-party websites. We are not
-                responsible for the content, privacy policies, or practices of
-                these external sites.
+                Our website may contain links to third-party websites. We are
+                not responsible for the content, privacy policies, or practices
+                of these external sites.
               </p>
             </CardContent>
           </Card>
@@ -235,8 +236,9 @@ export default function TermsPage() {
                 </div>
               </div>
               <p className="text-muted-foreground leading-relaxed">
-                These terms shall be governed by and construed in accordance with
-                applicable laws, without regard to conflict of law provisions.
+                These terms shall be governed by and construed in accordance
+                with applicable laws, without regard to conflict of law
+                provisions.
               </p>
             </CardContent>
           </Card>

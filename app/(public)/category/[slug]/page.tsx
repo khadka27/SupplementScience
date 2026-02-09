@@ -15,7 +15,7 @@ type Props = {
 };
 
 async function getCategory(slug: string): Promise<any | null> {
-  const data = await prisma.category.findUnique({
+  const data = await prisma.category.findFirst({
     where: {
       slug,
     },
