@@ -1,4 +1,4 @@
-﻿> nextjs@0.1.0 build D:\office\SupplementScience
+﻿> nextjs@0.1.0 build D:\office\SupplementDecoded
 > next build
 
 Γû▓ Next.js 16.1.1 (Turbopack)

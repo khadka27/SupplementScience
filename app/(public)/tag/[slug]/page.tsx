@@ -8,7 +8,7 @@ export const dynamic = "force-static";
 export const revalidate = 43200;
 
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 async function getTag(slug: string): Promise<any | null> {
@@ -69,7 +69,8 @@ async function getTagPosts(tagId: string): Promise<any[]> {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const tag = await getTag(params.slug);
+  const { slug } = await params;
+  const tag = await getTag(slug);
 
   if (!tag) {
     return {
@@ -77,7 +78,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
   const url = `${baseUrl}/tag/${tag.slug}`;
 
   if (tag.postCount < 3) {
@@ -130,7 +132,8 @@ export async function generateStaticParams() {
 }
 
 export default async function TagPage({ params }: Props) {
-  const tag = await getTag(params.slug);
+  const { slug } = await params;
+  const tag = await getTag(slug);
 
   if (!tag) {
     notFound();

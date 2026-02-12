@@ -60,6 +60,7 @@ interface BlogEditorFormProps {
   categories: Category[];
   tags: Tag[];
   initialData?: any;
+  initialCategoryId?: string;
 }
 
 export default function BlogEditorForm({
@@ -67,6 +68,7 @@ export default function BlogEditorForm({
   categories,
   tags,
   initialData,
+  initialCategoryId,
 }: BlogEditorFormProps) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -82,7 +84,8 @@ export default function BlogEditorForm({
       featuredImageUrl: initialData?.featuredImageUrl || "",
       tagIds: initialData?.tags?.map((t: any) => t.tagId) || [],
       authorId: initialData?.authorId || authors[0]?.id || "",
-      categoryId: initialData?.categoryId || categories[0]?.id || "",
+      categoryId:
+        initialData?.categoryId || initialCategoryId || categories[0]?.id || "",
       status: initialData?.status?.toLowerCase() || "draft",
     },
   });
@@ -117,7 +120,7 @@ export default function BlogEditorForm({
       console.log(isEditing ? "Post updated:" : "Post created:", data);
 
       toast.success(
-        isEditing ? "Post updated successfully!" : "Post created successfully!"
+        isEditing ? "Post updated successfully!" : "Post created successfully!",
       );
       router.push("/admin/blogs");
       router.refresh();
@@ -374,8 +377,8 @@ export default function BlogEditorForm({
                                               ])
                                             : field.onChange(
                                                 field.value?.filter(
-                                                  (value) => value !== tag.id
-                                                )
+                                                  (value) => value !== tag.id,
+                                                ),
                                               );
                                         }}
                                       />

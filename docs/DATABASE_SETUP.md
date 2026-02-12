@@ -169,7 +169,7 @@ The seed script (`prisma/seed.ts`) creates:
    - Joint Health, Bone Health
 
 4. **Default Author**
-   - Supplement Science Team
+   - Supplement Decoded Team
 
 ### Custom Seeding
 

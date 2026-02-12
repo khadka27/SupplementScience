@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { getPostHref } from "@/lib/utils";
 import {
   ArrowRight,
   ShieldCheck,
@@ -176,7 +177,7 @@ export default async function Home() {
               <h2 className="text-3xl font-bold">Featured Guide</h2>
             </div>
 
-            <Link href={`/blog/${mainFeaturedPost.slug}`}>
+            <Link href={getPostHref(mainFeaturedPost)}>
               <Card className="group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-white to-green-50/50 dark:from-gray-950 dark:to-green-950/20">
                 <div className="grid md:grid-cols-2 gap-0">
                   {/* Image */}
@@ -218,7 +219,7 @@ export default async function Home() {
                       {mainFeaturedPost.publishedAt && (
                         <span>
                           {new Date(
-                            mainFeaturedPost.publishedAt
+                            mainFeaturedPost.publishedAt,
                           ).toLocaleDateString("en-US", {
                             month: "short",
                             day: "numeric",

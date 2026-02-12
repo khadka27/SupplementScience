@@ -29,21 +29,23 @@ import { NewsletterForm } from "@/components/NewsletterForm";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, getPostHref } from "@/lib/utils";
+
+interface AdjacentPost {
+  title: string;
+  slug: string;
+  featuredImageUrl?: string | null;
+  category?: {
+    name: string;
+    slug: string;
+  } | null;
+}
 
 interface BlogPostContentProps {
   post: Post;
   relatedPosts?: Post[];
-  prevPost?: {
-    title: string;
-    slug: string;
-    featuredImageUrl?: string | null;
-  } | null;
-  nextPost?: {
-    title: string;
-    slug: string;
-    featuredImageUrl?: string | null;
-  } | null;
+  prevPost?: AdjacentPost | null;
+  nextPost?: AdjacentPost | null;
 }
 
 export default function BlogPostContent({
@@ -75,11 +77,18 @@ export default function BlogPostContent({
 
   const breadcrumbItems = [
     { name: "Home", url: "/" },
-    { name: "Blog", url: "/blog" },
-    ...(post.category
-      ? [{ name: post.category.name, url: `/category/${post.category.slug}` }]
-      : []),
-    { name: post.title, url: `/blog/${post.slug}` },
+    ...(post.category?.slug === "ingredients"
+      ? [{ name: "Ingredients", url: "/ingredients" }]
+      : post.category
+        ? [
+            { name: "Blog", url: "/blog" },
+            {
+              name: post.category.name,
+              url: `/${post.category.slug}`,
+            },
+          ]
+        : [{ name: "Blog", url: "/blog" }]),
+    { name: post.title, url: getPostHref(post) },
   ];
 
   return (
@@ -88,7 +97,7 @@ export default function BlogPostContent({
       <div
         className={cn(
           "fixed top-0 left-0 w-full z-50 bg-background/80 backdrop-blur-md border-b border-border transition-all duration-300 transform",
-          showStickyHeader ? "translate-y-0" : "-translate-y-full"
+          showStickyHeader ? "translate-y-0" : "-translate-y-full",
         )}
       >
         <div className="container mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
@@ -251,7 +260,7 @@ export default function BlogPostContent({
                       {(post as any).reviewedAt &&
                         ` (${format(
                           new Date((post as any).reviewedAt),
-                          "MMM yyyy"
+                          "MMM yyyy",
                         )})`}
                     </span>
                   )}
@@ -582,7 +591,7 @@ export default function BlogPostContent({
               <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-border pt-12">
                 {prevPost ? (
                   <Link
-                    href={`/blog/${prevPost.slug}`}
+                    href={getPostHref(prevPost)}
                     className="group flex flex-col items-start text-left space-y-3 p-6 rounded-2xl border border-border/50 hover:bg-muted/30 transition-all hover:border-primary/30"
                   >
                     <div className="flex items-center gap-2 text-muted-foreground text-sm font-medium group-hover:text-primary">
@@ -598,7 +607,7 @@ export default function BlogPostContent({
 
                 {nextPost ? (
                   <Link
-                    href={`/blog/${nextPost.slug}`}
+                    href={getPostHref(nextPost)}
                     className="group flex flex-col items-end text-right space-y-3 p-6 rounded-2xl border border-border/50 hover:bg-muted/30 transition-all hover:border-primary/30"
                   >
                     <div className="flex items-center gap-2 text-muted-foreground text-sm font-medium group-hover:text-primary">

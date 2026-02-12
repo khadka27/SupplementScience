@@ -2,7 +2,13 @@ import prisma from "@/lib/prisma";
 import BlogEditorForm from "./BlogEditorForm";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 
-export default async function NewBlogPostPage() {
+type Props = {
+  searchParams: Promise<{ categoryId?: string }>;
+};
+
+export default async function NewBlogPostPage({ searchParams }: Props) {
+  const { categoryId } = await searchParams;
+
   const authors = await prisma.author.findMany({
     orderBy: { name: "asc" },
   });
@@ -27,7 +33,12 @@ export default async function NewBlogPostPage() {
           </p>
         </div>
 
-        <BlogEditorForm authors={authors} categories={categories} tags={tags} />
+        <BlogEditorForm
+          authors={authors}
+          categories={categories}
+          tags={tags}
+          initialCategoryId={categoryId}
+        />
       </div>
     </AdminLayout>
   );

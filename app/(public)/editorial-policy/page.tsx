@@ -12,10 +12,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
 
 export const metadata: Metadata = {
-  title: "Editorial Policy | SupplementScience",
+  title: "Editorial Policy | SupplementDecoded",
   description:
     "Learn about our editorial standards and content creation process. Discover how we ensure accuracy, integrity, and transparency in every article.",
   alternates: {

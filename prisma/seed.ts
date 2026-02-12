@@ -100,10 +100,10 @@ async function main() {
   if (!author) {
     await prisma.author.create({
       data: {
-        name: "Supplement Science Team",
+        name: "Supplement Decoded Team",
         slug: "supplement-science-team",
         bio: "Our team of health and nutrition experts provides evidence-based reviews and guides on supplements.",
-        email: "team@supplementscience.com",
+        email: "team@supplementdecoded.com",
       },
     });
     console.log("✅ Created default author");
@@ -138,6 +138,96 @@ async function main() {
     } else {
       console.log(`⏭️  Tag already exists: ${tagData.name}`);
     }
+  }
+
+  // Get category IDs for post creation
+  const jointPainCat = await prisma.category.findUnique({
+    where: { slug: "joint-pain" },
+  });
+  const arthritisCat = await prisma.category.findUnique({
+    where: { slug: "arthritis" },
+  });
+  const boneHealthCat = await prisma.category.findUnique({
+    where: { slug: "bone-health" },
+  });
+  const teamAuthor = await prisma.author.findUnique({
+    where: { slug: "supplement-science-team" },
+  });
+
+  // Create sample posts
+  const posts = [
+    {
+      title: "Top 5 Supplements for Bone Health in 2024",
+      slug: "top-5-bone-health-supplements",
+      excerpt:
+        "Maintain strong bones with these scientifically-backed supplements. We review calcium, Vitamin D, and more.",
+      content:
+        "<p>Bone health is crucial as we age. Here are the top supplements you should consider...</p><h2>1. Calcium</h2><p>Calcium is the building block of bones...</p><h2>2. Vitamin D</h2><p>Vitamin D helps your body absorb calcium...</p>",
+      status: "PUBLISHED" as const,
+      publishedAt: new Date(),
+      categoryId: boneHealthCat?.id,
+      authorId: teamAuthor?.id,
+      metaTitle: "Best Bone Health Supplements 2024",
+      metaDescription:
+        "Read our expert guide on the best supplements for maintaining strong and healthy bones.",
+    },
+    {
+      title: "How to Keep Your Bones Strong Naturally",
+      slug: "keep-bones-strong-naturally",
+      excerpt:
+        "Beyond supplements, discover lifestyle choices that support long-term bone density.",
+      content:
+        "<p>While supplements help, natural lifestyle choices are just as important for bone health...</p>",
+      status: "PUBLISHED" as const,
+      publishedAt: new Date(),
+      categoryId: boneHealthCat?.id,
+      authorId: teamAuthor?.id,
+      metaTitle: "Natural Ways to Support Bone Health",
+      metaDescription:
+        "Learn how diet and exercise play a role in maintaining bone density.",
+    },
+    {
+      title: "The Ultimate Guide to Managing Joint Pain",
+      slug: "joint-pain-management-guide",
+      excerpt:
+        "Everything you need to know about reducing joint inflammation and improving mobility.",
+      content:
+        "<p>Joint pain can be debilitating. This guide covers the best supplements and exercises...</p>",
+      status: "PUBLISHED" as const,
+      publishedAt: new Date(),
+      categoryId: jointPainCat?.id,
+      authorId: teamAuthor?.id,
+      metaTitle: "Joint Pain Management Guide",
+      metaDescription:
+        "A comprehensive guide to managing joint pain through supplementation and lifestyle changes.",
+    },
+  ];
+
+  for (const postData of posts) {
+    const existing = await prisma.post.findUnique({
+      where: { slug: postData.slug },
+    });
+
+    if (!existing) {
+      await prisma.post.create({
+        data: postData,
+      });
+      console.log(`✅ Created post: ${postData.title}`);
+    } else {
+      console.log(`⏭️  Post already exists: ${postData.title}`);
+    }
+  }
+
+  // Update category post counts
+  const allCategories = await prisma.category.findMany();
+  for (const cat of allCategories) {
+    const count = await prisma.post.count({
+      where: { categoryId: cat.id, status: "PUBLISHED" },
+    });
+    await prisma.category.update({
+      where: { id: cat.id },
+      data: { postCount: count },
+    });
   }
 
   console.log("\n✅ Database seeding completed!");

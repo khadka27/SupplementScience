@@ -4,7 +4,7 @@ export function generateOrganizationSchema(baseUrl: string) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Your Site Name",
+    name: "SupplementDecoded",
     url: baseUrl,
     logo: `${baseUrl}/logo.png`,
     sameAs: [
@@ -19,7 +19,7 @@ export function generateWebsiteSchema(baseUrl: string) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Your Site Name",
+    name: "SupplementDecoded",
     url: baseUrl,
     potentialAction: {
       "@type": "SearchAction",
@@ -50,7 +50,7 @@ export function generateBlogPostSchema(post: Post, baseUrl: string) {
       : undefined,
     publisher: {
       "@type": "Organization",
-      name: "Your Site Name",
+      name: "SupplementDecoded",
       logo: {
         "@type": "ImageObject",
         url: `${baseUrl}/logo.png`,

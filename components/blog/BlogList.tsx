@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { cn, getPostHref } from "@/lib/utils";
 
 interface BlogListProps {
   posts: Post[];
@@ -62,7 +62,7 @@ export default function BlogList({ posts, title }: BlogListProps) {
 
         {/* Featured Post */}
         <Link
-          href={`/blog/${featuredPost.slug}`}
+          href={getPostHref(featuredPost)}
           className="block mb-16 group animate-fadeInUp"
         >
           <Card className="overflow-hidden border-2 hover:border-green-200 dark:hover:border-green-800 transition-all duration-300 hover:shadow-xl">
@@ -130,7 +130,7 @@ export default function BlogList({ posts, title }: BlogListProps) {
                       <time dateTime={featuredPost.publishedAt.toISOString()}>
                         {format(
                           new Date(featuredPost.publishedAt),
-                          "MMM d, yyyy"
+                          "MMM d, yyyy",
                         )}
                       </time>
                     </div>
@@ -152,7 +152,7 @@ export default function BlogList({ posts, title }: BlogListProps) {
             {remainingPosts.map((post, index) => (
               <Link
                 key={post.id}
-                href={`/blog/${post.slug}`}
+                href={getPostHref(post)}
                 className="group animate-fadeInUp"
                 style={{ animationDelay: `${index * 50}ms` }}
               >

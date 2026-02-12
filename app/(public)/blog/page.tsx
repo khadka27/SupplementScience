@@ -6,17 +6,17 @@ import BlogList from "@/components/blog/BlogList";
 export const dynamic = "force-static";
 export const revalidate = 43200;
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
 
 export const metadata: Metadata = {
-  title: "Blog | Your Site Name",
+  title: "Blog | SupplementDecoded",
   description:
     "Discover expert articles, guides, and insights about supplements and health.",
   alternates: {
     canonical: `${baseUrl}/blog`,
   },
   openGraph: {
-    title: "Blog | Your Site Name",
+    title: "Blog | SupplementDecoded",
     description:
       "Discover expert articles, guides, and insights about supplements and health.",
     url: `${baseUrl}/blog`,
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Blog | Your Site Name",
+    title: "Blog | SupplementDecoded",
     description:
       "Discover expert articles, guides, and insights about supplements and health.",
   },

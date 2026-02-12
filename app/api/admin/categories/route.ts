@@ -12,7 +12,7 @@ export async function GET() {
     console.error("Error fetching categories:", error);
     return NextResponse.json(
       { error: "Failed to fetch categories" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     if (!name || !slug) {
       return NextResponse.json(
         { error: "Name and slug are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -40,8 +40,11 @@ export async function POST(request: NextRequest) {
         name,
         slug,
         description,
-        metaTitle,
-        metaDescription,
+        metaTitle: metaTitle || name,
+        metaDescription:
+          metaDescription ||
+          description ||
+          `Explore our ${name} category for the latest articles and insights.`,
         imageUrl,
       },
     });
@@ -52,12 +55,12 @@ export async function POST(request: NextRequest) {
     if (error.code === "P2002") {
       return NextResponse.json(
         { error: "Category with this slug already exists" },
-        { status: 409 }
+        { status: 409 },
       );
     }
     return NextResponse.json(
       { error: "Failed to create category" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

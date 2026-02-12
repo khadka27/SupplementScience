@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await auth();
@@ -23,8 +23,11 @@ export async function PUT(
         name,
         slug,
         description,
-        metaTitle,
-        metaDescription,
+        metaTitle: metaTitle || name,
+        metaDescription:
+          metaDescription ||
+          description ||
+          `Explore our ${name} category for the latest articles and insights.`,
         imageUrl,
       },
     });
@@ -35,25 +38,25 @@ export async function PUT(
     if (error.code === "P2002") {
       return NextResponse.json(
         { error: "Category with this slug already exists" },
-        { status: 409 }
+        { status: 409 },
       );
     }
     if (error.code === "P2025") {
       return NextResponse.json(
         { error: "Category not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
     return NextResponse.json(
       { error: "Failed to update category" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await auth();
@@ -73,12 +76,12 @@ export async function DELETE(
     if (error.code === "P2025") {
       return NextResponse.json(
         { error: "Category not found" },
-        { status: 404 }
+        { status: 404 },
       );
     }
     return NextResponse.json(
       { error: "Failed to delete category" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

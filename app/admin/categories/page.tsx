@@ -14,7 +14,8 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, Loader2, Tag } from "lucide-react";
+import { Pencil, Trash2, Plus, Loader2, Tag, PenLine } from "lucide-react";
+import Link from "next/link";
 import {
   Dialog,
   DialogContent,
@@ -321,6 +322,16 @@ export default function CategoriesManagementPage() {
                     <CardTitle className="text-lg">{category.name}</CardTitle>
                   </div>
                   <div className="flex gap-1">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      asChild
+                      title="Write article in this category"
+                    >
+                      <Link href={`/admin/blog/new?categoryId=${category.id}`}>
+                        <PenLine className="w-4 h-4 text-primary" />
+                      </Link>
+                    </Button>
                     <Button
                       size="sm"
                       variant="ghost"

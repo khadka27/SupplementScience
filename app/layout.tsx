@@ -12,13 +12,13 @@ const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID; // Add to .env
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Your Site Name | Evidence-Based Supplement Information",
-    template: "%s | Your Site Name",
+    default: "SupplementDecoded | Evidence-Based Supplement Information",
+    template: "%s | SupplementDecoded",
   },
   description:
     "Discover evidence-based information about supplements, nutrition, and health. Expert articles backed by scientific research.",
@@ -30,13 +30,13 @@ export const metadata: Metadata = {
     "evidence-based",
     "science",
   ],
-  authors: [{ name: "Your Site Name Team" }],
+  authors: [{ name: "SupplementDecoded Team" }],
   openGraph: {
     type: "website",
     locale: "en_US",
     url: baseUrl,
-    siteName: "Your Site Name",
-    title: "Your Site Name | Evidence-Based Supplement Information",
+    siteName: "SupplementDecoded",
+    title: "SupplementDecoded | Evidence-Based Supplement Information",
     description:
       "Discover evidence-based information about supplements, nutrition, and health.",
     images: [
@@ -44,17 +44,17 @@ export const metadata: Metadata = {
         url: `${baseUrl}/og-default.jpg`,
         width: 1200,
         height: 630,
-        alt: "Your Site Name",
+        alt: "SupplementDecoded",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Your Site Name | Evidence-Based Supplement Information",
+    title: "SupplementDecoded | Evidence-Based Supplement Information",
     description:
       "Discover evidence-based information about supplements, nutrition, and health.",
     images: [`${baseUrl}/og-default.jpg`],
-    creator: "@yourhandle",
+    creator: "@supplementdecoded",
   },
   robots: {
     index: true,

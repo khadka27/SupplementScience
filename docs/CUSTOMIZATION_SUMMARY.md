@@ -2,7 +2,7 @@
 
 ## ✅ What Was Done
 
-I've set up a complete blog content customization system for your SupplementScience website. Here's everything that was added:
+I've set up a complete blog content customization system for your SupplementDecoded website. Here's everything that was added:
 
 ---
 

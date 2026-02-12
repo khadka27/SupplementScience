@@ -19,7 +19,7 @@ This guide will walk you through customizing your blog post content with beautif
 
 ### Open the preview file
 
-1. Navigate to your project folder: `d:\office\SupplementScience`
+1. Navigate to your project folder: `d:\office\SupplementDecoded`
 2. Double-click `styling-preview.html`
 3. Your browser will open showing all available styles
 
@@ -64,7 +64,7 @@ Look at your current CertifyPro post content and decide where to add styles:
 ### Option B: Using Prisma Studio
 
 ```bash
-cd d:\office\SupplementScience
+cd d:\office\SupplementDecoded
 pnpm prisma studio
 ```
 
@@ -177,7 +177,7 @@ WHERE slug = 'your-certifypro-post-slug';
 ### Start the development server:
 
 ```bash
-cd d:\office\SupplementScience
+cd d:\office\SupplementDecoded
 pnpm dev
 ```
 

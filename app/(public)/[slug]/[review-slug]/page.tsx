@@ -27,7 +27,7 @@ async function getCategory(slug: string): Promise<any | null> {
 
 async function getReviewPost(
   categorySlug: string,
-  reviewSlug: string
+  reviewSlug: string,
 ): Promise<any | null> {
   const category = await getCategory(categorySlug);
   if (!category) return null;
@@ -68,7 +68,7 @@ async function getReviewPost(
 
 async function getRelatedPosts(
   categoryId: string,
-  currentPostId: string
+  currentPostId: string,
 ): Promise<any[]> {
   const data = await prisma.post.findMany({
     where: {
@@ -115,8 +115,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
-  const url = `${baseUrl}/category/${slug}/${reviewSlug}`;
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
+  const url = `${baseUrl}/${slug}/${reviewSlug}`;
   const imageUrl = post.featuredImageUrl || `${baseUrl}/og-default.jpg`;
 
   return {
@@ -179,6 +180,7 @@ export async function generateStaticParams() {
     });
 
     for (const post of posts) {
+      if (post.slug === category.slug) continue;
       params.push({
         slug: category.slug,
         "review-slug": post.slug,
@@ -199,16 +201,17 @@ export default async function CategoryReviewPage({ params }: Props) {
 
   const relatedPosts = await getRelatedPosts(post.categoryId!, post.id);
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
 
   const blogPostSchema = generateBlogPostSchema(post, baseUrl);
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: baseUrl },
     {
       name: post.category?.name || "Category",
-      url: `${baseUrl}/category/${slug}`,
+      url: `${baseUrl}/${slug}`,
     },
-    { name: post.title, url: `${baseUrl}/category/${slug}/${reviewSlug}` },
+    { name: post.title, url: `${baseUrl}/${slug}/${reviewSlug}` },
   ]);
 
   const faqSchema = post.faqs ? generateFAQSchema(post.faqs) : null;
@@ -238,4 +241,3 @@ export default async function CategoryReviewPage({ params }: Props) {
     </>
   );
 }
-

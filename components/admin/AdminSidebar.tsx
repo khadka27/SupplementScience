@@ -91,7 +91,7 @@ export function AdminSidebar() {
           </div>
           <div>
             <h2 className="text-lg font-bold">Admin Panel</h2>
-            <p className="text-xs text-muted-foreground">SupplementScience</p>
+            <p className="text-xs text-muted-foreground">SupplementDecoded</p>
           </div>
         </Link>
       </div>
@@ -113,7 +113,7 @@ export function AdminSidebar() {
                     "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all hover:bg-accent",
                     isActive
                       ? "bg-accent text-accent-foreground"
-                      : "text-muted-foreground hover:text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   <Icon className="h-5 w-5" />

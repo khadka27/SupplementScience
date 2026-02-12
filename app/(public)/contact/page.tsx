@@ -10,17 +10,17 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
 
 export const metadata: Metadata = {
-  title: "Contact Us | SupplementScience",
+  title: "Contact Us | SupplementDecoded",
   description:
     "Get in touch with our team. We would love to hear from you. Contact us for general inquiries, media requests, or partnership opportunities.",
   alternates: {
     canonical: `${baseUrl}/contact`,
   },
   openGraph: {
-    title: "Contact SupplementScience",
+    title: "Contact SupplementDecoded",
     description: "Get in touch with our team. We would love to hear from you.",
     url: `${baseUrl}/contact`,
     type: "website",
@@ -59,10 +59,10 @@ export default function ContactPage() {
                 possible.
               </p>
               <a
-                href="mailto:contact@yoursite.com"
+                href="mailto:contact@www.supplementdecoded.com"
                 className="text-primary hover:underline font-medium inline-flex items-center gap-2"
               >
-                contact@yoursite.com
+                contact@www.supplementdecoded.com
                 <Send className="w-4 h-4" />
               </a>
             </CardContent>
@@ -96,10 +96,10 @@ export default function ContactPage() {
                 For media inquiries and press-related questions.
               </p>
               <a
-                href="mailto:press@yoursite.com"
+                href="mailto:press@www.supplementdecoded.com"
                 className="text-primary hover:underline font-medium inline-flex items-center gap-2"
               >
-                press@yoursite.com
+                press@www.supplementdecoded.com
                 <Send className="w-4 h-4" />
               </a>
             </CardContent>
@@ -118,10 +118,10 @@ export default function ContactPage() {
                 Interested in collaborating with us?
               </p>
               <a
-                href="mailto:partnerships@yoursite.com"
+                href="mailto:partnerships@www.supplementdecoded.com"
                 className="text-primary hover:underline font-medium inline-flex items-center gap-2"
               >
-                partnerships@yoursite.com
+                partnerships@www.supplementdecoded.com
                 <Send className="w-4 h-4" />
               </a>
             </CardContent>
@@ -139,10 +139,10 @@ export default function ContactPage() {
                 team for detailed guidance.
               </p>
               <a
-                href="mailto:expert@yoursite.com"
+                href="mailto:expert@www.supplementdecoded.com"
                 className="text-primary hover:underline font-medium inline-flex items-center gap-2"
               >
-                expert@yoursite.com
+                expert@www.supplementdecoded.com
                 <Send className="w-4 h-4" />
               </a>
             </CardContent>

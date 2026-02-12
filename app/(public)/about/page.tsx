@@ -10,17 +10,17 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
 
 export const metadata: Metadata = {
-  title: "About Us | SupplementScience",
+  title: "About Us | SupplementDecoded",
   description:
     "Learn about our mission to provide evidence-based information about supplements and health. Discover our approach to delivering scientifically-backed wellness guidance.",
   alternates: {
     canonical: `${baseUrl}/about`,
   },
   openGraph: {
-    title: "About SupplementScience",
+    title: "About SupplementDecoded",
     description:
       "Evidence-based supplement and health information you can trust.",
     url: `${baseUrl}/about`,
@@ -35,7 +35,7 @@ export default function AboutPage() {
       <div className="relative bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-green-950 dark:via-emerald-950 dark:to-teal-950 py-20 px-4">
         <div className="container mx-auto max-w-4xl text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            About SupplementScience
+            About SupplementDecoded
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
             We are dedicated to providing accurate, evidence-based information

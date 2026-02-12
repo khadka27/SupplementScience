@@ -259,7 +259,7 @@ netlify deploy --prod
 ## Step 6: Submit to Google
 
 1. Add site to [Google Search Console](https://search.google.com/search-console)
-2. Submit your sitemap: `https://yoursite.com/sitemap.xml`
+2. Submit your sitemap: `https://www.supplementdecoded.com/sitemap.xml`
 3. Request indexing for your key pages
 
 ---

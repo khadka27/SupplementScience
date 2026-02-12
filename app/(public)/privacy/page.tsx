@@ -11,10 +11,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | SupplementScience",
+  title: "Privacy Policy | SupplementDecoded",
   description:
     "Our privacy policy explains how we collect, use, and protect your personal information. Learn about our commitment to data security and your privacy rights.",
   alternates: {

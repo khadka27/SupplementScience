@@ -12,10 +12,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
 
 export const metadata: Metadata = {
-  title: "Medical Disclaimer | SupplementScience",
+  title: "Medical Disclaimer | SupplementDecoded",
   description:
     "Important medical disclaimer regarding the health information provided on our website. Consult healthcare professionals for medical advice.",
   alternates: {

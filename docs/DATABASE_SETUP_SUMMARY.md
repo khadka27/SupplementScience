@@ -86,7 +86,7 @@ The seed script creates:
    - Calcium, Omega-3, Joint Health, Bone Health
 
 4. **Default Author**
-   - Supplement Science Team
+   - Supplement Decoded Team
 
 ---
 

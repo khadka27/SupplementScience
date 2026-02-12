@@ -171,7 +171,7 @@ middleware.ts               # URL normalization
 
 Add to `.env`:
 ```
-NEXT_PUBLIC_BASE_URL=https://yoursite.com
+NEXT_PUBLIC_BASE_URL=https://www.supplementdecoded.com
 NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
 ```

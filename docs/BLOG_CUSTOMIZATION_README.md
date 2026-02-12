@@ -2,7 +2,7 @@
 
 ## Overview
 
-A complete system for customizing and styling blog post content in your SupplementScience website. Transform plain HTML content into beautiful, professional blog posts with custom components and styling.
+A complete system for customizing and styling blog post content in your SupplementDecoded website. Transform plain HTML content into beautiful, professional blog posts with custom components and styling.
 
 ---
 

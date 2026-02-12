@@ -11,6 +11,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { getPostHref } from "@/lib/utils";
 
 interface RelatedPostsProps {
   posts: Post[];
@@ -25,7 +26,7 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
         {posts.map((post, index) => (
           <Link
             key={post.id}
-            href={`/blog/${post.slug}`}
+            href={getPostHref(post)}
             className="group h-full block"
           >
             <article className="h-full flex flex-col space-y-4">

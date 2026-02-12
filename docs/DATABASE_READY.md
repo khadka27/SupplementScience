@@ -37,7 +37,7 @@ Your database has been successfully synced with your Prisma schema and seeded wi
 ### Seed Data
 - ✅ **Categories:** Joint Pain, Arthritis, Bone Health
 - ✅ **Tags:** Glucosamine, Chondroitin, Turmeric, Collagen, MSM, Vitamin D, Calcium, Omega-3, Joint Health, Bone Health
-- ✅ **Author:** Supplement Science Team
+- ✅ **Author:** Supplement Decoded Team
 - ✅ **Admin:** (if created) username: `admin`, password: `admin123`
 
 ---

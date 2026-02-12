@@ -37,6 +37,7 @@ const navItems = [
   { name: "Home", href: "/" },
   { name: "Blog", href: "/blog" },
   { name: "Categories", href: "/category" },
+  { name: "Ingredients", href: "/ingredients" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ];
@@ -60,7 +61,7 @@ export function Navbar() {
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
         scrolled
           ? "bg-background/80 backdrop-blur-md py-3 border-border"
-          : "bg-transparent py-5 border-transparent"
+          : "bg-transparent py-5 border-transparent",
       )}
     >
       <div className="container mx-auto max-w-6xl px-4 lg:px-8 flex items-center justify-between">
@@ -68,8 +69,8 @@ export function Navbar() {
           <div className="bg-primary text-primary-foreground p-1.5 rounded-lg transition-transform group-hover:rotate-12">
             <Microscope className="w-6 h-6" />
           </div>
-          <span className="text-xl font-bold tracking-tight font-heading">
-            Supplement<span className="text-primary">Science</span>
+          <span className="text-xl font-bold font-heading uppercase tracking-tighter">
+            Supplement<span className="text-primary">Decoded</span>
           </span>
         </Link>
 
@@ -83,7 +84,7 @@ export function Navbar() {
                 "text-sm font-medium transition-colors hover:text-primary relative py-1",
                 pathname === item.href
                   ? "text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:rounded-full"
-                  : "text-muted-foreground"
+                  : "text-muted-foreground",
               )}
             >
               {item.name}
@@ -184,7 +185,7 @@ export function Navbar() {
               <SheetHeader className="mb-8">
                 <SheetTitle className="text-left flex items-center gap-2">
                   <Microscope className="w-5 h-5 text-primary" />
-                  <span>SupplementScience</span>
+                  <span>SupplementDecoded</span>
                 </SheetTitle>
               </SheetHeader>
 
@@ -202,7 +203,7 @@ export function Navbar() {
                       "flex items-center justify-between py-2 text-lg font-medium transition-colors hover:text-primary",
                       pathname === item.href
                         ? "text-primary border-b-2 border-primary w-fit"
-                        : "text-muted-foreground"
+                        : "text-muted-foreground",
                     )}
                   >
                     {item.name}

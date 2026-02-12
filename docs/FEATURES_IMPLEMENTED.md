@@ -1,4 +1,4 @@
-# 🎉 SupplementScience - All New Features Implemented
+# 🎉 SupplementDecoded - All New Features Implemented
 
 ## ✅ Complete Feature Checklist
 

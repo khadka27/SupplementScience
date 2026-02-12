@@ -110,6 +110,8 @@ export async function POST(req: Request) {
         slug,
         excerpt: excerpt || null,
         content,
+        metaTitle: body.metaTitle || title,
+        metaDescription: body.metaDescription || excerpt || content.substring(0, 155).replace(/<[^>]*>/g, "") + "...",
         featuredImageUrl: featuredImageUrl || null,
         status: status?.toUpperCase() || "DRAFT",
         publishedAt: status?.toLowerCase() === "published" ? new Date() : null,

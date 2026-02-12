@@ -22,7 +22,7 @@ export function Footer() {
                 <Microscope className="w-5 h-5" />
               </div>
               <span className="text-xl font-bold font-heading uppercase tracking-tighter">
-                Supplement<span className="text-primary">Science</span>
+                Supplement<span className="text-primary">Decoded</span>
               </span>
             </Link>
             <p className="text-muted-foreground text-base max-w-md leading-relaxed">
@@ -69,6 +69,14 @@ export function Footer() {
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   Latest Articles
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/ingredients"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  Ingredients Index
                 </Link>
               </li>
               <li>
@@ -153,7 +161,7 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-6">
           <p className="text-sm text-muted-foreground font-medium">
-            © {currentYear} SupplementScience. Empowering health through data.
+            © {currentYear} SupplementDecoded. Empowering health through data.
           </p>
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-1.5 text-xs text-muted-foreground bg-accent/50 px-3 py-1.5 rounded-full border border-border">

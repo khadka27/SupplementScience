@@ -11,10 +11,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
 
 export const metadata: Metadata = {
-  title: "Terms of Service | SupplementScience",
+  title: "Terms of Service | SupplementDecoded",
   description:
     "Terms and conditions for using our website and services. Read our user agreement and understand your rights and responsibilities.",
   alternates: {
@@ -131,7 +131,7 @@ export default function TermsPage() {
               </div>
               <p className="text-muted-foreground leading-relaxed">
                 All content on this website, including text, images, graphics,
-                logos, and software, is the property of SupplementScience or its
+                logos, and software, is the property of SupplementDecoded or its
                 content suppliers and is protected by copyright and other
                 intellectual property laws.
               </p>
@@ -189,7 +189,7 @@ export default function TermsPage() {
                 </div>
               </div>
               <p className="text-muted-foreground leading-relaxed">
-                To the fullest extent permitted by law, SupplementScience shall
+                To the fullest extent permitted by law, SupplementDecoded shall
                 not be liable for any indirect, incidental, special,
                 consequential, or punitive damages resulting from your use of
                 our website.

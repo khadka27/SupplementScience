@@ -7,17 +7,18 @@ import Image from "next/image";
 export const dynamic = "force-static";
 export const revalidate = 43200;
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
 
 export const metadata: Metadata = {
-  title: "Browse All Categories | SupplementScience",
+  title: "Browse All Categories | SupplementDecoded",
   description:
     "Explore our comprehensive collection of health and supplement categories. Find evidence-based guides tailored to your wellness goals.",
   alternates: {
     canonical: `${baseUrl}/categories`,
   },
   openGraph: {
-    title: "Browse All Categories | SupplementScience",
+    title: "Browse All Categories | SupplementDecoded",
     description:
       "Explore our comprehensive collection of health and supplement categories.",
     url: `${baseUrl}/categories`,
@@ -78,7 +79,7 @@ export default async function CategoriesPage() {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {categories.map((category) => (
-              <Link key={category.id} href={`/category/${category.slug}`}>
+              <Link key={category.id} href={`/${category.slug}`}>
                 <Card className="group hover:shadow-xl hover:border-green-300 dark:hover:border-green-700 transition-all duration-300 h-full cursor-pointer">
                   <CardContent className="p-0">
                     {category.imageUrl && (

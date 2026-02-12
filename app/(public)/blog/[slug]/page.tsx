@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import prisma from "@/lib/prisma";
 import { Post } from "@/lib/types";
@@ -8,6 +8,7 @@ import {
   generateBreadcrumbSchema,
   generateFAQSchema,
 } from "@/lib/schema";
+import { getPostHref } from "@/lib/utils";
 
 export const dynamic = "force-static";
 export const revalidate = 21600;
@@ -67,6 +68,12 @@ async function getAdjacentPosts(currentPostId: string, publishedAt: Date) {
         title: true,
         slug: true,
         featuredImageUrl: true,
+        category: {
+          select: {
+            name: true,
+            slug: true,
+          },
+        },
       },
     }),
     prisma.post.findFirst({
@@ -83,6 +90,12 @@ async function getAdjacentPosts(currentPostId: string, publishedAt: Date) {
         title: true,
         slug: true,
         featuredImageUrl: true,
+        category: {
+          select: {
+            name: true,
+            slug: true,
+          },
+        },
       },
     }),
   ]);
@@ -91,7 +104,7 @@ async function getAdjacentPosts(currentPostId: string, publishedAt: Date) {
 
 async function getRelatedPosts(
   categoryId?: string,
-  currentPostId?: string
+  currentPostId?: string,
 ): Promise<any[]> {
   if (!categoryId) return [];
 
@@ -139,7 +152,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
   const url = `${baseUrl}/blog/${post.slug}`;
   const imageUrl = post.featuredImageUrl || `${baseUrl}/og-default.jpg`;
 
@@ -199,13 +213,30 @@ export default async function BlogPostPage({ params }: Props) {
   const post = await getPost(slug);
 
   if (!post) {
+    // Check if it's a category slug
+    const category = await prisma.category.findUnique({
+      where: { slug },
+      select: { slug: true },
+    });
+
+    if (category) {
+      redirect(`/${category.slug}`);
+    }
+
     notFound();
+  }
+
+  // Redirect to the correct URL structure
+  const correctUrl = getPostHref(post);
+  if (correctUrl !== `/blog/${post.slug}`) {
+    redirect(correctUrl);
   }
 
   const relatedPosts = await getRelatedPosts(post.categoryId, post.id);
   const adjacentPosts = await getAdjacentPosts(post.id, post.publishedAt);
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://yoursite.com";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
 
   const blogPostSchema = generateBlogPostSchema(post, baseUrl);
   const breadcrumbSchema = generateBreadcrumbSchema([

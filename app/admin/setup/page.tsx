@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 
 export const metadata: Metadata = {
-  title: "Admin Setup | SupplementScience",
+  title: "Admin Setup | SupplementDecoded",
   description: "Initialize your admin account",
 };
 
