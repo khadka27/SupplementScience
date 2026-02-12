@@ -79,7 +79,7 @@ async function getData(slug: string) {
     };
   }
 
-  // Check if it's a root-level post (e.g., Ingredient)
+  // Check if it's a root-level post (e.g., Featured)
   const post = await prisma.post.findFirst({
     where: {
       slug: slug,
@@ -93,6 +93,14 @@ async function getData(slug: string) {
   });
 
   if (post) {
+    const isHub = post.category?.isHub;
+    const categorySlug = post.category?.slug;
+
+    // Redirect if it belongs to a hub category
+    if (isHub && categorySlug) {
+      redirect(`/${categorySlug}/${slug}`);
+    }
+
     return {
       type: "post" as const,
       post: {
@@ -139,10 +147,13 @@ export async function generateStaticParams() {
   const categories = await prisma.category.findMany({ select: { slug: true } });
   const rootPosts = await prisma.post.findMany({
     where: {
-      OR: [
-        { category: { slug: "ingredients" } },
-        { isFeatured: true }, // Or any logic that puts them at root
-      ],
+      isFeatured: true,
+      // Exclude hub category posts from root generation
+      NOT: {
+        category: {
+          isHub: true,
+        },
+      },
     },
     select: { slug: true },
   });

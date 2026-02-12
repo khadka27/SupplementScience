@@ -2,21 +2,26 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
+// GET all sections (hub categories only)
 export async function GET() {
   try {
-    const categories = await prisma.category.findMany({
+    const sections = await prisma.category.findMany({
+      where: {
+        isHub: true,
+      },
       orderBy: { createdAt: "desc" },
     });
-    return NextResponse.json(categories);
+    return NextResponse.json(sections);
   } catch (error) {
-    console.error("Error fetching categories:", error);
+    console.error("Error fetching sections:", error);
     return NextResponse.json(
-      { error: "Failed to fetch categories" },
+      { error: "Failed to fetch sections" },
       { status: 500 },
     );
   }
 }
 
+// POST create a new section
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
@@ -25,7 +30,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, slug, description, metaTitle, metaDescription, imageUrl, isHub } =
+    const { name, slug, description, metaTitle, metaDescription, imageUrl } =
       body;
 
     if (!name || !slug) {
@@ -35,7 +40,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const category = await prisma.category.create({
+    const section = await prisma.category.create({
       data: {
         name,
         slug,
@@ -44,23 +49,23 @@ export async function POST(request: NextRequest) {
         metaDescription:
           metaDescription ||
           description ||
-          `Explore our ${name} category for the latest articles and insights.`,
+          `Explore our comprehensive ${name} section for expert articles and insights.`,
         imageUrl,
-        isHub: isHub || false,
+        isHub: true, // Always create as a hub
       },
     });
 
-    return NextResponse.json(category, { status: 201 });
+    return NextResponse.json(section, { status: 201 });
   } catch (error: any) {
-    console.error("Error creating category:", error);
+    console.error("Error creating section:", error);
     if (error.code === "P2002") {
       return NextResponse.json(
-        { error: "Category with this slug already exists" },
+        { error: "Section with this slug already exists" },
         { status: 409 },
       );
     }
     return NextResponse.json(
-      { error: "Failed to create category" },
+      { error: "Failed to create section" },
       { status: 500 },
     );
   }

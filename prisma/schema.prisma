@@ -34,6 +34,7 @@ model Category {
   metaTitle       String?  @map("meta_title")
   metaDescription String?  @map("meta_description")
   imageUrl        String?  @map("image_url")
+  isHub           Boolean  @default(false) @map("is_hub")
   postCount       Int      @default(0) @map("post_count")
   posts           Post[]
   createdAt       DateTime @default(now()) @map("created_at")

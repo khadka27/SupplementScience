@@ -7,21 +7,24 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getPostHref(post: {
   slug: string;
-  category?: { slug: string; name: string } | null;
+  category?: { slug: string; name: string; isHub?: boolean } | null;
 }) {
-  if (
-    post.category?.slug === "ingredients" ||
-    post.category?.name?.toLowerCase() === "ingredients"
-  ) {
-    return `/${post.slug}`;
+  const categorySlug = post.category?.slug?.toLowerCase();
+  const isHub = post.category?.isHub;
+
+  // If category is marked as a hub, use top-level URL structure
+  if (isHub && categorySlug) {
+    return `/${categorySlug}/${post.slug}`;
   }
-  if (post.category?.slug) {
-    // If the post slug is the same as the category slug, just return the category path
-    if (post.slug === post.category.slug) {
-      return `/${post.category.slug}`;
+
+  // If category exists but not a hub, use regular category structure
+  if (categorySlug) {
+    if (post.slug === categorySlug) {
+      return `/${categorySlug}`;
     }
-    return `/${post.category.slug}/${post.slug}`;
+    return `/blog/${post.slug}`;
   }
+
   return `/blog/${post.slug}`;
 }
 
