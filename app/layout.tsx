@@ -12,7 +12,8 @@ const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID; // Add to .env
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -103,20 +104,18 @@ export default function RootLayout({
         />
         {GA_MEASUREMENT_ID && (
           <>
-            <script
-              async
+            <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+              strategy="afterInteractive"
             />
-            <script
-              dangerouslySetInnerHTML={{
-                __html: `
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
                   window.dataLayer = window.dataLayer || [];
                   function gtag(){dataLayer.push(arguments);}
                   gtag('js', new Date());
                   gtag('config', '${GA_MEASUREMENT_ID}');
-                `,
-              }}
-            />
+              `}
+            </Script>
           </>
         )}
       </head>

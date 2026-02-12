@@ -129,6 +129,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title: post.metaTitle || post.title,
       description: post.metaDescription || post.excerpt || "",
+      keywords: post.tags?.map((t: any) => t.name) || [],
       alternates: { canonical: `${baseUrl}/${post.slug}` },
     };
   }
