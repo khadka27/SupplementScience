@@ -6,7 +6,8 @@ import BlogList from "@/components/blog/BlogList";
 export const dynamic = "force-static";
 export const revalidate = 43200;
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
 
 export const metadata: Metadata = {
   title: "Blog | SupplementDecoded",
@@ -68,5 +69,9 @@ async function getPosts(): Promise<any[]> {
 export default async function BlogPage() {
   const posts = await getPosts();
 
-  return <BlogList posts={posts} title="Latest Articles" />;
+  return (
+    <div className="container mx-auto max-w-6xl px-4 lg:px-8 pt-32 pb-20">
+      <BlogList posts={posts} title="Latest Articles" />
+    </div>
+  );
 }

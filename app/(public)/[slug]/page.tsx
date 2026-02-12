@@ -33,6 +33,11 @@ async function getData(slug: string) {
   });
 
   if (category) {
+    // If it's a regular category (not a hub), redirect to /category/[slug]
+    if (!category.isHub) {
+      redirect(`/category/${slug}`);
+    }
+
     // Check if there's a main article with the same slug inside this category
     const mainArticle = await prisma.post.findFirst({
       where: {
@@ -144,7 +149,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const categories = await prisma.category.findMany({ select: { slug: true } });
+  const categories = await prisma.category.findMany({ 
+    where: { isHub: true },
+    select: { slug: true } 
+  });
   const rootPosts = await prisma.post.findMany({
     where: {
       isFeatured: true,

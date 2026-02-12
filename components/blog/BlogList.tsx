@@ -21,18 +21,15 @@ interface BlogListProps {
 export default function BlogList({ posts, title }: BlogListProps) {
   if (posts.length === 0) {
     return (
-      <div className="min-h-screen pt-32 pb-20">
-        <div className="container mx-auto max-w-6xl px-4 lg:px-8">
-          <div className="text-center py-20">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
-              <Sparkles className="w-8 h-8 text-muted-foreground" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">No articles found</h3>
-            <p className="text-muted-foreground">
-              Check back soon for new content!
-            </p>
-          </div>
+      <div className="py-20 text-center">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted/30 mb-4 animate-pulse">
+          <Sparkles className="w-8 h-8 text-muted-foreground/50" />
         </div>
+        <h3 className="text-xl font-bold mb-2">No articles found</h3>
+        <p className="text-muted-foreground max-w-xs mx-auto">
+          We're constantly researching. Check back soon for new evidence-based
+          guides!
+        </p>
       </div>
     );
   }
@@ -41,197 +38,133 @@ export default function BlogList({ posts, title }: BlogListProps) {
   const remainingPosts = posts.slice(1);
 
   return (
-    <div className="min-h-screen pt-32 pb-20">
-      <div className="container mx-auto max-w-6xl px-4 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-12 animate-fadeInUp">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400 text-sm font-medium mb-4">
+    <div className="w-full space-y-16">
+      {/* Header section - Only shown if title is present */}
+      {title && (
+        <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-sm font-semibold mb-6 ring-1 ring-emerald-100 shadow-sm">
             <TrendingUp className="w-4 h-4" />
-            <span>Evidence-Based Content</span>
+            <span>Scientifically Verified</span>
           </div>
-          {title && (
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text">
-              {title}
-            </h1>
-          )}
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Explore our comprehensive guides on supplements, nutrition, and
-            wellness backed by scientific research.
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 tracking-tight text-slate-900">
+            {title}
+          </h1>
+          <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
+            Expert guides on clinical research, nutrition science, and
+            supplement efficacy.
           </p>
         </div>
+      )}
 
-        {/* Featured Post */}
-        <Link
-          href={getPostHref(featuredPost)}
-          className="block mb-16 group animate-fadeInUp"
-        >
-          <Card className="overflow-hidden border-2 hover:border-green-200 dark:hover:border-green-800 transition-all duration-300 hover:shadow-xl">
-            <div className="grid md:grid-cols-2 gap-0">
-              {featuredPost.featuredImageUrl && (
-                <div className="relative w-full h-64 md:h-full min-h-[300px] overflow-hidden">
+      {/* Main Featured Article */}
+      <Link
+        href={getPostHref(featuredPost)}
+        className="block group transition-all duration-500"
+      >
+        <Card className="overflow-hidden border-slate-100 hover:border-emerald-200 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] bg-white">
+          <div className="grid lg:grid-cols-5 gap-0">
+            {featuredPost.featuredImageUrl && (
+              <div className="lg:col-span-3 relative w-full h-[300px] lg:h-[450px] overflow-hidden">
+                <Image
+                  src={featuredPost.featuredImageUrl}
+                  alt={featuredPost.featuredImageAlt || featuredPost.title}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
+                  sizes="(max-width: 1024px) 100vw, 60vw"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent" />
+              </div>
+            )}
+
+            <div className="lg:col-span-2 p-8 lg:p-12 flex flex-col justify-center bg-slate-50/30">
+              {featuredPost.category && (
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600 mb-4 inline-block">
+                  {featuredPost.category.name}
+                </span>
+              )}
+
+              <h2 className="text-3xl lg:text-4xl font-black mb-6 group-hover:text-emerald-700 transition-colors leading-[1.1] text-slate-900">
+                {featuredPost.title}
+              </h2>
+
+              {featuredPost.excerpt && (
+                <p className="text-slate-500 text-lg mb-8 line-clamp-3 leading-relaxed font-medium">
+                  {featuredPost.excerpt}
+                </p>
+              )}
+
+              <div className="flex items-center gap-6 text-sm font-bold text-slate-400">
+                {featuredPost.author && (
+                  <div className="flex items-center gap-2 text-slate-900">
+                    <span className="w-6 h-px bg-slate-300"></span>
+                    <span>{featuredPost.author.name}</span>
+                  </div>
+                )}
+                {featuredPost.readTimeMinutes && (
+                  <div className="flex items-center gap-1.5 font-medium">
+                    <Clock className="w-4 h-4" />
+                    <span>{featuredPost.readTimeMinutes} min</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </Card>
+      </Link>
+
+      {/* All Other Articles Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {remainingPosts.map((post, index) => (
+          <Link key={post.id} href={getPostHref(post)} className="group block">
+            <div className="h-full flex flex-col bg-white overflow-hidden transition-all duration-300 group-hover:-translate-y-2">
+              {post.featuredImageUrl && (
+                <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-6 shadow-sm ring-1 ring-slate-100/50">
                   <Image
-                    src={featuredPost.featuredImageUrl}
-                    alt={featuredPost.featuredImageAlt || featuredPost.title}
+                    src={post.featuredImageUrl}
+                    alt={post.featuredImageAlt || post.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    priority
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  <Badge className="absolute top-4 left-4 bg-green-600 text-white border-0">
-                    <Sparkles className="w-3 h-3 mr-1" />
-                    Featured
-                  </Badge>
                 </div>
               )}
 
-              <div className="p-8 lg:p-10 flex flex-col justify-center">
-                {featuredPost.category && (
-                  <Badge
-                    variant="secondary"
-                    className="w-fit mb-4 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400"
-                  >
-                    {featuredPost.category.name}
-                  </Badge>
+              <div className="flex-1 flex flex-col">
+                {post.category && (
+                  <span className="text-[9px] font-black uppercase tracking-widest text-emerald-600 mb-3">
+                    {post.category.name}
+                  </span>
                 )}
 
-                <h2 className="text-2xl lg:text-3xl font-bold mb-4 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
-                  {featuredPost.title}
-                </h2>
+                <h3 className="text-xl font-black mb-3 text-slate-900 group-hover:text-emerald-600 transition-colors leading-tight">
+                  {post.title}
+                </h3>
 
-                {featuredPost.excerpt && (
-                  <p className="text-muted-foreground mb-6 line-clamp-3">
-                    {featuredPost.excerpt}
+                {post.excerpt && (
+                  <p className="text-slate-500 text-sm line-clamp-2 leading-relaxed mb-6 font-medium">
+                    {post.excerpt}
                   </p>
                 )}
 
-                <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                  {featuredPost.author && (
-                    <div className="flex items-center gap-2">
-                      {featuredPost.author.avatarUrl && (
-                        <div className="relative w-8 h-8 rounded-full overflow-hidden ring-2 ring-green-200 dark:ring-green-800">
-                          <Image
-                            src={featuredPost.author.avatarUrl}
-                            alt={featuredPost.author.name}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                      )}
-                      <span className="font-medium">
-                        {featuredPost.author.name}
-                      </span>
-                    </div>
-                  )}
-
-                  {featuredPost.publishedAt && (
-                    <div className="flex items-center gap-1.5">
-                      <Calendar className="w-4 h-4" />
-                      <time dateTime={featuredPost.publishedAt.toISOString()}>
-                        {format(
-                          new Date(featuredPost.publishedAt),
-                          "MMM d, yyyy",
-                        )}
+                <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-50 text-[10px] uppercase font-bold tracking-widest text-slate-400">
+                  <div className="flex items-center gap-2">
+                    {post.publishedAt && (
+                      <time dateTime={post.publishedAt.toISOString()}>
+                        {format(new Date(post.publishedAt), "MMM d")}
                       </time>
-                    </div>
-                  )}
-
-                  <div className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4" />
-                    <span>{featuredPost.readTimeMinutes} min read</span>
+                    )}
+                    <span>•</span>
+                    <span>{post.readTimeMinutes} min</span>
                   </div>
+                  <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-emerald-600">
+                    Read guide →
+                  </span>
                 </div>
               </div>
             </div>
-          </Card>
-        </Link>
-
-        {/* Grid Posts */}
-        {remainingPosts.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {remainingPosts.map((post, index) => (
-              <Link
-                key={post.id}
-                href={getPostHref(post)}
-                className="group animate-fadeInUp"
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                <Card className="h-full overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border hover:border-green-200 dark:hover:border-green-800">
-                  {post.featuredImageUrl && (
-                    <div className="relative w-full aspect-video overflow-hidden">
-                      <Image
-                        src={post.featuredImageUrl}
-                        alt={post.featuredImageAlt || post.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
-                  )}
-
-                  <CardHeader className="space-y-3">
-                    {post.category && (
-                      <Badge
-                        variant="secondary"
-                        className="w-fit bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/30"
-                      >
-                        {post.category.name}
-                      </Badge>
-                    )}
-
-                    <CardTitle className="line-clamp-2 group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors">
-                      {post.title}
-                    </CardTitle>
-
-                    {post.excerpt && (
-                      <CardDescription className="line-clamp-3">
-                        {post.excerpt}
-                      </CardDescription>
-                    )}
-                  </CardHeader>
-
-                  <CardContent>
-                    <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
-                      {post.author && (
-                        <div className="flex items-center gap-2">
-                          {post.author.avatarUrl && (
-                            <div className="relative w-6 h-6 rounded-full overflow-hidden ring-1 ring-border">
-                              <Image
-                                src={post.author.avatarUrl}
-                                alt={post.author.name}
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
-                          )}
-                          <span className="font-medium">
-                            {post.author.name}
-                          </span>
-                        </div>
-                      )}
-
-                      <span className="text-muted-foreground/50">•</span>
-
-                      {post.publishedAt && (
-                        <time dateTime={post.publishedAt.toISOString()}>
-                          {format(new Date(post.publishedAt), "MMM d, yyyy")}
-                        </time>
-                      )}
-
-                      <span className="text-muted-foreground/50">•</span>
-
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" />
-                        <span>{post.readTimeMinutes} min</span>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        )}
+          </Link>
+        ))}
       </div>
     </div>
   );
