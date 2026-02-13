@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await auth();
@@ -19,13 +19,36 @@ export async function PATCH(
     if (!status || !["PUBLISHED", "DRAFT"].includes(status)) {
       return NextResponse.json(
         { error: "Invalid status. Must be PUBLISHED or DRAFT" },
-        { status: 400 }
+        { status: 400 },
       );
+    }
+
+    // Get current post to check existing publishedAt
+    const currentPost = await prisma.post.findUnique({
+      where: { id },
+      select: { status: true, publishedAt: true },
+    });
+
+    if (!currentPost) {
+      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    }
+
+    const isNowPublished = status === "PUBLISHED";
+    const wasPublished = currentPost.status === "PUBLISHED";
+
+    let publishedAtData = currentPost.publishedAt;
+    if (isNowPublished && !wasPublished) {
+      publishedAtData = new Date();
+    } else if (!isNowPublished) {
+      publishedAtData = null;
     }
 
     const post = await prisma.post.update({
       where: { id },
-      data: { status },
+      data: {
+        status,
+        publishedAt: publishedAtData,
+      },
     });
 
     return NextResponse.json(post);
@@ -33,7 +56,7 @@ export async function PATCH(
     console.error("Error updating post status:", error);
     return NextResponse.json(
       { error: "Failed to update post status" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

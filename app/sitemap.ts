@@ -15,6 +15,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     select: {
       slug: true,
       updatedAt: true,
+      featuredImageUrl: true,
       category: {
         select: {
           slug: true,
@@ -26,34 +27,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     orderBy: {
       publishedAt: "desc",
     },
-    take: 1000,
+    take: 5000, // Increased limit
   });
 
   const categories = await prisma.category.findMany({
     where: {
-      postCount: {
-        gte: 1,
-      },
+      OR: [{ isHub: true }, { postCount: { gte: 1 } }],
     },
     select: {
       slug: true,
       updatedAt: true,
       isHub: true,
+      imageUrl: true,
     },
-    take: 100,
+    take: 500, // Increased limit
   });
 
   const tags = await prisma.tag.findMany({
     where: {
       postCount: {
-        gte: 3,
+        gte: 1, // Include tags with at least one post
       },
     },
     select: {
       slug: true,
       updatedAt: true,
     },
-    take: 200,
+    take: 1000, // Increased limit
   });
 
   const postUrls = posts.map((post) => {
@@ -77,6 +77,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: post.updatedAt,
       changeFrequency: "monthly" as const,
       priority: 0.8,
+      ...(post.featuredImageUrl && {
+        images: [post.featuredImageUrl],
+      }),
     };
   });
 
@@ -87,6 +90,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: category.updatedAt,
     changeFrequency: "weekly" as const,
     priority: 0.7,
+    ...(category.imageUrl && {
+      images: [category.imageUrl],
+    }),
   }));
 
   const tagUrls = tags.map((tag) => ({

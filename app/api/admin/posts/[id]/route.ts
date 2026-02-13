@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const { id } = await params;
@@ -26,14 +26,14 @@ export async function GET(
     console.error("Error fetching post:", error);
     return NextResponse.json(
       { error: "Failed to fetch post" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await auth();
@@ -65,9 +65,30 @@ export async function PUT(
       if (existingPost && existingPost.id !== id) {
         return NextResponse.json(
           { error: "Slug already exists. Please use a different slug." },
-          { status: 400 }
+          { status: 400 },
         );
       }
+    }
+
+    // Get current post to check status
+    const currentPost = await prisma.post.findUnique({
+      where: { id },
+    });
+
+    if (!currentPost) {
+      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    }
+
+    const isNowPublished = status?.toUpperCase() === "PUBLISHED";
+    const wasPublished = currentPost.status === "PUBLISHED";
+
+    // Set publishedAt only if it's being published for the first time
+    // or keep the existing publishedAt if it's already published
+    let publishedAtData = currentPost.publishedAt;
+    if (isNowPublished && !wasPublished) {
+      publishedAtData = new Date();
+    } else if (!isNowPublished) {
+      publishedAtData = null;
     }
 
     // Update the post
@@ -80,7 +101,7 @@ export async function PUT(
         content,
         featuredImageUrl: featuredImageUrl || null,
         status: status?.toUpperCase() || "DRAFT",
-        publishedAt: status?.toLowerCase() === "published" ? new Date() : null,
+        publishedAt: publishedAtData,
         readTimeMinutes: readTimeMinutes || 5,
         ...(authorId && {
           author: {
@@ -118,14 +139,14 @@ export async function PUT(
       error instanceof Error ? error.message : "Unknown error occurred";
     return NextResponse.json(
       { error: "Failed to update post", details: errorMessage },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   try {
     const session = await auth();
@@ -143,7 +164,7 @@ export async function DELETE(
     console.error("Error deleting post:", error);
     return NextResponse.json(
       { error: "Failed to delete post" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
