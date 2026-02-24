@@ -78,9 +78,9 @@ export function SearchBar() {
 
   const getMatchColor = (percentage: number) => {
     if (percentage >= 90)
-      return "bg-[#F7ECDE] text-primary border border-[#E9DAC1]";
+      return "bg-[#EFE9E3] text-primary border border-[#D9CFC7]";
     if (percentage >= 70)
-      return "bg-[#F7ECDE] text-primary/80 border border-[#E9DAC1]";
+      return "bg-[#EFE9E3] text-primary/80 border border-[#D9CFC7]";
     if (percentage >= 60)
       return "bg-muted text-muted-foreground border border-border";
     return "bg-muted text-muted-foreground/80";

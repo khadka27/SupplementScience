@@ -81,7 +81,7 @@ export default function PrivacyPage() {
 
           <Card className="text-center hover:shadow-lg transition-shadow">
             <CardContent className="pt-8">
-              <div className="bg-[#E9DAC1]  w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-[#D9CFC7]  w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Lock className="w-6 h-6 text-primary dark:text-primary" />
               </div>
               <h3 className="font-bold mb-2">Secure Storage</h3>
@@ -157,7 +157,7 @@ export default function PrivacyPage() {
           <Card>
             <CardContent className="pt-8">
               <div className="flex items-start gap-4 mb-4">
-                <div className="bg-[#E9DAC1]  p-2 rounded-lg">
+                <div className="bg-[#D9CFC7]  p-2 rounded-lg">
                   <FileText className="w-5 h-5 text-primary dark:text-primary" />
                 </div>
                 <div>

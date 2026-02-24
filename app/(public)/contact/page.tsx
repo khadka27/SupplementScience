@@ -31,9 +31,9 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-[#FBF8F1] via-[#F7ECDE] to-[#E9DAC1]  py-20 px-4">
+      <div className="relative bg-gradient-to-br from-[#F9F8F6] via-[#EFE9E3] to-[#D9CFC7]  py-20 px-4">
         <div className="container mx-auto max-w-4xl text-center">
-          <div className="bg-[#E9DAC1]  w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="bg-[#D9CFC7]  w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
             <Mail className="w-8 h-8 text-primary dark:text-primary" />
           </div>
           <h1 className="text-4xl md:text-6xl font-bold mb-6">Get In Touch</h1>
@@ -48,9 +48,9 @@ export default function ContactPage() {
       <div className="container mx-auto px-4 py-16 max-w-6xl">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {/* Email Us */}
-          <Card className="border-2 hover:border-[#E9DAC1] dark:hover:border-[#E9DAC1] transition-all hover:shadow-xl">
+          <Card className="border-2 hover:border-[#D9CFC7] dark:hover:border-[#D9CFC7] transition-all hover:shadow-xl">
             <CardContent className="pt-8 pb-6">
-              <div className="bg-[#E9DAC1]  w-12 h-12 rounded-full flex items-center justify-center mb-4">
+              <div className="bg-[#D9CFC7]  w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <Mail className="w-6 h-6 text-primary dark:text-primary" />
               </div>
               <h3 className="text-xl font-bold mb-2">Email Us</h3>
@@ -69,7 +69,7 @@ export default function ContactPage() {
           </Card>
 
           {/* General Inquiries */}
-          <Card className="border-2 hover:border-[#E9DAC1] dark:hover:border-[#E9DAC1] transition-all hover:shadow-xl">
+          <Card className="border-2 hover:border-[#D9CFC7] dark:hover:border-[#D9CFC7] transition-all hover:shadow-xl">
             <CardContent className="pt-8 pb-6">
               <div className="bg-blue-100 dark:bg-blue-900 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <MessageSquare className="w-6 h-6 text-blue-700 dark:text-blue-300" />
@@ -86,7 +86,7 @@ export default function ContactPage() {
           </Card>
 
           {/* Media & Press */}
-          <Card className="border-2 hover:border-[#E9DAC1] dark:hover:border-[#E9DAC1] transition-all hover:shadow-xl">
+          <Card className="border-2 hover:border-[#D9CFC7] dark:hover:border-[#D9CFC7] transition-all hover:shadow-xl">
             <CardContent className="pt-8 pb-6">
               <div className="bg-purple-100 dark:bg-purple-900 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <MessageSquare className="w-6 h-6 text-purple-700 dark:text-purple-300" />
@@ -106,7 +106,7 @@ export default function ContactPage() {
           </Card>
 
           {/* Partnership Opportunities */}
-          <Card className="border-2 hover:border-[#E9DAC1] dark:hover:border-[#E9DAC1] transition-all hover:shadow-xl md:col-span-2 lg:col-span-1">
+          <Card className="border-2 hover:border-[#D9CFC7] dark:hover:border-[#D9CFC7] transition-all hover:shadow-xl md:col-span-2 lg:col-span-1">
             <CardContent className="pt-8 pb-6">
               <div className="bg-amber-100 dark:bg-amber-900 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <Briefcase className="w-6 h-6 text-amber-700 dark:text-amber-300" />
@@ -128,7 +128,7 @@ export default function ContactPage() {
           </Card>
 
           {/* Contact Expert */}
-          <Card className="border-2 hover:border-[#E9DAC1] dark:hover:border-[#E9DAC1] transition-all hover:shadow-xl md:col-span-2">
+          <Card className="border-2 hover:border-[#D9CFC7] dark:hover:border-[#D9CFC7] transition-all hover:shadow-xl md:col-span-2">
             <CardContent className="pt-8 pb-6">
               <div className="bg-teal-100 dark:bg-teal-900 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                 <MessageSquare className="w-6 h-6 text-teal-700 dark:text-teal-300" />
@@ -192,7 +192,7 @@ export default function ContactPage() {
         </div>
 
         {/* CTA Section */}
-        <Card className="bg-gradient-to-br from-[#FBF8F1] to-[#F7ECDE]  border-2">
+        <Card className="bg-gradient-to-br from-[#F9F8F6] to-[#EFE9E3]  border-2">
           <CardContent className="py-12 text-center">
             <h2 className="text-3xl font-bold mb-4">
               Looking for Health Information?

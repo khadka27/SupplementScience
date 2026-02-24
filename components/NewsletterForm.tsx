@@ -129,7 +129,7 @@ export function NewsletterForm({
             className={cn(
               "mt-3 p-3 rounded-lg flex items-center gap-2",
               message.type === "success"
-                ? "bg-[#F7ECDE] text-primary border border-[#E9DAC1]"
+                ? "bg-[#EFE9E3] text-primary border border-[#D9CFC7]"
                 : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400",
             )}
           >
@@ -147,7 +147,7 @@ export function NewsletterForm({
   return (
     <div
       className={cn(
-        "rounded-[2rem] bg-white/40 backdrop-blur-sm p-8 md:p-10 border-2 border-[#E9DAC1] shadow-sm",
+        "rounded-[2rem] bg-white/40 backdrop-blur-sm p-8 md:p-10 border-2 border-[#D9CFC7] shadow-sm",
         className,
       )}
     >
@@ -196,7 +196,7 @@ export function NewsletterForm({
             className={cn(
               "p-3 rounded-lg flex items-center gap-2 text-sm",
               message.type === "success"
-                ? "bg-[#F7ECDE] text-primary border border-[#E9DAC1]"
+                ? "bg-[#EFE9E3] text-primary border border-[#D9CFC7]"
                 : "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400",
             )}
           >

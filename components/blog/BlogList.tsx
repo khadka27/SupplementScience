@@ -61,7 +61,7 @@ export default function BlogList({ posts, title }: BlogListProps) {
         href={getPostHref(featuredPost)}
         className="block group transition-all duration-500"
       >
-        <Card className="overflow-hidden border-slate-100 hover:border-emerald-200 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] bg-white">
+        <Card className="overflow-hidden border border-[#D9CFC7] hover:border-[#D9CFC7] hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] bg-white/70 backdrop-blur-sm rounded-[2rem] transition-all duration-500">
           <div className="grid lg:grid-cols-5 gap-0">
             {featuredPost.featuredImageUrl && (
               <div className="lg:col-span-3 relative w-full h-[300px] lg:h-[450px] overflow-hidden">
@@ -79,12 +79,12 @@ export default function BlogList({ posts, title }: BlogListProps) {
 
             <div className="lg:col-span-2 p-8 lg:p-12 flex flex-col justify-center bg-slate-50/30">
               {featuredPost.category && (
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-4 inline-block">
+                <span className="text-[11px] font-black uppercase tracking-[0.2em] text-black mb-4 inline-block bg-[#EFE9E3] px-3 py-1 rounded-full w-fit">
                   {featuredPost.category.name}
                 </span>
               )}
 
-              <h2 className="text-3xl lg:text-4xl font-black mb-6 group-hover:text-primary transition-colors leading-[1.1] text-slate-900">
+              <h2 className="text-3xl lg:text-4xl font-extrabold mb-5 group-hover:text-primary transition-colors leading-[1.2] text-black tracking-tight">
                 {featuredPost.title}
               </h2>
 
@@ -94,15 +94,15 @@ export default function BlogList({ posts, title }: BlogListProps) {
                 </p>
               )}
 
-              <div className="flex items-center gap-6 text-sm font-bold text-slate-400">
+              <div className="flex items-center gap-5 text-sm font-bold text-gray-500 mt-auto">
                 {featuredPost.author && (
-                  <div className="flex items-center gap-2 text-slate-900">
-                    <span className="w-6 h-px bg-slate-300"></span>
+                  <div className="flex items-center gap-2 text-black">
+                    <span className="w-8 h-px bg-[#D9CFC7]"></span>
                     <span>{featuredPost.author.name}</span>
                   </div>
                 )}
                 {featuredPost.readTimeMinutes && (
-                  <div className="flex items-center gap-1.5 font-medium">
+                  <div className="flex items-center gap-1.5 font-medium ml-auto">
                     <Clock className="w-4 h-4" />
                     <span>{featuredPost.readTimeMinutes} min</span>
                   </div>
@@ -117,9 +117,9 @@ export default function BlogList({ posts, title }: BlogListProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {remainingPosts.map((post, index) => (
           <Link key={post.id} href={getPostHref(post)} className="group block">
-            <div className="h-full flex flex-col bg-white overflow-hidden transition-all duration-300 group-hover:-translate-y-2">
+            <div className="h-full flex flex-col bg-white/70 backdrop-blur-sm overflow-hidden transition-all duration-300 group-hover:-translate-y-2 rounded-[1.5rem] p-4 border border-[#D9CFC7]/50 group-hover:shadow-[0_15px_30px_rgba(0,0,0,0.05)] group-hover:border-[#D9CFC7]">
               {post.featuredImageUrl && (
-                <div className="relative w-full aspect-[16/10] rounded-2xl overflow-hidden mb-6 shadow-sm ring-1 ring-slate-100/50">
+                <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden mb-6 shadow-sm ring-1 ring-[#D9CFC7]/30">
                   <Image
                     src={post.featuredImageUrl}
                     alt={post.featuredImageAlt || post.title}
@@ -132,12 +132,12 @@ export default function BlogList({ posts, title }: BlogListProps) {
 
               <div className="flex-1 flex flex-col">
                 {post.category && (
-                  <span className="text-[9px] font-black uppercase tracking-widest text-primary mb-3">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-black mb-3">
                     {post.category.name}
                   </span>
                 )}
 
-                <h3 className="text-xl font-black mb-3 text-slate-900 group-hover:text-primary transition-colors leading-tight">
+                <h3 className="text-xl font-extrabold mb-3 text-black group-hover:text-primary transition-colors leading-snug">
                   {post.title}
                 </h3>
 

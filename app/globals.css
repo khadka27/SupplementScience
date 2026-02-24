@@ -127,24 +127,24 @@
   :root,
   .dark {
     /* Custom Brand Colors for the Entire Site */
-    --background: 42 55% 96%; /* #FBF8F1 */
+    --background: 36 21% 97%; /* #F9F8F6 */
     --foreground: 0 0% 0%; /* Black text */
-    --card: 42 55% 96%; /* #FBF8F1 */
+    --card: 36 21% 97%; /* #F9F8F6 */
     --card-foreground: 0 0% 0%;
-    --popover: 33 61% 92%; /* #F7ECDE */
+    --popover: 30 25% 91%; /* #EFE9E3 */
     --popover-foreground: 0 0% 0%;
     --primary: 0 0% 0%; /* Black */
     --primary-foreground: 0 0% 100%;
-    --secondary: 33 61% 92%; /* #F7ECDE */
+    --secondary: 30 25% 91%; /* #EFE9E3 */
     --secondary-foreground: 0 0% 0%;
-    --muted: 33 61% 92%; /* #F7ECDE */
+    --muted: 30 25% 91%; /* #EFE9E3 */
     --muted-foreground: 215 16% 40%;
-    --accent: 33 61% 92%; /* #F7ECDE */
+    --accent: 30 25% 91%; /* #EFE9E3 */
     --accent-foreground: 0 0% 0%;
     --destructive: 0 62% 55%;
     --destructive-foreground: 0 0% 100%;
-    --border: 37 48% 84%; /* #E9DAC1 */
-    --input: 37 48% 84%;
+    --border: 27 18% 82%; /* #D9CFC7 */
+    --input: 27 18% 82%;
     --ring: 0 0% 0%;
 
     /* Custom variables for links and states */
@@ -157,12 +157,12 @@
     --shadow-opacity: 0.05;
 
     /* Base color aliases */
-    --bg: #fbf8f1;
-    --surface: #f7ecde;
-    --surface-2: #e9dac1;
+    --bg: #f9f8f6;
+    --surface: #efe9e3;
+    --surface-2: #d9cfc7;
     --text: #000000;
     --text-muted: #4b5563;
-    --accent-soft: #f7ecde;
+    --accent-soft: #efe9e3;
     --primary-hover: #355b14;
 
     /* Home page variables */
@@ -596,7 +596,7 @@ article ul.checklist {
 }
 
 article ul.checklist li {
-  @apply flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-[#FBF8F1] to-[#E9DAC1]  transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg;
+  @apply flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-[#F9F8F6] to-[#D9CFC7]  transform transition-all duration-300 hover:scale-[1.02] hover:shadow-lg;
   animation: slideInUp 0.4s ease-out;
 }
 
@@ -1003,7 +1003,7 @@ article .benefit-card .icon {
 }
 
 article .benefit-card h5 {
-  @apply text-xl font-black mb-3 text-green-700 dark:text-green-400;
+  @apply text-xl font-black mb-3 text-black;
 }
 
 article .benefit-card p {
@@ -1035,7 +1035,7 @@ article .after-box {
 }
 
 article .after-box h4 {
-  @apply text-2xl font-black text-green-700 mb-4;
+  @apply text-2xl font-black text-black mb-4;
 }
 
 article .after-box::before {

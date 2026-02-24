@@ -141,7 +141,7 @@ export default function TermsPage() {
           <Card>
             <CardContent className="pt-8">
               <div className="flex items-start gap-4 mb-4">
-                <div className="bg-[#E9DAC1]  p-2 rounded-lg">
+                <div className="bg-[#D9CFC7]  p-2 rounded-lg">
                   <FileText className="w-5 h-5 text-primary dark:text-primary" />
                 </div>
                 <div>

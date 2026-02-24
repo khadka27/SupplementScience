@@ -31,9 +31,9 @@ export default function EditorialPolicyPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-[#FBF8F1] via-[#F7ECDE] to-[#E9DAC1]  py-20 px-4">
+      <div className="relative bg-gradient-to-br from-[#F9F8F6] via-[#EFE9E3] to-[#D9CFC7]  py-20 px-4">
         <div className="container mx-auto max-w-4xl text-center">
-          <div className="bg-[#E9DAC1]  w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="bg-[#D9CFC7]  w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
             <BookOpen className="w-8 h-8 text-primary dark:text-primary" />
           </div>
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
@@ -48,10 +48,10 @@ export default function EditorialPolicyPage() {
 
       <div className="container mx-auto px-4 py-16 max-w-4xl">
         {/* Commitment Card */}
-        <Card className="mb-12 border-2 bg-gradient-to-br from-[#FBF8F1] to-[#F7ECDE] ">
+        <Card className="mb-12 border-2 bg-gradient-to-br from-[#F9F8F6] to-[#EFE9E3] ">
           <CardContent className="pt-8">
             <div className="flex items-start gap-4">
-              <div className="bg-[#E9DAC1]  p-3 rounded-lg">
+              <div className="bg-[#D9CFC7]  p-3 rounded-lg">
                 <Award className="w-6 h-6 text-primary dark:text-primary" />
               </div>
               <div>
@@ -84,7 +84,7 @@ export default function EditorialPolicyPage() {
 
           <Card className="text-center hover:shadow-lg transition-shadow">
             <CardContent className="pt-8">
-              <div className="bg-[#E9DAC1]  w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-[#D9CFC7]  w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
                 <CheckCircle2 className="w-6 h-6 text-primary dark:text-primary" />
               </div>
               <h3 className="font-bold mb-2">Fact-Checked</h3>
@@ -169,7 +169,7 @@ export default function EditorialPolicyPage() {
 
                 <div>
                   <div className="flex items-start gap-3 mb-3">
-                    <div className="bg-[#E9DAC1]  p-2 rounded-lg">
+                    <div className="bg-[#D9CFC7]  p-2 rounded-lg">
                       <CheckCircle2 className="w-5 h-5 text-primary dark:text-primary" />
                     </div>
                     <h3 className="text-lg font-bold mt-1">Editorial Review</h3>
@@ -348,7 +348,7 @@ export default function EditorialPolicyPage() {
           <Card>
             <CardContent className="pt-8">
               <div className="flex items-start gap-4 mb-4">
-                <div className="bg-[#E9DAC1]  p-2 rounded-lg">
+                <div className="bg-[#D9CFC7]  p-2 rounded-lg">
                   <Shield className="w-5 h-5 text-primary dark:text-primary" />
                 </div>
                 <div>
@@ -432,10 +432,10 @@ export default function EditorialPolicyPage() {
         </div>
 
         {/* Contact Card */}
-        <Card className="mt-12 border-2 bg-gradient-to-br from-[#FBF8F1] to-[#F7ECDE] ">
+        <Card className="mt-12 border-2 bg-gradient-to-br from-[#F9F8F6] to-[#EFE9E3] ">
           <CardContent className="py-8">
             <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="bg-[#E9DAC1]  p-4 rounded-full">
+              <div className="bg-[#D9CFC7]  p-4 rounded-full">
                 <Mail className="w-8 h-8 text-primary dark:text-primary" />
               </div>
               <div className="flex-1 text-center md:text-left">

@@ -32,7 +32,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-[#FBF8F1] via-[#F7ECDE] to-[#E9DAC1]  py-20 px-4">
+      <div className="relative bg-gradient-to-br from-[#F9F8F6] via-[#EFE9E3] to-[#D9CFC7]  py-20 px-4">
         <div className="container mx-auto max-w-4xl text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             About SupplementDecoded
@@ -48,10 +48,10 @@ export default function AboutPage() {
       {/* Core Values */}
       <div className="container mx-auto px-4 py-16 max-w-6xl">
         <div className="grid md:grid-cols-2 gap-8 mb-16">
-          <Card className="border-2 hover:border-[#E9DAC1] dark:hover:border-[#E9DAC1] transition-colors">
+          <Card className="border-2 hover:border-[#D9CFC7] dark:hover:border-[#D9CFC7] transition-colors">
             <CardContent className="pt-8">
               <div className="flex items-start gap-4">
-                <div className="bg-[#E9DAC1]  p-3 rounded-lg">
+                <div className="bg-[#D9CFC7]  p-3 rounded-lg">
                   <Target className="w-6 h-6 text-primary dark:text-primary" />
                 </div>
                 <div>
@@ -67,10 +67,10 @@ export default function AboutPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-2 hover:border-[#E9DAC1] dark:hover:border-[#E9DAC1] transition-colors">
+          <Card className="border-2 hover:border-[#D9CFC7] dark:hover:border-[#D9CFC7] transition-colors">
             <CardContent className="pt-8">
               <div className="flex items-start gap-4">
-                <div className="bg-[#E9DAC1]  p-3 rounded-lg">
+                <div className="bg-[#D9CFC7]  p-3 rounded-lg">
                   <Shield className="w-6 h-6 text-primary dark:text-primary" />
                 </div>
                 <div>
@@ -130,7 +130,7 @@ export default function AboutPage() {
                 className="text-center hover:shadow-lg transition-shadow"
               >
                 <CardContent className="pt-8 pb-6">
-                  <div className="bg-[#E9DAC1]  w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="bg-[#D9CFC7]  w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4">
                     <item.icon className="w-7 h-7 text-primary dark:text-primary" />
                   </div>
                   <h3 className="font-bold text-lg mb-2">{item.title}</h3>
@@ -147,7 +147,7 @@ export default function AboutPage() {
         <Card className="mb-16 bg-muted/30">
           <CardContent className="py-12">
             <div className="max-w-3xl mx-auto text-center">
-              <div className="bg-[#E9DAC1]  w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="bg-[#D9CFC7]  w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Users className="w-8 h-8 text-primary dark:text-primary" />
               </div>
               <h2 className="text-3xl font-bold mb-4">Our Team</h2>
@@ -191,7 +191,7 @@ export default function AboutPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-2 bg-[#F7ECDE] ">
+          <Card className="border-2 bg-[#EFE9E3] ">
             <CardContent className="py-8">
               <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
                 <Mail className="w-6 h-6 text-primary dark:text-primary" />

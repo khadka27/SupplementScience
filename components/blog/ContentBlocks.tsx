@@ -22,7 +22,7 @@ export function QuickSummary({ children, className }: ContentBlockProps) {
   return (
     <Card
       className={cn(
-        "bg-[#F7ECDE] border-2 border-[#E9DAC1] transition-all shadow-sm",
+        "bg-[#EFE9E3] border-2 border-[#D9CFC7] transition-all shadow-sm",
         className,
       )}
     >
@@ -44,7 +44,7 @@ export function BenefitsBlock({ children, className }: ContentBlockProps) {
   return (
     <Card
       className={cn(
-        "bg-[#F7ECDE] border-2 border-[#E9DAC1] transition-all shadow-sm",
+        "bg-[#EFE9E3] border-2 border-[#D9CFC7] transition-all shadow-sm",
         className,
       )}
     >
@@ -66,7 +66,7 @@ export function DosageBlock({ children, className }: ContentBlockProps) {
   return (
     <Card
       className={cn(
-        "bg-[#F7ECDE] border-2 border-[#E9DAC1] transition-all shadow-sm",
+        "bg-[#EFE9E3] border-2 border-[#D9CFC7] transition-all shadow-sm",
         className,
       )}
     >
@@ -88,7 +88,7 @@ export function WarningBlock({ children, className }: ContentBlockProps) {
   return (
     <Card
       className={cn(
-        "bg-[#F7ECDE] border-2 border-[#E9DAC1] transition-all shadow-sm",
+        "bg-[#EFE9E3] border-2 border-[#D9CFC7] transition-all shadow-sm",
         className,
       )}
     >
@@ -110,7 +110,7 @@ export function TimelineBlock({ children, className }: ContentBlockProps) {
   return (
     <Card
       className={cn(
-        "bg-[#F7ECDE] border-2 border-[#E9DAC1] transition-all shadow-sm",
+        "bg-[#EFE9E3] border-2 border-[#D9CFC7] transition-all shadow-sm",
         className,
       )}
     >

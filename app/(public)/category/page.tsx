@@ -102,7 +102,7 @@ export default async function CategoriesPage() {
                   <a
                     key={category.id}
                     href={`/${category.slug}`}
-                    className="p-4 rounded-xl bg-[#F7ECDE] hover:bg-[#E9DAC1] border border-[#E9DAC1] transition-all group flex items-center justify-between"
+                    className="p-4 rounded-xl bg-[#EFE9E3] hover:bg-[#D9CFC7] border border-[#D9CFC7] transition-all group flex items-center justify-between"
                   >
                     <span className="font-semibold text-black">
                       {category.name}

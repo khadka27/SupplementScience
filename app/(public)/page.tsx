@@ -118,7 +118,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[#FBF8F1] via-[#F7ECDE] to-[#E9DAC1]  py-20 px-4 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#F9F8F6] via-[#EFE9E3] to-[#D9CFC7]  py-20 px-4 overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.2),transparent)]" />
@@ -127,18 +127,18 @@ export default async function Home() {
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-12">
             {/* Trust Badge */}
-            <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-[#E9DAC1] dark:border-[#E9DAC1] mb-6 shadow-sm">
+            <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-[#D9CFC7] dark:border-[#D9CFC7] mb-6 shadow-sm">
               <ShieldCheck className="w-4 h-4 text-primary dark:text-primary" />
               <span className="text-sm font-medium text-primary dark:text-gray-800">
                 Evidence-Based • Updated Weekly • Beginner-Friendly
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 bg-gradient-to-r from-primary to-primary  bg-clip-text text-transparent leading-tight">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 text-black leading-tight drop-shadow-sm">
               Science-Backed Supplement Guides for Real Results
             </h1>
 
-            <p className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-gray-800 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed">
               Understand what works, how to take it safely, and what to avoid —
               based on research, not hype.
             </p>
@@ -158,7 +158,7 @@ export default async function Home() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-[#E9DAC1] text-primary dark:text-primary hover:bg-[#F7ECDE] dark:hover:bg-[#E9DAC1]"
+                  className="border-[#D9CFC7] text-primary dark:text-primary hover:bg-[#EFE9E3] dark:hover:bg-[#D9CFC7]"
                 >
                   Beginner Guides
                 </Button>
@@ -177,8 +177,8 @@ export default async function Home() {
               <h2 className="text-3xl font-bold">Featured Guide</h2>
             </div>
 
-            <Link href={getPostHref(mainFeaturedPost)}>
-              <Card className="group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-[#E9DAC1] dark:border-[#E9DAC1] bg-gradient-to-br from-white to-green-50/50 dark:from-gray-950 dark:to-green-950/20">
+            <Link href={getPostHref(mainFeaturedPost)} className="block">
+              <Card className="group hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] transition-all duration-500 overflow-hidden border border-[#D9CFC7] bg-white/60 backdrop-blur-sm rounded-[2rem]">
                 <div className="grid md:grid-cols-2 gap-0">
                   {/* Image */}
                   {mainFeaturedPost.featuredImageUrl && (
@@ -252,15 +252,15 @@ export default async function Home() {
                 const Icon = categoryIcons[category.name] || Leaf;
                 return (
                   <Link key={category.id} href={`/category/${category.slug}`}>
-                    <Card className="group hover:shadow-lg hover:border-[#E9DAC1] dark:hover:border-[#E9DAC1] transition-all duration-300 h-full cursor-pointer">
-                      <CardContent className="p-6 text-center">
-                        <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[#E9DAC1]  flex items-center justify-center group-hover:bg-[#E9DAC1] dark:group-hover:bg-[#E9DAC1] transition-colors">
-                          <Icon className="w-6 h-6 text-primary dark:text-primary" />
+                    <Card className="group hover:shadow-xl hover:-translate-y-1 hover:border-[#D9CFC7] transition-all duration-300 h-full cursor-pointer bg-white/70 backdrop-blur-sm rounded-[1.5rem] border border-[#D9CFC7]/50">
+                      <CardContent className="p-8 text-center flex flex-col justify-center items-center h-full">
+                        <div className="w-14 h-14 mb-5 rounded-2xl bg-[#EFE9E3] flex items-center justify-center group-hover:bg-[#D9CFC7] transition-colors shadow-inner">
+                          <Icon className="w-7 h-7 text-black" />
                         </div>
-                        <h3 className="font-bold text-lg mb-2 group-hover:text-primary dark:group-hover:text-primary transition-colors">
+                        <h3 className="font-bold text-xl mb-2 group-hover:text-primary transition-colors text-black">
                           {category.name}
                         </h3>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
                           {category.postCount}{" "}
                           {category.postCount === 1 ? "guide" : "guides"}
                         </p>
@@ -294,7 +294,7 @@ export default async function Home() {
               <Link key={topic} href={`/blog?q=${topic.toLowerCase()}`}>
                 <Badge
                   variant="outline"
-                  className="px-4 py-2 hover:bg-[#F7ECDE] dark:hover:bg-[#E9DAC1] hover:border-[#E9DAC1] dark:hover:border-[#E9DAC1] cursor-pointer transition-colors text-sm"
+                  className="px-4 py-2 hover:bg-[#EFE9E3] dark:hover:bg-[#D9CFC7] hover:border-[#D9CFC7] dark:hover:border-[#D9CFC7] cursor-pointer transition-colors text-sm"
                 >
                   {topic}
                 </Badge>
@@ -330,7 +330,7 @@ export default async function Home() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-[#E9DAC1] text-primary dark:text-primary"
+                  className="border-[#D9CFC7] text-primary dark:text-primary"
                 >
                   View All Articles
                   <ArrowRight className="ml-2 w-4 h-4" />
@@ -342,7 +342,7 @@ export default async function Home() {
       )}
 
       {/* Editor's Picks */}
-      <section className="py-16 px-4 bg-gradient-to-br from-[#FBF8F1] to-[#F7ECDE] ">
+      <section className="py-16 px-4 bg-gradient-to-br from-[#F9F8F6] to-[#EFE9E3] ">
         <div className="container mx-auto max-w-6xl">
           <div className="flex items-center gap-2 mb-8">
             <CheckCircle2 className="w-6 h-6 text-primary dark:text-primary" />
@@ -373,9 +373,9 @@ export default async function Home() {
               },
             ].map((pick, index) => (
               <Link key={index} href="/blog">
-                <Card className="group hover:shadow-lg hover:border-[#E9DAC1] dark:hover:border-[#E9DAC1] transition-all cursor-pointer">
-                  <CardContent className="p-6 flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-[#E9DAC1]  flex items-center justify-center shrink-0 group-hover:bg-[#E9DAC1] dark:group-hover:bg-[#E9DAC1] transition-colors">
+                <Card className="group hover:shadow-xl hover:-translate-y-1 hover:border-[#D9CFC7] transition-all duration-300 cursor-pointer bg-white/80 backdrop-blur-md rounded-[1.5rem] border border-[#D9CFC7]/50">
+                  <CardContent className="p-6 flex items-start gap-5">
+                    <div className="w-12 h-12 rounded-lg bg-[#D9CFC7]  flex items-center justify-center shrink-0 group-hover:bg-[#D9CFC7] dark:group-hover:bg-[#D9CFC7] transition-colors">
                       <pick.icon className="w-6 h-6 text-primary dark:text-primary" />
                     </div>
                     <div>
@@ -397,7 +397,7 @@ export default async function Home() {
       {/* Trust & Safety */}
       <section className="py-16 px-4 bg-white dark:bg-gray-950">
         <div className="container mx-auto max-w-4xl text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#E9DAC1]  mb-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#D9CFC7]  mb-6">
             <ShieldCheck className="w-8 h-8 text-primary dark:text-primary" />
           </div>
 
@@ -419,7 +419,7 @@ export default async function Home() {
       </section>
 
       {/* Newsletter */}
-      <section className="py-16 px-4 bg-gradient-to-br from-[#E9DAC1] to-[#F7ECDE] text-white">
+      <section className="py-16 px-4 bg-gradient-to-br from-[#D9CFC7] to-[#EFE9E3] text-white">
         <div className="container mx-auto max-w-3xl text-center">
           <Mail className="w-12 h-12 mx-auto mb-6 opacity-90" />
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -437,7 +437,7 @@ export default async function Home() {
             />
             <Button
               size="lg"
-              className="bg-white text-primary hover:bg-[#F7ECDE] font-bold whitespace-nowrap"
+              className="bg-white text-primary hover:bg-[#EFE9E3] font-bold whitespace-nowrap"
             >
               Subscribe
             </Button>
