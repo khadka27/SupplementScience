@@ -42,7 +42,7 @@ export default function BlogList({ posts, title }: BlogListProps) {
       {/* Header section - Only shown if title is present */}
       {title && (
         <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-sm font-semibold mb-6 ring-1 ring-emerald-100 shadow-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 text-primary text-sm font-semibold mb-6 ring-1 ring-emerald-100 shadow-sm">
             <TrendingUp className="w-4 h-4" />
             <span>Scientifically Verified</span>
           </div>
@@ -79,12 +79,12 @@ export default function BlogList({ posts, title }: BlogListProps) {
 
             <div className="lg:col-span-2 p-8 lg:p-12 flex flex-col justify-center bg-slate-50/30">
               {featuredPost.category && (
-                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-600 mb-4 inline-block">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-primary mb-4 inline-block">
                   {featuredPost.category.name}
                 </span>
               )}
 
-              <h2 className="text-3xl lg:text-4xl font-black mb-6 group-hover:text-emerald-700 transition-colors leading-[1.1] text-slate-900">
+              <h2 className="text-3xl lg:text-4xl font-black mb-6 group-hover:text-primary transition-colors leading-[1.1] text-slate-900">
                 {featuredPost.title}
               </h2>
 
@@ -132,12 +132,12 @@ export default function BlogList({ posts, title }: BlogListProps) {
 
               <div className="flex-1 flex flex-col">
                 {post.category && (
-                  <span className="text-[9px] font-black uppercase tracking-widest text-emerald-600 mb-3">
+                  <span className="text-[9px] font-black uppercase tracking-widest text-primary mb-3">
                     {post.category.name}
                   </span>
                 )}
 
-                <h3 className="text-xl font-black mb-3 text-slate-900 group-hover:text-emerald-600 transition-colors leading-tight">
+                <h3 className="text-xl font-black mb-3 text-slate-900 group-hover:text-primary transition-colors leading-tight">
                   {post.title}
                 </h3>
 
@@ -157,7 +157,7 @@ export default function BlogList({ posts, title }: BlogListProps) {
                     <span>•</span>
                     <span>{post.readTimeMinutes} min</span>
                   </div>
-                  <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-emerald-600">
+                  <span className="opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-primary">
                     Read guide →
                   </span>
                 </div>

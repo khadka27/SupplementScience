@@ -10,6 +10,8 @@ export default defineConfig({
     seed: "tsx prisma/seed.ts",
   },
   datasource: {
-    url: process.env.DATABASE_URL || "postgresql://user:password@localhost:5432/supplementscience?schema=public",
+    url:
+      process.env.DATABASE_URL ||
+      "postgresql://user:password@127.0.0.1:5432/supplementscience",
   },
 });

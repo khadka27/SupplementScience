@@ -118,7 +118,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-green-950 dark:via-emerald-950 dark:to-teal-950 py-20 px-4 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-[#FBF8F1] via-[#F7ECDE] to-[#E9DAC1]  py-20 px-4 overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(34,197,94,0.2),transparent)]" />
@@ -127,14 +127,14 @@ export default async function Home() {
         <div className="container mx-auto max-w-6xl relative z-10">
           <div className="text-center mb-12">
             {/* Trust Badge */}
-            <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-green-200 dark:border-green-800 mb-6 shadow-sm">
-              <ShieldCheck className="w-4 h-4 text-green-600 dark:text-green-400" />
-              <span className="text-sm font-medium text-green-900 dark:text-green-100">
+            <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full border border-[#E9DAC1] dark:border-[#E9DAC1] mb-6 shadow-sm">
+              <ShieldCheck className="w-4 h-4 text-primary dark:text-primary" />
+              <span className="text-sm font-medium text-primary dark:text-gray-800">
                 Evidence-Based • Updated Weekly • Beginner-Friendly
               </span>
             </div>
 
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 bg-gradient-to-r from-green-700 to-emerald-600 dark:from-green-400 dark:to-emerald-400 bg-clip-text text-transparent leading-tight">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6 bg-gradient-to-r from-primary to-primary  bg-clip-text text-transparent leading-tight">
               Science-Backed Supplement Guides for Real Results
             </h1>
 
@@ -147,7 +147,7 @@ export default async function Home() {
               <Link href="/blog">
                 <Button
                   size="lg"
-                  className="bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl transition-all"
+                  className="bg-primary hover:bg-primary text-white shadow-lg hover:shadow-xl transition-all"
                 >
                   <BookOpen className="mr-2 w-5 h-5" />
                   Browse Supplements
@@ -158,7 +158,7 @@ export default async function Home() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-green-600 text-green-700 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-950/50"
+                  className="border-[#E9DAC1] text-primary dark:text-primary hover:bg-[#F7ECDE] dark:hover:bg-[#E9DAC1]"
                 >
                   Beginner Guides
                 </Button>
@@ -178,7 +178,7 @@ export default async function Home() {
             </div>
 
             <Link href={getPostHref(mainFeaturedPost)}>
-              <Card className="group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-green-200 dark:border-green-800 bg-gradient-to-br from-white to-green-50/50 dark:from-gray-950 dark:to-green-950/20">
+              <Card className="group hover:shadow-2xl transition-all duration-300 overflow-hidden border-2 border-[#E9DAC1] dark:border-[#E9DAC1] bg-gradient-to-br from-white to-green-50/50 dark:from-gray-950 dark:to-green-950/20">
                 <div className="grid md:grid-cols-2 gap-0">
                   {/* Image */}
                   {mainFeaturedPost.featuredImageUrl && (
@@ -196,12 +196,12 @@ export default async function Home() {
                   {/* Content */}
                   <div className="p-8 md:p-12 flex flex-col justify-center">
                     {mainFeaturedPost.category && (
-                      <Badge className="w-fit mb-4 bg-green-600 text-white">
+                      <Badge className="w-fit mb-4 bg-primary text-white">
                         {mainFeaturedPost.category.name}
                       </Badge>
                     )}
 
-                    <h3 className="text-3xl md:text-4xl font-bold mb-4 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">
+                    <h3 className="text-3xl md:text-4xl font-bold mb-4 group-hover:text-primary dark:group-hover:text-primary transition-colors">
                       {mainFeaturedPost.title}
                     </h3>
 
@@ -252,12 +252,12 @@ export default async function Home() {
                 const Icon = categoryIcons[category.name] || Leaf;
                 return (
                   <Link key={category.id} href={`/category/${category.slug}`}>
-                    <Card className="group hover:shadow-lg hover:border-green-300 dark:hover:border-green-700 transition-all duration-300 h-full cursor-pointer">
+                    <Card className="group hover:shadow-lg hover:border-[#E9DAC1] dark:hover:border-[#E9DAC1] transition-all duration-300 h-full cursor-pointer">
                       <CardContent className="p-6 text-center">
-                        <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center group-hover:bg-green-200 dark:group-hover:bg-green-800/50 transition-colors">
-                          <Icon className="w-6 h-6 text-green-600 dark:text-green-400" />
+                        <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[#E9DAC1]  flex items-center justify-center group-hover:bg-[#E9DAC1] dark:group-hover:bg-[#E9DAC1] transition-colors">
+                          <Icon className="w-6 h-6 text-primary dark:text-primary" />
                         </div>
-                        <h3 className="font-bold text-lg mb-2 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">
+                        <h3 className="font-bold text-lg mb-2 group-hover:text-primary dark:group-hover:text-primary transition-colors">
                           {category.name}
                         </h3>
                         <p className="text-sm text-muted-foreground">
@@ -294,7 +294,7 @@ export default async function Home() {
               <Link key={topic} href={`/blog?q=${topic.toLowerCase()}`}>
                 <Badge
                   variant="outline"
-                  className="px-4 py-2 hover:bg-green-50 dark:hover:bg-green-950/50 hover:border-green-300 dark:hover:border-green-700 cursor-pointer transition-colors text-sm"
+                  className="px-4 py-2 hover:bg-[#F7ECDE] dark:hover:bg-[#E9DAC1] hover:border-[#E9DAC1] dark:hover:border-[#E9DAC1] cursor-pointer transition-colors text-sm"
                 >
                   {topic}
                 </Badge>
@@ -330,7 +330,7 @@ export default async function Home() {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-green-600 text-green-700 dark:text-green-400"
+                  className="border-[#E9DAC1] text-primary dark:text-primary"
                 >
                   View All Articles
                   <ArrowRight className="ml-2 w-4 h-4" />
@@ -342,10 +342,10 @@ export default async function Home() {
       )}
 
       {/* Editor's Picks */}
-      <section className="py-16 px-4 bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/20 dark:to-emerald-950/20">
+      <section className="py-16 px-4 bg-gradient-to-br from-[#FBF8F1] to-[#F7ECDE] ">
         <div className="container mx-auto max-w-6xl">
           <div className="flex items-center gap-2 mb-8">
-            <CheckCircle2 className="w-6 h-6 text-green-600 dark:text-green-400" />
+            <CheckCircle2 className="w-6 h-6 text-primary dark:text-primary" />
             <h2 className="text-3xl font-bold">Top Picks This Month</h2>
           </div>
 
@@ -373,16 +373,16 @@ export default async function Home() {
               },
             ].map((pick, index) => (
               <Link key={index} href="/blog">
-                <Card className="group hover:shadow-lg hover:border-green-300 dark:hover:border-green-700 transition-all cursor-pointer">
+                <Card className="group hover:shadow-lg hover:border-[#E9DAC1] dark:hover:border-[#E9DAC1] transition-all cursor-pointer">
                   <CardContent className="p-6 flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center shrink-0 group-hover:bg-green-200 dark:group-hover:bg-green-800/50 transition-colors">
-                      <pick.icon className="w-6 h-6 text-green-600 dark:text-green-400" />
+                    <div className="w-12 h-12 rounded-lg bg-[#E9DAC1]  flex items-center justify-center shrink-0 group-hover:bg-[#E9DAC1] dark:group-hover:bg-[#E9DAC1] transition-colors">
+                      <pick.icon className="w-6 h-6 text-primary dark:text-primary" />
                     </div>
                     <div>
                       <Badge variant="outline" className="mb-2 text-xs">
                         {pick.category}
                       </Badge>
-                      <h3 className="font-bold text-lg group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">
+                      <h3 className="font-bold text-lg group-hover:text-primary dark:group-hover:text-primary transition-colors">
                         {pick.title}
                       </h3>
                     </div>
@@ -397,8 +397,8 @@ export default async function Home() {
       {/* Trust & Safety */}
       <section className="py-16 px-4 bg-white dark:bg-gray-950">
         <div className="container mx-auto max-w-4xl text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/30 mb-6">
-            <ShieldCheck className="w-8 h-8 text-green-600 dark:text-green-400" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#E9DAC1]  mb-6">
+            <ShieldCheck className="w-8 h-8 text-primary dark:text-primary" />
           </div>
 
           <h2 className="text-3xl font-bold mb-4">Our Promise</h2>
@@ -419,13 +419,13 @@ export default async function Home() {
       </section>
 
       {/* Newsletter */}
-      <section className="py-16 px-4 bg-gradient-to-br from-green-600 to-emerald-600 text-white">
+      <section className="py-16 px-4 bg-gradient-to-br from-[#E9DAC1] to-[#F7ECDE] text-white">
         <div className="container mx-auto max-w-3xl text-center">
           <Mail className="w-12 h-12 mx-auto mb-6 opacity-90" />
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Get Supplement Guides That Actually Help
           </h2>
-          <p className="text-lg mb-8 text-green-50">
+          <p className="text-lg mb-8 text-black">
             Weekly summaries, dosage guides, and new research updates — no spam.
           </p>
 
@@ -437,13 +437,13 @@ export default async function Home() {
             />
             <Button
               size="lg"
-              className="bg-white text-green-600 hover:bg-green-50 font-bold whitespace-nowrap"
+              className="bg-white text-primary hover:bg-[#F7ECDE] font-bold whitespace-nowrap"
             >
               Subscribe
             </Button>
           </div>
 
-          <p className="text-xs text-green-100 mt-4">
+          <p className="text-xs text-gray-800 mt-4">
             Join 10,000+ readers • Unsubscribe anytime
           </p>
         </div>
@@ -460,7 +460,7 @@ export default async function Home() {
               Your blog is ready! Add your first post to get started.
             </p>
             <Link href="/admin/blog/new">
-              <Button size="lg" className="bg-green-600 hover:bg-green-700">
+              <Button size="lg" className="bg-primary hover:bg-primary">
                 Create Your First Article
               </Button>
             </Link>

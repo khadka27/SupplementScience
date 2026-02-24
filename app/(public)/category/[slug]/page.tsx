@@ -99,7 +99,7 @@ export default async function CategoryPage({ params }: Props) {
               {category.description}
             </p>
           )}
-          <div className="mt-4 text-sm font-medium text-emerald-600">
+          <div className="mt-4 text-sm font-medium text-primary">
             {posts.length} Professional Guides & Articles
           </div>
         </div>

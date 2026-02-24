@@ -54,7 +54,7 @@ export function SearchBar() {
       setIsLoading(true);
       try {
         const response = await fetch(
-          `/api/search?q=${encodeURIComponent(query)}`
+          `/api/search?q=${encodeURIComponent(query)}`,
         );
         const data = await response.json();
         setResults(data.results || []);
@@ -78,12 +78,12 @@ export function SearchBar() {
 
   const getMatchColor = (percentage: number) => {
     if (percentage >= 90)
-      return "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400";
+      return "bg-[#F7ECDE] text-primary border border-[#E9DAC1]";
     if (percentage >= 70)
-      return "bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400";
+      return "bg-[#F7ECDE] text-primary/80 border border-[#E9DAC1]";
     if (percentage >= 60)
-      return "bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400";
-    return "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400";
+      return "bg-muted text-muted-foreground border border-border";
+    return "bg-muted text-muted-foreground/80";
   };
 
   return (
@@ -136,7 +136,7 @@ export function SearchBar() {
                         variant="secondary"
                         className={cn(
                           "text-xs shrink-0",
-                          getMatchColor(result.matchPercentage)
+                          getMatchColor(result.matchPercentage),
                         )}
                       >
                         {result.matchPercentage}% match

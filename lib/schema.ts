@@ -69,6 +69,12 @@ export function generateBlogPostSchema(post: Post, baseUrl: string) {
       }),
     wordCount: post.content ? post.content.split(/\s+/).length : 0,
     timeRequired: `PT${post.readTimeMinutes}M`,
+    ...(post.reviewedBy && {
+      reviewedBy: {
+        "@type": "Person",
+        name: post.reviewedBy,
+      },
+    }),
   };
 }
 
@@ -87,7 +93,7 @@ export function generateAuthorSchema(author: any, baseUrl: string) {
 }
 
 export function generateBreadcrumbSchema(
-  items: Array<{ name: string; url: string }>
+  items: Array<{ name: string; url: string }>,
 ) {
   return {
     "@context": "https://schema.org",
@@ -102,7 +108,7 @@ export function generateBreadcrumbSchema(
 }
 
 export function generateFAQSchema(
-  faqs: Array<{ question: string; answer: string }>
+  faqs: Array<{ question: string; answer: string }>,
 ) {
   return {
     "@context": "https://schema.org",

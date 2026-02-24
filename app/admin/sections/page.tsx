@@ -350,7 +350,7 @@ export default function SectionsManagementPage() {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2 flex-1 pr-20">
-                      <Layers className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+                      <Layers className="w-5 h-5 text-primary flex-shrink-0" />
                       <CardTitle className="text-lg">{section.name}</CardTitle>
                     </div>
                   </div>

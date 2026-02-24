@@ -111,8 +111,8 @@ export default function ShareButtons({
       <Button
         variant="outline"
         size="icon"
-        className={`rounded-full transition-all duration-300 hover:text-green-600 hover:bg-green-600/10 ${
-          copied ? "text-green-600 bg-green-600/10 border-green-600/20" : ""
+        className={`rounded-full transition-all duration-300 hover:text-black hover:bg-[#E9DAC1]/50 ${
+          copied ? "text-primary bg-primary/10 border-primary/20" : ""
         }`}
         onClick={handleCopyLink}
         title="Copy Link"

@@ -80,7 +80,7 @@ export default async function CategoriesPage() {
   return (
     <div className="container mx-auto px-4 py-16 max-w-7xl mt-20">
       <div className="mb-16 text-center lg:text-left">
-        <h1 className="text-5xl font-extrabold mb-6 tracking-tight bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent">
+        <h1 className="text-5xl font-extrabold mb-6 tracking-tight bg-gradient-to-r from-primary to-primary bg-clip-text text-transparent">
           Content Categories
         </h1>
         <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
@@ -93,8 +93,8 @@ export default async function CategoriesPage() {
         <div className="lg:col-span-1 space-y-12">
           {hubCategories.length > 0 && (
             <section>
-              <h2 className="text-xs font-bold uppercase tracking-widest text-emerald-600 mb-6 flex items-center gap-2">
-                <span className="w-8 h-px bg-emerald-600"></span>
+              <h2 className="text-xs font-bold uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
+                <span className="w-8 h-px bg-primary"></span>
                 Authority Hubs
               </h2>
               <div className="flex flex-col gap-3">
@@ -102,12 +102,12 @@ export default async function CategoriesPage() {
                   <a
                     key={category.id}
                     href={`/${category.slug}`}
-                    className="p-4 rounded-xl bg-emerald-50/50 hover:bg-emerald-100/50 border border-emerald-100 transition-all group flex items-center justify-between"
+                    className="p-4 rounded-xl bg-[#F7ECDE] hover:bg-[#E9DAC1] border border-[#E9DAC1] transition-all group flex items-center justify-between"
                   >
-                    <span className="font-semibold text-emerald-900">
+                    <span className="font-semibold text-black">
                       {category.name}
                     </span>
-                    <span className="text-xs bg-white/80 px-2 py-1 rounded-md text-emerald-700 shadow-sm leading-none font-medium">
+                    <span className="text-xs bg-white/80 px-2 py-1 rounded-md text-primary shadow-sm leading-none font-medium">
                       {category.postCount}
                     </span>
                   </a>

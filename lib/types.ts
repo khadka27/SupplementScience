@@ -66,4 +66,6 @@ export type Post = {
   author?: Author | null;
   category?: Category | null;
   tags?: Tag[] | null;
+  reviewedBy?: string | null;
+  reviewedAt?: Date | null;
 };

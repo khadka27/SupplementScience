@@ -347,7 +347,7 @@ export default function CategoriesManagementPage() {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
-                    <Tag className="w-5 h-5 text-emerald-600" />
+                    <Tag className="w-5 h-5 text-primary" />
                     <CardTitle className="text-lg">{category.name}</CardTitle>
                   </div>
                   <div className="flex gap-1">

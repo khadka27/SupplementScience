@@ -253,7 +253,7 @@ export default async function GenericSlugPage({ params }: Props) {
           {posts.length > 0 && (
             <div className="container mx-auto px-4 py-12 max-w-6xl border-t border-border mt-12">
               <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
-                <span className="w-8 h-1 bg-green-500 rounded-full" />
+                <span className="w-8 h-1 bg-[#F7ECDE]0 rounded-full" />
                 More {category.name} Articles
               </h2>
               <BlogList posts={posts as any} />
@@ -263,7 +263,7 @@ export default async function GenericSlugPage({ params }: Props) {
       ) : (
         <>
           {/* Default Category View without a main article */}
-          <div className="relative bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 dark:from-green-950 dark:via-emerald-950 dark:to-teal-950 py-16 px-4">
+          <div className="relative bg-gradient-to-br from-[#FBF8F1] via-[#F7ECDE] to-[#E9DAC1]  py-16 px-4">
             <div className="container mx-auto max-w-6xl">
               <div className="flex flex-col md:flex-row items-center gap-8">
                 {category.imageUrl && (
@@ -294,7 +294,7 @@ export default async function GenericSlugPage({ params }: Props) {
           <div className="container mx-auto px-4 py-12 max-w-6xl">
             <div className="mt-12">
               <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
-                <span className="w-8 h-1 bg-green-500 rounded-full" />
+                <span className="w-8 h-1 bg-[#F7ECDE]0 rounded-full" />
                 Articles in {category.name}
               </h2>
               <BlogList posts={posts as any} />

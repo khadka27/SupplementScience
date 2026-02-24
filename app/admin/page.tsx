@@ -90,8 +90,8 @@ export default function AdminDashboardPage() {
       title: "Published",
       value: stats.publishedPosts,
       icon: Eye,
-      color: "text-green-600",
-      bgColor: "bg-green-50 dark:bg-green-950",
+      color: "text-primary",
+      bgColor: "bg-[#F7ECDE] ",
       href: "/admin/blogs?status=published",
     },
     {

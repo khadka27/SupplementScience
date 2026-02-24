@@ -5,6 +5,13 @@ import { auth } from "@/lib/auth";
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // ✅ CRITICAL: Never intercept NextAuth's own API routes.
+  // If proxy touches /api/auth/*, it returns an HTML page instead of JSON,
+  // causing: "Unexpected token '<', <!DOCTYPE... is not valid JSON"
+  if (pathname.startsWith("/api/auth")) {
+    return NextResponse.next();
+  }
+
   // Proxy functionality: URL normalization
   // Convert to lowercase
   if (pathname !== pathname.toLowerCase()) {
@@ -57,39 +64,16 @@ export async function proxy(request: NextRequest) {
     }
   }
 
-  // Redirect authenticated admin from public pages to admin panel
-  const publicPages = [
-    "/",
-    "/blog",
-    "/about",
-    "/contact",
-    "/privacy",
-    "/terms",
-    "/editorial-policy",
-    "/medical-disclaimer",
-  ];
-  const isPublicPage =
-    publicPages.includes(pathname) ||
-    pathname.startsWith("/blog/") ||
-    pathname.startsWith("/category/") ||
-    pathname.startsWith("/tag/");
-
-  if (isPublicPage) {
-    const session = await auth();
-
-    if (session) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/admin";
-      return NextResponse.redirect(url);
-    }
-  }
+  // (Removed: redirecting admins away from public pages adds an auth()
+  //  call on every single public request, which hurts performance.
+  //  The admin panel link in the nav is sufficient.)
 
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico).*)",
-    "/admin/:path*",
+    // Match all paths EXCEPT: api routes, Next.js internals, and static files
+    "/((?!api/|_next/static|_next/image|favicon\.ico|.*\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)",
   ],
 };

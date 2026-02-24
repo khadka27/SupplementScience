@@ -81,8 +81,8 @@ export function NewsletterForm({
             className={cn(
               "text-xs",
               message.type === "success"
-                ? "text-green-600 dark:text-green-400"
-                : "text-red-600 dark:text-red-400"
+                ? "text-primary font-bold"
+                : "text-red-600 dark:text-red-400",
             )}
           >
             {message.text}
@@ -129,8 +129,8 @@ export function NewsletterForm({
             className={cn(
               "mt-3 p-3 rounded-lg flex items-center gap-2",
               message.type === "success"
-                ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400"
-                : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400"
+                ? "bg-[#F7ECDE] text-primary border border-[#E9DAC1]"
+                : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400",
             )}
           >
             {message.type === "success" && (
@@ -147,19 +147,21 @@ export function NewsletterForm({
   return (
     <div
       className={cn(
-        "rounded-2xl bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 p-8 border-2 border-green-200/50 dark:border-green-800/50",
-        className
+        "rounded-[2rem] bg-white/40 backdrop-blur-sm p-8 md:p-10 border-2 border-[#E9DAC1] shadow-sm",
+        className,
       )}
     >
-      <div className="flex items-start gap-4 mb-6">
-        <div className="bg-green-600 text-white p-3 rounded-xl">
+      <div className="flex items-start gap-5 mb-8">
+        <div className="bg-primary text-primary-foreground p-3.5 rounded-[1.25rem] shadow-lg shadow-primary/20">
           <Mail className="w-6 h-6" />
         </div>
         <div className="flex-1">
-          <h3 className="text-xl font-bold mb-2">Stay Updated</h3>
-          <p className="text-muted-foreground text-sm">
-            Get the latest supplement research, guides, and wellness tips
-            delivered to your inbox.
+          <h3 className="text-2xl font-black text-black mb-2">
+            Subscribe to the Science
+          </h3>
+          <p className="text-gray-700 font-medium leading-relaxed">
+            Get the latest evidence-based research and supplement guides
+            delivered directly to your inbox.
           </p>
         </div>
       </div>
@@ -194,8 +196,8 @@ export function NewsletterForm({
             className={cn(
               "p-3 rounded-lg flex items-center gap-2 text-sm",
               message.type === "success"
-                ? "bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400"
-                : "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400"
+                ? "bg-[#F7ECDE] text-primary border border-[#E9DAC1]"
+                : "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400",
             )}
           >
             {message.type === "success" && (

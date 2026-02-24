@@ -13,7 +13,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-muted/30 border-t border-border mt-20">
+    <footer className="bg-[#F7ECDE] border-t border-[#E9DAC1] mt-20">
       <div className="container mx-auto max-w-6xl px-4 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="md:col-span-2 space-y-6">
@@ -165,7 +165,7 @@ export function Footer() {
           </p>
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-1.5 text-xs text-muted-foreground bg-accent/50 px-3 py-1.5 rounded-full border border-border">
-              <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               Database Real-time Sync
             </span>
           </div>

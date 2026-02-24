@@ -61,17 +61,17 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
                   )}
                 </div>
 
-                <h4 className="text-xl font-bold leading-tight group-hover:text-primary transition-colors line-clamp-2">
+                <h4 className="text-xl font-black leading-tight text-black group-hover:text-primary transition-colors line-clamp-2">
                   {post.title}
                 </h4>
 
                 {post.excerpt && (
-                  <p className="text-muted-foreground line-clamp-3 text-sm leading-relaxed mb-4 flex-1">
+                  <p className="text-gray-700 line-clamp-3 text-sm leading-relaxed mb-4 flex-1 font-medium">
                     {post.excerpt}
                   </p>
                 )}
 
-                <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground pt-2">
+                <div className="flex items-center gap-2 text-xs font-bold text-gray-600 pt-2">
                   <Clock className="w-3.5 h-3.5" />
                   <span>{post.readTimeMinutes} min read</span>
                 </div>

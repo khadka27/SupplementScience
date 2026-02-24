@@ -60,8 +60,8 @@ export function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
         scrolled
-          ? "bg-background/80 backdrop-blur-md py-3 border-border"
-          : "bg-transparent py-5 border-transparent",
+          ? "bg-[#F7ECDE]/90 backdrop-blur-md py-3 border-[#E9DAC1]"
+          : "bg-[#F7ECDE] py-5 border-[#E9DAC1]",
       )}
     >
       <div className="container mx-auto max-w-6xl px-4 lg:px-8 flex items-center justify-between">

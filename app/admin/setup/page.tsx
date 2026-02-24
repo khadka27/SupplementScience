@@ -39,7 +39,7 @@ export default function AdminSetupPage() {
           <CardContent className="space-y-6">
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
+                <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                 <div>
                   <h3 className="font-semibold mb-1">
                     Step 1: Initialize Admin
@@ -54,7 +54,7 @@ export default function AdminSetupPage() {
               </div>
 
               <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
+                <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                 <div>
                   <h3 className="font-semibold mb-1">
                     Step 2: Default Credentials
@@ -74,7 +74,7 @@ export default function AdminSetupPage() {
               </div>
 
               <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-green-600 mt-0.5 shrink-0" />
+                <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 shrink-0" />
                 <div>
                   <h3 className="font-semibold mb-1">
                     Step 3: Change Credentials
