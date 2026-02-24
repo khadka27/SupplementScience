@@ -35,7 +35,6 @@ import {
 
 const navItems = [
   { name: "Home", href: "/" },
-  { name: "Blog", href: "/blog" },
   { name: "Categories", href: "/category" },
   { name: "Ingredients", href: "/ingredients" },
   { name: "About", href: "/about" },
@@ -143,8 +142,8 @@ export function Navbar() {
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link href="/blog" className="cursor-pointer">
-                    View Public Blog
+                  <Link href="/" className="cursor-pointer">
+                    View Public Site
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
@@ -245,9 +244,9 @@ export function Navbar() {
                           Authors
                         </Button>
                       </Link>
-                      <Link href="/blog" className="block">
+                      <Link href="/" className="block">
                         <Button variant="outline" className="w-full" size="sm">
-                          View Blog
+                          View Site
                         </Button>
                       </Link>
                     </div>

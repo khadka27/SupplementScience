@@ -14,9 +14,6 @@ export default async function CategoriesPage() {
   const regularCategories = await prisma.category.findMany({
     where: {
       isHub: false,
-      postCount: {
-        gt: 0,
-      },
     },
     orderBy: {
       name: "asc",
@@ -26,9 +23,6 @@ export default async function CategoriesPage() {
   const hubCategories = await prisma.category.findMany({
     where: {
       isHub: true,
-      postCount: {
-        gt: 0,
-      },
     },
     orderBy: {
       name: "asc",
@@ -78,77 +72,48 @@ export default async function CategoriesPage() {
   }));
 
   return (
-    <div className="container mx-auto px-4 py-16 max-w-7xl mt-20">
+    <div className="container mx-auto px-4 py-16 max-w-7xl mt-20 min-h-[60vh]">
       <div className="mb-16 text-center lg:text-left">
-        <h1 className="text-5xl font-extrabold mb-6 tracking-tight bg-gradient-to-r from-primary to-primary bg-clip-text text-transparent">
+        <h1 className="text-5xl font-extrabold mb-6 tracking-tight text-black">
           Content Categories
         </h1>
-        <p className="text-xl text-muted-foreground max-w-3xl leading-relaxed">
+        <p className="text-xl text-gray-800 max-w-3xl leading-relaxed">
           Explore our expert-verified library of supplement guides, ingredient
           analyses, and wellness research organized by topic.
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-4 gap-12 mb-20">
-        <div className="lg:col-span-1 space-y-12">
-          {hubCategories.length > 0 && (
-            <section>
-              <h2 className="text-xs font-bold uppercase tracking-widest text-primary mb-6 flex items-center gap-2">
-                <span className="w-8 h-px bg-primary"></span>
-                Authority Hubs
-              </h2>
-              <div className="flex flex-col gap-3">
-                {hubCategories.map((category) => (
-                  <a
-                    key={category.id}
-                    href={`/${category.slug}`}
-                    className="p-4 rounded-xl bg-[#EFE9E3] hover:bg-[#D9CFC7] border border-[#D9CFC7] transition-all group flex items-center justify-between"
-                  >
-                    <span className="font-semibold text-black">
-                      {category.name}
-                    </span>
-                    <span className="text-xs bg-white/80 px-2 py-1 rounded-md text-primary shadow-sm leading-none font-medium">
-                      {category.postCount}
-                    </span>
-                  </a>
-                ))}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+        {regularCategories.length === 0 && hubCategories.length === 0 ? (
+          <p className="text-gray-500 italic">No categories found.</p>
+        ) : (
+          [...hubCategories, ...regularCategories].map((category) => (
+            <a
+              key={category.id}
+              href={
+                category.isHub
+                  ? `/${category.slug}`
+                  : `/category/${category.slug}`
+              }
+              className="group block p-8 rounded-[2rem] bg-white/70 backdrop-blur-sm border border-[#D9CFC7] hover:border-black hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] transition-all duration-300"
+            >
+              <h3 className="text-2xl font-bold mb-3 text-black">
+                {category.name}
+              </h3>
+              {category.description && (
+                <p className="text-gray-600 mb-6 line-clamp-2 leading-relaxed">
+                  {category.description}
+                </p>
+              )}
+              <div className="inline-flex flex-wrap items-center gap-2 bg-[#EFE9E3] text-black px-4 py-2 rounded-full text-sm font-semibold group-hover:bg-black group-hover:text-white transition-colors">
+                <span>{category.postCount || 0}</span>
+                <span>
+                  {(category.postCount || 0) === 1 ? "Guide" : "Guides"}
+                </span>
               </div>
-            </section>
-          )}
-
-          <section>
-            <h2 className="text-xs font-bold uppercase tracking-widest text-slate-500 mb-6 flex items-center gap-2">
-              <span className="w-8 h-px bg-slate-400"></span>
-              Topic Categories
-            </h2>
-            <div className="flex flex-col gap-2">
-              {regularCategories.map((category) => (
-                <a
-                  key={category.id}
-                  href={`/category/${category.slug}`}
-                  className="px-4 py-3 rounded-lg hover:bg-slate-50 transition-colors text-sm font-medium text-slate-700 flex items-center justify-between border border-transparent hover:border-slate-100"
-                >
-                  {category.name}
-                  <span className="text-[10px] text-slate-400 font-normal">
-                    {category.postCount}
-                  </span>
-                </a>
-              ))}
-            </div>
-          </section>
-        </div>
-
-        <div className="lg:col-span-3">
-          <div className="flex items-center justify-between mb-8 border-b border-slate-100 pb-6">
-            <h2 className="text-2xl font-bold tracking-tight">
-              Latest categorized articles
-            </h2>
-            <span className="text-sm text-muted-foreground italic">
-              Evidence-verified content
-            </span>
-          </div>
-          <BlogList posts={formattedPosts as any} />
-        </div>
+            </a>
+          ))
+        )}
       </div>
     </div>
   );

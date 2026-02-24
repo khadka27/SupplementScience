@@ -144,7 +144,7 @@ export default async function Home() {
             </p>
 
             <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/blog">
+              <Link href="/category">
                 <Button
                   size="lg"
                   className="bg-primary hover:bg-primary text-white shadow-lg hover:shadow-xl transition-all"
@@ -291,7 +291,7 @@ export default async function Home() {
               "Athletes",
               "Safety",
             ].map((topic) => (
-              <Link key={topic} href={`/blog?q=${topic.toLowerCase()}`}>
+              <Link key={topic} href={`/category`}>
                 <Badge
                   variant="outline"
                   className="px-4 py-2 hover:bg-[#EFE9E3] dark:hover:bg-[#D9CFC7] hover:border-[#D9CFC7] dark:hover:border-[#D9CFC7] cursor-pointer transition-colors text-sm"
@@ -315,7 +315,7 @@ export default async function Home() {
                   Fresh research and supplement guides
                 </p>
               </div>
-              <Link href="/blog">
+              <Link href="/category">
                 <Button variant="ghost" className="hidden md:flex">
                   View All
                   <ArrowRight className="ml-2 w-4 h-4" />
@@ -326,7 +326,7 @@ export default async function Home() {
             <BlogList posts={postsToShow} />
 
             <div className="text-center mt-12">
-              <Link href="/blog">
+              <Link href="/category">
                 <Button
                   variant="outline"
                   size="lg"
@@ -372,7 +372,7 @@ export default async function Home() {
                 category: "Heart Health",
               },
             ].map((pick, index) => (
-              <Link key={index} href="/blog">
+              <Link key={index} href={`/category`}>
                 <Card className="group hover:shadow-xl hover:-translate-y-1 hover:border-[#D9CFC7] transition-all duration-300 cursor-pointer bg-white/80 backdrop-blur-md rounded-[1.5rem] border border-[#D9CFC7]/50">
                   <CardContent className="p-6 flex items-start gap-5">
                     <div className="w-12 h-12 rounded-lg bg-[#D9CFC7]  flex items-center justify-center shrink-0 group-hover:bg-[#D9CFC7] dark:group-hover:bg-[#D9CFC7] transition-colors">

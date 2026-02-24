@@ -20,12 +20,12 @@ export function getPostHref(post: {
   // If category exists but not a hub, use regular category structure
   if (categorySlug) {
     if (post.slug === categorySlug) {
-      return `/${categorySlug}`;
+      return `/category/${categorySlug}`;
     }
-    return `/blog/${post.slug}`;
+    return `/${categorySlug}/${post.slug}`;
   }
 
-  return `/blog/${post.slug}`;
+  return `/${post.slug}`;
 }
 
 export function getCategoryHref(category: { slug: string }) {

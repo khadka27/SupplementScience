@@ -101,8 +101,8 @@ async function getData(slug: string) {
     const isHub = post.category?.isHub;
     const categorySlug = post.category?.slug;
 
-    // Redirect if it belongs to a hub category
-    if (isHub && categorySlug) {
+    // Redirect if it belongs to a category
+    if (categorySlug) {
       redirect(`/${categorySlug}/${slug}`);
     }
 
@@ -149,19 +149,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const categories = await prisma.category.findMany({ 
+  const categories = await prisma.category.findMany({
     where: { isHub: true },
-    select: { slug: true } 
+    select: { slug: true },
   });
   const rootPosts = await prisma.post.findMany({
     where: {
       isFeatured: true,
-      // Exclude hub category posts from root generation
-      NOT: {
-        category: {
-          isHub: true,
-        },
-      },
+      // Exclude ALL categorized posts from root generation, as they live at /[categorySlug]/[postSlug]
+      categoryId: null,
     },
     select: { slug: true },
   });

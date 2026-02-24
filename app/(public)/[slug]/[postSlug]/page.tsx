@@ -12,11 +12,9 @@ type Props = {
 };
 
 async function getData(categorySlug: string, postSlug: string) {
-  // Find the category and verify it's a hub
   const category = await prisma.category.findUnique({
     where: {
       slug: categorySlug,
-      isHub: true,
     },
   });
 
@@ -70,10 +68,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  // Get all hub categories
-  const hubCategories = await prisma.category.findMany({
+  // Get all categories that have posts
+  const categories = await prisma.category.findMany({
     where: {
-      isHub: true,
+      postCount: {
+        gt: 0,
+      },
     },
     select: {
       slug: true,
@@ -84,7 +84,7 @@ export async function generateStaticParams() {
   // For each hub category, get all published posts
   const params: Array<{ slug: string; postSlug: string }> = [];
 
-  for (const category of hubCategories) {
+  for (const category of categories) {
     const posts = await prisma.post.findMany({
       where: {
         status: "PUBLISHED",
@@ -104,7 +104,7 @@ export async function generateStaticParams() {
   return params;
 }
 
-export default async function HubPostPage({ params }: Props) {
+export default async function CategorizedPostPage({ params }: Props) {
   const { slug, postSlug } = await params;
   const data = await getData(slug, postSlug);
 
