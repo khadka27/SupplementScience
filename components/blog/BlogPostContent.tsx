@@ -81,13 +81,12 @@ export default function BlogPostContent({
       ? [{ name: "Ingredients", url: "/ingredients" }]
       : post.category
         ? [
-            { name: "Blog", url: "/blog" },
             {
               name: post.category.name,
               url: `/${post.category.slug}`,
             },
           ]
-        : [{ name: "Blog", url: "/blog" }]),
+        : []),
     { name: post.title, url: getPostHref(post) },
   ];
 

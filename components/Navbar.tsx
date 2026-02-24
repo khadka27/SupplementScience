@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import {
@@ -57,20 +58,22 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b",
+        "fixed top-4 left-0 right-0 z-50 transition-all duration-300 mx-auto max-w-6xl w-[calc(100%-2rem)] rounded-full",
         scrolled
-          ? "bg-[#EFE9E3]/90 backdrop-blur-md py-3 border-[#D9CFC7]"
-          : "bg-[#EFE9E3] py-5 border-[#D9CFC7]",
+          ? "bg-white/80 backdrop-blur-md py-3 border border-[#D9CFC7] shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
+          : "bg-white/50 backdrop-blur-sm py-4 border border-[#D9CFC7]/50 shadow-sm",
       )}
     >
-      <div className="container mx-auto max-w-6xl px-4 lg:px-8 flex items-center justify-between">
+      <div className="px-6 lg:px-8 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="bg-primary text-primary-foreground p-1.5 rounded-lg transition-transform group-hover:rotate-12">
-            <Microscope className="w-6 h-6" />
-          </div>
-          <span className="text-xl font-bold font-heading uppercase tracking-tighter">
-            Supplement<span className="text-primary">Decoded</span>
-          </span>
+          <Image
+            src="/logo.png"
+            alt="Supplement Science Logo"
+            width={240}
+            height={60}
+            className="w-auto h-8 md:h-10 lg:h-12 transition-transform group-hover:scale-105"
+            priority
+          />
         </Link>
 
         {/* Desktop Navigation */}
@@ -80,10 +83,10 @@ export function Navbar() {
               key={item.href}
               href={item.href}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-primary relative py-1",
+                "text-sm font-semibold transition-all px-4 py-2 rounded-full",
                 pathname === item.href
-                  ? "text-primary after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-primary after:rounded-full"
-                  : "text-muted-foreground",
+                  ? "bg-black text-white shadow-sm"
+                  : "text-gray-600 hover:bg-[#EFE9E3] hover:text-black",
               )}
             >
               {item.name}
@@ -164,8 +167,11 @@ export function Navbar() {
             </DropdownMenu>
           ) : (
             <Link href="/admin/login">
-              <Button size="sm" className="rounded-full px-5">
-                Admin Login
+              <Button
+                size="sm"
+                className="rounded-full px-6 font-semibold shadow-sm hover:shadow-md transition-all"
+              >
+                Login
               </Button>
             </Link>
           )}

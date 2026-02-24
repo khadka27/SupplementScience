@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   Microscope,
   Twitter,
@@ -18,12 +19,13 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="md:col-span-2 space-y-6">
             <Link href="/" className="flex items-center gap-2">
-              <div className="bg-primary text-primary-foreground p-1.5 rounded-lg">
-                <Microscope className="w-5 h-5" />
-              </div>
-              <span className="text-xl font-bold font-heading uppercase tracking-tighter">
-                Supplement<span className="text-primary">Decoded</span>
-              </span>
+              <Image
+                src="/logo.png"
+                alt="Supplement Science Logo"
+                width={240}
+                height={60}
+                className="w-auto h-12 mb-2"
+              />
             </Link>
             <p className="text-muted-foreground text-base max-w-md leading-relaxed">
               Advancing human health through rigorous, evidence-based research
