@@ -131,9 +131,19 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {/* Premium Background Decoration */}
-            <div className="fixed inset-0 -z-10 overflow-hidden pointer-events-none opacity-50 dark:opacity-20">
-              <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse" />
-              <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px]" />
+            {/* Premium Background Decoration */}
+            <div
+              className="fixed inset-0 -z-10 overflow-hidden pointer-events-none opacity-50 dark:opacity-20"
+              suppressHydrationWarning={true}
+            >
+              <div
+                className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse"
+                suppressHydrationWarning={true}
+              />
+              <div
+                className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px]"
+                suppressHydrationWarning={true}
+              />
             </div>
 
             {children}
