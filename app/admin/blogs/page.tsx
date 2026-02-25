@@ -266,8 +266,13 @@ function BlogsManagementContent() {
                       </div>
                       <CardTitle className="text-xl">
                         <Link
-                          href={`/blog/${post.slug}`}
+                          href={
+                            post.category?.slug
+                              ? `/${post.category.slug}/${post.slug}`
+                              : `/${post.slug}`
+                          }
                           className="hover:text-primary"
+                          target="_blank"
                         >
                           {post.title}
                         </Link>
@@ -302,8 +307,13 @@ function BlogsManagementContent() {
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
                           <Link
-                            href={`/blog/${post.slug}`}
+                            href={
+                              post.category?.slug
+                                ? `/${post.category.slug}/${post.slug}`
+                                : `/${post.slug}`
+                            }
                             className="cursor-pointer"
+                            target="_blank"
                           >
                             <Eye className="h-4 w-4 mr-2" />
                             View Post

@@ -5,7 +5,7 @@ import BlogPostContent from "@/components/blog/BlogPostContent";
 import { generateBlogPostSchema, generateBreadcrumbSchema } from "@/lib/schema";
 
 export const dynamic = "force-static";
-export const revalidate = 21600;
+export const revalidate = 10;
 
 type Props = {
   params: Promise<{ slug: string; postSlug: string }>;

@@ -7,18 +7,25 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { prepareContent } from "@/lib/content-processor";
 import {
+  List,
   Clock,
   Calendar,
   Share2,
-  Info,
-  Microscope,
-  ExternalLink,
-  ArrowLeft,
-  Menu,
-  List,
+  ChevronRight,
+  ChevronLeft,
   ArrowRight,
+  ArrowLeft,
+  ExternalLink,
+  Table as TableIcon,
+  MessageSquare,
+  Bookmark,
+  Microscope,
+  Info,
   AlertTriangle,
+  CheckCircle2,
+  XCircle,
 } from "lucide-react";
+
 import { Post, Source } from "@/lib/types";
 import AuthorBox from "./AuthorBox";
 import RelatedPosts from "./RelatedPosts";
@@ -28,7 +35,6 @@ import ShareButtons from "./ShareButtons";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
 import { cn, getPostHref } from "@/lib/utils";
 
 interface AdjacentPost {
@@ -54,8 +60,10 @@ export default function BlogPostContent({
   prevPost,
   nextPost,
 }: BlogPostContentProps) {
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeId, setActiveId] = useState<string>("");
   const [showStickyHeader, setShowStickyHeader] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [imgError, setImgError] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
 
   useEffect(() => {
@@ -92,13 +100,20 @@ export default function BlogPostContent({
 
   return (
     <div
-      className="min-h-screen bg-[#F9F8F6] text-black relative pb-24 font-sans selection:bg-primary/20 selection:text-primary"
+      className="min-h-screen bg-[#F5F3F0] dark:bg-[#0D0C09] text-black dark:text-zinc-100 relative pb-24 font-sans selection:bg-primary/20 selection:text-primary"
       style={
         {
-          "--text": "#000000",
-          "--foreground": "#000000",
+          "--text": "#111111",
+          "--foreground": "#111111",
           "--muted-foreground": "#4b5563",
           "--border": "#D9CFC7",
+          "--primary": "hsl(var(--primary))",
+          "--accent": "hsl(var(--primary))",
+          "--accent-soft": "rgba(16,185,129,0.06)",
+          "--link": "hsl(var(--primary))",
+          "--link-hover": "hsl(var(--primary))",
+          "--surface": "#ffffff",
+          "--surface-2": "#f5f0eb",
         } as React.CSSProperties
       }
     >
@@ -141,18 +156,18 @@ export default function BlogPostContent({
           <Breadcrumbs items={breadcrumbItems} />
         </div>
 
-        {/* Modern SEO-Friendly Hero Section */}
-        <header className="mb-12 lg:mb-20 max-w-7xl mx-auto bg-[#EFE9E3] p-8 md:p-12 lg:p-16 rounded-[2.5rem] border border-[#D9CFC7] shadow-sm">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        {/* Hero Section */}
+        <header className="mb-10 lg:mb-16 max-w-7xl mx-auto bg-white dark:bg-[#17120D] rounded-[2rem] shadow-sm overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
             {/* Left Content Column */}
-            <div className="lg:col-span-7 space-y-6 order-2 lg:order-1 animate-in fade-in slide-in-from-left-8 duration-700">
+            <div className="lg:col-span-7 space-y-5 order-2 lg:order-1 p-8 md:p-10 lg:p-12">
               {/* Category Badge */}
               {post.category && (
                 <Link
                   href={`/category/${post.category.slug}`}
-                  className="inline-block hover:opacity-80 transition-opacity"
+                  className="inline-flex items-center gap-1.5 hover:opacity-80 transition-opacity"
                 >
-                  <span className="text-primary font-bold tracking-wide uppercase text-sm border-b-2 border-primary/20 hover:border-primary transition-colors pb-0.5">
+                  <span className="text-xs font-black text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
                     {post.category.name}
                   </span>
                 </Link>
@@ -161,17 +176,17 @@ export default function BlogPostContent({
               {/* Title */}
               <h1
                 ref={titleRef}
-                className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-black leading-[1.1] tracking-tight text-balance"
+                className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-black dark:text-white leading-[1.15] tracking-tight"
               >
                 {post.title}
               </h1>
 
               {/* Author & Meta Info Block */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 py-4 border-y border-black/10">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 py-4 border-y border-black/10 dark:border-white/10">
                 {post.author && (
                   <div className="flex items-center gap-3">
                     {post.author.avatarUrl ? (
-                      <div className="relative w-12 h-12 rounded-full overflow-hidden border-2 border-primary/10 ring-2 ring-[#EFE9E3]">
+                      <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
                         <Image
                           src={post.author.avatarUrl}
                           alt={post.author.name}
@@ -180,17 +195,17 @@ export default function BlogPostContent({
                         />
                       </div>
                     ) : (
-                      <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center text-lg font-bold border-2 border-[#EFE9E3] ring-2 ring-primary/10">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center text-base font-black border-2 border-primary/20">
                         {post.author.name.charAt(0)}
                       </div>
                     )}
                     <div>
-                      <div className="text-xs text-gray-600 font-medium uppercase tracking-wider mb-0.5">
+                      <div className="text-[10px] text-gray-500 dark:text-zinc-500 font-bold uppercase tracking-widest mb-0.5">
                         Written by
                       </div>
                       <Link
                         href={`/author/${post.author.slug}`}
-                        className="font-bold text-black hover:text-primary transition-colors block leading-none text-base"
+                        className="font-bold text-black dark:text-zinc-100 hover:text-primary transition-colors block leading-none text-sm"
                       >
                         {post.author.name}
                       </Link>
@@ -198,99 +213,94 @@ export default function BlogPostContent({
                   </div>
                 )}
 
-                <div className="hidden sm:block w-px h-10 bg-black/10" />
+                <div className="hidden sm:block w-px h-8 bg-black/10 dark:bg-white/10" />
 
-                <div className="flex flex-col justify-center gap-1">
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <span className="font-medium text-black">
-                      Updated{" "}
-                      <time
-                        dateTime={
-                          post.updatedAt?.toString() ||
-                          post.publishedAt?.toString()
-                        }
-                      >
-                        {post.updatedAt
-                          ? format(new Date(post.updatedAt), "MMMM d, yyyy")
-                          : format(
-                              new Date(post.publishedAt || new Date()),
-                              "MMMM d, yyyy",
-                            )}
-                      </time>
-                    </span>
-                    <span className="text-black/20">•</span>
+                <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-zinc-500 flex-wrap">
+                  <div className="flex items-center gap-1.5">
+                    <Calendar className="w-3.5 h-3.5" />
+                    <time
+                      dateTime={
+                        post.updatedAt?.toString() ||
+                        post.publishedAt?.toString()
+                      }
+                    >
+                      {post.updatedAt
+                        ? format(new Date(post.updatedAt), "MMM d, yyyy")
+                        : format(
+                            new Date(post.publishedAt || new Date()),
+                            "MMM d, yyyy",
+                          )}
+                    </time>
+                  </div>
+                  <span className="text-black/20">·</span>
+                  <div className="flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5" />
                     <span>{post.readTimeMinutes} min read</span>
                   </div>
-
-                  {/* Reviewed By Badge - Dynamic */}
                   {post.reviewedBy && (
-                    <div className="flex items-center gap-1.5 text-xs font-bold text-gray-800 bg-[#D9CFC7]/50 px-2.5 py-1 rounded-full self-start">
-                      <div className="p-0.5 bg-primary/20 rounded-full">
-                        <svg
-                          className="w-2 h-2 text-primary"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          strokeWidth={4}
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                      </div>
-                      Reviewed by {post.reviewedBy}
-                    </div>
+                    <>
+                      <span className="text-black/20">·</span>
+                      <span className="flex items-center gap-1 text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                        ✓ Reviewed by {post.reviewedBy}
+                      </span>
+                    </>
                   )}
                 </div>
               </div>
 
               {/* Excerpt */}
               {post.excerpt && (
-                <p className="text-lg md:text-xl text-gray-700 leading-relaxed text-balance">
+                <p className="text-base md:text-lg text-gray-600 dark:text-zinc-400 leading-relaxed">
                   {post.excerpt}
                 </p>
               )}
             </div>
 
             {/* Right Image Column */}
-            <div className="lg:col-span-5 order-1 lg:order-2 animate-in fade-in slide-in-from-right-8 duration-700 delay-200">
-              <div className="relative aspect-[4/3] lg:aspect-[3/4] xl:aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-xl border border-border/40 bg-muted">
-                {post.featuredImageUrl ? (
+            <div className="lg:col-span-5 order-1 lg:order-2">
+              <div className="relative h-64 lg:h-full min-h-[320px] overflow-hidden bg-gradient-to-br from-[#EFE9E3] to-[#D9CFC7] dark:from-[#1D150E] dark:to-[#2C2218]">
+                {post.featuredImageUrl && !imgError ? (
                   <Image
                     src={post.featuredImageUrl}
                     alt={post.featuredImageAlt || post.title}
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-700"
                     priority
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    unoptimized={post.featuredImageUrl.startsWith("http")}
+                    sizes="(max-width: 768px) 100vw, 40vw"
+                    onError={() => setImgError(true)}
                   />
-                ) : (
-                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/5 to-primary/10 text-primary/20">
-                    <Microscope className="w-24 h-24" />
+                ) : null}
+
+                {/* Fallback pattern and icon if image is missing or broken */}
+                {(imgError || !post.featuredImageUrl) && (
+                  <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
+                    <div className="w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center mb-4 ring-8 ring-primary/5">
+                      <Microscope className="w-12 h-12 text-primary" />
+                    </div>
+                    <span className="text-primary/40 font-black uppercase tracking-[0.2em] text-[10px]">
+                      Scientific Resource
+                    </span>
                   </div>
                 )}
 
-                {/* Image Badge/Overlay (Optional) */}
-                <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
               </div>
             </div>
           </div>
         </header>
 
-        {/* Main Grid Layout with Left Sidebar */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 max-w-7xl mx-auto px-4 lg:px-8 mt-12">
+        {/* Main Grid Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 max-w-7xl mx-auto px-4 lg:px-6 mt-10">
           {/* LEFT SIDEBAR: Table of Contents */}
-          <aside className="hidden lg:block lg:col-span-3 relative animate-in fade-in slide-in-from-left-8 duration-700 delay-700">
-            <div className="sticky top-28">
-              {/* TOC Section */}
-              <div className="bg-[#EFE9E3] backdrop-blur-sm p-6 rounded-2xl border border-[#D9CFC7] shadow-sm max-h-[calc(100vh-8rem)] flex flex-col">
-                <div className="flex items-center gap-2 font-black text-sm text-black mb-5 uppercase tracking-wide shrink-0">
-                  <List className="w-4 h-4 text-primary" />
+          <aside className="hidden lg:block lg:col-span-3 relative">
+            <div className="sticky top-24">
+              <div className="bg-white dark:bg-[#17120D] p-5 rounded-2xl shadow-sm max-h-[calc(100vh-7rem)] flex flex-col">
+                <div className="flex items-center gap-2 font-black text-xs text-black dark:text-zinc-100 mb-4 uppercase tracking-widest shrink-0 border-b border-[#D9CFC7] dark:border-[#3B2E22] pb-3">
+                  <List className="w-3.5 h-3.5 text-primary" />
                   <span>Contents</span>
                 </div>
-                <div className="overflow-y-auto overflow-x-hidden pr-2 scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent hover:scrollbar-thumb-primary/50">
+                <div className="overflow-y-auto overflow-x-hidden pr-1 scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
                   <TableOfContents />
                 </div>
               </div>
@@ -298,65 +308,52 @@ export default function BlogPostContent({
           </aside>
 
           {/* MAIN CONTENT Area */}
-          <main className="lg:col-span-9 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500">
-            <article className="max-w-4xl">
-              {/* Mobile TOC */}
-              <div className="lg:hidden mb-16 bg-[#EFE9E3] p-7 rounded-2xl border border-[#D9CFC7] shadow-md backdrop-blur-sm">
-                <h3 className="font-black text-lg mb-5 flex items-center gap-3 text-black">
-                  <div className="p-2 bg-primary/10 rounded-lg">
-                    <List className="w-5 h-5 text-primary" />
-                  </div>
-                  <span>Table of Contents</span>
-                </h3>
-                <div className="max-h-[60vh] overflow-y-auto overflow-x-hidden pr-2 scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent">
-                  <TableOfContents />
-                </div>
-              </div>
-
-              {/* Quick Summary Card */}
-              {post.excerpt && (
-                <div className="mb-12 bg-white/50 border-2 border-[#D9CFC7] rounded-2xl p-6 shadow-lg">
-                  <div className="flex items-start gap-3 mb-4">
+          <main className="lg:col-span-9 min-w-0">
+            <article className="w-full max-w-4xl mx-auto bg-white dark:bg-[#111111] rounded-[2.5rem] shadow-xl shadow-black/5 overflow-hidden transition-all duration-500">
+              <div className="px-8 md:px-16 lg:px-20 py-10 md:py-20">
+                {/* Mobile TOC */}
+                <div className="lg:hidden mb-12 bg-[#F5F3F0] dark:bg-[#1A1612] p-6 rounded-[1.5rem] animate-in fade-in slide-in-from-top-4 duration-500">
+                  <h3 className="font-black text-lg mb-4 flex items-center gap-3 text-black dark:text-white">
                     <div className="p-2 bg-primary/10 rounded-lg">
-                      <svg
-                        className="w-5 h-5 text-primary"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
+                      <List className="w-5 h-5 text-primary" />
                     </div>
-                    <div className="flex-1">
-                      <h3 className="text-lg font-black text-black mb-2">
-                        Quick Summary
-                      </h3>
-                      <p className="text-sm text-gray-800 leading-relaxed">
-                        {post.excerpt}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-gray-600 font-medium">
-                    <Clock className="w-4 h-4" />
-                    <span>{post.readTimeMinutes} min read</span>
+                    <span>Table of Contents</span>
+                  </h3>
+                  <div className="max-h-[50vh] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/30">
+                    <TableOfContents />
                   </div>
                 </div>
-              )}
 
-              {/* Medical Disclaimer */}
-              <div className="mb-12 bg-[#EFE9E3]/50 border-l-4 border-[#D9CFC7] rounded-lg p-5 shadow-md">
-                <div className="flex items-start gap-3">
-                  <AlertTriangle className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
+                {/* Quick Summary Card */}
+                {post.excerpt && (
+                  <div className="mb-12 bg-primary/[0.03] dark:bg-primary/[0.05] border-2 border-primary/10 rounded-[2rem] p-7 lg:p-10 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-6 opacity-[0.03] group-hover:scale-110 transition-transform duration-700">
+                      <Bookmark className="w-24 h-24 text-primary" />
+                    </div>
+                    <div className="flex flex-col sm:flex-row items-start gap-6 relative z-10">
+                      <div className="p-3 bg-primary text-white rounded-2xl shadow-xl shadow-primary/20 shrink-0">
+                        <CheckCircle2 className="w-6 h-6" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-2xl font-black text-black dark:text-white mb-3 tracking-tight">
+                          Key Insights
+                        </h3>
+                        <p className="text-lg text-gray-700 dark:text-zinc-300 leading-relaxed font-medium">
+                          {post.excerpt}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Medical Disclaimer */}
+                <div className="mb-12 bg-amber-50/50 dark:bg-amber-950/10 border-l-4 border-amber-500 rounded-r-2xl p-6 shadow-sm flex gap-4">
+                  <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-sm font-bold text-black mb-1">
+                    <h4 className="text-sm font-black text-amber-800 dark:text-amber-400 uppercase tracking-widest mb-2">
                       Medical Disclaimer
                     </h4>
-                    <p className="text-xs text-gray-800 leading-relaxed">
+                    <p className="text-[13px] md:text-sm text-amber-900/80 dark:text-amber-200/60 leading-relaxed italic">
                       This article is for informational purposes only and does
                       not constitute medical advice. Always consult with a
                       qualified healthcare professional before starting any new
@@ -364,156 +361,104 @@ export default function BlogPostContent({
                     </p>
                   </div>
                 </div>
-              </div>
 
-              {/* Main Article Content */}
-              <div
-                className="prose prose-lg max-w-none blog-content-enhanced
-                /* === HEADINGS === */
-                prose-headings:font-bold prose-headings:tracking-tight prose-headings:scroll-mt-28
-                prose-h1:text-[2.5rem] prose-h1:leading-[1.2] prose-h1:mb-4 prose-h1:mt-8 prose-h1:font-bold prose-h1:text-[var(--text)]
-                prose-h2:text-[1.75rem] prose-h2:leading-[1.3] prose-h2:mt-10 prose-h2:mb-4 prose-h2:font-bold prose-h2:text-[var(--text)] prose-h2:border-b-2 prose-h2:border-[var(--border)] prose-h2:pb-2
-                prose-h3:text-[1.375rem] prose-h3:leading-[1.4] prose-h3:mt-8 prose-h3:mb-3 prose-h3:font-semibold prose-h3:text-[var(--text)] prose-h3:flex prose-h3:items-center prose-h3:gap-2 prose-h3:before:content-['▸'] prose-h3:before:text-[var(--primary)]
-                prose-h4:text-[1.125rem] prose-h4:leading-[1.5] prose-h4:mt-6 prose-h4:mb-2 prose-h4:font-semibold prose-h4:text-[var(--text)]
-                prose-h5:text-[1rem] prose-h5:leading-[1.6] prose-h5:mt-4 prose-h5:mb-2 prose-h5:font-semibold prose-h5:text-[var(--text)]
-                
-                /* === PARAGRAPHS === */
-                prose-p:text-[1.125rem] prose-p:leading-[1.75] prose-p:mb-5 prose-p:text-[var(--text)]
-                
-                /* === LINKS === */
-                prose-a:text-primary prose-a:underline prose-a:decoration-2 prose-a:underline-offset-4 prose-a:font-bold hover:prose-a:text-primary/80 prose-a:transition-colors
-                
-                /* === STRONG/BOLD === */
-                prose-strong:font-bold prose-strong:text-[var(--text)]
-                
-                /* === LISTS - FIX DOUBLE DOTS === */
-                prose-ul:my-5 prose-ul:pl-6 prose-ul:list-disc
-                prose-ol:my-5 prose-ol:pl-6 prose-ol:list-decimal
-                prose-li:my-2.5 prose-li:text-[1.125rem] prose-li:leading-[1.7] prose-li:text-[var(--text)] prose-li:marker:text-[var(--primary)]
-                prose-ul:prose-li:pl-0 prose-ol:prose-li:pl-0
-                prose-li:prose-li:marker:font-normal
-                
-                /* === IMAGES === */
-                prose-img:rounded-2xl prose-img:shadow-lg prose-img:my-8 prose-img:border-2 prose-img:border-[var(--border)] prose-img:mx-auto
-                
-                /* === BLOCKQUOTES === */
-                prose-blockquote:border-l-[5px] prose-blockquote:border-[var(--accent)] prose-blockquote:bg-[var(--accent-soft)] prose-blockquote:py-4 prose-blockquote:px-5 prose-blockquote:rounded-r-xl prose-blockquote:my-7 prose-blockquote:text-[1.125rem] prose-blockquote:leading-[1.7] prose-blockquote:text-[var(--text)] prose-blockquote:not-italic
-                
-                /* === CODE === */
-                prose-code:bg-black/5 prose-code:px-2 prose-code:py-0.5 prose-code:rounded-md prose-code:text-[0.9375rem] prose-code:font-mono prose-code:text-black prose-code:before:content-none prose-code:after:content-none
-                prose-pre:bg-[#1e1e1e] prose-pre:text-[#f5f5f5] prose-pre:rounded-2xl prose-pre:p-5 prose-pre:my-6 prose-pre:text-[0.9375rem] prose-pre:leading-[1.6] prose-pre:overflow-x-auto
-                
-                /* === HORIZONTAL RULES === */
-                prose-hr:border-0 prose-hr:h-[1px] prose-hr:bg-[var(--border)] prose-hr:my-8
-                
-                /* === TABLES === */
-                prose-table:w-full prose-table:my-7 prose-table:rounded-2xl prose-table:overflow-hidden prose-table:bg-white/50
-                prose-thead:bg-[#EFE9E3]
-                prose-th:px-4 prose-th:py-3.5 prose-th:text-left prose-th:font-black prose-th:text-[0.9375rem] prose-th:text-black
-                prose-td:px-4 prose-td:py-3.5 prose-td:border-t prose-td:border-[#D9CFC7] prose-td:text-[0.9375rem] prose-td:text-black"
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(prepareContent(post.content)),
-                }}
-              />
+                {/* Main Article Content */}
+                <div
+                  className="prose prose-lg dark:prose-invert max-w-none blog-content-enhanced
+                  /* Headings and Spacing handled by global css */"
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(prepareContent(post.content)),
+                  }}
+                />
 
-              {/* Citations / Sources */}
-              {post.sources && post.sources.length > 0 && (
-                <div className="mt-20 bg-white/40 backdrop-blur-sm border-2 border-[#D9CFC7] rounded-[2.5rem] p-10 overflow-hidden relative group hover:border-primary/30 transition-all shadow-lg hover:shadow-xl">
-                  <div className="absolute top-0 left-0 w-2 h-full bg-primary/70 group-hover:w-2.5 transition-all" />
-
-                  <div className="flex items-center gap-4 mb-10 text-black relative z-10">
-                    <div className="bg-primary/10 p-3 rounded-2xl shadow-sm">
-                      <Microscope className="w-7 h-7 text-primary" />
-                    </div>
-                    <h3 className="text-3xl font-black m-0 tracking-tight">
-                      Scientific Sources
-                    </h3>
-                  </div>
-                  <div className="space-y-6 relative z-10">
-                    {post.sources.map((source: Source, index: number) => (
-                      <div
-                        key={index}
-                        className="flex gap-5 group/source p-5 rounded-2xl hover:bg-[#EFE9E3]/50 transition-all border border-transparent hover:border-[#D9CFC7]"
-                      >
-                        <span className="text-primary/70 font-mono text-base font-bold mt-0.5 shrink-0 w-8">
-                          [{index + 1}]
-                        </span>
-                        <div className="flex-1">
-                          <a
-                            href={source.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-black hover:text-primary font-bold flex items-center gap-2 transition-colors group-hover/source:underline decoration-primary/40 underline-offset-4 text-base md:text-lg leading-snug"
-                          >
-                            {source.title}
-                            <ExternalLink className="w-4 h-4 opacity-0 group-hover/source:opacity-100 transition-opacity" />
-                          </a>
-                          {source.description && (
-                            <p className="text-sm md:text-base text-gray-700 mt-2.5 leading-relaxed">
-                              {source.description}
-                            </p>
-                          )}
-                        </div>
+                {/* Citations / Sources */}
+                {post.sources && post.sources.length > 0 && (
+                  <div className="mt-20 pt-16 border-t border-[#D9CFC7] dark:border-[#3B2E22]">
+                    <div className="flex items-center gap-4 mb-10 text-black dark:text-white">
+                      <div className="bg-primary/10 p-4 rounded-2xl shadow-inner">
+                        <Microscope className="w-8 h-8 text-primary" />
                       </div>
-                    ))}
-                  </div>
-                  <div className="mt-10 pt-7 border-t border-[#D9CFC7] flex gap-3 text-sm text-gray-700 bg-[#EFE9E3]/30 -mx-10 -mb-10 p-8 rounded-b-[2.5rem] backdrop-blur-sm">
-                    <Info className="w-5 h-5 shrink-0 mt-0.5 text-primary" />
-                    <p className="leading-relaxed font-semibold">
-                      This article is based on scientific evidence, written by
-                      experts, and fact-checked by our editorial team.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* Tags */}
-              {post.tags && post.tags.length > 0 && (
-                <div className="my-16">
-                  <h4 className="text-xs font-black text-muted-foreground uppercase tracking-[0.2em] mb-7 flex items-center gap-2">
-                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
-                    <span>Related Topics</span>
-                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
-                  </h4>
-                  <div className="flex flex-wrap gap-3 justify-center">
-                    {post.tags.map((tag) => (
-                      <Link key={tag.id} href={`/tag/${tag.slug}`}>
-                        <Badge
-                          variant="secondary"
-                          className="text-sm py-2.5 px-6 rounded-full bg-white hover:bg-primary hover:text-primary-foreground transition-all cursor-pointer border border-[#D9CFC7] hover:border-primary font-bold shadow-sm hover:shadow-md hover:scale-105"
+                      <div>
+                        <h3 className="text-3xl font-black m-0 tracking-tight">
+                          Evidence Based
+                        </h3>
+                        <p className="text-sm text-gray-500 dark:text-zinc-500 font-bold uppercase tracking-widest mt-1">
+                          Scientific References
+                        </p>
+                      </div>
+                    </div>
+                    <div className="grid gap-5">
+                      {post.sources.map((source: Source, index: number) => (
+                        <div
+                          key={index}
+                          className="flex gap-5 p-6 rounded-2xl bg-gray-50 dark:bg-white/[0.02] border border-transparent hover:border-primary/20 hover:bg-white dark:hover:bg-white/[0.05] hover:shadow-lg transition-all duration-300 group/source"
                         >
-                          #{tag.name}
-                        </Badge>
-                      </Link>
-                    ))}
+                          <span className="text-primary font-mono text-lg font-black mt-0.5 shrink-0 w-8">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <div className="flex-1">
+                            <a
+                              href={source.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-black dark:text-zinc-100 hover:text-primary font-bold flex items-center gap-2 transition-colors text-base md:text-lg leading-snug"
+                            >
+                              {source.title}
+                              <ExternalLink className="w-4 h-4 opacity-0 group-hover/source:opacity-40 transition-opacity" />
+                            </a>
+                            {source.description && (
+                              <p className="text-sm md:text-base text-gray-600 dark:text-zinc-400 mt-2 leading-relaxed">
+                                {source.description}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
+                )}
+              </div>
+            </article>
+
+            {/* Tags Section - Outside but below the card */}
+            {post.tags && post.tags.length > 0 && (
+              <div className="mt-12 mb-16 px-6">
+                <h4 className="text-[10px] font-black text-gray-400 dark:text-zinc-600 uppercase tracking-[0.3em] mb-6 flex items-center gap-3">
+                  <div className="h-px bg-gray-200 dark:bg-zinc-800 flex-1" />
+                  Explore Related Topics
+                  <div className="h-px bg-gray-200 dark:bg-zinc-800 flex-1" />
+                </h4>
+                <div className="flex flex-wrap gap-2.5">
+                  {post.tags.map((tag: any) => (
+                    <Link
+                      key={tag.id}
+                      href={`/tag/${tag.slug}`}
+                      className="px-5 py-2.5 bg-white dark:bg-[#111111] border border-[#D9CFC7] dark:border-[#3B2E22] rounded-xl text-sm font-bold text-gray-700 dark:text-zinc-300 hover:border-primary hover:text-primary hover:shadow-md transition-all"
+                    >
+                      # {tag.name}
+                    </Link>
+                  ))}
                 </div>
-              )}
-
-              <Separator className="my-20" />
-
-              {/* Author Box Large */}
-              <div className="bg-[#EFE9E3] backdrop-blur-sm border-2 border-[#D9CFC7] rounded-[2.5rem] p-12 shadow-xl hover:shadow-2xl transition-all hover:border-primary/30 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full blur-3xl group-hover:bg-white/20 transition-colors" />
-                {post.author && <AuthorBox author={post.author} />}
               </div>
+            )}
 
-              {/* Newsletter Subscription */}
-              <div className="mt-16">
-                <NewsletterForm />
-              </div>
+            {/* Newsletter Subscription */}
+            <div className="mt-8 mb-16 px-6">
+              <NewsletterForm />
+            </div>
 
-              {/* New Prev/Next Navigation */}
-              <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-[#D9CFC7] pt-12">
+            {/* Prev/Next Navigation */}
+            {(prevPost || nextPost) && (
+              <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-[#D9CFC7] dark:border-[#3B2E22] pt-12 px-6">
                 {prevPost ? (
                   <Link
                     href={getPostHref(prevPost)}
-                    className="group flex flex-col items-start text-left space-y-3 p-6 rounded-2xl border border-[#D9CFC7] bg-white/40 hover:bg-[#EFE9E3] transition-all hover:border-primary/30"
+                    className="group flex flex-col items-start text-left space-y-3 p-6 rounded-2xl border border-[#D9CFC7] dark:border-[#3B2E22] bg-white/40 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 transition-all hover:border-primary/30"
                   >
-                    <div className="flex items-center gap-2 text-gray-600 text-sm font-bold group-hover:text-primary">
+                    <div className="flex items-center gap-2 text-gray-600 dark:text-zinc-400 text-sm font-bold group-hover:text-primary">
                       <ArrowLeft className="w-4 h-4" /> Previous Article
                     </div>
-                    <h4 className="text-lg font-black text-black group-hover:text-primary transition-colors line-clamp-2">
+                    <h4 className="text-lg font-black text-black dark:text-white group-hover:text-primary transition-colors line-clamp-2">
                       {prevPost.title}
                     </h4>
                   </Link>
@@ -524,12 +469,12 @@ export default function BlogPostContent({
                 {nextPost ? (
                   <Link
                     href={getPostHref(nextPost)}
-                    className="group flex flex-col items-end text-right space-y-3 p-6 rounded-2xl border border-[#D9CFC7] bg-white/40 hover:bg-[#EFE9E3] transition-all hover:border-primary/30"
+                    className="group flex flex-col items-end text-right space-y-3 p-6 rounded-2xl border border-[#D9CFC7] dark:border-[#3B2E22] bg-white/40 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 transition-all hover:border-primary/30"
                   >
-                    <div className="flex items-center gap-2 text-gray-600 text-sm font-bold group-hover:text-primary">
+                    <div className="flex items-center gap-2 text-gray-600 dark:text-zinc-400 text-sm font-bold group-hover:text-primary">
                       Next Article <ArrowRight className="w-4 h-4" />
                     </div>
-                    <h4 className="text-lg font-black text-black group-hover:text-primary transition-colors line-clamp-2">
+                    <h4 className="text-lg font-black text-black dark:text-white group-hover:text-primary transition-colors line-clamp-2">
                       {nextPost.title}
                     </h4>
                   </Link>
@@ -537,49 +482,48 @@ export default function BlogPostContent({
                   <div />
                 )}
               </div>
+            )}
 
-              <div className="mt-24">
-                <div className="flex items-center justify-between mb-10">
-                  <h3 className="text-3xl font-bold tracking-tight">
-                    Read Next
+            {/* Related Posts */}
+            {relatedPosts && relatedPosts.length > 0 && (
+              <div className="mt-20">
+                <div className="flex items-center justify-between mb-8 px-6">
+                  <h3 className="text-2xl font-black tracking-tight">
+                    Recommended Reading
                   </h3>
                   <Link
                     href="/blog"
-                    className="text-primary hover:underline font-medium"
+                    className="text-primary hover:underline font-bold text-sm tracking-widest uppercase"
                   >
-                    View all articles
+                    View All
                   </Link>
                 </div>
-                {relatedPosts && relatedPosts.length > 0 ? (
-                  <RelatedPosts posts={relatedPosts} />
-                ) : (
-                  <p className="text-muted-foreground italic">
-                    No related articles found.
-                  </p>
-                )}
-              </div>
-
-              {/* Share Section at Bottom */}
-              <div className="mt-20 pt-12 border-t-2 border-[#D9CFC7]">
-                <div className="bg-[#EFE9E3] p-10 rounded-[2.5rem] border border-[#D9CFC7] shadow-lg hover:shadow-xl transition-all text-center">
-                  <div className="flex items-center justify-center gap-3 text-lg font-black text-black uppercase tracking-widest mb-6">
-                    <Share2 className="w-6 h-6 text-primary" />
-                    <span>Share This Article</span>
-                  </div>
-                  <div className="flex justify-center">
-                    <ShareButtons
-                      title={post.title}
-                      slug={post.slug}
-                      orientation="horizontal"
-                      className="flex-wrap justify-center gap-4"
-                    />
-                  </div>
-                  <p className="text-sm text-gray-700 mt-6 font-bold">
-                    Help others discover this valuable information
-                  </p>
+                <div className="px-6">
+                  <RelatedPosts posts={relatedPosts} currentPostId={post.id} />
                 </div>
               </div>
-            </article>
+            )}
+
+            {/* Footer Share Block */}
+            <div className="mt-24 px-6">
+              <div className="bg-[#EFE9E3] dark:bg-[#1A1612] p-10 rounded-[2.5rem] shadow-lg text-center">
+                <div className="flex items-center justify-center gap-3 text-lg font-black text-black dark:text-white uppercase tracking-widest mb-6">
+                  <Share2 className="w-6 h-6 text-primary" />
+                  <span>Share This Scientific Review</span>
+                </div>
+                <div className="flex justify-center">
+                  <ShareButtons
+                    title={post.title}
+                    slug={post.slug}
+                    orientation="horizontal"
+                    className="flex-wrap justify-center gap-4"
+                  />
+                </div>
+                <p className="text-sm text-gray-700 dark:text-zinc-400 mt-6 font-bold italic">
+                  "Knowledge is meant to be shared."
+                </p>
+              </div>
+            </div>
           </main>
         </div>
       </div>

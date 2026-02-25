@@ -62,6 +62,7 @@ model Post {
   slug             String     @unique
   metaTitle        String?    @map("meta_title")
   metaDescription  String?    @map("meta_description")
+  postType         String     @default("blog") @map("post_type")
   content          String     @db.Text
   excerpt          String?    @db.Text
   featuredImageUrl String?    @map("featured_image_url")

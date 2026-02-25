@@ -70,7 +70,10 @@ export function Navbar() {
           : "bg-white/50 dark:bg-[#0F0E0A]/50 backdrop-blur-md py-4 border-b border-transparent dark:border-transparent",
       )}
     >
-      <div className="px-6 lg:px-8 flex items-center justify-between">
+      <div
+        className="px-6 lg:px-8 flex items-center justify-between"
+        suppressHydrationWarning
+      >
         <Link href="/" className="flex items-center gap-2 group">
           <Image
             src="/logo.png"
@@ -100,7 +103,10 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden md:flex items-center gap-4">
+        <div
+          className="hidden md:flex items-center gap-4"
+          suppressHydrationWarning
+        >
           <Button
             variant="ghost"
             size="icon"
@@ -113,7 +119,10 @@ export function Navbar() {
         </div>
 
         {/* Mobile Navigation */}
-        <div className="flex md:hidden items-center gap-2">
+        <div
+          className="flex md:hidden items-center gap-2"
+          suppressHydrationWarning
+        >
           <ModeToggle />
           <Sheet>
             <SheetTrigger asChild>
@@ -169,9 +178,13 @@ export function Navbar() {
             ? "top-full opacity-100 translate-y-0 py-3 pointer-events-auto"
             : "top-[80%] opacity-0 -translate-y-2 pointer-events-none py-0 h-0 overflow-hidden border-b-0",
         )}
+        suppressHydrationWarning
       >
-        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8 flex items-center justify-center gap-3">
-          <div className="flex-1 max-w-2xl relative">
+        <div
+          className="w-full max-w-6xl mx-auto px-6 lg:px-8 flex items-center justify-center gap-3"
+          suppressHydrationWarning
+        >
+          <div className="flex-1 max-w-2xl relative" suppressHydrationWarning>
             <SearchBar />
           </div>
           <Button

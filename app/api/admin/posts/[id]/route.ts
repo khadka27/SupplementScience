@@ -54,6 +54,7 @@ export async function PUT(
       tagIds,
       status,
       readTimeMinutes,
+      postType,
     } = body;
 
     // Check if slug is being changed and if it already exists
@@ -103,6 +104,7 @@ export async function PUT(
         status: status?.toUpperCase() || "DRAFT",
         publishedAt: publishedAtData,
         readTimeMinutes: readTimeMinutes || 5,
+        postType: postType || "blog",
         ...(authorId && {
           author: {
             connect: { id: authorId },

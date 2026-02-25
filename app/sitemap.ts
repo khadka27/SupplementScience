@@ -16,6 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       slug: true,
       updatedAt: true,
       featuredImageUrl: true,
+      postType: true,
       category: {
         select: {
           slug: true,
@@ -57,19 +58,26 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   const postUrls = posts.map((post) => {
-    let url = `${baseUrl}/blog/${post.slug}`;
     const categorySlug = post.category?.slug?.toLowerCase();
     const isHub = post.category?.isHub;
 
-    // If category is a hub, use top-level URL structure
-    if (isHub && categorySlug) {
+    let url: string;
+
+    if (post.postType === "ingredient") {
+      url = `${baseUrl}/ingredients/${post.slug}`;
+    } else if (isHub && categorySlug) {
+      // Hub category posts: /[categorySlug]/[postSlug]
       url = `${baseUrl}/${categorySlug}/${post.slug}`;
     } else if (categorySlug) {
+      // Regular category posts: /[categorySlug]/[postSlug]
       if (post.slug === categorySlug) {
-        url = `${baseUrl}/${categorySlug}`;
+        url = `${baseUrl}/category/${categorySlug}`;
       } else {
-        url = `${baseUrl}/blog/${post.slug}`;
+        url = `${baseUrl}/${categorySlug}/${post.slug}`;
       }
+    } else {
+      // No category: /[postSlug]
+      url = `${baseUrl}/${post.slug}`;
     }
 
     return {
@@ -110,16 +118,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
-      url: `${baseUrl}/blog`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
-    {
       url: `${baseUrl}/category`,
       lastModified: new Date(),
       changeFrequency: "weekly",
-      priority: 0.8,
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/about`,

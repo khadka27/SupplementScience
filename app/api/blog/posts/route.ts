@@ -65,6 +65,7 @@ export async function POST(req: Request) {
       tagIds,
       status,
       readTimeMinutes,
+      postType,
     } = body;
 
     console.log("Received post data:", { title, slug, status, tagIds });
@@ -75,7 +76,7 @@ export async function POST(req: Request) {
         JSON.stringify({
           error: "Missing required fields: title, slug, or content",
         }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
+        { status: 400, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -85,7 +86,7 @@ export async function POST(req: Request) {
         JSON.stringify({
           error: "At least one tag is required",
         }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
+        { status: 400, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -99,7 +100,7 @@ export async function POST(req: Request) {
         JSON.stringify({
           error: "Slug already exists. Please use a different slug.",
         }),
-        { status: 400, headers: { "Content-Type": "application/json" } }
+        { status: 400, headers: { "Content-Type": "application/json" } },
       );
     }
 
@@ -111,11 +112,15 @@ export async function POST(req: Request) {
         excerpt: excerpt || null,
         content,
         metaTitle: body.metaTitle || title,
-        metaDescription: body.metaDescription || excerpt || content.substring(0, 155).replace(/<[^>]*>/g, "") + "...",
+        metaDescription:
+          body.metaDescription ||
+          excerpt ||
+          content.substring(0, 155).replace(/<[^>]*>/g, "") + "...",
         featuredImageUrl: featuredImageUrl || null,
         status: status?.toUpperCase() || "DRAFT",
         publishedAt: status?.toLowerCase() === "published" ? new Date() : null,
         readTimeMinutes: readTimeMinutes || 5,
+        postType: postType || "blog",
         ...(authorId && {
           author: {
             connect: { id: authorId },
@@ -147,7 +152,7 @@ export async function POST(req: Request) {
       error instanceof Error ? error.message : "Unknown error occurred";
     return new NextResponse(
       JSON.stringify({ error: "Internal Error", details: errorMessage }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
+      { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
 }

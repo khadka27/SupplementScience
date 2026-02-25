@@ -147,7 +147,7 @@ export function NewsletterForm({
   return (
     <div
       className={cn(
-        "rounded-[2rem] bg-white/40 backdrop-blur-sm p-8 md:p-10 border-2 border-[#D9CFC7] shadow-sm",
+        "rounded-[2rem] bg-white/40 backdrop-blur-sm p-8 md:p-10 shadow-sm",
         className,
       )}
     >

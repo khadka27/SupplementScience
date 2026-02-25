@@ -28,7 +28,15 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { Save, Loader2, Link as LinkIcon } from "lucide-react";
+import {
+  Save,
+  Loader2,
+  Link as LinkIcon,
+  Globe,
+  ImageIcon,
+} from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ImageUpload } from "@/components/ImageUpload";
 import {
   generateSlugForPostType,
   generatePreviewUrl,
@@ -106,7 +114,7 @@ export default function GuideEditorForm({
     if (slug && selectedCategory?.slug) {
       // For guides, we need to extract the guide type from the slug
       // and use it to generate the correct URL
-      const url = `/category/${selectedCategory.slug}/${slug}`;
+      const url = `/${selectedCategory.slug}/${slug}`;
       setPreviewUrl(url);
     } else {
       setPreviewUrl("");
@@ -122,7 +130,7 @@ export default function GuideEditorForm({
       const validation = validateSlugForPostType(
         "guide",
         values.slug,
-        selectedCategory?.slug
+        selectedCategory?.slug,
       );
       if (!validation.valid) {
         toast.error(validation.error || "Invalid slug format");
@@ -150,7 +158,9 @@ export default function GuideEditorForm({
 
       const data = await response.json();
       toast.success(
-        isEditing ? "Guide updated successfully!" : "Guide created successfully!"
+        isEditing
+          ? "Guide updated successfully!"
+          : "Guide created successfully!",
       );
       router.push("/admin/blogs");
       router.refresh();
@@ -175,7 +185,7 @@ export default function GuideEditorForm({
       "guide",
       "",
       selectedCategory.slug,
-      currentGuideType
+      currentGuideType,
     );
 
     if (!generatedSlug) {
@@ -416,10 +426,31 @@ export default function GuideEditorForm({
                   name="featuredImageUrl"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Featured Image URL</FormLabel>
-                      <FormControl>
-                        <Input placeholder="https://..." {...field} />
-                      </FormControl>
+                      <FormLabel>Featured Image</FormLabel>
+                      <Tabs defaultValue="upload" className="w-full">
+                        <TabsList className="mb-4">
+                          <TabsTrigger value="upload" className="gap-2">
+                            <ImageIcon className="h-4 w-4" /> Upload
+                          </TabsTrigger>
+                          <TabsTrigger value="url" className="gap-2">
+                            <Globe className="h-4 w-4" /> Link URL
+                          </TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="upload">
+                          <ImageUpload
+                            value={field.value || ""}
+                            onChange={field.onChange}
+                          />
+                        </TabsContent>
+                        <TabsContent value="url">
+                          <FormControl>
+                            <Input placeholder="https://..." {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            URL for the main post image
+                          </FormDescription>
+                        </TabsContent>
+                      </Tabs>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -468,8 +499,8 @@ export default function GuideEditorForm({
                                               ])
                                             : field.onChange(
                                                 field.value?.filter(
-                                                  (value) => value !== tag.id
-                                                )
+                                                  (value) => value !== tag.id,
+                                                ),
                                               );
                                         }}
                                       />
@@ -521,4 +552,3 @@ export default function GuideEditorForm({
     </Form>
   );
 }
-

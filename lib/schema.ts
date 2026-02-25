@@ -58,7 +58,9 @@ export function generateBlogPostSchema(post: Post, baseUrl: string) {
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${baseUrl}/blog/${post.slug}`,
+      "@id": post.category?.slug
+        ? `${baseUrl}/${post.category.slug}/${post.slug}`
+        : `${baseUrl}/${post.slug}`,
     },
     ...(post.category && {
       articleSection: post.category.name,

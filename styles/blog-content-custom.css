@@ -9,8 +9,10 @@
    BLOG CONTENT CONTAINER
    ======================================== */
 .blog-content-enhanced {
-  max-width: 740px;
-  margin: 0 auto;
+  width: 100%;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
   color: var(--text);
 }
 
@@ -191,40 +193,194 @@ article pre code {
 }
 
 /* ========================================
-   TABLES - CLEAN & PROFESSIONAL
+   TABLES - INTERACTIVE & POLISHED
    ======================================== */
-article table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 1.75rem 0;
-  border-radius: 0.875rem;
-  overflow: hidden;
-  background: var(--surface);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+/* Scroll wrapper — prevents layout overflow on mobile */
+article .table-wrapper,
+article div:has(> table) {
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 1rem;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.08),
+    0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  margin: 2rem 0;
+  border: 1px solid var(--border);
 }
 
+/* When table is not inside a wrapper div, give it its own scroll */
+article table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+  font-size: 0.9375rem;
+  background: #ffffff;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+/* ─── Header ─────────────────────────────── */
 article table thead {
-  background: var(--surface-2);
+  background: linear-gradient(135deg, #f5f0eb 0%, #ede7e0 100%);
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 article table th {
-  padding: 0.875rem;
+  padding: 0.875rem 1.125rem;
   text-align: left;
-  font-weight: 600;
-  font-size: 0.9375rem;
-  color: var(--text);
-  border-bottom: 2px solid var(--border);
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #3b2e22;
+  border-bottom: 2px solid #d9cfc7;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  transition: background 0.15s ease;
 }
 
-article table td {
-  padding: 0.875rem;
-  border-top: 1px solid var(--border);
-  font-size: 0.9375rem;
-  color: var(--text);
+/* Column dividers inside header */
+article table th:not(:last-child) {
+  border-right: 1px solid rgba(217, 207, 199, 0.6);
 }
 
+/* Header hover hint */
+article table th:hover {
+  background: rgba(217, 207, 199, 0.5);
+}
+
+/* ─── Body rows ──────────────────────────── */
+article table tbody tr {
+  transition:
+    background 0.15s ease,
+    transform 0.1s ease;
+  cursor: default;
+}
+
+/* Zebra stripes */
+article table tbody tr:nth-child(even) {
+  background: rgba(239, 233, 227, 0.35);
+}
+
+article table tbody tr:nth-child(odd) {
+  background: #ffffff;
+}
+
+/* Row hover — clean highlight */
 article table tbody tr:hover {
-  background: var(--surface-2);
+  background: rgba(16, 185, 129, 0.07) !important;
+  transform: scale(1.004);
+  position: relative;
+  z-index: 1;
+}
+
+/* Active row click feedback */
+article table tbody tr:active {
+  background: rgba(16, 185, 129, 0.13) !important;
+}
+
+/* ─── Cells ──────────────────────────────── */
+article table td {
+  padding: 0.8125rem 1.125rem;
+  vertical-align: top;
+  font-size: 0.9375rem;
+  color: #1a1a1a;
+  line-height: 1.55;
+  border-bottom: 1px solid rgba(217, 207, 199, 0.5);
+  transition: background 0.15s ease;
+}
+
+/* Subtle column dividers in body */
+article table td:not(:last-child) {
+  border-right: 1px solid rgba(217, 207, 199, 0.3);
+}
+
+/* No border on last row */
+article table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ─── Scroll fade indicator on right ────── */
+article div:has(> table)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3rem;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.7));
+  pointer-events: none;
+  border-radius: 0 1rem 1rem 0;
+}
+
+/* ─── Number/value cells (right-align) ──── */
+article table td:is([data-type="number"], .num),
+article table th:is([data-type="number"], .num) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+/* ─── First column emphasis ──────────────── */
+article table td:first-child {
+  font-weight: 600;
+  color: #111;
+}
+
+/* ─── DARK MODE ──────────────────────────── */
+.dark article table {
+  background: #17120d;
+}
+
+.dark article table thead {
+  background: linear-gradient(135deg, #251d14 0%, #2c2218 100%);
+}
+
+.dark article table th {
+  color: #e8d9c8;
+  border-bottom-color: #3b2e22;
+  border-right-color: rgba(59, 46, 34, 0.6);
+}
+
+.dark article table th:hover {
+  background: rgba(59, 46, 34, 0.5);
+}
+
+.dark article table tbody tr:nth-child(even) {
+  background: rgba(44, 34, 24, 0.4);
+}
+
+.dark article table tbody tr:nth-child(odd) {
+  background: #17120d;
+}
+
+.dark article table tbody tr:hover {
+  background: rgba(16, 185, 129, 0.09) !important;
+}
+
+.dark article table td {
+  color: #e4d5c5;
+  border-bottom-color: rgba(59, 46, 34, 0.4);
+  border-right-color: rgba(59, 46, 34, 0.25);
+}
+
+.dark article table td:first-child {
+  color: #f0e4d4;
+}
+
+.dark article div:has(> table) {
+  border-color: #3b2e22;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.dark article div:has(> table)::after {
+  background: linear-gradient(to right, transparent, rgba(23, 18, 13, 0.7));
 }
 
 /* ========================================
@@ -236,8 +392,6 @@ article img {
   border-radius: 1rem;
   margin: 2rem auto;
   display: block;
-  border: 2px solid var(--border);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 article figure {

@@ -34,7 +34,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="fixed inset-0 z-50 flex bg-background overflow-hidden">
       <AdminSidebar />
       <div className="flex flex-1 flex-col overflow-hidden">
         <AdminNavbar />

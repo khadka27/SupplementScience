@@ -15,15 +15,23 @@ import { getPostHref } from "@/lib/utils";
 
 interface RelatedPostsProps {
   posts: Post[];
+  currentPostId?: string;
 }
 
-export default function RelatedPosts({ posts }: RelatedPostsProps) {
-  if (posts.length === 0) return null;
+export default function RelatedPosts({
+  posts,
+  currentPostId,
+}: RelatedPostsProps) {
+  const displayPosts = currentPostId
+    ? posts.filter((p) => p.id !== currentPostId).slice(0, 3)
+    : posts.slice(0, 3);
+
+  if (displayPosts.length === 0) return null;
 
   return (
     <div className="my-16">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {posts.map((post, index) => (
+        {displayPosts.map((post, index) => (
           <Link
             key={post.id}
             href={getPostHref(post)}
@@ -38,6 +46,7 @@ export default function RelatedPosts({ posts }: RelatedPostsProps) {
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 33vw"
+                    unoptimized={post.featuredImageUrl.startsWith("http")}
                   />
                   {post.category && (
                     <div className="absolute top-4 left-4">

@@ -1,6 +1,6 @@
 /**
  * Internal Linking Utilities
- * 
+ *
  * Provides helper functions for generating internal links
  * following the dynamic slug-based routing structure.
  */
@@ -22,9 +22,9 @@ export function getIngredientUrl(ingredientSlug: string): string {
  */
 export function getReviewUrl(
   categorySlug: string,
-  productSlug: string
+  productSlug: string,
 ): string {
-  return `/category/${categorySlug}/${productSlug}`;
+  return `/${categorySlug}/${productSlug}`;
 }
 
 /**
@@ -35,7 +35,7 @@ export function getReviewUrl(
  */
 export function getGuideUrl(
   categorySlug: string,
-  guideType: "safety-measures" | "how-to-choose" | "ingredients-used"
+  guideType: "safety-measures" | "how-to-choose" | "ingredients-used",
 ): string {
   const guideSlugMap = {
     "safety-measures": `safety-measures-for-${categorySlug}-supplements`,
@@ -43,7 +43,7 @@ export function getGuideUrl(
     "ingredients-used": `ingredients-used-in-${categorySlug}-supplements`,
   };
 
-  return `/category/${categorySlug}/${guideSlugMap[guideType]}`;
+  return `/${categorySlug}/${guideSlugMap[guideType]}`;
 }
 
 /**
@@ -65,7 +65,7 @@ export function getCategoryUrl(categorySlug: string): string {
 export function createInternalLink(
   href: string,
   text: string,
-  className?: string
+  className?: string,
 ): string {
   const classAttr = className ? ` class="${className}"` : "";
   return `<a href="${href}"${classAttr}>${text}</a>`;
@@ -79,7 +79,7 @@ export function createInternalLink(
  */
 export function linkIngredients(
   content: string,
-  ingredientMap: Record<string, string>
+  ingredientMap: Record<string, string>,
 ): string {
   let processedContent = content;
 
@@ -87,7 +87,7 @@ export function linkIngredients(
     // Create regex to match ingredient mentions (case-insensitive, whole word)
     const regex = new RegExp(
       `\\b${ingredientName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`,
-      "gi"
+      "gi",
     );
 
     // Replace with link, but avoid replacing if already inside an anchor tag
@@ -106,7 +106,7 @@ export function linkIngredients(
       return createInternalLink(
         getIngredientUrl(slug),
         match,
-        "text-green-600 dark:text-green-400 hover:underline"
+        "text-green-600 dark:text-green-400 hover:underline",
       );
     });
   }
@@ -122,7 +122,7 @@ export function linkIngredients(
  */
 export function extractIngredientMentions(
   content: string,
-  knownIngredients: string[]
+  knownIngredients: string[],
 ): string[] {
   const found: string[] = [];
   const lowerContent = content.toLowerCase();
@@ -130,7 +130,7 @@ export function extractIngredientMentions(
   for (const ingredient of knownIngredients) {
     const regex = new RegExp(
       `\\b${ingredient.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`,
-      "i"
+      "i",
     );
     if (regex.test(lowerContent) && !found.includes(ingredient)) {
       found.push(ingredient);
@@ -151,11 +151,11 @@ export const INGREDIENT_SLUGS: Record<string, string> = {
   chondroitin: "chondroitin",
   "chondroitin sulfate": "chondroitin",
   turmeric: "turmeric",
-  "curcumin": "turmeric",
+  curcumin: "turmeric",
   collagen: "collagen",
   "type ii collagen": "collagen",
   msm: "msm",
-  "methylsulfonylmethane": "msm",
+  methylsulfonylmethane: "msm",
   boswellia: "boswellia",
   "boswellia serrata": "boswellia",
   hyaluronic: "hyaluronic-acid",
@@ -192,7 +192,7 @@ export function getIngredientSlug(ingredientName: string): string {
  */
 export function getGuideSlug(
   categorySlug: string,
-  guideType: "safety-measures" | "how-to-choose" | "ingredients-used"
+  guideType: "safety-measures" | "how-to-choose" | "ingredients-used",
 ): string {
   const guideSlugMap = {
     "safety-measures": `safety-measures-for-${categorySlug}-supplements`,
@@ -215,4 +215,3 @@ export function getProductReviewSlug(productName: string): string {
     .replace(/^-+|-+$/g, "");
   return `${slug}-review`;
 }
-

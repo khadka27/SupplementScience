@@ -28,11 +28,16 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { Save, Loader2, Link as LinkIcon } from "lucide-react";
 import {
-  generateSlugForPostType,
-  generatePreviewUrl,
-} from "@/lib/admin-utils";
+  Save,
+  Loader2,
+  Link as LinkIcon,
+  Globe,
+  ImageIcon,
+} from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ImageUpload } from "@/components/ImageUpload";
+import { generateSlugForPostType, generatePreviewUrl } from "@/lib/admin-utils";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const calculateReadTime = (content: string): number => {
@@ -120,7 +125,11 @@ export default function IngredientEditorForm({
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, readTimeMinutes }),
+        body: JSON.stringify({
+          ...values,
+          readTimeMinutes,
+          postType: "ingredient",
+        }),
       });
 
       if (!response.ok) {
@@ -134,7 +143,7 @@ export default function IngredientEditorForm({
       toast.success(
         isEditing
           ? "Ingredient page updated successfully!"
-          : "Ingredient page created successfully!"
+          : "Ingredient page created successfully!",
       );
       router.push("/admin/blogs");
       router.refresh();
@@ -335,7 +344,8 @@ export default function IngredientEditorForm({
                         </SelectContent>
                       </Select>
                       <FormDescription>
-                        Optional. Ingredients are global and don't require a category.
+                        Optional. Ingredients are global and don't require a
+                        category.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -375,10 +385,31 @@ export default function IngredientEditorForm({
                   name="featuredImageUrl"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Featured Image URL</FormLabel>
-                      <FormControl>
-                        <Input placeholder="https://..." {...field} />
-                      </FormControl>
+                      <FormLabel>Featured Image</FormLabel>
+                      <Tabs defaultValue="upload" className="w-full">
+                        <TabsList className="mb-4">
+                          <TabsTrigger value="upload" className="gap-2">
+                            <ImageIcon className="h-4 w-4" /> Upload
+                          </TabsTrigger>
+                          <TabsTrigger value="url" className="gap-2">
+                            <Globe className="h-4 w-4" /> Link URL
+                          </TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="upload">
+                          <ImageUpload
+                            value={field.value || ""}
+                            onChange={field.onChange}
+                          />
+                        </TabsContent>
+                        <TabsContent value="url">
+                          <FormControl>
+                            <Input placeholder="https://..." {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            URL for the ingredient's main image
+                          </FormDescription>
+                        </TabsContent>
+                      </Tabs>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -427,8 +458,8 @@ export default function IngredientEditorForm({
                                               ])
                                             : field.onChange(
                                                 field.value?.filter(
-                                                  (value) => value !== tag.id
-                                                )
+                                                  (value) => value !== tag.id,
+                                                ),
                                               );
                                         }}
                                       />
@@ -480,4 +511,3 @@ export default function IngredientEditorForm({
     </Form>
   );
 }
-

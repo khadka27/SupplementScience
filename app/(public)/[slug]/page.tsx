@@ -14,7 +14,7 @@ import {
 } from "@/lib/schema";
 
 export const dynamic = "force-static";
-export const revalidate = 21600;
+export const revalidate = 10;
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -60,7 +60,7 @@ async function getData(slug: string) {
       },
       include: {
         author: { select: { name: true, slug: true, avatarUrl: true } },
-        category: { select: { name: true, slug: true } },
+        category: { select: { name: true, slug: true, isHub: true } },
         tags: { include: { tag: { select: { name: true, slug: true } } } },
       },
       orderBy: { publishedAt: "desc" },

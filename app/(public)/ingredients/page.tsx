@@ -3,7 +3,7 @@ import BlogList from "@/components/blog/BlogList";
 import { Metadata } from "next";
 
 export const dynamic = "force-static";
-export const revalidate = 21600;
+export const revalidate = 10;
 
 export const metadata: Metadata = {
   title: "Ingredients | Supplement Science",
@@ -12,6 +12,16 @@ export const metadata: Metadata = {
 
 export default async function IngredientsPage() {
   const tags = await prisma.tag.findMany({
+    where: {
+      posts: {
+        some: {
+          post: {
+            postType: "ingredient",
+            status: "PUBLISHED",
+          },
+        },
+      },
+    },
     orderBy: {
       name: "asc",
     },
@@ -20,9 +30,7 @@ export default async function IngredientsPage() {
   const posts = await prisma.post.findMany({
     where: {
       status: "PUBLISHED",
-      tags: {
-        some: {}, // has at least one tag
-      },
+      postType: "ingredient",
     },
     include: {
       author: {

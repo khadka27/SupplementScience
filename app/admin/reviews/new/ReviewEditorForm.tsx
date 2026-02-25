@@ -28,7 +28,15 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { Save, Loader2, Link as LinkIcon } from "lucide-react";
+import {
+  Save,
+  Loader2,
+  Link as LinkIcon,
+  Globe,
+  ImageIcon,
+} from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ImageUpload } from "@/components/ImageUpload";
 import {
   generateSlugForPostType,
   generatePreviewUrl,
@@ -119,7 +127,7 @@ export default function ReviewEditorForm({
       const validation = validateSlugForPostType(
         "review",
         values.slug,
-        selectedCategory?.slug
+        selectedCategory?.slug,
       );
       if (!validation.valid) {
         toast.error(validation.error || "Invalid slug format");
@@ -147,7 +155,9 @@ export default function ReviewEditorForm({
 
       const data = await response.json();
       toast.success(
-        isEditing ? "Review updated successfully!" : "Review created successfully!"
+        isEditing
+          ? "Review updated successfully!"
+          : "Review created successfully!",
       );
       router.push("/admin/blogs");
       router.refresh();
@@ -191,10 +201,7 @@ export default function ReviewEditorForm({
                     <FormItem>
                       <FormLabel>Product Name *</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="e.g., Flexitrinol"
-                          {...field}
-                        />
+                        <Input placeholder="e.g., Flexitrinol" {...field} />
                       </FormControl>
                       <FormDescription>
                         The name of the supplement product being reviewed
@@ -393,10 +400,28 @@ export default function ReviewEditorForm({
                   name="featuredImageUrl"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Featured Image URL</FormLabel>
-                      <FormControl>
-                        <Input placeholder="https://..." {...field} />
-                      </FormControl>
+                      <FormLabel>Featured Image</FormLabel>
+                      <Tabs defaultValue="upload" className="w-full">
+                        <TabsList className="mb-4">
+                          <TabsTrigger value="upload" className="gap-2">
+                            <ImageIcon className="h-4 w-4" /> Upload
+                          </TabsTrigger>
+                          <TabsTrigger value="url" className="gap-2">
+                            <Globe className="h-4 w-4" /> Link URL
+                          </TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="upload">
+                          <ImageUpload
+                            value={field.value || ""}
+                            onChange={field.onChange}
+                          />
+                        </TabsContent>
+                        <TabsContent value="url">
+                          <FormControl>
+                            <Input placeholder="https://..." {...field} />
+                          </FormControl>
+                        </TabsContent>
+                      </Tabs>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -445,8 +470,8 @@ export default function ReviewEditorForm({
                                               ])
                                             : field.onChange(
                                                 field.value?.filter(
-                                                  (value) => value !== tag.id
-                                                )
+                                                  (value) => value !== tag.id,
+                                                ),
                                               );
                                         }}
                                       />
@@ -498,4 +523,3 @@ export default function ReviewEditorForm({
     </Form>
   );
 }
-
