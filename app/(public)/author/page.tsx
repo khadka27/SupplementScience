@@ -38,8 +38,11 @@ export default async function AuthorsPage() {
   });
 
   return (
-    <div className="container mx-auto px-4 py-16 max-w-7xl mt-20 min-h-[60vh]">
-      <div className="mb-16 text-center lg:text-left">
+    <div
+      className="container mx-auto px-4 py-16 max-w-7xl mt-20 min-h-[60vh]"
+      suppressHydrationWarning
+    >
+      <div className="mb-16 text-center lg:text-left" suppressHydrationWarning>
         <h1 className="text-5xl font-extrabold mb-6 tracking-tight text-black">
           Our Experts
         </h1>
@@ -49,7 +52,10 @@ export default async function AuthorsPage() {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+      <div
+        className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20"
+        suppressHydrationWarning
+      >
         {authors.length === 0 ? (
           <p className="text-gray-500 italic">No authors found.</p>
         ) : (
@@ -59,7 +65,10 @@ export default async function AuthorsPage() {
               href={`/author/${author.slug}`}
               className="group flex flex-col items-center text-center p-8 rounded-[2rem] bg-white/70 backdrop-blur-sm border border-[#D9CFC7] hover:border-black hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] transition-all duration-300"
             >
-              <div className="w-32 h-32 rounded-full overflow-hidden shrink-0 border-4 border-white shadow-xl relative bg-[#EFE9E3] mb-6">
+              <div
+                className="w-32 h-32 rounded-full overflow-hidden shrink-0 border-4 border-white shadow-xl relative bg-[#EFE9E3] mb-6"
+                suppressHydrationWarning
+              >
                 {author.avatarUrl ? (
                   <Image
                     src={author.avatarUrl}
@@ -68,7 +77,10 @@ export default async function AuthorsPage() {
                     className="object-cover transition-transform group-hover:scale-105"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-[#D9CFC7]">
+                  <div
+                    className="w-full h-full flex items-center justify-center text-4xl font-bold text-[#D9CFC7]"
+                    suppressHydrationWarning
+                  >
                     {author.name.charAt(0)}
                   </div>
                 )}
@@ -81,7 +93,10 @@ export default async function AuthorsPage() {
                   {author.bio}
                 </p>
               )}
-              <div className="mt-auto inline-flex flex-wrap items-center gap-2 bg-[#EFE9E3] text-black px-4 py-2 rounded-full text-sm font-semibold group-hover:bg-black group-hover:text-white transition-colors">
+              <div
+                className="mt-auto inline-flex flex-wrap items-center gap-2 bg-[#EFE9E3] text-black px-4 py-2 rounded-full text-sm font-semibold group-hover:bg-black group-hover:text-white transition-colors"
+                suppressHydrationWarning
+              >
                 <span>{author._count.posts || 0}</span>
                 <span>
                   {(author._count.posts || 0) === 1 ? "Article" : "Articles"}

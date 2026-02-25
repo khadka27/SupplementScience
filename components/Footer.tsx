@@ -15,9 +15,15 @@ export function Footer() {
 
   return (
     <footer className="bg-[#EFE9E3] border-t border-[#D9CFC7] mt-20">
-      <div className="container mx-auto max-w-6xl px-4 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          <div className="md:col-span-2 space-y-6">
+      <div
+        className="container mx-auto max-w-6xl px-4 lg:px-8 py-12"
+        suppressHydrationWarning
+      >
+        <div
+          className="grid grid-cols-1 md:grid-cols-4 gap-10"
+          suppressHydrationWarning
+        >
+          <div className="md:col-span-2 space-y-6" suppressHydrationWarning>
             <Link href="/" className="flex items-center gap-2">
               <Image
                 src="/logo.png"
@@ -32,7 +38,7 @@ export function Footer() {
               on supplements, nutrition, and personalized wellness strategies.
               Every article is cited from peer-reviewed journals.
             </p>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4" suppressHydrationWarning>
               <a
                 href="#"
                 className="p-2 rounded-full bg-muted hover:bg-primary hover:text-primary-foreground transition-all"
@@ -60,7 +66,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
+          <div suppressHydrationWarning>
             <h4 className="font-bold mb-6 uppercase text-xs tracking-widest text-primary">
               Information
             </h4>
@@ -108,7 +114,7 @@ export function Footer() {
             </ul>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-6" suppressHydrationWarning>
             <h4 className="font-bold uppercase text-xs tracking-widest text-primary">
               Newsletter
             </h4>
@@ -116,7 +122,7 @@ export function Footer() {
               Get the latest science-backed supplement news delivered to your
               inbox.
             </p>
-            <div className="flex gap-2">
+            <div className="flex gap-2" suppressHydrationWarning>
               <input
                 type="email"
                 placeholder="Email address"
@@ -128,7 +134,7 @@ export function Footer() {
             </div>
           </div>
 
-          <div>
+          <div suppressHydrationWarning>
             <h4 className="font-bold mb-6 uppercase text-xs tracking-widest text-primary">
               Support
             </h4>
@@ -161,11 +167,14 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-6">
+        <div
+          className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-6"
+          suppressHydrationWarning
+        >
           <p className="text-sm text-muted-foreground font-medium">
             © {currentYear} SupplementDecoded. Empowering health through data.
           </p>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6" suppressHydrationWarning>
             <span className="flex items-center gap-1.5 text-xs text-muted-foreground bg-accent/50 px-3 py-1.5 rounded-full border border-border">
               <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
               Database Real-time Sync
