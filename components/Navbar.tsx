@@ -13,6 +13,7 @@ import {
   LogOut,
   Settings,
   User,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "./ModeToggle";
@@ -46,6 +47,7 @@ export function Navbar() {
   const pathname = usePathname();
   const { data: session } = useSession();
   const [scrolled, setScrolled] = React.useState(false);
+  const [isSearchOpen, setIsSearchOpen] = React.useState(false);
 
   React.useEffect(() => {
     const handleScroll = () => {
@@ -55,13 +57,17 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  React.useEffect(() => {
+    setIsSearchOpen(false);
+  }, [pathname]);
+
   return (
     <header
       className={cn(
-        "fixed top-4 left-0 right-0 z-50 transition-all duration-300 mx-auto max-w-6xl w-[calc(100%-2rem)] rounded-full",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full",
         scrolled
-          ? "bg-white/80 backdrop-blur-md py-3 border border-[#D9CFC7] shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
-          : "bg-white/50 backdrop-blur-sm py-4 border border-[#D9CFC7]/50 shadow-sm",
+          ? "bg-white/90 dark:bg-zinc-950/90 backdrop-blur-xl py-3 border-b border-[#D9CFC7] dark:border-zinc-800 shadow-sm"
+          : "bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md py-4 border-b border-transparent dark:border-transparent",
       )}
     >
       <div className="px-6 lg:px-8 flex items-center justify-between">
@@ -95,7 +101,14 @@ export function Navbar() {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
-          <SearchBar />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full"
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+          >
+            <Search className="w-5 h-5 text-gray-700 dark:text-zinc-300" />
+          </Button>
           <ModeToggle />
         </div>
 
@@ -145,6 +158,30 @@ export function Navbar() {
               </div>
             </SheetContent>
           </Sheet>
+        </div>
+      </div>
+
+      {/* Expandable Search Drawer */}
+      <div
+        className={cn(
+          "absolute left-0 right-0 w-full transition-all duration-300 ease-in-out z-[-1] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl shadow-md border-b border-[#D9CFC7] dark:border-zinc-800",
+          isSearchOpen
+            ? "top-full opacity-100 translate-y-0 py-3 pointer-events-auto"
+            : "top-[80%] opacity-0 -translate-y-2 pointer-events-none py-0 h-0 overflow-hidden border-b-0",
+        )}
+      >
+        <div className="w-full max-w-6xl mx-auto px-6 lg:px-8 flex items-center justify-center gap-3">
+          <div className="flex-1 max-w-2xl relative">
+            <SearchBar />
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsSearchOpen(false)}
+            className="rounded-full shrink-0 text-muted-foreground hover:text-black dark:hover:text-white"
+          >
+            <X className="w-5 h-5" />
+          </Button>
         </div>
       </div>
     </header>

@@ -124,8 +124,8 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-white dark:bg-[#0F0E0A] text-slate-900 dark:text-zinc-100 transition-colors duration-300">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-b from-[#F9F8F6] via-[#EFE9E3] to-[#F9F8F6] dark:from-[#0F0E0A] dark:via-[#211A13] dark:to-[#0F0E0A] pt-28 pb-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-grid-black/[0.02] dark:bg-grid-white/[0.02] bg-[size:20px_20px]" />
+      <section className="relative bg-linear-to-b from-[#F9F8F6] via-[#EFE9E3] to-[#F9F8F6] dark:from-[#0F0E0A] dark:via-[#211A13] dark:to-[#0F0E0A] pt-[104px] pb-20 px-4 overflow-hidden">
+        <div className="absolute inset-0 bg-grid-black/[0.02] dark:bg-grid-white/[0.02] bg-size-[20px_20px]" />
         <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.08),transparent_50%)] dark:bg-[radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.15),transparent_50%)]" />
         <div className="absolute bottom-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_80%,rgba(217,207,199,0.3),transparent_50%)] dark:bg-[radial-gradient(circle_at_20%_80%,rgba(217,207,199,0.05),transparent_50%)]" />
 
@@ -205,7 +205,7 @@ export default async function Home() {
 
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
             {/* For */}
-            <Card className="bg-gradient-to-br from-[#F4FDF8] to-[#E9F9F0] dark:from-green-950/20 dark:to-green-900/10 border border-green-200 dark:border-green-900/50 shadow-xl shadow-green-900/5 dark:shadow-none rounded-[2.5rem] overflow-hidden hover:shadow-2xl transition-shadow h-full">
+            <Card className="bg-linear-to-br from-[#F4FDF8] to-[#E9F9F0] dark:from-green-950/20 dark:to-green-900/10 border border-green-200 dark:border-green-900/50 shadow-xl shadow-green-900/5 dark:shadow-none rounded-[2.5rem] overflow-hidden hover:shadow-2xl transition-shadow h-full">
               <CardContent className="p-8 md:p-12 flex flex-col h-full">
                 <div className="flex items-center gap-4 mb-10">
                   <div className="w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-900/50 flex items-center justify-center shadow-inner border border-green-200 dark:border-green-800">
@@ -215,7 +215,7 @@ export default async function Home() {
                     Who This Is For
                   </h3>
                 </div>
-                <ul className="space-y-6 flex-grow">
+                <ul className="space-y-6 grow">
                   {[
                     "People researching supplements before considering a purchase",
                     "Readers skeptical of marketing claims and “miracle” language",
@@ -244,7 +244,7 @@ export default async function Home() {
             </Card>
 
             {/* Not For */}
-            <Card className="bg-gradient-to-br from-[#FFF5F5] to-[#FFEDED] dark:from-red-950/20 dark:to-red-900/10 border border-red-200 dark:border-red-900/50 shadow-xl shadow-red-900/5 dark:shadow-none rounded-[2.5rem] overflow-hidden hover:shadow-2xl transition-shadow h-full">
+            <Card className="bg-linear-to-br from-[#FFF5F5] to-[#FFEDED] dark:from-red-950/20 dark:to-red-900/10 border border-red-200 dark:border-red-900/50 shadow-xl shadow-red-900/5 dark:shadow-none rounded-[2.5rem] overflow-hidden hover:shadow-2xl transition-shadow h-full">
               <CardContent className="p-8 md:p-12 flex flex-col h-full">
                 <div className="flex items-center gap-4 mb-10">
                   <div className="w-14 h-14 rounded-2xl bg-red-100 dark:bg-red-900/50 flex items-center justify-center shadow-inner border border-red-200 dark:border-red-800">
@@ -254,7 +254,7 @@ export default async function Home() {
                     Who This Is Not For
                   </h3>
                 </div>
-                <ul className="space-y-6 flex-grow">
+                <ul className="space-y-6 grow">
                   {[
                     "Those seeking quick fixes, guaranteed outcomes, or cures",
                     "People looking for personalized medical advice or diagnoses",
@@ -360,7 +360,7 @@ export default async function Home() {
                 <ListChecks className="text-primary w-8 h-8" />
                 How We Evaluate
               </h3>
-              <div className="space-y-8 relative before:absolute before:inset-0 before:ml-[1.4rem] before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-primary/50 before:via-[#D9CFC7] dark:before:via-zinc-700 before:to-transparent">
+              <div className="space-y-8 relative before:absolute before:inset-0 before:ml-[1.4rem] before:-translate-x-px before:h-full before:w-0.5 before:bg-linear-to-b before:from-primary/50 before:via-[#D9CFC7] dark:before:via-zinc-700 before:to-transparent">
                 {[
                   {
                     title: "What & Why",
@@ -450,9 +450,9 @@ export default async function Home() {
                 },
               ].map((guide, i) => (
                 <Link key={i} href={guide.href}>
-                  <Card className="group h-full bg-white dark:bg-[#0F0E0A] border-[#D9CFC7]/80 dark:border-[#3B3028] hover:border-primary/50 dark:hover:border-primary/50 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 rounded-[2rem] overflow-hidden">
+                  <Card className="group h-full bg-white dark:bg-[#0F0E0A] border-[#D9CFC7]/80 dark:border-[#3B3028] hover:border-primary/50 dark:hover:border-primary/50 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 rounded-4xl overflow-hidden">
                     <CardContent className="p-8">
-                      <div className="w-14 h-14 bg-gradient-to-br from-[#F9F8F6] to-[#EFE9E3] dark:from-[#211A13] dark:to-[#3B3028] border border-[#D9CFC7]/50 dark:border-[#634F36] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform shadow-sm">
+                      <div className="w-14 h-14 bg-linear-to-br from-[#F9F8F6] to-[#EFE9E3] dark:from-[#211A13] dark:to-[#3B3028] border border-[#D9CFC7]/50 dark:border-[#634F36] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform shadow-sm">
                         <guide.icon className="w-7 h-7 text-primary drop-shadow-sm" />
                       </div>
                       <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-zinc-100 group-hover:text-primary transition-colors">
@@ -486,7 +486,7 @@ export default async function Home() {
                   const Icon = categoryIcons[category.name] || Leaf;
                   return (
                     <Link key={category.id} href={`/category/${category.slug}`}>
-                      <Card className="group hover:shadow-xl hover:border-primary/30 dark:hover:border-primary/30 hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-[#0F0E0A] rounded-[2rem] border-[#D9CFC7]/60 dark:border-[#3B3028] h-full overflow-hidden">
+                      <Card className="group hover:shadow-xl hover:border-primary/30 dark:hover:border-primary/30 hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-[#0F0E0A] rounded-4xl border-[#D9CFC7]/60 dark:border-[#3B3028] h-full overflow-hidden">
                         <CardContent className="p-8 text-center flex flex-col items-center justify-center h-full relative">
                           <div className="absolute top-0 left-0 w-full h-1 bg-primary/0 group-hover:bg-primary transition-colors" />
                           <div className="w-20 h-20 mb-6 rounded-full bg-gray-50 dark:bg-[#211A13] flex items-center justify-center group-hover:bg-primary/5 dark:group-hover:bg-primary/10 transition-colors border border-gray-100 dark:border-[#3B3028] shadow-sm relative group-hover:scale-105">
@@ -535,12 +535,12 @@ export default async function Home() {
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-tr from-black/40 via-transparent to-transparent opacity-60" />
+                      <div className="absolute inset-0 bg-linear-to-tr from-black/40 via-transparent to-transparent opacity-60" />
                     </div>
                   )}
 
                   {/* Content */}
-                  <div className="p-10 md:p-16 flex flex-col justify-center bg-gradient-to-br from-white to-[#F9F8F6] dark:from-[#0F0E0A] dark:to-[#211A13]">
+                  <div className="p-10 md:p-16 flex flex-col justify-center bg-linear-to-br from-white to-[#F9F8F6] dark:from-[#0F0E0A] dark:to-[#211A13]">
                     <div className="flex items-center gap-3 mb-6">
                       <div className="bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 border border-amber-200 dark:border-amber-800/50 shadow-sm">
                         <Sparkles className="w-3.5 h-3.5" /> Featured Case Study
@@ -606,7 +606,7 @@ export default async function Home() {
       </section>
 
       {/* Trust & Transparency */}
-      <section className="py-24 px-4 bg-gradient-to-b from-[#F9F8F6] to-[#EFE9E3] dark:from-[#0F0E0A] dark:to-[#211A13]">
+      <section className="py-24 px-4 bg-linear-to-b from-[#F9F8F6] to-[#EFE9E3] dark:from-[#0F0E0A] dark:to-[#211A13]">
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-2 gap-16 lg:gap-20 items-center">
             <div>

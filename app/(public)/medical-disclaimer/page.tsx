@@ -1,23 +1,14 @@
 import { Metadata } from "next";
-import { Card, CardContent } from "@/components/ui/card";
-import {
-  AlertTriangle,
-  Stethoscope,
-  Shield,
-  UserCheck,
-  Pill,
-  AlertCircle,
-  FileWarning,
-  Mail,
-} from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import Link from "next/link";
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
 
 export const metadata: Metadata = {
   title: "Medical Disclaimer | SupplementDecoded",
   description:
-    "Important medical disclaimer regarding the health information provided on our website. Consult healthcare professionals for medical advice.",
+    "Please read our medical disclaimer. All content on this website is provided for educational and informational purposes only.",
   alternates: {
     canonical: `${baseUrl}/medical-disclaimer`,
   },
@@ -29,353 +20,175 @@ export const metadata: Metadata = {
 
 export default function MedicalDisclaimerPage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white dark:bg-[#0F0E0A] text-slate-900 dark:text-zinc-100 transition-colors duration-300">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 dark:from-amber-950 dark:via-orange-950 dark:to-red-950 py-20 px-4">
-        <div className="container mx-auto max-w-4xl text-center">
-          <div className="bg-amber-100 dark:bg-amber-900 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
-            <AlertTriangle className="w-8 h-8 text-amber-700 dark:text-amber-300" />
+      <section className="relative bg-linear-to-b from-[#F9F8F6] via-[#EFE9E3] to-[#F9F8F6] dark:from-[#0F0E0A] dark:via-[#211A13] dark:to-[#0F0E0A] pt-[140px] pb-20 px-4 overflow-hidden border-b border-[#D9CFC7] dark:border-[#211A13]">
+        <div className="absolute inset-0 bg-grid-black/[0.02] dark:bg-grid-white/[0.02] bg-size-[20px_20px]" />
+
+        <div className="container mx-auto max-w-4xl text-center relative z-10">
+          <div className="bg-white/80 dark:bg-[#211A13]/80 backdrop-blur-md w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8 border border-[#D9CFC7] dark:border-[#3B3028] shadow-sm shadow-[#D9CFC7]/50 dark:shadow-none">
+            <AlertCircle className="w-10 h-10 text-amber-600 dark:text-amber-500 drop-shadow-sm" />
           </div>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight text-black dark:text-white">
             Medical Disclaimer
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Please read this disclaimer carefully before using our website or
-            following any information provided.
+          <p className="text-xl text-gray-700 dark:text-zinc-300 mb-6 max-w-2xl mx-auto leading-relaxed">
+            All content on this website is provided for educational and
+            informational purposes only.
           </p>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white dark:bg-[#211A13] border border-[#D9CFC7] dark:border-[#3B3028] text-sm font-medium text-gray-600 dark:text-zinc-400">
+            <span>Last Updated: February 25, 2026</span>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <div className="container mx-auto px-4 py-16 max-w-4xl">
-        {/* Important Notice */}
-        <Card className="mb-12 border-2 border-amber-300 dark:border-amber-700 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950">
-          <CardContent className="pt-8">
-            <div className="flex items-start gap-4">
-              <div className="bg-amber-100 dark:bg-amber-900 p-3 rounded-lg">
-                <AlertCircle className="w-6 h-6 text-amber-700 dark:text-amber-300" />
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold mb-4 text-amber-900 dark:text-amber-100">
-                  Important Notice
-                </h2>
-                <p className="text-amber-900 dark:text-amber-100 leading-relaxed font-medium">
-                  The information on this website is for educational purposes
-                  only and is NOT a substitute for professional medical advice,
-                  diagnosis, or treatment. Always consult your physician before
-                  taking any supplements.
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Key Points Grid */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
-          <Card className="text-center hover:shadow-lg transition-shadow border-2">
-            <CardContent className="pt-8">
-              <div className="bg-red-100 dark:bg-red-900 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FileWarning className="w-6 h-6 text-red-700 dark:text-red-300" />
-              </div>
-              <h3 className="font-bold mb-2">Not Medical Advice</h3>
-              <p className="text-sm text-muted-foreground">
-                Content is informational only, not medical advice
+      {/* Content Section */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-4xl">
+          <div className="bg-white dark:bg-[#0F0E0A] border border-[#D9CFC7] dark:border-[#3B3028] rounded-4xl p-8 md:p-12 lg:p-16 shadow-xl shadow-black/5 dark:shadow-none">
+            <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary hover:prose-a:text-primary/80 prose-a:font-medium">
+              <h2 className="text-3xl mt-0">Educational Purpose Only</h2>
+              <p>
+                All content on this website is provided for educational and
+                informational purposes only.
               </p>
-            </CardContent>
-          </Card>
-
-          <Card className="text-center hover:shadow-lg transition-shadow border-2">
-            <CardContent className="pt-8">
-              <div className="bg-blue-100 dark:bg-blue-900 w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Stethoscope className="w-6 h-6 text-blue-700 dark:text-blue-300" />
-              </div>
-              <h3 className="font-bold mb-2">Consult Professionals</h3>
-              <p className="text-sm text-muted-foreground">
-                Always seek qualified healthcare advice
+              <p>
+                The information presented is intended to help readers understand
+                supplements, nutrition, ingredients, safety considerations, and
+                related research in context. It is not intended to replace
+                professional medical advice, diagnosis, or treatment.
               </p>
-            </CardContent>
-          </Card>
 
-          <Card className="text-center hover:shadow-lg transition-shadow border-2">
-            <CardContent className="pt-8">
-              <div className="bg-[#D9CFC7]  w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4">
-                <UserCheck className="w-6 h-6 text-primary dark:text-primary" />
-              </div>
-              <h3 className="font-bold mb-2">Individual Results Vary</h3>
-              <p className="text-sm text-muted-foreground">
-                Effects differ based on personal factors
+              <h2>No Medical Advice</h2>
+              <p>
+                The content on this site does not constitute medical advice.
               </p>
-            </CardContent>
-          </Card>
-        </div>
+              <p>We do not provide:</p>
+              <ul>
+                <li>Medical diagnoses</li>
+                <li>Treatment recommendations</li>
+                <li>Personalized health guidance</li>
+              </ul>
+              <p>
+                Always seek the advice of a qualified healthcare professional
+                regarding any medical condition, treatment, or health decision.
+              </p>
 
-        {/* Content Sections */}
-        <div className="space-y-8">
-          <Card>
-            <CardContent className="pt-8">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="bg-blue-100 dark:bg-blue-900 p-2 rounded-lg">
-                  <FileWarning className="w-5 h-5 text-blue-700 dark:text-blue-300" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold mb-4">
-                    General Information Only
-                  </h2>
-                </div>
-              </div>
-              <p className="text-muted-foreground leading-relaxed">
-                The content on this website is provided for general
-                informational and educational purposes only. It is not intended
-                to be a substitute for professional medical advice, diagnosis,
-                or treatment.
+              <h2>Scope of This Website</h2>
+              <p>
+                This website provides educational summaries of evidence,
+                ingredient safety information, and claim context. It does not
+                provide personalized advice, medical diagnoses, product
+                recommendations, or “best supplement” lists.
               </p>
-            </CardContent>
-          </Card>
+              <p>
+                Safety concerns or potentially misleading claims may be reported
+                through our <Link href="/contact">Contact page</Link>.
+              </p>
 
-          <Card className="border-red-200 dark:border-red-800">
-            <CardContent className="pt-8">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="bg-red-100 dark:bg-red-900 p-2 rounded-lg">
-                  <AlertTriangle className="w-5 h-5 text-red-700 dark:text-red-300" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold mb-4">
-                    Not Medical Advice
-                  </h2>
-                </div>
-              </div>
-              <p className="text-muted-foreground leading-relaxed">
-                The information on this website should not be considered medical
-                advice. We are not healthcare providers, and nothing on this
-                website should be construed as medical advice or as an attempt
-                to practice medicine.
+              <h2>Supplements Are Not a Substitute for Medical Care</h2>
+              <p>
+                Diet, physical activity, sleep, and appropriate medical care are
+                the foundation of health.
               </p>
-            </CardContent>
-          </Card>
+              <p>
+                Supplements, where discussed, are presented only as optional,
+                supportive tools. They are not substitutes for professional
+                healthcare, prescribed treatments, or healthy lifestyle
+                practices.
+              </p>
 
-          <Card>
-            <CardContent className="pt-8">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="bg-[#D9CFC7]  p-2 rounded-lg">
-                  <Stethoscope className="w-5 h-5 text-primary dark:text-primary" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold mb-4">
-                    Consult Healthcare Professionals
-                  </h2>
-                </div>
-              </div>
-              <p className="text-muted-foreground leading-relaxed">
-                Always seek the advice of your physician or other qualified
-                health provider with any questions you may have regarding a
-                medical condition or supplement use. Never disregard
-                professional medical advice or delay seeking it because of
-                something you have read on this website.
+              <h2>Individual Differences</h2>
+              <p>
+                Health outcomes and responses to supplements can vary widely
+                between individuals.
               </p>
-            </CardContent>
-          </Card>
+              <p>
+                Factors such as age, medical history, medications, genetics, and
+                lifestyle may influence how information applies to you. For this
+                reason, information on this site should not be used to
+                self-diagnose or self-treat any condition.
+              </p>
 
-          <Card>
-            <CardContent className="pt-8">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="bg-purple-100 dark:bg-purple-900 p-2 rounded-lg">
-                  <UserCheck className="w-5 h-5 text-purple-700 dark:text-purple-300" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold mb-4">
-                    Individual Results May Vary
-                  </h2>
-                </div>
-              </div>
-              <p className="text-muted-foreground leading-relaxed">
-                The effects of supplements and health interventions can vary
-                significantly from person to person. Individual results may
-                differ based on various factors including age, health status,
-                genetics, lifestyle, and other individual circumstances.
+              <h2>Accuracy and Limitations</h2>
+              <p>
+                We strive to present accurate, evidence-based information using
+                credible sources and defined editorial processes. However:
               </p>
-            </CardContent>
-          </Card>
+              <ul>
+                <li>Scientific research evolves over time</li>
+                <li>Evidence may be limited, mixed, or inconclusive</li>
+                <li>Errors or omissions may occur despite careful review</li>
+              </ul>
+              <p>
+                We do not guarantee the completeness, accuracy, or applicability
+                of all information at all times.
+              </p>
 
-          <Card className="border-amber-200 dark:border-amber-800 bg-amber-50/30 dark:bg-amber-950/30">
-            <CardContent className="pt-8">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="bg-amber-100 dark:bg-amber-900 p-2 rounded-lg">
-                  <Pill className="w-5 h-5 text-amber-700 dark:text-amber-300" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold mb-4">Product Safety</h2>
-                </div>
-              </div>
-              <p className="text-muted-foreground mb-4">
-                Before taking any supplement or making changes to your health
-                regimen:
+              <h2>No Endorsements or Guarantees</h2>
+              <p>
+                This site does not endorse, recommend, certify, or promote any
+                supplement, product, service, or brand.
               </p>
-              <ul className="space-y-2 text-muted-foreground">
-                <li className="flex items-start gap-2">
-                  <span className="text-amber-600 dark:text-amber-400 mt-1">
-                    •
-                  </span>
-                  <span>
-                    Consult with your healthcare provider, especially if you
-                    have existing medical conditions
-                  </span>
+              <p>
+                References to products or ingredients are provided solely for
+                educational context. No guarantees of results or outcomes are
+                expressed or implied.
+              </p>
+
+              <h2>External Links</h2>
+              <p>
+                This website may reference or link to external sources for
+                additional context or research.
+              </p>
+              <p>
+                We are not responsible for the content, accuracy, or practices
+                of external websites and do not control their information or
+                policies.
+              </p>
+
+              <h2>Monetization and Affiliate Policy</h2>
+              <p>
+                This website does not use affiliate links, sponsored placements,
+                referral programs, or advertising partnerships.
+              </p>
+              <p>
+                We do not receive compensation from supplement manufacturers,
+                retailers, or third-party services for linking to external
+                resources.
+              </p>
+              <p>
+                Any external links are provided solely for educational context
+                and reference purposes.
+              </p>
+
+              <h2>Use at Your Own Discretion</h2>
+              <p>By using this website, you acknowledge that:</p>
+              <ul>
+                <li>
+                  You are responsible for how you interpret and use the
+                  information provided
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-amber-600 dark:text-amber-400 mt-1">
-                    •
-                  </span>
-                  <span>
-                    Inform your doctor about all medications and supplements you
-                    are currently taking
-                  </span>
+                <li>
+                  Any actions you take based on this information are taken at
+                  your own discretion
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-amber-600 dark:text-amber-400 mt-1">
-                    •
-                  </span>
-                  <span>
-                    Be aware of potential drug interactions and
-                    contraindications
-                  </span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-amber-600 dark:text-amber-400 mt-1">
-                    •
-                  </span>
-                  <span>Follow recommended dosages and usage guidelines</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-amber-600 dark:text-amber-400 mt-1">
-                    •
-                  </span>
-                  <span>Monitor for any adverse reactions</span>
+                <li>
+                  You agree that this site is not liable for decisions made
+                  based on its content
                 </li>
               </ul>
-            </CardContent>
-          </Card>
 
-          <Card className="border-red-200 dark:border-red-800 bg-red-50/30 dark:bg-red-950/30">
-            <CardContent className="pt-8">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="bg-red-100 dark:bg-red-900 p-2 rounded-lg">
-                  <AlertCircle className="w-5 h-5 text-red-700 dark:text-red-300" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold mb-4">
-                    Medical Emergencies
-                  </h2>
-                </div>
-              </div>
-              <p className="text-muted-foreground leading-relaxed font-medium">
-                If you think you may have a medical emergency, call your doctor
-                or emergency services immediately. Do not rely on information
-                from this website in emergency situations.
+              <h2>Contact and Questions</h2>
+              <p>
+                If you have questions about this disclaimer or concerns about
+                any content on the site, you may contact us through the{" "}
+                <Link href="/contact">Contact page</Link>.
               </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-8">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="bg-teal-100 dark:bg-teal-900 p-2 rounded-lg">
-                  <Shield className="w-5 h-5 text-teal-700 dark:text-teal-300" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold mb-4">
-                    Research-Based Information
-                  </h2>
-                </div>
-              </div>
-              <p className="text-muted-foreground leading-relaxed">
-                While we strive to provide accurate, evidence-based information
-                supported by scientific research, nutritional science is
-                constantly evolving. New research may contradict or supersede
-                information presented on this website.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-muted/30">
-            <CardContent className="pt-8">
-              <h2 className="text-2xl font-bold mb-4">No Guarantees</h2>
-              <p className="text-muted-foreground leading-relaxed">
-                We make no guarantees, warranties, or representations regarding
-                the accuracy, completeness, or timeliness of the content on this
-                website. Health information can change rapidly as new research
-                emerges.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-muted/30">
-            <CardContent className="pt-8">
-              <h2 className="text-2xl font-bold mb-4">FDA Disclaimer</h2>
-              <p className="text-muted-foreground leading-relaxed">
-                Statements regarding dietary supplements have not been evaluated
-                by the Food and Drug Administration and are not intended to
-                diagnose, treat, cure, or prevent any disease or health
-                condition.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-8">
-              <h2 className="text-2xl font-bold mb-4">
-                Third-Party Information
-              </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                We may reference or link to third-party websites, research
-                studies, or other sources. We are not responsible for the
-                accuracy or reliability of third-party information.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-8">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="bg-slate-100 dark:bg-slate-900 p-2 rounded-lg">
-                  <Shield className="w-5 h-5 text-slate-700 dark:text-slate-300" />
-                </div>
-                <div>
-                  <h2 className="text-2xl font-bold mb-4">
-                    Limitation of Liability
-                  </h2>
-                </div>
-              </div>
-              <p className="text-muted-foreground leading-relaxed">
-                To the fullest extent permitted by law, we disclaim all
-                liability for any injury, loss, or damage resulting from your
-                use of this website or reliance on any information provided
-                herein.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Contact Card */}
-        <Card className="mt-12 border-2 bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-950 dark:to-orange-950">
-          <CardContent className="py-8">
-            <div className="flex flex-col md:flex-row items-center gap-6">
-              <div className="bg-amber-100 dark:bg-amber-900 p-4 rounded-full">
-                <Mail className="w-8 h-8 text-amber-700 dark:text-amber-300" />
-              </div>
-              <div className="flex-1 text-center md:text-left">
-                <h3 className="text-2xl font-bold mb-2">Questions?</h3>
-                <p className="text-muted-foreground">
-                  If you have questions about this medical disclaimer, please
-                  contact us.
-                </p>
-              </div>
-              <Link href="/contact">
-                <button className="px-6 py-3 bg-primary text-primary-foreground rounded-full font-semibold hover:opacity-90 transition-opacity">
-                  Contact Us
-                </button>
-              </Link>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

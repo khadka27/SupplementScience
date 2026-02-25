@@ -72,7 +72,7 @@ export default async function CategoriesPage() {
   }));
 
   return (
-    <div className="container mx-auto px-4 py-16 max-w-7xl mt-20 min-h-[60vh]">
+    <div className="container mx-auto px-4 pt-28 pb-16 max-w-7xl min-h-[60vh]">
       <div className="mb-16 text-center lg:text-left">
         <h1 className="text-5xl font-extrabold mb-6 tracking-tight text-black">
           Content Categories
