@@ -66,8 +66,8 @@ export function Navbar() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full",
         scrolled
-          ? "bg-white/90 dark:bg-zinc-950/90 backdrop-blur-xl py-3 border-b border-[#D9CFC7] dark:border-zinc-800 shadow-sm"
-          : "bg-white/50 dark:bg-zinc-950/50 backdrop-blur-md py-4 border-b border-transparent dark:border-transparent",
+          ? "bg-white/90 dark:bg-[#0F0E0A]/90 backdrop-blur-xl py-3 border-b border-[#D9CFC7] dark:border-[#3B3028] shadow-sm"
+          : "bg-white/50 dark:bg-[#0F0E0A]/50 backdrop-blur-md py-4 border-b border-transparent dark:border-transparent",
       )}
     >
       <div className="px-6 lg:px-8 flex items-center justify-between">
@@ -77,7 +77,7 @@ export function Navbar() {
             alt="Supplement Science Logo"
             width={240}
             height={60}
-            className="w-auto h-8 md:h-10 lg:h-12 transition-transform group-hover:scale-105"
+            className="w-auto h-8 md:h-10 lg:h-12 transition-transform group-hover:scale-105 dark:invert"
             priority
           />
         </Link>
@@ -91,8 +91,8 @@ export function Navbar() {
               className={cn(
                 "text-sm font-semibold transition-all px-4 py-2 rounded-full",
                 pathname === item.href
-                  ? "bg-black text-white shadow-sm"
-                  : "text-gray-600 hover:bg-[#EFE9E3] hover:text-black",
+                  ? "bg-black dark:bg-white text-white dark:text-black shadow-sm"
+                  : "text-gray-600 dark:text-gray-400 hover:bg-[#EFE9E3] dark:hover:bg-[#211A13] hover:text-black dark:hover:text-white",
               )}
             >
               {item.name}
@@ -164,7 +164,7 @@ export function Navbar() {
       {/* Expandable Search Drawer */}
       <div
         className={cn(
-          "absolute left-0 right-0 w-full transition-all duration-300 ease-in-out z-[-1] bg-white/95 dark:bg-zinc-950/95 backdrop-blur-xl shadow-md border-b border-[#D9CFC7] dark:border-zinc-800",
+          "absolute left-0 right-0 w-full transition-all duration-300 ease-in-out z-[-1] bg-white/95 dark:bg-[#0F0E0A]/95 backdrop-blur-xl shadow-md border-b border-[#D9CFC7] dark:border-[#3B3028]",
           isSearchOpen
             ? "top-full opacity-100 translate-y-0 py-3 pointer-events-auto"
             : "top-[80%] opacity-0 -translate-y-2 pointer-events-none py-0 h-0 overflow-hidden border-b-0",

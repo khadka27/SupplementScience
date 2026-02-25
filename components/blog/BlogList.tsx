@@ -61,7 +61,7 @@ export default function BlogList({ posts, title }: BlogListProps) {
         href={getPostHref(featuredPost)}
         className="block group transition-all duration-500"
       >
-        <Card className="overflow-hidden border border-[#D9CFC7] hover:border-[#D9CFC7] hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] bg-white/70 backdrop-blur-sm rounded-[2rem] transition-all duration-500">
+        <Card className="overflow-hidden border border-[#D9CFC7] dark:border-[#3B3028] hover:border-[#D9CFC7] dark:hover:border-[#634F36] hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] bg-white/70 dark:bg-[#0F0E0A]/70 backdrop-blur-sm rounded-[2rem] transition-all duration-500">
           <div className="grid lg:grid-cols-5 gap-0">
             {featuredPost.featuredImageUrl && (
               <div className="lg:col-span-3 relative w-full h-[300px] lg:h-[450px] overflow-hidden">
@@ -77,27 +77,27 @@ export default function BlogList({ posts, title }: BlogListProps) {
               </div>
             )}
 
-            <div className="lg:col-span-2 p-8 lg:p-12 flex flex-col justify-center bg-slate-50/30">
+            <div className="lg:col-span-2 p-8 lg:p-12 flex flex-col justify-center bg-slate-50/30 dark:bg-[#211A13]/30">
               {featuredPost.category && (
-                <span className="text-[11px] font-black uppercase tracking-[0.2em] text-black mb-4 inline-block bg-[#EFE9E3] px-3 py-1 rounded-full w-fit">
+                <span className="text-[11px] font-black uppercase tracking-[0.2em] text-black dark:text-zinc-100 mb-4 inline-block bg-[#EFE9E3] dark:bg-[#3B3028] px-3 py-1 rounded-full w-fit">
                   {featuredPost.category.name}
                 </span>
               )}
 
-              <h2 className="text-3xl lg:text-4xl font-extrabold mb-5 group-hover:text-primary transition-colors leading-[1.2] text-black tracking-tight">
+              <h2 className="text-3xl lg:text-4xl font-extrabold mb-5 group-hover:text-primary transition-colors leading-[1.2] text-black dark:text-white tracking-tight">
                 {featuredPost.title}
               </h2>
 
               {featuredPost.excerpt && (
-                <p className="text-slate-500 text-lg mb-8 line-clamp-3 leading-relaxed font-medium">
+                <p className="text-slate-500 dark:text-zinc-400 text-lg mb-8 line-clamp-3 leading-relaxed font-medium">
                   {featuredPost.excerpt}
                 </p>
               )}
 
               <div className="flex items-center gap-5 text-sm font-bold text-gray-500 mt-auto">
                 {featuredPost.author && (
-                  <div className="flex items-center gap-2 text-black">
-                    <span className="w-8 h-px bg-[#D9CFC7]"></span>
+                  <div className="flex items-center gap-2 text-black dark:text-zinc-100">
+                    <span className="w-8 h-px bg-[#D9CFC7] dark:bg-[#3B3028]"></span>
                     <span>{featuredPost.author.name}</span>
                   </div>
                 )}
@@ -117,9 +117,9 @@ export default function BlogList({ posts, title }: BlogListProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {remainingPosts.map((post, index) => (
           <Link key={post.id} href={getPostHref(post)} className="group block">
-            <div className="h-full flex flex-col bg-white/70 backdrop-blur-sm overflow-hidden transition-all duration-300 group-hover:-translate-y-2 rounded-[1.5rem] p-4 border border-[#D9CFC7]/50 group-hover:shadow-[0_15px_30px_rgba(0,0,0,0.05)] group-hover:border-[#D9CFC7]">
+            <div className="h-full flex flex-col bg-white/70 dark:bg-[#0F0E0A]/70 backdrop-blur-sm overflow-hidden transition-all duration-300 group-hover:-translate-y-2 rounded-[1.5rem] p-4 border border-[#D9CFC7]/50 dark:border-[#3B3028]/50 group-hover:shadow-[0_15px_30px_rgba(0,0,0,0.05)] dark:group-hover:shadow-[0_15px_30px_rgba(0,0,0,0.2)] group-hover:border-[#D9CFC7] dark:group-hover:border-[#3B3028]">
               {post.featuredImageUrl && (
-                <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden mb-6 shadow-sm ring-1 ring-[#D9CFC7]/30">
+                <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden mb-6 shadow-sm ring-1 ring-[#D9CFC7]/30 dark:ring-[#3B3028]/50">
                   <Image
                     src={post.featuredImageUrl}
                     alt={post.featuredImageAlt || post.title}
@@ -132,22 +132,22 @@ export default function BlogList({ posts, title }: BlogListProps) {
 
               <div className="flex-1 flex flex-col">
                 {post.category && (
-                  <span className="text-[10px] font-black uppercase tracking-widest text-black mb-3">
+                  <span className="text-[10px] font-black uppercase tracking-widest text-black dark:text-zinc-300 mb-3">
                     {post.category.name}
                   </span>
                 )}
 
-                <h3 className="text-xl font-extrabold mb-3 text-black group-hover:text-primary transition-colors leading-snug">
+                <h3 className="text-xl font-extrabold mb-3 text-black dark:text-white group-hover:text-primary transition-colors leading-snug">
                   {post.title}
                 </h3>
 
                 {post.excerpt && (
-                  <p className="text-slate-500 text-sm line-clamp-2 leading-relaxed mb-6 font-medium">
+                  <p className="text-slate-500 dark:text-zinc-400 text-sm line-clamp-2 leading-relaxed mb-6 font-medium">
                     {post.excerpt}
                   </p>
                 )}
 
-                <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-50 text-[10px] uppercase font-bold tracking-widest text-slate-400">
+                <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-50 dark:border-[#3B3028] text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-zinc-500">
                   <div className="flex items-center gap-2">
                     {post.publishedAt && (
                       <time dateTime={post.publishedAt.toISOString()}>

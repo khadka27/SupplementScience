@@ -124,14 +124,13 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-white dark:bg-[#0F0E0A] text-slate-900 dark:text-zinc-100 transition-colors duration-300">
       {/* Hero Section */}
-      <section className="relative bg-linear-to-b from-[#F9F8F6] via-[#EFE9E3] to-[#F9F8F6] dark:from-[#0F0E0A] dark:via-[#211A13] dark:to-[#0F0E0A] pt-[104px] pb-20 px-4 overflow-hidden">
-        <div className="absolute inset-0 bg-grid-black/[0.02] dark:bg-grid-white/[0.02] bg-size-[20px_20px]" />
-        <div className="absolute top-0 right-0 w-full h-full bg-[radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.08),transparent_50%)] dark:bg-[radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.15),transparent_50%)]" />
-        <div className="absolute bottom-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_80%,rgba(217,207,199,0.3),transparent_50%)] dark:bg-[radial-gradient(circle_at_20%_80%,rgba(217,207,199,0.05),transparent_50%)]" />
+      <section className="relative bg-[#F9F8F6] dark:bg-[#0D0C09] pt-[104px] pb-20 px-4 overflow-hidden border-b border-[#D9CFC7] dark:border-[#2A221A]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.06),transparent_50%)] dark:bg-[radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.12),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_80%,rgba(217,207,199,0.25),transparent_50%)] dark:bg-[radial-gradient(circle_at_15%_80%,rgba(59,48,40,0.4),transparent_50%)]" />
 
         <div className="container mx-auto max-w-5xl relative z-10">
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-white/80 dark:bg-[#211A13]/80 backdrop-blur-md px-5 py-2.5 rounded-full border border-[#D9CFC7] dark:border-[#3B3028] mb-8 shadow-sm hover:shadow-md transition-shadow">
+            <div className="inline-flex items-center gap-2 bg-white/90 dark:bg-[#1D150E]/90 backdrop-blur-md px-5 py-2.5 rounded-full border border-[#D9CFC7] dark:border-[#4A3A2A] mb-8 shadow-sm hover:shadow-md transition-shadow">
               <ShieldCheck className="w-5 h-5 text-primary" />
               <span className="text-sm font-semibold text-gray-800 dark:text-zinc-200 uppercase tracking-wider">
                 Evidence-Based Resource
@@ -155,9 +154,9 @@ export default async function Home() {
               .
             </p>
 
-            <div className="bg-amber-50/90 dark:bg-amber-950/30 backdrop-blur-md border border-amber-200/80 dark:border-amber-900/50 p-5 rounded-2xl max-w-3xl mx-auto mb-10 text-left flex gap-4 items-start shadow-sm relative overflow-hidden">
-              <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-400 dark:bg-amber-600" />
-              <Info className="w-6 h-6 text-amber-600 dark:text-amber-500 shrink-0 mt-0.5" />
+            <div className="bg-amber-50/90 dark:bg-[#1A1200]/80 backdrop-blur-md border border-amber-200/80 dark:border-amber-800/60 p-5 rounded-2xl max-w-3xl mx-auto mb-10 text-left flex gap-4 items-start shadow-sm relative overflow-hidden">
+              <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-400 dark:bg-amber-500" />
+              <Info className="w-6 h-6 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
               <p className="text-sm md:text-base text-amber-900 dark:text-amber-200 leading-snug">
                 <strong className="font-bold">Plain-language note:</strong> The
                 information on this site is for educational purposes only and
@@ -191,7 +190,7 @@ export default async function Home() {
       </section>
 
       {/* Target Audience Section */}
-      <section className="py-24 px-4 bg-white dark:bg-[#0F0E0A] relative border-t border-gray-100 dark:border-[#211A13]">
+      <section className="py-24 px-4 bg-white dark:bg-[#0D0C09] relative border-t border-[#D9CFC7] dark:border-[#2A221A]">
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black dark:text-white tracking-tight">
@@ -205,10 +204,10 @@ export default async function Home() {
 
           <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
             {/* For */}
-            <Card className="bg-linear-to-br from-[#F4FDF8] to-[#E9F9F0] dark:from-green-950/20 dark:to-green-900/10 border border-green-200 dark:border-green-900/50 shadow-xl shadow-green-900/5 dark:shadow-none rounded-[2.5rem] overflow-hidden hover:shadow-2xl transition-shadow h-full">
+            <Card className="bg-linear-to-br from-[#F0FDF7] to-[#DCFCE7] dark:from-[#071a0e] dark:to-[#0a2214] border border-green-200 dark:border-green-900/70 shadow-xl shadow-green-900/5 dark:shadow-green-950/30 rounded-[2.5rem] overflow-hidden hover:shadow-2xl transition-shadow h-full">
               <CardContent className="p-8 md:p-12 flex flex-col h-full">
                 <div className="flex items-center gap-4 mb-10">
-                  <div className="w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-900/50 flex items-center justify-center shadow-inner border border-green-200 dark:border-green-800">
+                  <div className="w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-900/60 flex items-center justify-center shadow-inner border border-green-200 dark:border-green-700/70">
                     <CheckCircle2 className="w-7 h-7 text-green-600 dark:text-green-400" />
                   </div>
                   <h3 className="text-3xl font-bold text-green-950 dark:text-green-100 tracking-tight">
@@ -244,10 +243,10 @@ export default async function Home() {
             </Card>
 
             {/* Not For */}
-            <Card className="bg-linear-to-br from-[#FFF5F5] to-[#FFEDED] dark:from-red-950/20 dark:to-red-900/10 border border-red-200 dark:border-red-900/50 shadow-xl shadow-red-900/5 dark:shadow-none rounded-[2.5rem] overflow-hidden hover:shadow-2xl transition-shadow h-full">
+            <Card className="bg-linear-to-br from-[#FFF5F5] to-[#FFE8E8] dark:from-[#1a0707] dark:to-[#220a0a] border border-red-200 dark:border-red-900/70 shadow-xl shadow-red-900/5 dark:shadow-red-950/30 rounded-[2.5rem] overflow-hidden hover:shadow-2xl transition-shadow h-full">
               <CardContent className="p-8 md:p-12 flex flex-col h-full">
                 <div className="flex items-center gap-4 mb-10">
-                  <div className="w-14 h-14 rounded-2xl bg-red-100 dark:bg-red-900/50 flex items-center justify-center shadow-inner border border-red-200 dark:border-red-800">
+                  <div className="w-14 h-14 rounded-2xl bg-red-100 dark:bg-red-900/60 flex items-center justify-center shadow-inner border border-red-200 dark:border-red-700/70">
                     <XCircle className="w-7 h-7 text-red-600 dark:text-red-400" />
                   </div>
                   <h3 className="text-3xl font-bold text-red-950 dark:text-red-100 tracking-tight">
@@ -262,16 +261,16 @@ export default async function Home() {
                   ].map((item, i) => (
                     <li
                       key={i}
-                      className="flex gap-4 text-red-900/90 dark:text-red-200/90 leading-relaxed text-lg"
+                      className="flex gap-4 text-red-900/90 dark:text-red-200 leading-relaxed text-lg"
                     >
-                      <div className="mt-1 bg-red-200/50 dark:bg-red-900/50 rounded-full p-1 border border-red-300 dark:border-red-800">
-                        <XCircle className="w-4 h-4 text-red-600 dark:text-red-400" />
+                      <div className="mt-1 bg-red-200/60 dark:bg-red-800/60 rounded-full p-1 border border-red-300 dark:border-red-700 shrink-0">
+                        <XCircle className="w-4 h-4 text-red-600 dark:text-red-300" />
                       </div>
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-10 pt-8 border-t border-red-200/50 dark:border-red-900/50">
+                <div className="mt-10 pt-8 border-t border-red-200/60 dark:border-red-800/50">
                   <p className="font-bold text-red-950 dark:text-red-100 text-xl leading-snug">
                     We empower with knowledge, not persuade you to buy hype.
                   </p>
@@ -283,7 +282,7 @@ export default async function Home() {
       </section>
 
       {/* Mission & Evaluation */}
-      <section className="py-28 px-4 bg-[#F9F8F6] dark:bg-[#0F0E0A] text-slate-900 dark:text-white relative overflow-hidden">
+      <section className="py-28 px-4 bg-[#F4F2EF] dark:bg-[#110E09] text-slate-900 dark:text-white relative overflow-hidden border-t border-[#D9CFC7] dark:border-[#2A221A]">
         {/* Glow effects */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/10 dark:bg-primary/20 rounded-full blur-[140px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-teal-500/10 dark:bg-[#3B3028] rounded-full blur-[140px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
@@ -355,7 +354,7 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="bg-white/60 dark:bg-[#211A13]/80 backdrop-blur-xl border border-[#D9CFC7] dark:border-[#634F36]/50 rounded-[2.5rem] p-8 md:p-12 shadow-xl dark:shadow-2xl relative">
+            <div className="bg-white/80 dark:bg-[#18120C]/90 backdrop-blur-xl border border-[#D9CFC7] dark:border-[#3B2E22] rounded-[2.5rem] p-8 md:p-12 shadow-xl dark:shadow-2xl relative">
               <h3 className="text-3xl font-bold mb-10 flex items-center gap-4 text-black dark:text-white">
                 <ListChecks className="text-primary w-8 h-8" />
                 How We Evaluate
@@ -387,10 +386,10 @@ export default async function Home() {
                     key={i}
                     className="relative flex items-start gap-6 group hover:-translate-y-1 transition-transform"
                   >
-                    <div className="flex items-center justify-center w-12 h-12 rounded-full border-4 border-white dark:border-[#211A13] bg-slate-50 dark:bg-[#3B3028] text-slate-700 dark:text-zinc-300 font-bold z-10 shrink-0 group-hover:bg-primary group-hover:text-white group-hover:border-primary/20 dark:group-hover:border-primary/30 transition-all shadow-md dark:shadow-lg">
+                    <div className="flex items-center justify-center w-12 h-12 rounded-full border-4 border-white dark:border-[#18120C] bg-white dark:bg-[#2C2218] text-slate-800 dark:text-zinc-100 font-bold z-10 shrink-0 group-hover:bg-primary group-hover:text-white group-hover:border-primary/20 dark:group-hover:border-primary/30 transition-all shadow-md dark:shadow-lg text-lg">
                       {i + 1}
                     </div>
-                    <div className="bg-white/80 dark:bg-[#0F0E0A]/60 hover:bg-white dark:hover:bg-[#3B3028]/80 border border-[#D9CFC7]/60 dark:border-[#3B3028]/60 p-6 rounded-2xl transition-colors w-full shadow-sm">
+                    <div className="bg-white/90 dark:bg-[#0D0C09]/80 hover:bg-white dark:hover:bg-[#2C2218]/90 border border-[#D9CFC7]/70 dark:border-[#3B2E22] p-6 rounded-2xl transition-colors w-full shadow-sm">
                       <h4 className="font-bold text-xl mb-2 text-black dark:text-zinc-100">
                         {step.title}
                       </h4>
@@ -407,8 +406,8 @@ export default async function Home() {
       </section>
 
       {/* Getting Started & Categories */}
-      <section className="py-24 px-4 bg-[#F9F8F6] dark:bg-[#211A13] relative">
-        <div className="absolute inset-0 bg-white/40 dark:bg-[#0F0E0A]/20" />
+      <section className="py-24 px-4 bg-[#F0EDE8] dark:bg-[#0A0907] relative border-t border-[#D9CFC7] dark:border-[#2A221A]">
+        <div className="absolute inset-0 bg-white/30 dark:bg-[#0D0C09]/40" />
         <div className="container mx-auto max-w-7xl relative z-10">
           <div className="mb-24">
             <div className="text-center mb-16">
@@ -450,9 +449,9 @@ export default async function Home() {
                 },
               ].map((guide, i) => (
                 <Link key={i} href={guide.href}>
-                  <Card className="group h-full bg-white dark:bg-[#0F0E0A] border-[#D9CFC7]/80 dark:border-[#3B3028] hover:border-primary/50 dark:hover:border-primary/50 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 rounded-4xl overflow-hidden">
+                  <Card className="group h-full bg-white dark:bg-[#17120D] border border-[#D9CFC7]/80 dark:border-[#3B2E22] hover:border-primary/60 dark:hover:border-primary/60 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 rounded-4xl overflow-hidden">
                     <CardContent className="p-8">
-                      <div className="w-14 h-14 bg-linear-to-br from-[#F9F8F6] to-[#EFE9E3] dark:from-[#211A13] dark:to-[#3B3028] border border-[#D9CFC7]/50 dark:border-[#634F36] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform shadow-sm">
+                      <div className="w-14 h-14 bg-[#F4F2EF] dark:bg-[#251D14] border border-[#D9CFC7]/70 dark:border-[#4A3A2A] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform shadow-sm">
                         <guide.icon className="w-7 h-7 text-primary drop-shadow-sm" />
                       </div>
                       <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-zinc-100 group-hover:text-primary transition-colors">
@@ -486,10 +485,10 @@ export default async function Home() {
                   const Icon = categoryIcons[category.name] || Leaf;
                   return (
                     <Link key={category.id} href={`/category/${category.slug}`}>
-                      <Card className="group hover:shadow-xl hover:border-primary/30 dark:hover:border-primary/30 hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-[#0F0E0A] rounded-4xl border-[#D9CFC7]/60 dark:border-[#3B3028] h-full overflow-hidden">
+                      <Card className="group hover:shadow-xl hover:border-primary/40 dark:hover:border-primary/50 hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-[#17120D] rounded-4xl border border-[#D9CFC7]/70 dark:border-[#3B2E22] h-full overflow-hidden">
                         <CardContent className="p-8 text-center flex flex-col items-center justify-center h-full relative">
                           <div className="absolute top-0 left-0 w-full h-1 bg-primary/0 group-hover:bg-primary transition-colors" />
-                          <div className="w-20 h-20 mb-6 rounded-full bg-gray-50 dark:bg-[#211A13] flex items-center justify-center group-hover:bg-primary/5 dark:group-hover:bg-primary/10 transition-colors border border-gray-100 dark:border-[#3B3028] shadow-sm relative group-hover:scale-105">
+                          <div className="w-20 h-20 mb-6 rounded-full bg-[#F4F2EF] dark:bg-[#251D14] flex items-center justify-center group-hover:bg-primary/10 dark:group-hover:bg-primary/15 transition-colors border border-[#D9CFC7] dark:border-[#4A3A2A] shadow-sm relative group-hover:scale-105">
                             <Icon className="w-10 h-10 text-primary drop-shadow-sm" />
                           </div>
                           <h3 className="font-bold text-xl mb-2 group-hover:text-primary transition-colors text-black dark:text-zinc-100">
@@ -507,7 +506,7 @@ export default async function Home() {
       </section>
 
       {/* Latest Guides & Research */}
-      <section className="py-24 px-4 bg-white dark:bg-[#0F0E0A]">
+      <section className="py-24 px-4 bg-white dark:bg-[#0D0C09] border-t border-[#D9CFC7] dark:border-[#2A221A]">
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-black dark:text-white tracking-tight">
@@ -634,7 +633,7 @@ export default async function Home() {
                 ].map((item, i) => (
                   <li
                     key={i}
-                    className="flex gap-4 text-gray-800 dark:text-zinc-200 text-lg leading-relaxed bg-white/40 dark:bg-[#3B3028]/40 p-3 rounded-2xl border border-white/50 dark:border-[#634F36]/50 shadow-sm"
+                    className="flex gap-4 text-gray-800 dark:text-zinc-200 text-lg leading-relaxed bg-white/60 dark:bg-[#1A1208]/80 p-3 rounded-2xl border border-white/70 dark:border-[#3B2E22]/80 shadow-sm"
                   >
                     <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-0.5 drop-shadow-sm" />
                     <span className="font-medium">{item}</span>
@@ -643,7 +642,7 @@ export default async function Home() {
               </ul>
             </div>
 
-            <div className="bg-white dark:bg-[#0F0E0A] p-10 md:p-12 rounded-[3rem] shadow-2xl border border-[#D9CFC7]/60 dark:border-[#3B3028] relative overflow-hidden group">
+            <div className="bg-white dark:bg-[#17120D] p-10 md:p-12 rounded-[3rem] shadow-2xl border border-[#D9CFC7]/60 dark:border-[#3B2E22] relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 group-hover:bg-primary/20 transition-colors duration-1000" />
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-500/10 dark:bg-amber-500/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2" />
 

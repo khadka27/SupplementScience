@@ -37,7 +37,7 @@ export default function ShareButtons({
     ? window.location.origin
     : process.env.NEXT_PUBLIC_BASE_URL || "https://supplementscience.com";
 
-  const url = `${baseUrl}/blog/${slug}`;
+  const url = mounted ? window.location.href : `${baseUrl}/${slug}`;
   const encodedUrl = encodeURIComponent(url);
   const encodedTitle = encodeURIComponent(title);
 

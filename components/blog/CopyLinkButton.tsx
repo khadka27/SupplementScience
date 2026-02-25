@@ -33,7 +33,7 @@ export function CopyLinkButton({
 }: CopyLinkButtonProps) {
   const [copied, setCopied] = useState(false);
   const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
-  const url = `${baseUrl}/blog/${slug}`;
+  const url = typeof window !== "undefined" ? window.location.href : `/${slug}`;
 
   const copyToClipboard = async () => {
     try {
@@ -47,16 +47,16 @@ export function CopyLinkButton({
 
   const shareLinks = {
     twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(
-      url
+      url,
     )}&text=${encodeURIComponent(title || "")}`,
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-      url
+      url,
     )}`,
     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-      url
+      url,
     )}`,
     email: `mailto:?subject=${encodeURIComponent(
-      title || ""
+      title || "",
     )}&body=${encodeURIComponent(url)}`,
   };
 

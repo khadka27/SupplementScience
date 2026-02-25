@@ -119,7 +119,11 @@ export function SearchBar() {
             {results.map((result) => (
               <Link
                 key={result.id}
-                href={`/blog/${result.slug}`}
+                href={
+                  result.category?.slug
+                    ? `/${result.category.slug}/${result.slug}`
+                    : `/${result.slug}`
+                }
                 onClick={() => {
                   setIsOpen(false);
                   setQuery("");
