@@ -163,8 +163,8 @@ export async function generateStaticParams() {
   });
 
   const allSlugs = [
-    ...categories.map((c) => ({ slug: c.slug })),
-    ...rootPosts.map((p) => ({ slug: p.slug })),
+    ...categories.map((c: { slug: string }) => ({ slug: c.slug })),
+    ...rootPosts.map((p: { slug: string }) => ({ slug: p.slug })),
   ];
 
   return allSlugs;
