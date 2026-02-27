@@ -93,7 +93,7 @@ export async function generateStaticParams() {
       select: { slug: true },
     });
 
-    posts.forEach((post) => {
+    posts.forEach((post: { slug: string }) => {
       params.push({
         slug: category.slug,
         postSlug: post.slug,
