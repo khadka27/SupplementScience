@@ -39,6 +39,7 @@ const navItems = [
   { name: "Home", href: "/" },
   { name: "Categories", href: "/category" },
   { name: "Ingredients", href: "/ingredients" },
+  { name: "Guides", href: "/guides" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
 ];
