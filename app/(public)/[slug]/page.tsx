@@ -77,7 +77,7 @@ async function getData(slug: string) {
               mainArticle.tags?.map((pt: any) => pt.tag).filter(Boolean) || [],
           }
         : null,
-      posts: (otherPosts || []).map((p) => ({
+      posts: (otherPosts || []).map((p: (typeof otherPosts)[0]) => ({
         ...p,
         tags: p.tags?.map((pt: any) => pt.tag).filter(Boolean) || [],
       })),
