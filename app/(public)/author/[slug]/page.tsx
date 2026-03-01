@@ -74,7 +74,7 @@ export async function generateStaticParams() {
       },
     },
   });
-  return authors.map((a) => ({ slug: a.slug }));
+  return authors.map((a: (typeof authors)[number]) => ({ slug: a.slug }));
 }
 
 export default async function AuthorPage({ params }: Props) {

@@ -62,7 +62,9 @@ export async function generateStaticParams() {
     where: { postType: "ingredient", status: "PUBLISHED" },
     select: { slug: true },
   });
-  return ingredients.map((i) => ({ slug: i.slug }));
+  return ingredients.map((i: (typeof ingredients)[number]) => ({
+    slug: i.slug,
+  }));
 }
 
 export default async function IngredientPage({ params }: Props) {
