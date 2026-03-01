@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 export const revalidate = 43200;
 
 export const metadata: Metadata = {

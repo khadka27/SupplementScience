@@ -5,7 +5,7 @@ import BlogList from "@/components/blog/BlogList";
 import Image from "next/image";
 import { Twitter, Youtube, Instagram, Mail, Globe } from "lucide-react";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 export const revalidate = 43200;
 
 type Props = {

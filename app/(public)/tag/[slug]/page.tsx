@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { Tag, Post } from "@/lib/types";
 import BlogList from "@/components/blog/BlogList";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 export const revalidate = 43200;
 
 type Props = {

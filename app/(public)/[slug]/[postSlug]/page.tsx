@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import BlogPostContent from "@/components/blog/BlogPostContent";
 import { generateBlogPostSchema, generateBreadcrumbSchema } from "@/lib/schema";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 export const revalidate = 10;
 
 type Props = {

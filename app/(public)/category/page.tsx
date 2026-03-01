@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import BlogList from "@/components/blog/BlogList";
 import { Metadata } from "next";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 export const revalidate = 21600;
 
 export const metadata: Metadata = {

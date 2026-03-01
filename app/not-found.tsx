@@ -5,24 +5,17 @@ import { Home, Search } from "lucide-react";
 import Link from "next/link";
 
 async function getCategories(): Promise<any[]> {
-  const data = await prisma.category.findMany({
-    where: {
-      postCount: {
-        gte: 1,
-      },
-    },
-    select: {
-      id: true,
-      name: true,
-      slug: true,
-    },
-    orderBy: {
-      postCount: "desc",
-    },
-    take: 6,
-  });
-
-  return data || [];
+  try {
+    const data = await prisma.category.findMany({
+      where: { postCount: { gte: 1 } },
+      select: { id: true, name: true, slug: true },
+      orderBy: { postCount: "desc" },
+      take: 6,
+    });
+    return data || [];
+  } catch {
+    return [];
+  }
 }
 
 export default async function NotFound() {

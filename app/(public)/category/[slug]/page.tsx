@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import BlogList from "@/components/blog/BlogList";
 import Image from "next/image";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 export const revalidate = 10;
 
 type Props = {
