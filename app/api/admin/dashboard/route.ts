@@ -9,39 +9,37 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get statistics
-    const totalPosts = await prisma.post.count();
-    const publishedPosts = await prisma.post.count({
-      where: { status: "PUBLISHED" },
-    });
-    const draftPosts = await prisma.post.count({
-      where: { status: "DRAFT" },
-    });
-    const totalCategories = await prisma.category.count();
-    const totalTags = await prisma.tag.count();
-    const totalAuthors = await prisma.author.count();
-    const totalSubscribers = await prisma.subscriber.count();
-
-    // Get recent posts
-    const recentPosts = await prisma.post.findMany({
-      take: 5,
-      orderBy: { createdAt: "desc" },
-      include: {
-        author: true,
-        category: true,
-      },
-    });
-
-    // Get popular posts (by view count)
-    const popularPosts = await prisma.post.findMany({
-      take: 5,
-      where: { status: "PUBLISHED" },
-      orderBy: { viewCount: "desc" },
-      include: {
-        author: true,
-        category: true,
-      },
-    });
+    // Run all database queries concurrently for maximum speed
+    const [
+      totalPosts,
+      publishedPosts,
+      draftPosts,
+      totalCategories,
+      totalTags,
+      totalAuthors,
+      totalSubscribers,
+      recentPosts,
+      popularPosts,
+    ] = await Promise.all([
+      prisma.post.count(),
+      prisma.post.count({ where: { status: "PUBLISHED" } }),
+      prisma.post.count({ where: { status: "DRAFT" } }),
+      prisma.category.count(),
+      prisma.tag.count(),
+      prisma.author.count(),
+      prisma.subscriber.count(),
+      prisma.post.findMany({
+        take: 5,
+        orderBy: { createdAt: "desc" },
+        include: { author: true, category: true },
+      }),
+      prisma.post.findMany({
+        take: 5,
+        where: { status: "PUBLISHED" },
+        orderBy: { viewCount: "desc" },
+        include: { author: true, category: true },
+      }),
+    ]);
 
     return NextResponse.json({
       stats: {
@@ -60,7 +58,7 @@ export async function GET() {
     console.error("Error fetching dashboard stats:", error);
     return NextResponse.json(
       { error: "Failed to fetch dashboard statistics" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
