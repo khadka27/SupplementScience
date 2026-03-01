@@ -57,7 +57,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     take: 1000, // Increased limit
   });
 
-  const postUrls = posts.map((post) => {
+  const postUrls = posts.map((post: (typeof posts)[number]) => {
     const categorySlug = post.category?.slug?.toLowerCase();
     const isHub = post.category?.isHub;
 
@@ -91,19 +91,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     };
   });
 
-  const categoryUrls = categories.map((category) => ({
-    url: category.isHub
-      ? `${baseUrl}/${category.slug}`
-      : `${baseUrl}/category/${category.slug}`,
-    lastModified: category.updatedAt,
-    changeFrequency: "weekly" as const,
-    priority: 0.7,
-    ...(category.imageUrl && {
-      images: [category.imageUrl],
+  const categoryUrls = categories.map(
+    (category: (typeof categories)[number]) => ({
+      url: category.isHub
+        ? `${baseUrl}/${category.slug}`
+        : `${baseUrl}/category/${category.slug}`,
+      lastModified: category.updatedAt,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+      ...(category.imageUrl && {
+        images: [category.imageUrl],
+      }),
     }),
-  }));
+  );
 
-  const tagUrls = tags.map((tag) => ({
+  const tagUrls = tags.map((tag: (typeof tags)[number]) => ({
     url: `${baseUrl}/tag/${tag.slug}`,
     lastModified: tag.updatedAt,
     changeFrequency: "weekly" as const,

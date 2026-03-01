@@ -59,7 +59,7 @@ export default async function AuthorsPage() {
         {authors.length === 0 ? (
           <p className="text-gray-500 italic">No authors found.</p>
         ) : (
-          authors.map((author) => (
+          authors.map((author: (typeof authors)[number]) => (
             <Link
               key={author.id}
               href={`/author/${author.slug}`}
