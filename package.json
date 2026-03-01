@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "next build --turbo",
+    "build": "prisma generate && next build --turbo",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
@@ -22,6 +22,15 @@
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/engines",
+      "esbuild",
+      "prisma",
+      "sharp",
+      "unrs-resolver"
+    ]
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
