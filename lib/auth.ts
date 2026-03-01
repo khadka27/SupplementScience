@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import prisma from "@/lib/prisma";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   providers: [
     Credentials({
       name: "credentials",
@@ -27,7 +28,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
           const isPasswordValid = await bcrypt.compare(
             credentials.password as string,
-            admin.password
+            admin.password,
           );
 
           if (!isPasswordValid) {
