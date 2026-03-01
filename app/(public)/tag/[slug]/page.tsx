@@ -126,7 +126,7 @@ export async function generateStaticParams() {
     take: 200,
   });
 
-  return tags.map((tag) => ({
+  return tags.map((tag: (typeof tags)[number]) => ({
     slug: tag.slug,
   }));
 }

@@ -57,7 +57,7 @@ export async function GET(req: Request) {
     });
 
     // Calculate match percentages
-    const results = posts.map((post) => {
+    const results = posts.map((post: (typeof posts)[number]) => {
       const titleLower = post.title.toLowerCase();
       const excerptLower = post.excerpt?.toLowerCase() || "";
 
