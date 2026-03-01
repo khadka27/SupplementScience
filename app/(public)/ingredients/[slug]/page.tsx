@@ -58,13 +58,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const ingredients = await prisma.post.findMany({
-    where: { postType: "ingredient", status: "PUBLISHED" },
-    select: { slug: true },
-  });
-  return ingredients.map((i: (typeof ingredients)[number]) => ({
-    slug: i.slug,
-  }));
+  try {
+    const ingredients = await prisma.post.findMany({
+      where: { postType: "ingredient", status: "PUBLISHED" },
+      select: { slug: true },
+    });
+    return ingredients.map((i: (typeof ingredients)[number]) => ({
+      slug: i.slug,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 export default async function IngredientPage({ params }: Props) {

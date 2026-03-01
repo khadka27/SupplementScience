@@ -62,11 +62,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const categories = await prisma.category.findMany({
-    where: { isHub: false },
-    select: { slug: true },
-  });
-  return categories.map((c: (typeof categories)[number]) => ({ slug: c.slug }));
+  try {
+    const categories = await prisma.category.findMany({
+      where: { isHub: false },
+      select: { slug: true },
+    });
+    return categories.map((c: (typeof categories)[number]) => ({
+      slug: c.slug,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 export default async function CategoryPage({ params }: Props) {

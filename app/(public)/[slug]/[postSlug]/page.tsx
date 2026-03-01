@@ -68,40 +68,44 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  // Get all categories that have posts
-  const categories = await prisma.category.findMany({
-    where: {
-      postCount: {
-        gt: 0,
-      },
-    },
-    select: {
-      slug: true,
-      id: true,
-    },
-  });
-
-  // For each hub category, get all published posts
-  const params: Array<{ slug: string; postSlug: string }> = [];
-
-  for (const category of categories) {
-    const posts = await prisma.post.findMany({
+  try {
+    // Get all categories that have posts
+    const categories = await prisma.category.findMany({
       where: {
-        status: "PUBLISHED",
-        categoryId: category.id,
+        postCount: {
+          gt: 0,
+        },
       },
-      select: { slug: true },
+      select: {
+        slug: true,
+        id: true,
+      },
     });
 
-    posts.forEach((post: { slug: string }) => {
-      params.push({
-        slug: category.slug,
-        postSlug: post.slug,
+    // For each hub category, get all published posts
+    const params: Array<{ slug: string; postSlug: string }> = [];
+
+    for (const category of categories) {
+      const posts = await prisma.post.findMany({
+        where: {
+          status: "PUBLISHED",
+          categoryId: category.id,
+        },
+        select: { slug: true },
       });
-    });
-  }
 
-  return params;
+      posts.forEach((post: { slug: string }) => {
+        params.push({
+          slug: category.slug,
+          postSlug: post.slug,
+        });
+      });
+    }
+
+    return params;
+  } catch {
+    return [];
+  }
 }
 
 export default async function CategorizedPostPage({ params }: Props) {

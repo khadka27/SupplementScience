@@ -114,21 +114,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const tags = await prisma.tag.findMany({
-    where: {
-      postCount: {
-        gte: 3,
+  try {
+    const tags = await prisma.tag.findMany({
+      where: {
+        postCount: {
+          gte: 3,
+        },
       },
-    },
-    select: {
-      slug: true,
-    },
-    take: 200,
-  });
+      select: {
+        slug: true,
+      },
+      take: 200,
+    });
 
-  return tags.map((tag: (typeof tags)[number]) => ({
-    slug: tag.slug,
-  }));
+    return tags.map((tag: (typeof tags)[number]) => ({
+      slug: tag.slug,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 export default async function TagPage({ params }: Props) {

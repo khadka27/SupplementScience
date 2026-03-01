@@ -66,15 +66,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const authors = await prisma.author.findMany({
-    select: { slug: true },
-    where: {
-      posts: {
-        some: { status: "PUBLISHED" },
+  try {
+    const authors = await prisma.author.findMany({
+      select: { slug: true },
+      where: {
+        posts: {
+          some: { status: "PUBLISHED" },
+        },
       },
-    },
-  });
-  return authors.map((a: (typeof authors)[number]) => ({ slug: a.slug }));
+    });
+    return authors.map((a: (typeof authors)[number]) => ({ slug: a.slug }));
+  } catch {
+    return [];
+  }
 }
 
 export default async function AuthorPage({ params }: Props) {

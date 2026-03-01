@@ -149,25 +149,28 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
-  const categories = await prisma.category.findMany({
-    where: { isHub: true },
-    select: { slug: true },
-  });
-  const rootPosts = await prisma.post.findMany({
-    where: {
-      isFeatured: true,
-      // Exclude ALL categorized posts from root generation, as they live at /[categorySlug]/[postSlug]
-      categoryId: null,
-    },
-    select: { slug: true },
-  });
+  try {
+    const categories = await prisma.category.findMany({
+      where: { isHub: true },
+      select: { slug: true },
+    });
+    const rootPosts = await prisma.post.findMany({
+      where: {
+        isFeatured: true,
+        categoryId: null,
+      },
+      select: { slug: true },
+    });
 
-  const allSlugs = [
-    ...categories.map((c: { slug: string }) => ({ slug: c.slug })),
-    ...rootPosts.map((p: { slug: string }) => ({ slug: p.slug })),
-  ];
+    const allSlugs = [
+      ...categories.map((c: { slug: string }) => ({ slug: c.slug })),
+      ...rootPosts.map((p: { slug: string }) => ({ slug: p.slug })),
+    ];
 
-  return allSlugs;
+    return allSlugs;
+  } catch {
+    return [];
+  }
 }
 
 export default async function GenericSlugPage({ params }: Props) {
