@@ -63,7 +63,7 @@ export default async function IngredientsPage() {
     take: 50,
   });
 
-  const formattedPosts = (posts || []).map((p) => ({
+  const formattedPosts = (posts || []).map((p: (typeof posts)[number]) => ({
     ...p,
     tags: p.tags?.map((pt: any) => pt.tag).filter(Boolean) || [],
   }));

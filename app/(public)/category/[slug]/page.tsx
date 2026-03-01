@@ -41,7 +41,7 @@ async function getData(slug: string) {
 
   return {
     category,
-    posts: (posts || []).map((p) => ({
+    posts: (posts || []).map((p: (typeof posts)[number]) => ({
       ...p,
       tags: p.tags?.map((pt: any) => pt.tag).filter(Boolean) || [],
     })),
@@ -66,7 +66,7 @@ export async function generateStaticParams() {
     where: { isHub: false },
     select: { slug: true },
   });
-  return categories.map((c) => ({ slug: c.slug }));
+  return categories.map((c: (typeof categories)[number]) => ({ slug: c.slug }));
 }
 
 export default async function CategoryPage({ params }: Props) {

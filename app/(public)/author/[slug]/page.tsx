@@ -35,7 +35,7 @@ async function getAuthor(slug: string) {
 
   return {
     author,
-    posts: (posts || []).map((p) => ({
+    posts: (posts || []).map((p: (typeof posts)[number]) => ({
       ...p,
       tags: p.tags?.map((pt: any) => pt.tag).filter(Boolean) || [],
     })),
