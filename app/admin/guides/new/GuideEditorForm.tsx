@@ -447,7 +447,7 @@ export default function GuideEditorForm({
                             <Input placeholder="https://..." {...field} />
                           </FormControl>
                           <FormDescription>
-                            URL for the main post image
+                            URL for the main post image (Ideal size: 1200x628)
                           </FormDescription>
                         </TabsContent>
                       </Tabs>

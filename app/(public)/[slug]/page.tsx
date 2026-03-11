@@ -252,7 +252,7 @@ export default async function GenericSlugPage({ params }: Props) {
           {posts.length > 0 && (
             <div className="container mx-auto px-4 py-12 max-w-6xl border-t border-border mt-12">
               <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
-                <span className="w-8 h-1 bg-[#EFE9E3]0 rounded-full" />
+                <span className="w-8 h-1 bg-[#EFE9E3] rounded-full" />
                 More {category.name} Articles
               </h2>
               <BlogList posts={posts as any} />
@@ -293,7 +293,7 @@ export default async function GenericSlugPage({ params }: Props) {
           <div className="container mx-auto px-4 py-12 max-w-6xl">
             <div className="mt-12">
               <h2 className="text-2xl font-bold mb-8 flex items-center gap-3">
-                <span className="w-8 h-1 bg-[#EFE9E3]0 rounded-full" />
+                <span className="w-8 h-1 bg-[#EFE9E3] rounded-full" />
                 Articles in {category.name}
               </h2>
               <BlogList posts={posts as any} />

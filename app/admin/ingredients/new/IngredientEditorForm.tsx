@@ -406,7 +406,7 @@ export default function IngredientEditorForm({
                             <Input placeholder="https://..." {...field} />
                           </FormControl>
                           <FormDescription>
-                            URL for the ingredient's main image
+                            URL for the ingredient's main image (Ideal size: 1200x628)
                           </FormDescription>
                         </TabsContent>
                       </Tabs>

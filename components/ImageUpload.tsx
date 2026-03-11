@@ -106,8 +106,11 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
               <span className="font-semibold">Click to upload</span> or drag and
               drop
             </p>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-muted-foreground mt-2">
               SVG, PNG, JPG or GIF (MAX. 5MB)
+            </p>
+            <p className="text-xs font-semibold text-primary mt-1">
+              Ideal Size: 1200x628 pixels
             </p>
           </div>
           <input
