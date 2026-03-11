@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function PUT(
   request: NextRequest,
@@ -25,6 +26,7 @@ export async function PUT(
       },
     });
 
+    revalidatePath("/sitemap.xml");
     return NextResponse.json(tag);
   } catch (error: any) {
     console.error("Error updating tag:", error);
@@ -60,6 +62,7 @@ export async function DELETE(
       where: { id },
     });
 
+    revalidatePath("/sitemap.xml");
     return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error("Error deleting tag:", error);

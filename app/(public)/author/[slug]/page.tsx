@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const { author } = data;
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
+    (((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || "https://www.supplementdecoded.com") as string);
 
   return {
     title: `${author.name} | Expert Author`,

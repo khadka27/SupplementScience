@@ -3,7 +3,7 @@ import { BookOpen } from "lucide-react";
 import Link from "next/link";
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
+  (((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || "https://www.supplementdecoded.com") as string);
 
 export const metadata: Metadata = {
   title: "Editorial Policy | SupplementDecoded",

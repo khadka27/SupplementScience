@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   try {
@@ -42,6 +43,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    revalidatePath("/sitemap.xml");
     return NextResponse.json(tag, { status: 201 });
   } catch (error: any) {
     console.error("Error creating tag:", error);

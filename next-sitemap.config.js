@@ -1,5 +1,5 @@
 module.exports = {
-  siteUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://yoursite.com',
+  siteUrl: ((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || 'https://www.supplementdecoded.com'),
   generateRobotsTxt: true,
   generateIndexSitemap: true,
   exclude: ['/admin', '/admin/*', '/api/*', '/draft/*'],
@@ -12,8 +12,8 @@ module.exports = {
       }
     ],
     additionalSitemaps: [
-      `${process.env.NEXT_PUBLIC_BASE_URL || 'https://yoursite.com'}/sitemap-posts.xml`,
-      `${process.env.NEXT_PUBLIC_BASE_URL || 'https://yoursite.com'}/sitemap-pages.xml`
+      `${((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || 'https://www.supplementdecoded.com')}/sitemap-posts.xml`,
+      `${((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || 'https://www.supplementdecoded.com')}/sitemap-pages.xml`
     ]
   },
   transform: async (config, path) => {

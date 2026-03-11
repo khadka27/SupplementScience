@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function PATCH(
   request: NextRequest,
@@ -51,6 +52,7 @@ export async function PATCH(
       },
     });
 
+    revalidatePath("/sitemap.xml");
     return NextResponse.json(post);
   } catch (error) {
     console.error("Error updating post status:", error);

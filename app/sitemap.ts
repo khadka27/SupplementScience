@@ -2,7 +2,10 @@ import { MetadataRoute } from "next";
 import prisma from "@/lib/prisma";
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_BASE_URL || "https://www.supplementdecoded.com";
+  (((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || "https://www.supplementdecoded.com") as string);
+
+export const revalidate = 3600; // revalidate every hour
+export const dynamic = "force-dynamic";
 
 const staticPages: MetadataRoute.Sitemap = [
   {

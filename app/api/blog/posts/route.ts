@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache";
 
 export async function GET(req: Request) {
   try {
@@ -145,6 +146,7 @@ export async function POST(req: Request) {
     });
 
     console.log("Post created successfully:", post.id);
+    revalidatePath("/sitemap.xml");
     return NextResponse.json(post);
   } catch (error) {
     console.error("[POSTS_POST] Error:", error);
