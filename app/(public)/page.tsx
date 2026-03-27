@@ -132,7 +132,7 @@ export default async function Home() {
   const evaluationSteps = [
     {
       title: "What the Product Is",
-      desc: "Manufacturer information, product form, intended audience, and category, without hype or unsupported claims.",
+      desc: "Manufacturer information, product form, intended audience, and category, without hype or claims.",
     },
     {
       title: "Why It Exists",
@@ -140,7 +140,7 @@ export default async function Home() {
     },
     {
       title: "Ingredient Analysis",
-      desc: "Examination of each ingredient, its typical use, what research suggests, and known limitations.",
+      desc: "Examination of each ingredient, its typical use, what research suggests, and known limitations, with links to our Ingredients and Safety Measures guides.",
     },
     {
       title: "What Research Says",
@@ -151,8 +151,12 @@ export default async function Home() {
       desc: "Potential side effects, interactions, dosage concerns, and who should be cautious or avoid use.",
     },
     {
-      title: "Suitability & Final Assessment",
-      desc: "Conditional guidance on who might research a product further, followed by a neutral synthesis of what is known and what remains uncertain.",
+      title: "Suitability",
+      desc: "Conditional guidance on who might research a product further, never recommendations.",
+    },
+    {
+      title: "Final Assessment",
+      desc: "A neutral synthesis of what is known, what remains uncertain, and why professional guidance matters.",
     },
   ];
 
@@ -280,9 +284,10 @@ export default async function Home() {
 
             <p className="text-lg md:text-xl text-gray-600 dark:text-zinc-400 mb-10 max-w-4xl mx-auto leading-relaxed">
               Unlike many sites that lead with product recommendations, we start
-              with science, safety, and sound lifestyle guidance. Supplements,
-              where discussed, are considered optional, supportive tools, never
-              primary or curative solutions.
+              with science, safety, and sound lifestyle guidance. Diet,
+              exercise, sleep, and medical care are the cornerstones of
+              well-being. Supplements, where discussed, are considered optional,
+              supportive tools, never primary or curative solutions.
             </p>
 
             <div className="bg-amber-50/90 dark:bg-[#1A1200]/80 backdrop-blur-md border border-amber-200/80 dark:border-amber-800/60 p-5 rounded-2xl max-w-3xl mx-auto mb-10 text-left flex gap-4 items-start shadow-sm relative overflow-hidden">
