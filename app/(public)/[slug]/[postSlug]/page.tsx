@@ -11,6 +11,12 @@ type Props = {
   params: Promise<{ slug: string; postSlug: string }>;
 };
 
+// Helper function to safely parse JSON fields
+function parseJsonField(field: any): any {
+  if (!field) return [];
+  return typeof field === "string" ? JSON.parse(field) : field;
+}
+
 async function getData(categorySlug: string, postSlug: string) {
   const category = await prisma.category.findUnique({
     where: {
@@ -41,6 +47,11 @@ async function getData(categorySlug: string, postSlug: string) {
       category,
       post: {
         ...post,
+        // Parse JSON fields properly
+        sources: parseJsonField(post.sources),
+        faqs: parseJsonField(post.faqs),
+        references: parseJsonField(post.references),
+        // Extract tags
         tags: post.tags?.map((pt: any) => pt.tag).filter(Boolean) || [],
       },
     };
@@ -55,8 +66,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!data) return { title: "Not Found" };
 
-  const baseUrl =
-    (((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || "https://www.supplementdecoded.com") as string);
+  const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
+    process.env.NEXT_PUBLIC_BASE_URL.replace(
+      /^https?:\/\/supplementdecoded\.com/i,
+      "https://www.supplementdecoded.com",
+    )) ||
+    "https://www.supplementdecoded.com") as string;
   const { post } = data;
 
   return {
@@ -114,8 +129,12 @@ export default async function CategorizedPostPage({ params }: Props) {
 
   if (!data) notFound();
 
-  const baseUrl =
-    (((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || "https://www.supplementdecoded.com") as string);
+  const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
+    process.env.NEXT_PUBLIC_BASE_URL.replace(
+      /^https?:\/\/supplementdecoded\.com/i,
+      "https://www.supplementdecoded.com",
+    )) ||
+    "https://www.supplementdecoded.com") as string;
   const { category, post } = data;
 
   const blogPostSchema = generateBlogPostSchema(post as any, baseUrl);

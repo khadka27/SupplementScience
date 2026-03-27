@@ -4,7 +4,6 @@ import prisma from "@/lib/prisma";
 import BlogList from "@/components/blog/BlogList";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { getPostHref } from "@/lib/utils";
 import {
   ArrowRight,
@@ -19,7 +18,6 @@ import {
   Moon,
   Shield,
   Leaf,
-  Mail,
   Scale,
   FileText,
   AlertTriangle,
@@ -110,6 +108,118 @@ export default async function Home() {
   const mainFeaturedPost = featuredPosts[0] || recentPosts[0];
   const postsToShow = recentPosts.slice(0, 6);
 
+  const whoThisIsFor = [
+    "People researching supplements before considering a purchase",
+    "Readers skeptical of marketing claims and \u201cmiracle\u201d language",
+    "Individuals managing health conditions who want evidence, not promises",
+    "Caregivers, journalists, and educators seeking reliable research summaries",
+    "Anyone who wants to understand ingredients, safety, and limitations",
+  ];
+
+  const whoThisIsNotFor = [
+    "Those seeking quick fixes, guaranteed outcomes, or cures",
+    "People looking for personalized medical advice or diagnoses",
+    "Anyone expecting product endorsements or promotional reviews",
+  ];
+
+  const missionPoints = [
+    "Explains why people take supplements and where they fit alongside healthy lifestyle practices",
+    "Analyzes ingredients using neutral, research-backed language",
+    "Highlights both potential benefits and known limitations",
+    "Upholds strict safety standards and transparently discloses risks and side effects",
+  ];
+
+  const evaluationSteps = [
+    {
+      title: "What the Product Is",
+      desc: "Manufacturer information, product form, intended audience, and category, without hype or unsupported claims.",
+    },
+    {
+      title: "Why It Exists",
+      desc: "Context around the general problem the product aims to address and why people seek supplements in that category.",
+    },
+    {
+      title: "Ingredient Analysis",
+      desc: "Examination of each ingredient, its typical use, what research suggests, and known limitations.",
+    },
+    {
+      title: "What Research Says",
+      desc: "Summaries of clinical trials, systematic reviews, and meta-analyses where available, including mixed or inconclusive findings.",
+    },
+    {
+      title: "Safety & Limitations",
+      desc: "Potential side effects, interactions, dosage concerns, and who should be cautious or avoid use.",
+    },
+    {
+      title: "Suitability & Final Assessment",
+      desc: "Conditional guidance on who might research a product further, followed by a neutral synthesis of what is known and what remains uncertain.",
+    },
+  ];
+
+  const recommendedGuides = [
+    {
+      title: "How to Choose Supplements",
+      desc: "A practical, evidence-based decision framework before you evaluate any product.",
+      icon: BookOpen,
+      href: "/guides",
+    },
+    {
+      title: "Safety Measures",
+      desc: "General principles for supplement safety, risk awareness, and red flags.",
+      icon: Shield,
+      href: "/safety-measures",
+    },
+    {
+      title: "Ingredients Guide",
+      desc: "How common supplement ingredients are evaluated and where limitations matter.",
+      icon: Beaker,
+      href: "/ingredients",
+    },
+    {
+      title: "Health Category Overviews",
+      desc: "Topic-specific foundations to help you read product analysis with context.",
+      icon: FileText,
+      href: "/category",
+    },
+  ];
+
+  const healthTopics = [
+    "Joint Pain",
+    "Weight Loss",
+    "Men\u2019s Health",
+    "Women\u2019s Health",
+    "Gut Health",
+    "Mental Health",
+    "Sleep Cycle",
+    "Skin Care",
+  ];
+
+  const trustSignals = [
+    "Content is produced by our Research Editorial Team.",
+    "Review input may include professionals with backgrounds in nutrition science, pharmacology, public health, and clinical research.",
+    "Articles are reviewed and updated periodically, typically every 6-12 months, as new evidence emerges.",
+    "Sources are cited transparently, prioritizing peer-reviewed research and authoritative health organizations.",
+    "When evidence is limited or conflicting, we clearly state those limitations.",
+  ];
+
+  const nextSteps = [
+    {
+      title: "Browse Ingredients",
+      desc: "See how individual ingredients are evaluated before you read any product-specific analysis.",
+      href: "/ingredients",
+    },
+    {
+      title: "Explore a Health Category",
+      desc: "Start with a health topic overview to build context before comparing products or claims.",
+      href: "/category",
+    },
+    {
+      title: "Learn How We Evaluate Supplements",
+      desc: "Review the editorial framework, fact-checking standards, and independence principles behind our content.",
+      href: "/editorial-policy",
+    },
+  ];
+
   const categoryIcons: Record<string, any> = {
     "Muscle & Strength": Dumbbell,
     "Sleep & Stress": Moon,
@@ -119,10 +229,21 @@ export default async function Home() {
     "Skin & Hair": Sparkles,
     "Weight Loss": TrendingUp,
     Vitamins: Leaf,
+    "Joint Pain": HeartPulse,
+    "Men's Health": Dumbbell,
+    "Men\u2019s Health": Dumbbell,
+    "Women's Health": Heart,
+    "Women\u2019s Health": Heart,
+    "Mental Health": Brain,
+    "Sleep Cycle": Moon,
+    "Skin Care": Sparkles,
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0F0E0A] text-slate-900 dark:text-zinc-100 transition-colors duration-300">
+    <div
+      className="min-h-screen bg-white dark:bg-[#0F0E0A] text-slate-900 dark:text-zinc-100 transition-colors duration-300"
+      suppressHydrationWarning={true}
+    >
       {/* Hero Section */}
       <section className="relative bg-[#F9F8F6] dark:bg-[#0D0C09] pt-[104px] pb-20 px-4 overflow-hidden border-b border-[#D9CFC7] dark:border-[#2A221A]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.06),transparent_50%)] dark:bg-[radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.12),transparent_50%)]" />
@@ -138,20 +259,30 @@ export default async function Home() {
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 text-black dark:text-white leading-[1.1] tracking-tight drop-shadow-sm">
-              Science-Backed Supplement Guides for{" "}
+              An Evidence-Based Resource for{" "}
               <span className="text-primary relative whitespace-nowrap">
-                <span className="relative z-10 text-primary">Real Results</span>
+                <span className="relative z-10 text-primary">
+                  Understanding Supplements
+                </span>
                 <span className="absolute bottom-1 left-0 w-full h-3 bg-primary/20 -rotate-1 z-0 rounded-full"></span>
               </span>
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-700 dark:text-zinc-300 mb-10 max-w-4xl mx-auto leading-relaxed font-medium">
-              We are a research-driven health information platform dedicated to
-              helping you understand supplements, nutrition, and safety through{" "}
+              Welcome to our evidence-based health resource. We are a
+              research-driven health information platform dedicated to helping
+              readers understand supplements, nutrition, and safety through{" "}
               <strong className="text-black dark:text-white">
                 evidence, context, and transparency
               </strong>
-              .
+              , so you can make informed decisions about your health.
+            </p>
+
+            <p className="text-lg md:text-xl text-gray-600 dark:text-zinc-400 mb-10 max-w-4xl mx-auto leading-relaxed">
+              Unlike many sites that lead with product recommendations, we start
+              with science, safety, and sound lifestyle guidance. Supplements,
+              where discussed, are considered optional, supportive tools, never
+              primary or curative solutions.
             </p>
 
             <div className="bg-amber-50/90 dark:bg-[#1A1200]/80 backdrop-blur-md border border-amber-200/80 dark:border-amber-800/60 p-5 rounded-2xl max-w-3xl mx-auto mb-10 text-left flex gap-4 items-start shadow-sm relative overflow-hidden">
@@ -160,28 +291,36 @@ export default async function Home() {
               <p className="text-sm md:text-base text-amber-900 dark:text-amber-200 leading-snug">
                 <strong className="font-bold">Plain-language note:</strong> The
                 information on this site is for educational purposes only and
-                does not replace professional medical advice. Diet, exercise,
-                sleep, and medical care are the cornerstones of well-being.
+                does not replace professional medical advice.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/category">
+            <div className="flex flex-col lg:flex-row justify-center gap-4">
+              <Link href="/ingredients">
                 <Button
                   size="lg"
                   className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all text-lg h-14 px-8 rounded-full font-bold"
                 >
                   <Search className="mr-2 w-5 h-5" />
-                  Explore Health Categories
+                  Browse Ingredients
                 </Button>
               </Link>
-              <Link href="/about">
+              <Link href="/category">
                 <Button
                   variant="outline"
                   size="lg"
                   className="w-full sm:w-auto border-[#D9CFC7] dark:border-[#634F36] bg-white dark:bg-[#211A13] text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-[#3B3028] hover:-translate-y-0.5 transition-all text-lg h-14 px-8 rounded-full shadow-sm font-bold"
                 >
-                  Our Editorial Process
+                  Explore Health Categories
+                </Button>
+              </Link>
+              <Link href="/editorial-policy">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto border-[#D9CFC7] dark:border-[#634F36] bg-transparent text-gray-900 dark:text-white hover:bg-white/70 dark:hover:bg-[#211A13] hover:-translate-y-0.5 transition-all text-lg h-14 px-8 rounded-full shadow-sm font-bold"
+                >
+                  Learn How We Evaluate
                 </Button>
               </Link>
             </div>
@@ -194,11 +333,11 @@ export default async function Home() {
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black dark:text-white tracking-tight">
-              Is This Resource For You?
+              Who This Resource Is For
             </h2>
             <p className="text-lg md:text-xl text-gray-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
-              We value clarity over hype. To set clear expectations, here is a
-              transparent look at who will benefit most from our platform.
+              This site is designed for readers who value clarity over hype and
+              want careful explanations grounded in research.
             </p>
           </div>
 
@@ -215,13 +354,7 @@ export default async function Home() {
                   </h3>
                 </div>
                 <ul className="space-y-6 grow">
-                  {[
-                    "People researching supplements before considering a purchase",
-                    "Readers skeptical of marketing claims and “miracle” language",
-                    "Individuals managing health conditions who want evidence, not promises",
-                    "Caregivers, journalists, and educators seeking reliable research summaries",
-                    "Anyone who wants to understand ingredients, safety, and limitations",
-                  ].map((item, i) => (
+                  {whoThisIsFor.map((item, i) => (
                     <li
                       key={i}
                       className="flex gap-4 text-green-900/90 dark:text-green-200/90 leading-relaxed text-lg"
@@ -236,7 +369,7 @@ export default async function Home() {
                 <div className="mt-10 pt-8 border-t border-green-200/50 dark:border-green-900/50">
                   <p className="font-bold text-green-950 dark:text-green-100 text-xl leading-snug">
                     If you prefer careful explanations grounded in research,
-                    you're in the right place.
+                    you&rsquo;re in the right place.
                   </p>
                 </div>
               </CardContent>
@@ -254,11 +387,7 @@ export default async function Home() {
                   </h3>
                 </div>
                 <ul className="space-y-6 grow">
-                  {[
-                    "Those seeking quick fixes, guaranteed outcomes, or cures",
-                    "People looking for personalized medical advice or diagnoses",
-                    "Anyone expecting product endorsements or promotional reviews",
-                  ].map((item, i) => (
+                  {whoThisIsNotFor.map((item, i) => (
                     <li
                       key={i}
                       className="flex gap-4 text-red-900/90 dark:text-red-200 leading-relaxed text-lg"
@@ -272,7 +401,8 @@ export default async function Home() {
                 </ul>
                 <div className="mt-10 pt-8 border-t border-red-200/60 dark:border-red-800/50">
                   <p className="font-bold text-red-950 dark:text-red-100 text-xl leading-snug">
-                    We empower with knowledge, not persuade you to buy hype.
+                    This site is not intended for quick fixes, guarantees, or
+                    promotional recommendations.
                   </p>
                 </div>
               </CardContent>
@@ -300,12 +430,30 @@ export default async function Home() {
                 Our Mission & Editorial Approach
               </h2>
               <p className="text-xl text-slate-700 dark:text-zinc-300 mb-10 leading-relaxed font-medium">
-                We build a trustworthy library of health content. Every piece is
-                created by our Research Editorial Team and relies on credible
-                sources such as peer-reviewed journals, the NIH, and the WHO.
+                Our mission is to build a trustworthy library of health and
+                supplement content that explains context clearly, analyzes
+                ingredients neutrally, and helps readers understand both
+                potential benefits and real limitations.
               </p>
 
               <div className="space-y-8">
+                <div className="bg-white/70 dark:bg-[#18120C]/80 border border-[#D9CFC7] dark:border-[#3B2E22] rounded-[2rem] p-6 md:p-8 shadow-sm">
+                  <h3 className="text-2xl font-bold text-black dark:text-white mb-6">
+                    Our mission includes:
+                  </h3>
+                  <ul className="space-y-4">
+                    {missionPoints.map((item, index) => (
+                      <li
+                        key={index}
+                        className="flex gap-4 text-slate-700 dark:text-zinc-300 leading-relaxed text-lg"
+                      >
+                        <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-1" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
                 <div className="flex gap-5 group">
                   <div className="w-14 h-14 rounded-2xl bg-white dark:bg-[#211A13] border border-[#D9CFC7] dark:border-[#3B3028] flex items-center justify-center shrink-0 group-hover:bg-primary/5 dark:group-hover:bg-primary/10 group-hover:border-primary/30 dark:group-hover:border-primary/50 transition-colors shadow-sm dark:shadow-inner">
                     <Scale className="w-7 h-7 text-primary" />
@@ -315,9 +463,11 @@ export default async function Home() {
                       Neutral, Research-Backed Language
                     </h4>
                     <p className="text-slate-600 dark:text-zinc-400 leading-relaxed text-lg">
-                      We analyze ingredients without hype. When research is
-                      mixed, limited, or inconclusive, we state that clearly. We
-                      do not overstate effectiveness.
+                      Every piece is created by our Research Editorial Team and
+                      reviewed through a defined editorial and fact-checking
+                      process. We rely on peer-reviewed journals, authoritative
+                      health organizations, and public research databases
+                      including the NIH and WHO.
                     </p>
                   </div>
                 </div>
@@ -330,9 +480,10 @@ export default async function Home() {
                       Strict Safety Standards
                     </h4>
                     <p className="text-slate-600 dark:text-zinc-400 leading-relaxed text-lg">
-                      We highlight both potential benefits and known
-                      limitations. We uphold strict safety standards and
-                      transparently disclose risks and side effects.
+                      When research is mixed, limited, or inconclusive, we say
+                      so directly. We do not overstate effectiveness or
+                      certainty, and we disclose side effects, risks, and
+                      important limitations.
                     </p>
                   </div>
                 </div>
@@ -342,12 +493,13 @@ export default async function Home() {
                   </div>
                   <div>
                     <h4 className="text-xl font-bold mb-2 text-black dark:text-zinc-100">
-                      Lifestyle Comes First
+                      The Foundation: Lifestyle Comes First
                     </h4>
                     <p className="text-slate-600 dark:text-zinc-400 leading-relaxed text-lg">
-                      Supplements should only complement healthy habits, never
-                      substitute. Diet, regular physical activity, and adequate
-                      sleep have the greatest impact.
+                      Consistent evidence shows that balanced nutrition, regular
+                      physical activity, adequate sleep, and professional
+                      healthcare have the greatest impact on long-term health.
+                      Supplements do not replace these fundamentals.
                     </p>
                   </div>
                 </div>
@@ -357,31 +509,10 @@ export default async function Home() {
             <div className="bg-white/80 dark:bg-[#18120C]/90 backdrop-blur-xl border border-[#D9CFC7] dark:border-[#3B2E22] rounded-[2.5rem] p-8 md:p-12 shadow-xl dark:shadow-2xl relative">
               <h3 className="text-3xl font-bold mb-10 flex items-center gap-4 text-black dark:text-white">
                 <ListChecks className="text-primary w-8 h-8" />
-                How We Evaluate
+                How We Evaluate Supplements
               </h3>
               <div className="space-y-8 relative before:absolute before:inset-0 before:ml-[1.4rem] before:-translate-x-px before:h-full before:w-0.5 before:bg-linear-to-b before:from-primary/50 before:via-[#D9CFC7] dark:before:via-zinc-700 before:to-transparent">
-                {[
-                  {
-                    title: "What & Why",
-                    desc: "Manufacturer info, intended audience, and why people seek it out.",
-                  },
-                  {
-                    title: "Ingredient Analysis",
-                    desc: "Examination of each active component and its research backing.",
-                  },
-                  {
-                    title: "Research Summary",
-                    desc: "Synthesis of clinical trials and systematic reviews.",
-                  },
-                  {
-                    title: "Safety & Interactions",
-                    desc: "Side effects, dosage warnings, and who should avoid it.",
-                  },
-                  {
-                    title: "Final Assessment",
-                    desc: "A neutral, educational case study synthesis—never a sales pitch.",
-                  },
-                ].map((step, i) => (
+                {evaluationSteps.map((step, i) => (
                   <div
                     key={i}
                     className="relative flex items-start gap-6 group hover:-translate-y-1 transition-transform"
@@ -415,39 +546,13 @@ export default async function Home() {
                 New Here? Start With These Guides
               </h2>
               <p className="text-xl text-gray-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
-                Essential context providing practical frameworks and safety
-                principles to help navigate our platform without being
-                overwhelmed.
+                These pages provide essential context before reading any product
+                analysis so you can navigate the site without overwhelm.
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                {
-                  title: "How to Choose",
-                  desc: "A practical, evidence-based decision framework",
-                  icon: BookOpen,
-                  href: "/category",
-                },
-                {
-                  title: "Safety Measures",
-                  desc: "General principles for risk awareness",
-                  icon: Shield,
-                  href: "/category",
-                },
-                {
-                  title: "Ingredients Guide",
-                  desc: "How common supplement ingredients are evaluated",
-                  icon: Beaker,
-                  href: "/category",
-                },
-                {
-                  title: "Health Overviews",
-                  desc: "Topic-specific foundational research knowledge",
-                  icon: FileText,
-                  href: "/category",
-                },
-              ].map((guide, i) => (
+              {recommendedGuides.map((guide, i) => (
                 <Link key={i} href={guide.href}>
                   <Card className="group h-full bg-white dark:bg-[#17120D] border border-[#D9CFC7]/80 dark:border-[#3B2E22] hover:border-primary/60 dark:hover:border-primary/60 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 rounded-4xl overflow-hidden">
                     <CardContent className="p-8">
@@ -475,9 +580,21 @@ export default async function Home() {
                   Health Categories We Cover
                 </h2>
                 <p className="text-xl text-gray-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
-                  Each category includes an evidence-based overview, ingredient
-                  explanations, and guidance for informed decision-making.
+                  Our research is organized into clear health topics including
+                  Joint Pain, Weight Loss, Men&rsquo;s Health, Women&rsquo;s
+                  Health, Gut Health, Mental Health, Sleep Cycle, and Skin Care.
                 </p>
+              </div>
+
+              <div className="flex flex-wrap justify-center gap-3 mb-10">
+                {healthTopics.map((topic) => (
+                  <div
+                    key={topic}
+                    className="px-5 py-3 rounded-full bg-white dark:bg-[#17120D] border border-[#D9CFC7]/80 dark:border-[#3B2E22] text-sm md:text-base font-semibold text-gray-800 dark:text-zinc-200 shadow-sm"
+                  >
+                    {topic}
+                  </div>
+                ))}
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
@@ -513,8 +630,8 @@ export default async function Home() {
               Latest Research & Guides
             </h2>
             <p className="text-xl text-gray-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
-              Deep dives into ingredients, health topics, and the latest
-              evidence-led science.
+              Browse recent articles, ingredient explainers, and health topic
+              research summaries grounded in evidence rather than promotion.
             </p>
           </div>
 
@@ -527,11 +644,13 @@ export default async function Home() {
                 <div className="grid md:grid-cols-2 gap-0">
                   {/* Image */}
                   {mainFeaturedPost.featuredImageUrl && (
-                    <div className="relative h-72 md:h-full overflow-hidden bg-[#F9F8F6] dark:bg-[#211A13]">
+                    <div className="relative h-72 md:h-96 overflow-hidden bg-[#F9F8F6] dark:bg-[#211A13]">
                       <Image
                         src={mainFeaturedPost.featuredImageUrl}
                         alt={mainFeaturedPost.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                        priority
                         className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
                       />
                       <div className="absolute inset-0 bg-linear-to-tr from-black/40 via-transparent to-transparent opacity-60" />
@@ -542,7 +661,7 @@ export default async function Home() {
                   <div className="p-10 md:p-16 flex flex-col justify-center bg-linear-to-br from-white to-[#F9F8F6] dark:from-[#0F0E0A] dark:to-[#211A13]">
                     <div className="flex items-center gap-3 mb-6">
                       <div className="bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 border border-amber-200 dark:border-amber-800/50 shadow-sm">
-                        <Sparkles className="w-3.5 h-3.5" /> Featured Case Study
+                        <Sparkles className="w-3.5 h-3.5" /> Research Spotlight
                       </div>
                       {mainFeaturedPost.category && (
                         <div className="bg-primary/10 text-primary dark:text-primary dark:bg-primary/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-primary/20 dark:border-primary/30">
@@ -620,17 +739,12 @@ export default async function Home() {
               </h2>
               <p className="text-xl text-gray-700 dark:text-zinc-300 mb-10 leading-relaxed font-medium">
                 We are committed to editorial independence. We do not sell
-                supplements, and we do not accept sponsorships that influence
-                content.
+                supplements, we do not accept sponsorships that influence
+                content, and affiliate links, when present, never affect our
+                evaluations.
               </p>
               <ul className="space-y-6">
-                {[
-                  "Content produced by our built Research Editorial Team.",
-                  "Review input from nutritionists, pharmacologists, and researchers.",
-                  "Articles updated periodically (every 6-12 months) as evidence evolves.",
-                  "Sources cited transparently, prioritizing peer-reviewed research.",
-                  "Clear disclosure of limitations and mixed evidence.",
-                ].map((item, i) => (
+                {trustSignals.map((item, i) => (
                   <li
                     key={i}
                     className="flex gap-4 text-gray-800 dark:text-zinc-200 text-lg leading-relaxed bg-white/60 dark:bg-[#1A1208]/80 p-3 rounded-2xl border border-white/70 dark:border-[#3B2E22]/80 shadow-sm"
@@ -648,27 +762,40 @@ export default async function Home() {
 
               <div className="relative z-10 text-center">
                 <div className="mx-auto w-20 h-20 bg-primary/10 text-primary flex items-center justify-center rounded-full mb-8 shadow-inner border border-primary/20">
-                  <Mail className="w-10 h-10" />
+                  <ArrowRight className="w-10 h-10" />
                 </div>
                 <h3 className="text-3xl font-extrabold mb-4 text-black dark:text-white tracking-tight">
-                  Stay Informed, Not Sold
+                  Where to Go Next
                 </h3>
                 <p className="text-lg text-gray-600 dark:text-zinc-400 mb-10 leading-relaxed max-w-sm mx-auto">
                   Our goal is to empower you with knowledge, not persuade you to
-                  buy hype. Join our newsletter to get evidence-based summaries.
+                  buy. Continue exploring the site through ingredients, category
+                  overviews, and our editorial standards.
                 </p>
-                <div className="space-y-4 w-full relative z-20">
-                  <Input
-                    type="email"
-                    placeholder="Enter your email address"
-                    className="h-16 bg-gray-50/80 dark:bg-[#211A13] border-gray-200 dark:border-[#3B3028] rounded-2xl px-6 w-full focus-visible:ring-primary focus-visible:ring-2 focus-visible:border-transparent text-lg shadow-inner placeholder:text-gray-400 dark:text-white"
-                  />
-                  <Button className="w-full h-16 bg-black dark:bg-white hover:bg-gray-800 dark:hover:bg-gray-200 hover:-translate-y-0.5 text-white dark:text-black font-bold rounded-2xl text-xl shadow-xl transition-all">
-                    Subscribe for Updates
-                  </Button>
+                <div className="space-y-4 w-full relative z-20 text-left">
+                  {nextSteps.map((step) => (
+                    <Link
+                      key={step.title}
+                      href={step.href}
+                      className="block rounded-[1.75rem] border border-[#D9CFC7]/80 dark:border-[#3B2E22] bg-[#F9F8F6] dark:bg-[#211A13] p-5 hover:border-primary/50 hover:-translate-y-0.5 transition-all"
+                    >
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <h4 className="text-lg font-bold text-black dark:text-white mb-1">
+                            {step.title}
+                          </h4>
+                          <p className="text-sm md:text-base text-gray-600 dark:text-zinc-400 leading-relaxed">
+                            {step.desc}
+                          </p>
+                        </div>
+                        <ArrowRight className="w-5 h-5 text-primary shrink-0 mt-1" />
+                      </div>
+                    </Link>
+                  ))}
                 </div>
-                <p className="text-sm text-center mt-6 text-gray-400 dark:text-zinc-500 font-medium tracking-wide">
-                  You can unsubscribe at any time.
+                <p className="text-sm text-center mt-6 text-gray-500 dark:text-zinc-500 font-medium leading-relaxed">
+                  Thank you for visiting. We invite you to explore, learn, and
+                  approach health decisions with clarity and evidence.
                 </p>
               </div>
             </div>

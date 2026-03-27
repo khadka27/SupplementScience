@@ -266,9 +266,18 @@ export default function BlogPostContent({
                     fill
                     className="object-cover hover:scale-105 transition-transform duration-700"
                     priority
-                    unoptimized={post.featuredImageUrl.startsWith("http")}
-                    sizes="(max-width: 768px) 100vw, 40vw"
-                    onError={() => setImgError(true)}
+                    quality={85}
+                    unoptimized={
+                      post.featuredImageUrl?.startsWith("http") ||
+                      post.featuredImageUrl?.startsWith("https")
+                    }
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
+                    onError={() => {
+                      console.warn(
+                        `Failed to load image: ${post.featuredImageUrl}`,
+                      );
+                      setImgError(true);
+                    }}
                   />
                 ) : null}
 

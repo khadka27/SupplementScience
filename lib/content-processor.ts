@@ -14,36 +14,36 @@ export function processContent(html: string): string {
   // 1. Wrap tables in responsive containers
   processed = processed.replaceAll(
     "<table>",
-    '<div class="overflow-x-auto rounded-lg border border-border my-8"><table class="w-full">'
+    '<div class="overflow-x-auto rounded-lg border border-border my-8"><table class="w-full">',
   );
   processed = processed.replaceAll("</table>", "</table></div>");
 
   // 2. Enhance HR tags
   processed = processed.replaceAll(
     "<hr>",
-    '<hr class="my-16 border-t-2 border-primary/20" />'
+    '<hr class="my-16 border-t-2 border-primary/20" />',
   );
   processed = processed.replaceAll(
     "<hr/>",
-    '<hr class="my-16 border-t-2 border-primary/20" />'
+    '<hr class="my-16 border-t-2 border-primary/20" />',
   );
 
   // 3. Add emoji styling (optional - makes emojis larger)
   processed = processed.replaceAll(
     /(✅|❌|⭐|💡|🎯|📋|👣|💊|🌟|🚀|⚙️|🧠)/g,
-    '<span class="text-2xl">$1</span>'
+    '<span class="text-2xl">$1</span>',
   );
 
   // 4. Style special paragraphs (starting with "Note:" or "Important:")
   processed = processed.replaceAll(
     /<p>(Note:|Important:|Warning:|Tip:)/g,
-    '<p class="font-bold text-primary"><span class="bg-primary/10 px-2 py-1 rounded">$1</span>'
+    '<p class="font-bold text-primary"><span class="bg-primary/10 px-2 py-1 rounded">$1</span>',
   );
 
   // 5. Add target="_blank" to external links (security best practice)
   processed = processed.replaceAll(
     '<a href="http',
-    '<a target="_blank" rel="noopener noreferrer" href="http'
+    '<a target="_blank" rel="noopener noreferrer" href="http',
   );
 
   return processed;
@@ -95,9 +95,31 @@ export function enhanceInfoBoxes(html: string): string {
             $1
           </div>
         </div>
-      </div>`
+      </div>`,
     );
   });
+
+  return processed;
+}
+
+/**
+ * Enhance images in HTML content
+ * Adds responsive attributes and error handling
+ */
+export function enhanceImages(html: string): string {
+  let processed = html;
+
+  // Add loading="lazy" and decoding="async" to all images for better performance
+  processed = processed.replaceAll(
+    /<img([^>]*?)\s*\/?>/g,
+    '<img$1 loading="lazy" decoding="async" />',
+  );
+
+  // Ensure all image src attributes are properly formatted
+  processed = processed.replaceAll(
+    /<img\s+([^>]*?)src\s*=\s*["']?([^"'\s>]*)["']?/g,
+    '<img $1src="$2"',
+  );
 
   return processed;
 }
@@ -162,6 +184,7 @@ export function prepareContent(html: string): string {
   // Apply all enhancements
   processed = addHeadingIds(processed);
   processed = processContent(processed);
+  processed = enhanceImages(processed);
   processed = enhanceInfoBoxes(processed);
 
   return processed;
@@ -239,7 +262,7 @@ export const contentTemplates = {
  */
 export function fillTemplate(
   template: string,
-  data: Record<string, string>
+  data: Record<string, string>,
 ): string {
   let result = template;
   Object.entries(data).forEach(([key, value]) => {
