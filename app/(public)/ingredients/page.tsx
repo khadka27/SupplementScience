@@ -73,7 +73,7 @@ export default async function IngredientsPage() {
   return (
     <div className="min-h-screen bg-white dark:bg-[#0F0E0A] text-slate-900 dark:text-zinc-100 transition-colors duration-300">
       {/* Hero Section */}
-      <section className="relative bg-linear-to-b from-[#F9F8F6] via-[#EFE9E3] to-[#F9F8F6] dark:from-[#0F0E0A] dark:via-[#211A13] dark:to-[#0F0E0A] pt-[140px] pb-20 px-4 overflow-hidden border-b border-[#D9CFC7] dark:border-[#211A13]">
+      <section className="relative bg-linear-to-b from-[#F9F8F6] via-[#EFE9E3] to-[#F9F8F6] dark:from-[#0F0E0A] dark:via-[#211A13] dark:to-[#0F0E0A] pt-[140px] pb-16 px-4 overflow-hidden border-b border-[#D9CFC7] dark:border-[#211A13]">
         <div className="absolute inset-0 bg-grid-black/[0.02] dark:bg-grid-white/[0.02] bg-size-[20px_20px]" />
 
         <div className="container mx-auto max-w-4xl text-center relative z-10">
@@ -83,7 +83,7 @@ export default async function IngredientsPage() {
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight text-black dark:text-white">
             Supplement Ingredients
           </h1>
-          <p className="text-xl text-gray-700 dark:text-zinc-300 mb-6 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-700 dark:text-zinc-300 mb-4 max-w-3xl mx-auto leading-relaxed">
             Dietary supplements contain a wide variety of ingredients, ranging
             from vitamins and minerals to plant extracts, amino acids, and other
             bioactive compounds. Each ingredient may interact with the body in
@@ -100,7 +100,7 @@ export default async function IngredientsPage() {
       </section>
 
       {/* Introduction */}
-      <section className="py-16 px-4 bg-white dark:bg-[#0F0E0A]">
+      <section className="py-12 px-4 bg-white dark:bg-[#0F0E0A] border-b border-[#D9CFC7] dark:border-[#3B3028]">
         <div className="container mx-auto max-w-4xl">
           <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200/50 dark:border-blue-900/50 rounded-2xl p-8">
             <p className="text-lg text-blue-900 dark:text-blue-100 leading-relaxed">
@@ -114,9 +114,9 @@ export default async function IngredientsPage() {
       </section>
 
       {/* How Ingredients Are Evaluated */}
-      <section className="py-24 px-4 bg-[#F9F8F6] dark:bg-[#211A13] border-t border-[#D9CFC7] dark:border-[#3B3028]">
+      <section className="py-20 px-4 bg-[#F9F8F6] dark:bg-[#211A13] border-b border-[#D9CFC7] dark:border-[#3B3028]">
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-black dark:text-white">
             How Supplement Ingredients Are Evaluated
           </h2>
           <p className="text-lg text-gray-700 dark:text-zinc-300 mb-10 leading-relaxed">
@@ -208,9 +208,9 @@ export default async function IngredientsPage() {
       </section>
 
       {/* Categories */}
-      <section className="py-24 px-4 bg-white dark:bg-[#0F0E0A] border-t border-[#D9CFC7] dark:border-[#3B3028]">
+      <section className="py-20 px-4 bg-white dark:bg-[#0F0E0A] border-b border-[#D9CFC7] dark:border-[#3B3028]">
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-black dark:text-white">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white">
             Categories of Supplement Ingredients
           </h2>
           <p className="text-lg text-gray-700 dark:text-zinc-300 mb-10 leading-relaxed">
@@ -220,7 +220,7 @@ export default async function IngredientsPage() {
             in dietary supplements.
           </p>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6">
             <div className="bg-[#F9F8F6] dark:bg-[#211A13] rounded-2xl p-8 border border-[#D9CFC7] dark:border-[#3B3028]">
               <h3 className="text-2xl font-bold mb-4 text-black dark:text-white">
                 Vitamins
@@ -235,7 +235,7 @@ export default async function IngredientsPage() {
               <p className="text-sm text-gray-600 dark:text-zinc-400 font-semibold mb-3">
                 Examples include:
               </p>
-              <ul className="text-gray-700 dark:text-zinc-300 space-y-1">
+              <ul className="text-gray-700 dark:text-zinc-300 space-y-1 text-sm">
                 <li>• Vitamin D</li>
                 <li>• Vitamin B12</li>
                 <li>• Vitamin C</li>
@@ -255,7 +255,7 @@ export default async function IngredientsPage() {
               <p className="text-sm text-gray-600 dark:text-zinc-400 font-semibold mb-3">
                 Common mineral supplements include:
               </p>
-              <ul className="text-gray-700 dark:text-zinc-300 space-y-1">
+              <ul className="text-gray-700 dark:text-zinc-300 space-y-1 text-sm">
                 <li>• Magnesium</li>
                 <li>• Zinc</li>
                 <li>• Iron</li>
@@ -276,7 +276,7 @@ export default async function IngredientsPage() {
               <p className="text-sm text-gray-600 dark:text-zinc-400 font-semibold mb-3">
                 Examples include:
               </p>
-              <ul className="text-gray-700 dark:text-zinc-300 space-y-1">
+              <ul className="text-gray-700 dark:text-zinc-300 space-y-1 text-sm">
                 <li>• Ashwagandha</li>
                 <li>• Rhodiola</li>
                 <li>• Panax ginseng</li>
@@ -297,7 +297,7 @@ export default async function IngredientsPage() {
               <p className="text-sm text-gray-600 dark:text-zinc-400 font-semibold mb-3">
                 Examples include:
               </p>
-              <ul className="text-gray-700 dark:text-zinc-300 space-y-1">
+              <ul className="text-gray-700 dark:text-zinc-300 space-y-1 text-sm">
                 <li>• L-theanine</li>
                 <li>• Taurine</li>
                 <li>• L-tyrosine</li>
@@ -317,7 +317,7 @@ export default async function IngredientsPage() {
               <p className="text-sm text-gray-600 dark:text-zinc-400 font-semibold mb-3">
                 Examples include:
               </p>
-              <ul className="text-gray-700 dark:text-zinc-300 space-y-1">
+              <ul className="text-gray-700 dark:text-zinc-300 space-y-1 text-sm">
                 <li>• Omega-3 fatty acids</li>
                 <li>• DHA</li>
                 <li>• EPA</li>
@@ -328,9 +328,9 @@ export default async function IngredientsPage() {
       </section>
 
       {/* How to Use Ingredient Pages */}
-      <section className="py-24 px-4 bg-[#F9F8F6] dark:bg-[#211A13] border-t border-[#D9CFC7] dark:border-[#3B3028]">
+      <section className="py-20 px-4 bg-[#F9F8F6] dark:bg-[#211A13] border-b border-[#D9CFC7] dark:border-[#3B3028]">
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-black dark:text-white">
             How to Use Ingredient Pages
           </h2>
           <p className="text-lg text-gray-700 dark:text-zinc-300 mb-10 leading-relaxed">
@@ -342,7 +342,7 @@ export default async function IngredientsPage() {
             <p className="text-gray-700 dark:text-zinc-300 font-semibold mb-6">
               Typical sections include:
             </p>
-            <ul className="space-y-4">
+            <ul className="space-y-3 mb-8">
               <li className="flex gap-4">
                 <span className="text-primary font-bold">•</span>
                 <span className="text-gray-700 dark:text-zinc-300">
@@ -382,7 +382,7 @@ export default async function IngredientsPage() {
                 </span>
               </li>
             </ul>
-            <p className="text-gray-700 dark:text-zinc-300 mt-8 leading-relaxed">
+            <p className="text-gray-700 dark:text-zinc-300 leading-relaxed">
               These pages are intended to help readers understand how supplement
               ingredients are studied and interpreted in scientific literature,
               rather than providing medical advice or product recommendations.
@@ -392,9 +392,9 @@ export default async function IngredientsPage() {
       </section>
 
       {/* Understanding Evidence */}
-      <section className="py-24 px-4 bg-white dark:bg-[#0F0E0A] border-t border-[#D9CFC7] dark:border-[#3B3028]">
+      <section className="py-20 px-4 bg-white dark:bg-[#0F0E0A] border-b border-[#D9CFC7] dark:border-[#3B3028]">
         <div className="container mx-auto max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-black dark:text-white">
             Understanding Evidence in Supplement Research
           </h2>
           <p className="text-lg text-gray-700 dark:text-zinc-300 mb-10 leading-relaxed">
@@ -449,18 +449,18 @@ export default async function IngredientsPage() {
       </section>
 
       {/* Safety Considerations */}
-      <section className="py-24 px-4 bg-red-50 dark:bg-red-950/20 border-t border-[#D9CFC7] dark:border-[#3B3028]">
+      <section className="py-20 px-4 bg-red-50 dark:bg-red-950/20 border-b border-[#D9CFC7] dark:border-[#3B3028]">
         <div className="container mx-auto max-w-4xl">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-black dark:text-white flex items-center gap-4">
             <ShieldAlert className="w-8 h-8 text-red-600 dark:text-red-400" />
             Safety Considerations
           </h2>
-          <p className="text-lg text-gray-700 dark:text-zinc-300 mb-10 leading-relaxed">
+          <p className="text-lg text-gray-700 dark:text-zinc-300 mb-8 leading-relaxed">
             Although many supplement ingredients are widely available, they can
             still carry potential risks. Safety concerns may include:
           </p>
 
-          <div className="bg-white dark:bg-[#0F0E0A] rounded-2xl p-8 border border-red-200 dark:border-red-900/50 space-y-4">
+          <div className="bg-white dark:bg-[#0F0E0A] rounded-2xl p-8 border border-red-200 dark:border-red-900/50 space-y-3 mb-6">
             <div className="flex gap-4">
               <span className="text-red-600 dark:text-red-400 font-bold">
                 •
@@ -495,7 +495,7 @@ export default async function IngredientsPage() {
             </div>
           </div>
 
-          <div className="mt-10 bg-amber-50 dark:bg-amber-950/30 rounded-2xl p-6 border border-amber-200 dark:border-amber-900/50">
+          <div className="bg-amber-50 dark:bg-amber-950/30 rounded-2xl p-6 border border-amber-200 dark:border-amber-900/50">
             <p className="text-amber-900 dark:text-amber-200 leading-relaxed">
               Individuals considering supplements should be aware that
               scientific evidence continues to evolve, and safety profiles may
@@ -506,9 +506,9 @@ export default async function IngredientsPage() {
       </section>
 
       {/* Browse Ingredients Section */}
-      <section className="py-24 px-4 bg-white dark:bg-[#0F0E0A] border-t border-[#D9CFC7] dark:border-[#3B3028]">
+      <section className="py-20 px-4 bg-white dark:bg-[#0F0E0A]">
         <div className="container mx-auto max-w-7xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-black dark:text-white text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-10 text-black dark:text-white text-center">
             Explore Individual Ingredient Profiles
           </h2>
 
@@ -545,7 +545,7 @@ export default async function IngredientsPage() {
             </div>
 
             <div className="lg:col-span-3">
-              <div className="flex items-center justify-between mb-8 border-b border-[#D9CFC7] dark:border-[#3B3028] pb-6">
+              <div className="flex items-center justify-between mb-8 border-b border-[#D9CFC7] dark:border-[#3B3028] pb-4">
                 <h3 className="text-2xl font-bold tracking-tight text-black dark:text-white">
                   Latest ingredient analyses
                 </h3>

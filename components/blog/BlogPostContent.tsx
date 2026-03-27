@@ -368,6 +368,23 @@ export default function BlogPostContent({
                       qualified healthcare professional before starting any new
                       supplement regimen.
                     </p>
+                    <p className="text-[13px] md:text-sm text-amber-900/90 dark:text-amber-200/70 leading-relaxed mt-3">
+                      Read our{" "}
+                      <Link
+                        href="/medical-expert-review"
+                        className="font-semibold underline underline-offset-2 hover:text-amber-700 dark:hover:text-amber-300"
+                      >
+                        Medical / Expert Review Policy
+                      </Link>{" "}
+                      and{" "}
+                      <Link
+                        href="/medical-disclaimer"
+                        className="font-semibold underline underline-offset-2 hover:text-amber-700 dark:hover:text-amber-300"
+                      >
+                        Medical Disclaimer
+                      </Link>{" "}
+                      for details.
+                    </p>
                   </div>
                 </div>
 

@@ -107,6 +107,14 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/medical-expert-review"
+                  className="text-slate-600 dark:text-zinc-400 hover:text-primary dark:hover:text-primary transition-colors font-medium"
+                >
+                  Medical / Expert Review Policy
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/editorial-independence"
                   className="text-slate-600 dark:text-zinc-400 hover:text-primary dark:hover:text-primary transition-colors font-medium"
                 >
