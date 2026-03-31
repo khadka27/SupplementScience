@@ -52,6 +52,8 @@ const formSchema = z.object({
   ingredientName: z.string().min(2, "Ingredient name is required"),
   slug: z.string().min(3, "Slug must be at least 3 characters"),
   excerpt: z.string().optional(),
+  metaTitle: z.string().optional(),
+  metaDescription: z.string().optional(),
   content: z.string().min(10, "Content is too short"),
   featuredImageUrl: z
     .string()
@@ -90,6 +92,8 @@ export default function IngredientEditorForm({
       ingredientName: initialData?.ingredientName || "",
       slug: initialData?.slug || "",
       excerpt: initialData?.excerpt || "",
+      metaTitle: initialData?.metaTitle || "",
+      metaDescription: initialData?.metaDescription || "",
       content: initialData?.content || "",
       featuredImageUrl: initialData?.featuredImageUrl || "",
       tagIds: initialData?.tags?.map((t: any) => t.tagId) || [],
@@ -264,6 +268,46 @@ export default function IngredientEditorForm({
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name="metaTitle"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Meta Title (SEO)</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Leave blank to use page title"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Recommended length: 50-60 characters
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="metaDescription"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Meta Description (SEO)</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Leave blank to auto-generate from excerpt/content"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Recommended length: 140-160 characters
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </CardContent>
             </Card>
 
@@ -406,7 +450,8 @@ export default function IngredientEditorForm({
                             <Input placeholder="https://..." {...field} />
                           </FormControl>
                           <FormDescription>
-                            URL for the ingredient's main image (Ideal size: 1200x628)
+                            URL for the ingredient's main image (Ideal size:
+                            1200x628)
                           </FormDescription>
                         </TabsContent>
                       </Tabs>

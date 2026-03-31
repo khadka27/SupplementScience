@@ -56,6 +56,8 @@ const formSchema = z.object({
   productName: z.string().min(2, "Product name is required"),
   slug: z.string().min(3, "Slug must be at least 3 characters"),
   excerpt: z.string().optional(),
+  metaTitle: z.string().optional(),
+  metaDescription: z.string().optional(),
   content: z.string().min(10, "Content is too short"),
   featuredImageUrl: z
     .string()
@@ -94,6 +96,8 @@ export default function ReviewEditorForm({
       productName: initialData?.productName || "",
       slug: initialData?.slug || "",
       excerpt: initialData?.excerpt || "",
+      metaTitle: initialData?.metaTitle || "",
+      metaDescription: initialData?.metaDescription || "",
       content: initialData?.content || "",
       featuredImageUrl: initialData?.featuredImageUrl || "",
       tagIds: initialData?.tags?.map((t: any) => t.tagId) || [],
@@ -279,6 +283,46 @@ export default function ReviewEditorForm({
                           {...field}
                         />
                       </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="metaTitle"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Meta Title (SEO)</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Leave blank to use review title"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Recommended length: 50-60 characters
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="metaDescription"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Meta Description (SEO)</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Leave blank to auto-generate from excerpt/content"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Recommended length: 140-160 characters
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
