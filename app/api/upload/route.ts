@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import { join } from "path";
+import { writeFile, mkdir } from "node:fs/promises";
+import { join } from "node:path";
 import { auth } from "@/lib/auth";
 
 export async function POST(request: Request) {
@@ -23,18 +23,14 @@ export async function POST(request: Request) {
     // Create unique filename to prevent overwrites
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     // Remove spaces and special characters from original filename
-    const originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
+    const originalName = file.name.replaceAll(/[^a-zA-Z0-9.-]/g, "_");
     const filename = `${uniqueSuffix}-${originalName}`;
 
     // Define the upload directory
     const uploadDir = join(process.cwd(), "public", "images");
 
     // Ensure the directory exists
-    try {
-      await mkdir(uploadDir, { recursive: true });
-    } catch (err) {
-      // Directory might already exist, which is fine
-    }
+    await mkdir(uploadDir, { recursive: true });
 
     const filepath = join(uploadDir, filename);
 

@@ -14,7 +14,17 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, Loader2, UserCircle } from "lucide-react";
+import {
+  Pencil,
+  Trash2,
+  Plus,
+  Loader2,
+  UserCircle,
+  Globe,
+  ImageIcon,
+} from "lucide-react";
+import { ImageUpload } from "@/components/ImageUpload";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
@@ -124,7 +134,7 @@ export default function AuthorsManagementPage() {
       toast.success(
         editingAuthor
           ? "Author updated successfully"
-          : "Author created successfully"
+          : "Author created successfully",
       );
       setDialogOpen(false);
       resetForm();
@@ -305,15 +315,38 @@ export default function AuthorsManagementPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="avatarUrl">Avatar URL</Label>
-                  <Input
-                    id="avatarUrl"
-                    value={formData.avatarUrl}
-                    onChange={(e) =>
-                      setFormData({ ...formData, avatarUrl: e.target.value })
-                    }
-                    placeholder="https://example.com/avatar.jpg"
-                  />
+                  <Label>Author Avatar</Label>
+                  <Tabs defaultValue="upload" className="w-full">
+                    <TabsList className="mb-3">
+                      <TabsTrigger value="upload" className="gap-2">
+                        <ImageIcon className="h-4 w-4" /> Upload
+                      </TabsTrigger>
+                      <TabsTrigger value="url" className="gap-2">
+                        <Globe className="h-4 w-4" /> Link URL
+                      </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="upload">
+                      <ImageUpload
+                        value={formData.avatarUrl}
+                        onChange={(url) =>
+                          setFormData({ ...formData, avatarUrl: url })
+                        }
+                      />
+                    </TabsContent>
+                    <TabsContent value="url">
+                      <Input
+                        id="avatarUrl"
+                        value={formData.avatarUrl}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            avatarUrl: e.target.value,
+                          })
+                        }
+                        placeholder="https://example.com/avatar.jpg"
+                      />
+                    </TabsContent>
+                  </Tabs>
                 </div>
 
                 <div className="space-y-4 pt-4 border-t">

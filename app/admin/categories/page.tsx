@@ -14,8 +14,19 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, Loader2, Tag, PenLine } from "lucide-react";
+import {
+  Pencil,
+  Trash2,
+  Plus,
+  Loader2,
+  Tag,
+  PenLine,
+  Globe,
+  ImageIcon,
+} from "lucide-react";
 import Link from "next/link";
+import { ImageUpload } from "@/components/ImageUpload";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Dialog,
   DialogContent,
@@ -259,15 +270,36 @@ export default function CategoriesManagementPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="imageUrl">Image URL</Label>
-                  <Input
-                    id="imageUrl"
-                    type="url"
-                    value={formData.imageUrl}
-                    onChange={(e) =>
-                      setFormData({ ...formData, imageUrl: e.target.value })
-                    }
-                  />
+                  <Label>Category Image</Label>
+                  <Tabs defaultValue="upload" className="w-full">
+                    <TabsList className="mb-3">
+                      <TabsTrigger value="upload" className="gap-2">
+                        <ImageIcon className="h-4 w-4" /> Upload
+                      </TabsTrigger>
+                      <TabsTrigger value="url" className="gap-2">
+                        <Globe className="h-4 w-4" /> Link URL
+                      </TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="upload">
+                      <ImageUpload
+                        value={formData.imageUrl}
+                        onChange={(url) =>
+                          setFormData({ ...formData, imageUrl: url })
+                        }
+                      />
+                    </TabsContent>
+                    <TabsContent value="url">
+                      <Input
+                        id="imageUrl"
+                        type="url"
+                        placeholder="https://..."
+                        value={formData.imageUrl}
+                        onChange={(e) =>
+                          setFormData({ ...formData, imageUrl: e.target.value })
+                        }
+                      />
+                    </TabsContent>
+                  </Tabs>
                 </div>
 
                 <div className="flex items-center space-x-2 border p-3 rounded-md">
