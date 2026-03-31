@@ -66,9 +66,9 @@ const formSchema = z.object({
     .optional()
     .or(z.literal("")),
   authorId: z.string().optional().or(z.literal("")),
-  categoryId: z.string().min(1, "Category is required for guides"),
+  categoryId: z.string().optional().or(z.literal("")),
   customAuthor: z.string().optional().or(z.literal("")),
-  tagIds: z.array(z.string()).min(1, "Please select at least one tag"),
+  tagIds: z.array(z.string()).optional().default([]),
   status: z.enum(["draft", "published"]),
 });
 
@@ -103,27 +103,24 @@ export default function GuideEditorForm({
       featuredImageUrl: initialData?.featuredImageUrl || "",
       tagIds: initialData?.tags?.map((t: any) => t.tagId) || [],
       authorId: initialData?.authorId || authors[0]?.id || "",
-      categoryId: initialData?.categoryId || categories[0]?.id || "",
+      categoryId: initialData?.categoryId || "",
       status: initialData?.status?.toLowerCase() || "draft",
     },
   });
 
   const selectedCategoryId = form.watch("categoryId");
   const selectedCategory = categories.find((c) => c.id === selectedCategoryId);
-  const guideType = form.watch("guideType");
   const slug = form.watch("slug");
 
-  // Generate preview URL when category, guide type, or slug changes
+  // Generate preview URL from slug
   useEffect(() => {
-    if (slug && selectedCategory?.slug) {
-      // For guides, we need to extract the guide type from the slug
-      // and use it to generate the correct URL
-      const url = `/${selectedCategory.slug}/${slug}`;
+    if (slug) {
+      const url = `/guides/${slug}`;
       setPreviewUrl(url);
     } else {
       setPreviewUrl("");
     }
-  }, [slug, selectedCategory?.slug]);
+  }, [slug]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
@@ -150,7 +147,7 @@ export default function GuideEditorForm({
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, readTimeMinutes }),
+        body: JSON.stringify({ ...values, readTimeMinutes, postType: "guide" }),
       });
 
       if (!response.ok) {
@@ -179,18 +176,13 @@ export default function GuideEditorForm({
   };
 
   const generateSlug = () => {
-    if (!selectedCategory) {
-      toast.error("Please select a category first");
+    const title = form.getValues("title");
+    if (!title) {
+      toast.error("Please enter a guide title first");
       return;
     }
 
-    const currentGuideType = guideType || form.getValues("guideType");
-    const generatedSlug = generateSlugForPostType(
-      "guide",
-      "",
-      selectedCategory.slug,
-      currentGuideType,
-    );
+    const generatedSlug = generateSlugForPostType("guide", title);
 
     if (!generatedSlug) {
       toast.error("Failed to generate slug. Please check your selections.");
@@ -273,13 +265,10 @@ export default function GuideEditorForm({
                         </Button>
                       </FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="safety-measures-for-joint-pain-supplements"
-                          {...field}
-                        />
+                        <Input placeholder="guide-title" {...field} />
                       </FormControl>
                       <FormDescription>
-                        Auto-generated based on category and guide type
+                        Auto-generated from guide title
                       </FormDescription>
                       {previewUrl && (
                         <Alert>
@@ -411,17 +400,20 @@ export default function GuideEditorForm({
                   name="categoryId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Category *</FormLabel>
+                      <FormLabel>Category</FormLabel>
                       <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        onValueChange={(value) => {
+                          field.onChange(value === "none" ? "" : value);
+                        }}
+                        value={field.value || "none"}
                       >
                         <FormControl>
                           <SelectTrigger>
-                            <SelectValue placeholder="Select category" />
+                            <SelectValue placeholder="No category" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
+                          <SelectItem value="none">No category</SelectItem>
                           {categories.map((category) => (
                             <SelectItem key={category.id} value={category.id}>
                               {category.name}
@@ -430,7 +422,7 @@ export default function GuideEditorForm({
                         </SelectContent>
                       </Select>
                       <FormDescription>
-                        Required for guides. Determines the URL structure.
+                        Optional for guide classification.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -510,9 +502,9 @@ export default function GuideEditorForm({
                   render={() => (
                     <FormItem>
                       <div className="mb-3">
-                        <FormLabel>Tags *</FormLabel>
+                        <FormLabel>Tags</FormLabel>
                         <FormDescription className="text-xs">
-                          Select at least one tag
+                          Optional. Leave unselected if not needed.
                         </FormDescription>
                       </div>
                       <div className="space-y-2 max-h-64 overflow-y-auto border rounded-md p-3 bg-muted/30">

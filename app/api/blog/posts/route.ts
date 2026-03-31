@@ -83,16 +83,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Validate tags
-    if (!tagIds || !Array.isArray(tagIds) || tagIds.length === 0) {
-      return new NextResponse(
-        JSON.stringify({
-          error: "At least one tag is required",
-        }),
-        { status: 400, headers: { "Content-Type": "application/json" } },
-      );
-    }
-
     // Check if slug already exists
     const existingPost = await prisma.post.findUnique({
       where: { slug },
@@ -141,13 +131,17 @@ export async function POST(req: Request) {
             connect: { id: categoryId },
           },
         }),
-        tags: {
-          create: tagIds.map((tagId: string) => ({
-            tag: {
-              connect: { id: tagId },
+        ...(tagIds &&
+          Array.isArray(tagIds) &&
+          tagIds.length > 0 && {
+            tags: {
+              create: tagIds.map((tagId: string) => ({
+                tag: {
+                  connect: { id: tagId },
+                },
+              })),
             },
-          })),
-        },
+          }),
       },
       include: {
         tags: true,

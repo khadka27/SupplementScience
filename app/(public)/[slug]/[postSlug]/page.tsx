@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import prisma from "@/lib/prisma";
 import BlogPostContent from "@/components/blog/BlogPostContent";
@@ -128,6 +128,10 @@ export default async function CategorizedPostPage({ params }: Props) {
   const data = await getData(slug, postSlug);
 
   if (!data) notFound();
+
+  if (data.post.postType === "guide") {
+    redirect(`/guides/${data.post.slug}`);
+  }
 
   const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
     process.env.NEXT_PUBLIC_BASE_URL.replace(

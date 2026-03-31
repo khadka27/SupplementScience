@@ -13,6 +13,9 @@ export function getPostHref(post: {
   if (post.postType === "ingredient") {
     return `/ingredients/${post.slug}`;
   }
+  if (post.postType === "guide") {
+    return `/guides/${post.slug}`;
+  }
   const categorySlug = post.category?.slug?.toLowerCase();
   const isHub = post.category?.isHub;
 

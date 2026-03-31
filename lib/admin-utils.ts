@@ -1,6 +1,6 @@
 /**
  * Admin Utilities
- * 
+ *
  * Helper functions for admin-side content creation and management
  */
 
@@ -40,24 +40,24 @@ export const POST_TYPE_CONFIGS: Record<PostType, PostTypeConfig> = {
   guide: {
     type: "guide",
     label: "Category Guide",
-    description: "Category-specific guide (safety, how-to-choose, ingredients)",
-    slugGenerator: (guideType: string, categorySlug?: string) => {
-      if (!categorySlug) return "";
-      const validTypes = ["safety-measures", "how-to-choose", "ingredients-used"];
-      if (!validTypes.includes(guideType)) return "";
-      return getGuideSlug(categorySlug, guideType as any);
+    description: "General guide page",
+    slugGenerator: (title: string) => {
+      return title
+        .toLowerCase()
+        .trim()
+        .replaceAll(/[^\w\s-]/g, "")
+        .replaceAll(/[\s_-]+/g, "-")
+        .replaceAll(/^-+|-+$/g, "");
     },
-    urlGenerator: (slug: string, categorySlug?: string) => {
-      if (!categorySlug) return "#";
-      return getGuideUrl(categorySlug, slug as any);
-    },
-    requiresCategory: true,
+    urlGenerator: (slug: string) => `/guides/${slug}`,
+    requiresCategory: false,
   },
   ingredient: {
     type: "ingredient",
     label: "Ingredient Page",
     description: "Global ingredient information page",
-    slugGenerator: (ingredientName: string) => getIngredientSlug(ingredientName),
+    slugGenerator: (ingredientName: string) =>
+      getIngredientSlug(ingredientName),
     urlGenerator: (slug: string) => getIngredientUrl(slug),
     requiresCategory: false,
   },
@@ -85,13 +85,9 @@ export function generateSlugForPostType(
   postType: PostType,
   input: string,
   categorySlug?: string,
-  guideType?: string
+  guideType?: string,
 ): string {
   const config = POST_TYPE_CONFIGS[postType];
-
-  if (postType === "guide" && guideType) {
-    return config.slugGenerator(guideType, categorySlug);
-  }
 
   return config.slugGenerator(input, categorySlug);
 }
@@ -102,7 +98,7 @@ export function generateSlugForPostType(
 export function generatePreviewUrl(
   postType: PostType,
   slug: string,
-  categorySlug?: string
+  categorySlug?: string,
 ): string {
   const config = POST_TYPE_CONFIGS[postType];
   return config.urlGenerator(slug, categorySlug);
@@ -123,7 +119,7 @@ export const GUIDE_TYPES = [
 export function validateSlugForPostType(
   postType: PostType,
   slug: string,
-  categorySlug?: string
+  categorySlug?: string,
 ): { valid: boolean; error?: string } {
   if (!slug || slug.length < 3) {
     return { valid: false, error: "Slug must be at least 3 characters" };
@@ -134,21 +130,6 @@ export function validateSlugForPostType(
       valid: false,
       error: "Review slugs must end with '-review'",
     };
-  }
-
-  if (postType === "guide" && categorySlug) {
-    const expectedPatterns = [
-      `safety-measures-for-${categorySlug}-supplements`,
-      `how-to-choose-${categorySlug}-supplements`,
-      `ingredients-used-in-${categorySlug}-supplements`,
-    ];
-
-    if (!expectedPatterns.includes(slug)) {
-      return {
-        valid: false,
-        error: `Guide slug must match pattern: safety-measures-for-{category}-supplements, how-to-choose-{category}-supplements, or ingredients-used-in-{category}-supplements`,
-      };
-    }
   }
 
   return { valid: true };
@@ -179,4 +160,3 @@ export function extractGuideTypeFromSlug(slug: string): string | null {
   }
   return null;
 }
-

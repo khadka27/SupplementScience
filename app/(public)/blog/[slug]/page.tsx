@@ -20,6 +20,7 @@ export default async function BlogSlugRedirectPage({ params }: Props) {
     where: { slug },
     select: {
       slug: true,
+      postType: true,
       category: {
         select: { slug: true, isHub: true },
       },
@@ -31,6 +32,10 @@ export default async function BlogSlugRedirectPage({ params }: Props) {
   }
 
   const categorySlug = post.category?.slug?.toLowerCase();
+
+  if (post.postType === "guide") {
+    redirect(`/guides/${post.slug}`);
+  }
 
   if (categorySlug) {
     redirect(`/${categorySlug}/${post.slug}`);
