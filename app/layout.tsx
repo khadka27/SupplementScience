@@ -12,8 +12,12 @@ const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID; // Add to .env
 
-const baseUrl =
-  (((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || "https://www.supplementdecoded.com") as string);
+const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
+  process.env.NEXT_PUBLIC_BASE_URL.replace(
+    /^https?:\/\/supplementdecoded\.com/i,
+    "https://www.supplementdecoded.com",
+  )) ||
+  "https://www.supplementdecoded.com") as string;
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -76,6 +80,7 @@ export const metadata: Metadata = {
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider } from "@/components/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
+import { ClarityProvider } from "@/components/ClarityProvider";
 
 export default function RootLayout({
   children,
@@ -142,6 +147,7 @@ export default function RootLayout({
         suppressHydrationWarning={true}
       >
         <AuthProvider>
+          <ClarityProvider />
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

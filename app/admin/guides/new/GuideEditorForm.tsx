@@ -67,7 +67,7 @@ const formSchema = z.object({
   authorId: z.string().optional().or(z.literal("")),
   categoryId: z.string().optional().or(z.literal("")),
   customAuthor: z.string().optional().or(z.literal("")),
-  tagIds: z.array(z.string()).optional().default([]),
+  tagIds: z.array(z.string()),
   status: z.enum(["draft", "published"]),
 });
 
