@@ -107,7 +107,6 @@ export default function GuideEditorForm({
     },
   });
 
-  const selectedCategoryId = form.watch("categoryId");
   const slug = form.watch("slug");
 
   // Generate preview URL from slug
@@ -126,11 +125,7 @@ export default function GuideEditorForm({
       const readTimeMinutes = calculateReadTime(values.content);
 
       // Validate slug format
-      const validation = validateSlugForPostType(
-        "guide",
-        values.slug,
-        selectedCategory?.slug,
-      );
+      const validation = validateSlugForPostType("guide", values.slug);
       if (!validation.valid) {
         toast.error(validation.error || "Invalid slug format");
         setIsSubmitting(false);
