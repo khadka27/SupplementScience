@@ -7,6 +7,12 @@ import { generateBlogPostSchema, generateBreadcrumbSchema } from "@/lib/schema";
 export const dynamic = "force-dynamic";
 export const revalidate = 10;
 
+const baseUrl =
+  process.env.NEXT_PUBLIC_BASE_URL?.replace(
+    /^https?:\/\/supplementdecoded\.com/i,
+    "https://www.supplementdecoded.com",
+  ) || "https://www.supplementdecoded.com";
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
@@ -31,13 +37,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getData(slug);
 
   if (!post) return { title: "Guide Not Found" };
-
-  const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
-    process.env.NEXT_PUBLIC_BASE_URL.replace(
-      /^https?:\/\/supplementdecoded\.com/i,
-      "https://www.supplementdecoded.com",
-    )) ||
-    "https://www.supplementdecoded.com") as string;
 
   return {
     title: post.metaTitle || `${post.title} | SupplementDecoded`,
@@ -64,13 +63,6 @@ export default async function GuidePage({ params }: Props) {
   const post = await getData(slug);
 
   if (!post) notFound();
-
-  const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
-    process.env.NEXT_PUBLIC_BASE_URL.replace(
-      /^https?:\/\/supplementdecoded\.com/i,
-      "https://www.supplementdecoded.com",
-    )) ||
-    "https://www.supplementdecoded.com") as string;
 
   const blogPostSchema = generateBlogPostSchema(post as any, baseUrl);
   const breadcrumbSchema = generateBreadcrumbSchema([

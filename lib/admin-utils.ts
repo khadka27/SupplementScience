@@ -6,12 +6,9 @@
 
 import {
   getProductReviewSlug,
-  getGuideSlug,
   getIngredientSlug,
   getReviewUrl,
-  getGuideUrl,
   getIngredientUrl,
-  getCategoryUrl,
 } from "./internal-linking";
 
 export type PostType = "review" | "guide" | "ingredient" | "blog";
@@ -69,9 +66,9 @@ export const POST_TYPE_CONFIGS: Record<PostType, PostTypeConfig> = {
       return title
         .toLowerCase()
         .trim()
-        .replace(/[^\w\s-]/g, "")
-        .replace(/[\s_-]+/g, "-")
-        .replace(/^-+|-+$/g, "");
+        .replaceAll(/[^\w\s-]/g, "")
+        .replaceAll(/[\s_-]+/g, "-")
+        .replaceAll(/^-+|-+$/g, "");
     },
     urlGenerator: (slug: string) => `/blog/${slug}`,
     requiresCategory: false,
@@ -140,7 +137,7 @@ export function validateSlugForPostType(
  */
 export function extractProductNameFromSlug(slug: string): string {
   if (slug.endsWith("-review")) {
-    return slug.replace(/-review$/, "").replace(/-/g, " ");
+    return slug.slice(0, -"-review".length).replaceAll("-", " ");
   }
   return slug;
 }
