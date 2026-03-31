@@ -59,6 +59,8 @@ export async function POST(req: Request) {
       title,
       slug,
       excerpt,
+      metaTitle,
+      metaDescription,
       content,
       featuredImageUrl,
       authorId,
@@ -106,17 +108,24 @@ export async function POST(req: Request) {
     }
 
     // Create the post
+    const normalizedMetaTitle =
+      typeof metaTitle === "string" && metaTitle.trim().length > 0
+        ? metaTitle.trim()
+        : title;
+    const normalizedMetaDescription =
+      typeof metaDescription === "string" && metaDescription.trim().length > 0
+        ? metaDescription.trim()
+        : excerpt ||
+          content.substring(0, 155).replaceAll(/<[^>]*>/g, "") + "...";
+
     const post = await prisma.post.create({
       data: {
         title,
         slug,
         excerpt: excerpt || null,
         content,
-        metaTitle: body.metaTitle || title,
-        metaDescription:
-          body.metaDescription ||
-          excerpt ||
-          content.substring(0, 155).replace(/<[^>]*>/g, "") + "...",
+        metaTitle: normalizedMetaTitle,
+        metaDescription: normalizedMetaDescription,
         featuredImageUrl: featuredImageUrl || null,
         status: status?.toUpperCase() || "DRAFT",
         publishedAt: status?.toLowerCase() === "published" ? new Date() : null,

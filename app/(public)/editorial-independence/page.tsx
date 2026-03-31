@@ -2,8 +2,12 @@ import { Metadata } from "next";
 import { FileCheck } from "lucide-react";
 import Link from "next/link";
 
-const baseUrl =
-  (((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || "https://www.supplementdecoded.com") as string);
+const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
+  process.env.NEXT_PUBLIC_BASE_URL.replace(
+    /^https?:\/\/supplementdecoded\.com/i,
+    "https://www.supplementdecoded.com",
+  )) ||
+  "https://www.supplementdecoded.com") as string;
 
 export const metadata: Metadata = {
   title: "Editorial Independence & Disclosure | SupplementDecoded",
@@ -356,7 +360,11 @@ export default function EditorialIndependencePage() {
                 <li>
                   <Link href="/fact-checking">Fact-Checking Process</Link>
                 </li>
-                <li>Medical / Expert Review Policy</li>
+                <li>
+                  <Link href="/medical-expert-review">
+                    Medical / Expert Review Policy
+                  </Link>
+                </li>
                 <li>
                   <Link href="/medical-disclaimer">Disclaimer</Link>
                 </li>

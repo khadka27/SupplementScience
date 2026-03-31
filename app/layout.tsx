@@ -149,7 +149,6 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {/* Premium Background Decoration */}
-            {/* Premium Background Decoration */}
             <div
               className="fixed inset-0 -z-10 overflow-hidden pointer-events-none opacity-50 dark:opacity-20"
               suppressHydrationWarning={true}

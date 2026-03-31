@@ -48,6 +48,8 @@ export async function PUT(
       title,
       slug,
       excerpt,
+      metaTitle,
+      metaDescription,
       content,
       featuredImageUrl,
       authorId,
@@ -93,6 +95,16 @@ export async function PUT(
       publishedAtData = null;
     }
 
+    const normalizedMetaTitle =
+      typeof metaTitle === "string" && metaTitle.trim().length > 0
+        ? metaTitle.trim()
+        : title;
+    const normalizedMetaDescription =
+      typeof metaDescription === "string" && metaDescription.trim().length > 0
+        ? metaDescription.trim()
+        : excerpt ||
+          content.substring(0, 155).replaceAll(/<[^>]*>/g, "") + "...";
+
     // Update the post
     const post = await prisma.post.update({
       where: { id },
@@ -100,6 +112,8 @@ export async function PUT(
         title,
         slug,
         excerpt: excerpt || null,
+        metaTitle: normalizedMetaTitle,
+        metaDescription: normalizedMetaDescription,
         content,
         featuredImageUrl: featuredImageUrl || null,
         status: status?.toUpperCase() || "DRAFT",

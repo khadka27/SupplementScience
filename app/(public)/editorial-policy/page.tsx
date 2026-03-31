@@ -2,8 +2,12 @@ import { Metadata } from "next";
 import { BookOpen } from "lucide-react";
 import Link from "next/link";
 
-const baseUrl =
-  (((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || "https://www.supplementdecoded.com") as string);
+const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
+  process.env.NEXT_PUBLIC_BASE_URL.replace(
+    /^https?:\/\/supplementdecoded\.com/i,
+    "https://www.supplementdecoded.com",
+  )) ||
+  "https://www.supplementdecoded.com") as string;
 
 export const metadata: Metadata = {
   title: "Editorial Policy | SupplementDecoded",
@@ -246,7 +250,11 @@ export default function EditorialPolicyPage() {
                 <li>
                   <Link href="/about">About Us</Link>
                 </li>
-                <li>Medical / Expert Review Policy</li>
+                <li>
+                  <Link href="/medical-expert-review">
+                    Medical / Expert Review Policy
+                  </Link>
+                </li>
                 <li>
                   <Link href="/fact-checking">Fact-Checking Process</Link>
                 </li>
