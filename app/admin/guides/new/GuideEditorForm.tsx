@@ -39,14 +39,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageUpload } from "@/components/ImageUpload";
 import {
   generateSlugForPostType,
-  generatePreviewUrl,
   validateSlugForPostType,
   GUIDE_TYPES,
 } from "@/lib/admin-utils";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const calculateReadTime = (content: string): number => {
-  const text = content.replace(/<[^>]*>/g, "");
+  const text = content.replaceAll(/<[^>]*>/g, "");
   const words = text.trim().split(/\s+/).length;
   const minutes = Math.ceil(words / 200);
   return Math.max(1, minutes);
@@ -109,7 +108,6 @@ export default function GuideEditorForm({
   });
 
   const selectedCategoryId = form.watch("categoryId");
-  const selectedCategory = categories.find((c) => c.id === selectedCategoryId);
   const slug = form.watch("slug");
 
   // Generate preview URL from slug
@@ -157,7 +155,7 @@ export default function GuideEditorForm({
         throw new Error(errorMessage);
       }
 
-      const data = await response.json();
+      await response.json();
       toast.success(
         isEditing
           ? "Guide updated successfully!"
