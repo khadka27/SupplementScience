@@ -64,8 +64,21 @@ export default function BlogPostContent({
   const [showStickyHeader, setShowStickyHeader] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [imgError, setImgError] = useState(false);
+  const [currentArticleUrl, setCurrentArticleUrl] = useState("");
   const titleRef = useRef<HTMLHeadingElement>(null);
   const articleContentRef = useRef<HTMLDivElement>(null);
+
+  const getSummaryLinks = (articleUrl: string) => {
+    const query = encodeURIComponent(
+      `Summarize this article and key takeaways: ${articleUrl}`,
+    );
+
+    return {
+      chatgpt: `https://chatgpt.com/?q=${query}`,
+      perplexity: `https://www.perplexity.ai/search/new?q=${query}`,
+      copilot: `https://copilot.microsoft.com/?q=${query}`,
+    };
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,23 +98,48 @@ export default function BlogPostContent({
   }, []);
 
   useEffect(() => {
+    setCurrentArticleUrl(window.location.href);
+
     const container = articleContentRef.current;
     if (!container) return;
 
     const articleUrl = window.location.href;
-    const linkByProvider: Record<string, string> = {
-      chatgpt: `https://chatgpt.com/?q=${encodeURIComponent(`Summarize this article and key takeaways: ${articleUrl}`)}`,
-      perplexity: `https://www.perplexity.ai/search/new?q=${encodeURIComponent(`Summarize this article and key takeaways: ${articleUrl}`)}`,
-      copilot: `https://copilot.microsoft.com/?q=${encodeURIComponent(`Summarize this article and key takeaways: ${articleUrl}`)}`,
-    };
+    const linkByProvider = getSummaryLinks(articleUrl);
 
     const cleanupFns: Array<() => void> = [];
 
+    const resolveProvider = (rawText: string) => {
+      const text = rawText.toLowerCase();
+      const normalized = text.replaceAll(/[^a-z]/g, "");
+
+      if (
+        text.includes("chatgpt") ||
+        text.includes("chat gpt") ||
+        normalized.includes("chatgpt")
+      ) {
+        return "chatgpt";
+      }
+
+      if (text.includes("perplexity") || normalized.includes("perplexity")) {
+        return "perplexity";
+      }
+
+      if (text.includes("copilot") || normalized.includes("copilot")) {
+        return "copilot";
+      }
+
+      return null;
+    };
+
     container.querySelectorAll("a, button").forEach((element) => {
-      const label = (element.textContent || "").trim().toLowerCase();
-      const provider = Object.keys(linkByProvider).find((name) =>
-        label.includes(name),
-      );
+      const label = [
+        element.textContent || "",
+        element.getAttribute("aria-label") || "",
+        element.getAttribute("title") || "",
+      ]
+        .join(" ")
+        .trim();
+      const provider = resolveProvider(label);
 
       if (!provider) return;
       const targetUrl = linkByProvider[provider];
@@ -129,6 +167,8 @@ export default function BlogPostContent({
       cleanupFns.forEach((fn) => fn());
     };
   }, [post.slug]);
+
+  const summaryLinks = getSummaryLinks(currentArticleUrl || getPostHref(post));
 
   const breadcrumbItems = [
     { name: "Home", url: "/" },
@@ -301,6 +341,38 @@ export default function BlogPostContent({
                   {post.excerpt}
                 </p>
               )}
+
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                <span className="text-sm font-semibold text-gray-600 dark:text-zinc-400">
+                  Summarize:
+                </span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <a
+                    href={summaryLinks.chatgpt}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 text-sm font-semibold rounded-md border border-[#D9CFC7] hover:border-black/40 dark:border-[#3B2E22] dark:hover:border-zinc-400 bg-white dark:bg-[#17120D] transition-colors"
+                  >
+                    ChatGPT
+                  </a>
+                  <a
+                    href={summaryLinks.perplexity}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 text-sm font-semibold rounded-md border border-[#D9CFC7] hover:border-black/40 dark:border-[#3B2E22] dark:hover:border-zinc-400 bg-white dark:bg-[#17120D] transition-colors"
+                  >
+                    Perplexity
+                  </a>
+                  <a
+                    href={summaryLinks.copilot}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 text-sm font-semibold rounded-md border border-[#D9CFC7] hover:border-black/40 dark:border-[#3B2E22] dark:hover:border-zinc-400 bg-white dark:bg-[#17120D] transition-colors"
+                  >
+                    Copilot
+                  </a>
+                </div>
+              </div>
             </div>
 
             {/* Right Image Column */}
