@@ -65,6 +65,7 @@ export default function BlogPostContent({
   const [scrollProgress, setScrollProgress] = useState(0);
   const [imgError, setImgError] = useState(false);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const articleContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -82,6 +83,52 @@ export default function BlogPostContent({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    const container = articleContentRef.current;
+    if (!container) return;
+
+    const articleUrl = window.location.href;
+    const linkByProvider: Record<string, string> = {
+      chatgpt: `https://chatgpt.com/?q=${encodeURIComponent(`Summarize this article and key takeaways: ${articleUrl}`)}`,
+      perplexity: `https://www.perplexity.ai/search/new?q=${encodeURIComponent(`Summarize this article and key takeaways: ${articleUrl}`)}`,
+      copilot: `https://copilot.microsoft.com/?q=${encodeURIComponent(`Summarize this article and key takeaways: ${articleUrl}`)}`,
+    };
+
+    const cleanupFns: Array<() => void> = [];
+
+    container.querySelectorAll("a, button").forEach((element) => {
+      const label = (element.textContent || "").trim().toLowerCase();
+      const provider = Object.keys(linkByProvider).find((name) =>
+        label.includes(name),
+      );
+
+      if (!provider) return;
+      const targetUrl = linkByProvider[provider];
+
+      if (element instanceof HTMLAnchorElement) {
+        element.href = targetUrl;
+        element.target = "_blank";
+        element.rel = "noopener noreferrer";
+        return;
+      }
+
+      if (element instanceof HTMLButtonElement) {
+        const clickHandler = () => {
+          window.open(targetUrl, "_blank", "noopener,noreferrer");
+        };
+        element.type = "button";
+        element.addEventListener("click", clickHandler);
+        cleanupFns.push(() =>
+          element.removeEventListener("click", clickHandler),
+        );
+      }
+    });
+
+    return () => {
+      cleanupFns.forEach((fn) => fn());
+    };
+  }, [post.slug]);
 
   const breadcrumbItems = [
     { name: "Home", url: "/" },
@@ -390,6 +437,7 @@ export default function BlogPostContent({
 
                 {/* Main Article Content */}
                 <div
+                  ref={articleContentRef}
                   className="prose prose-lg dark:prose-invert max-w-none blog-content-enhanced
                   /* Headings and Spacing handled by global css */"
                   dangerouslySetInnerHTML={{
