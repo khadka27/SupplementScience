@@ -69,14 +69,13 @@ export default function BlogPostContent({
   const articleContentRef = useRef<HTMLDivElement>(null);
 
   const getSummaryLinks = (articleUrl: string) => {
-    const query = encodeURIComponent(
-      `Summarize this article and key takeaways: ${articleUrl}`,
-    );
+    const promptText = `Summarize this article and key takeaways: ${articleUrl}`;
+    const query = encodeURIComponent(promptText);
 
     return {
       chatgpt: `https://chatgpt.com/?q=${query}`,
       perplexity: `https://www.perplexity.ai/search/new?q=${query}`,
-      copilot: `https://copilot.microsoft.com/?q=${query}`,
+      copilot: `https://copilot.microsoft.com/?prompt=${query}&q=${query}`,
     };
   };
 
