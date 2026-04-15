@@ -70,7 +70,7 @@ const formSchema = z.object({
   authorId: z.string().optional().or(z.literal("")),
   categoryId: z.string().optional().or(z.literal("")),
   customAuthor: z.string().optional().or(z.literal("")),
-  tagIds: z.array(z.string()).min(1, "Please select at least one tag"),
+  tagIds: z.array(z.string()),
   status: z.enum(["draft", "published"]),
 });
 
@@ -498,9 +498,9 @@ export default function IngredientEditorForm({
                   render={() => (
                     <FormItem>
                       <div className="mb-3">
-                        <FormLabel>Tags *</FormLabel>
+                        <FormLabel>Tags</FormLabel>
                         <FormDescription className="text-xs">
-                          Select at least one tag
+                          Optional. Leave unselected if not needed.
                         </FormDescription>
                       </div>
                       <div className="space-y-2 max-h-64 overflow-y-auto border rounded-md p-3 bg-muted/30">
