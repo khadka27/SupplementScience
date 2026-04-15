@@ -38,7 +38,14 @@ const nextConfig = {
       },
     ];
   },
-
+  async rewrites() {
+    return [
+      {
+        source: "/images/:path*",
+        destination: "/api/images/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

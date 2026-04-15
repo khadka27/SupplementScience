@@ -338,6 +338,7 @@ const TiptapEditor = ({
   };
 
   const addImage = () => {
+    editor.commands.blur();
     setIsImageDialogOpen(true);
   };
 

@@ -4,17 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
-import {
-  Menu,
-  X,
-  Microscope,
-  ChevronRight,
-  LogOut,
-  Settings,
-  User,
-  Search,
-} from "lucide-react";
+import { Menu, X, Microscope, ChevronRight, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "./ModeToggle";
 import { SearchBar } from "./SearchBar";
@@ -26,14 +16,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -46,7 +28,6 @@ const navItems = [
 
 export function Navbar() {
   const pathname = usePathname();
-  const { data: session } = useSession();
   const [scrolled, setScrolled] = React.useState(false);
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
 
@@ -92,6 +73,7 @@ export function Navbar() {
             <Link
               key={item.href}
               href={item.href}
+              prefetch={false}
               className={cn(
                 "text-sm font-semibold transition-all px-4 py-2 rounded-full",
                 pathname === item.href
@@ -149,6 +131,7 @@ export function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
+                    prefetch={false}
                     className={cn(
                       "flex items-center justify-between py-2 text-lg font-medium transition-colors hover:text-primary",
                       pathname === item.href
