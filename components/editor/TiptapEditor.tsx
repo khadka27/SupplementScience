@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
+import { NodeSelection } from "@tiptap/pm/state";
 import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
@@ -64,6 +65,24 @@ const ResizableImage = Image.extend({
           return {
             "data-width": width,
             style: `width: ${width}; height: auto;`,
+          };
+        },
+      },
+      align: {
+        default: "center",
+        parseHTML: (element) => element.dataset.align || "center",
+        renderHTML: (attributes) => {
+          const align = attributes.align || "center";
+          const alignmentStyles: Record<string, string> = {
+            left: "display: block; margin-left: 0; margin-right: auto;",
+            center: "display: block; margin-left: auto; margin-right: auto;",
+            right: "display: block; margin-left: auto; margin-right: 0;",
+            full: "display: block; margin-left: 0; margin-right: 0; width: 100%;",
+          };
+
+          return {
+            "data-align": align,
+            style: alignmentStyles[align] || alignmentStyles.center,
           };
         },
       },
@@ -352,6 +371,18 @@ const TiptapEditor = ({
         class:
           "prose prose-lg dark:prose-invert max-w-none focus:outline-none min-h-[400px] border border-border rounded-md p-6 bg-background",
       },
+      handleClickOn(view, _pos, node, nodePos) {
+        if (node.type.name !== "image") {
+          return false;
+        }
+
+        const transaction = view.state.tr.setSelection(
+          NodeSelection.create(view.state.doc, nodePos),
+        );
+        view.dispatch(transaction);
+        view.focus();
+        return true;
+      },
     },
   });
 
@@ -382,6 +413,17 @@ const TiptapEditor = ({
 
   const setSelectedImageWidth = (width: string) => {
     editor.chain().focus().updateAttributes("image", { width }).run();
+  };
+
+  const setSelectedImageAlign = (
+    align: "left" | "center" | "right" | "full",
+  ) => {
+    const updates: Record<string, string> = { align };
+    if (align === "full") {
+      updates.width = "100%";
+    }
+
+    editor.chain().focus().updateAttributes("image", updates).run();
   };
 
   const editSelectedImageAlt = () => {
@@ -585,6 +627,9 @@ const TiptapEditor = ({
       {editor && (
         <BubbleMenu
           editor={editor}
+          shouldShow={({ editor }) => {
+            return editor.isActive("image") || !editor.state.selection.empty;
+          }}
           className="flex items-center gap-1 p-1 bg-popover border border-border rounded-md shadow-md animate-in fade-in zoom-in duration-100"
         >
           <Button
@@ -627,6 +672,39 @@ const TiptapEditor = ({
 
           {editor.isActive("image") && (
             <>
+              <Separator orientation="vertical" className="h-6 mx-1" />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedImageAlign("left")}
+              >
+                Left
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedImageAlign("center")}
+              >
+                Center
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedImageAlign("right")}
+              >
+                Right
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedImageAlign("full")}
+              >
+                Full
+              </Button>
               <Separator orientation="vertical" className="h-6 mx-1" />
               <Button
                 type="button"
