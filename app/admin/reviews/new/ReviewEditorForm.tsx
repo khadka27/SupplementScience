@@ -41,11 +41,12 @@ import {
   generateSlugForPostType,
   generatePreviewUrl,
   validateSlugForPostType,
+  isValidFeaturedImageSource,
 } from "@/lib/admin-utils";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const calculateReadTime = (content: string): number => {
-  const text = content.replace(/<[^>]*>/g, "");
+  const text = content.replaceAll(/<[^>]*>/g, "");
   const words = text.trim().split(/\s+/).length;
   const minutes = Math.ceil(words / 200);
   return Math.max(1, minutes);
@@ -61,9 +62,12 @@ const formSchema = z.object({
   content: z.string().min(10, "Content is too short"),
   featuredImageUrl: z
     .string()
-    .url("Must be a valid URL")
+    .refine(isValidFeaturedImageSource, {
+      message: "Must be a valid URL or /images path",
+    })
     .optional()
     .or(z.literal("")),
+  featuredImageAlt: z.string().optional().or(z.literal("")),
   authorId: z.string().optional().or(z.literal("")),
   categoryId: z.string().min(1, "Category is required for reviews"),
   customAuthor: z.string().optional().or(z.literal("")),
@@ -100,6 +104,7 @@ export default function ReviewEditorForm({
       metaDescription: initialData?.metaDescription || "",
       content: initialData?.content || "",
       featuredImageUrl: initialData?.featuredImageUrl || "",
+      featuredImageAlt: initialData?.featuredImageAlt || "",
       tagIds: initialData?.tags?.map((t: any) => t.tagId) || [],
       authorId: initialData?.authorId || authors[0]?.id || "",
       categoryId: initialData?.categoryId || categories[0]?.id || "",
@@ -157,7 +162,6 @@ export default function ReviewEditorForm({
         throw new Error(errorMessage);
       }
 
-      const data = await response.json();
       toast.success(
         isEditing
           ? "Review updated successfully!"
@@ -466,6 +470,26 @@ export default function ReviewEditorForm({
                           </FormControl>
                         </TabsContent>
                       </Tabs>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="featuredImageAlt"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Featured Image Alt Text</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Describe the image for accessibility"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Used by screen readers and search engines.
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}

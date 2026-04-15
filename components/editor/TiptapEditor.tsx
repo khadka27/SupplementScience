@@ -48,6 +48,29 @@ import {
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
+const ResizableImage = Image.extend({
+  addAttributes() {
+    return {
+      ...this.parent?.(),
+      width: {
+        default: "100%",
+        parseHTML: (element) =>
+          element.dataset.width ||
+          element.style.width ||
+          element.getAttribute("width") ||
+          "100%",
+        renderHTML: (attributes) => {
+          const width = attributes.width || "100%";
+          return {
+            "data-width": width,
+            style: `width: ${width}; height: auto;`,
+          };
+        },
+      },
+    };
+  },
+});
+
 interface TiptapEditorProps {
   content: string;
   onChange: (content: string) => void;
@@ -57,7 +80,7 @@ interface TiptapEditorProps {
 interface EditorImageDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  onInsertImage: (src: string) => void;
+  onInsertImage: (image: { src: string; alt?: string }) => void;
 }
 
 function EditorImageDialog({
@@ -67,6 +90,7 @@ function EditorImageDialog({
 }: EditorImageDialogProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState("");
+  const [imageAlt, setImageAlt] = useState("");
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [isDraggingImage, setIsDraggingImage] = useState(false);
 
@@ -104,9 +128,10 @@ function EditorImageDialog({
         throw new Error(data.error || "Failed to upload image");
       }
 
-      onInsertImage(data.url);
+      onInsertImage({ src: data.url, alt: imageAlt.trim() || undefined });
       onOpenChange(false);
       setImageUrl("");
+      setImageAlt("");
       toast.success("Image uploaded to /public/images");
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Upload failed");
@@ -137,9 +162,10 @@ function EditorImageDialog({
       return;
     }
 
-    onInsertImage(value);
+    onInsertImage({ src: value, alt: imageAlt.trim() || undefined });
     onOpenChange(false);
     setImageUrl("");
+    setImageAlt("");
   };
 
   return (
@@ -248,6 +274,18 @@ function EditorImageDialog({
               </Button>
             </div>
           </div>
+
+          <div className="rounded-lg border p-3 space-y-2">
+            <p className="text-sm font-medium">Image Alt Text</p>
+            <Input
+              value={imageAlt}
+              onChange={(e) => setImageAlt(e.target.value)}
+              placeholder="Describe this image for accessibility"
+            />
+            <p className="text-xs text-muted-foreground">
+              Recommended: concise, specific description for screen readers.
+            </p>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
@@ -273,7 +311,7 @@ const TiptapEditor = ({
       Link.configure({
         openOnClick: false,
       }),
-      Image.configure({
+      ResizableImage.configure({
         HTMLAttributes: {
           class: "rounded-lg max-w-full h-auto",
         },
@@ -340,6 +378,17 @@ const TiptapEditor = ({
   const addImage = () => {
     editor.commands.blur();
     setIsImageDialogOpen(true);
+  };
+
+  const setSelectedImageWidth = (width: string) => {
+    editor.chain().focus().updateAttributes("image", { width }).run();
+  };
+
+  const editSelectedImageAlt = () => {
+    const currentAlt = editor.getAttributes("image")?.alt || "";
+    const nextAlt = globalThis.prompt("Image alt text", currentAlt);
+    if (nextAlt === null) return;
+    editor.chain().focus().updateAttributes("image", { alt: nextAlt }).run();
   };
 
   const addTable = () => {
@@ -575,6 +624,52 @@ const TiptapEditor = ({
           >
             <LinkIcon className="h-4 w-4" />
           </Button>
+
+          {editor.isActive("image") && (
+            <>
+              <Separator orientation="vertical" className="h-6 mx-1" />
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedImageWidth("33%")}
+              >
+                33%
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedImageWidth("50%")}
+              >
+                50%
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedImageWidth("75%")}
+              >
+                75%
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={() => setSelectedImageWidth("100%")}
+              >
+                100%
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                onClick={editSelectedImageAlt}
+              >
+                Alt
+              </Button>
+            </>
+          )}
         </BubbleMenu>
       )}
 
@@ -583,8 +678,13 @@ const TiptapEditor = ({
       <EditorImageDialog
         open={isImageDialogOpen}
         onOpenChange={setIsImageDialogOpen}
-        onInsertImage={(src) => {
-          editor.chain().focus().setImage({ src }).run();
+        onInsertImage={({ src, alt }) => {
+          editor
+            .chain()
+            .focus()
+            .setImage({ src, alt })
+            .updateAttributes("image", { width: "100%" })
+            .run();
         }}
       />
 

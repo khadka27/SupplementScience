@@ -40,6 +40,7 @@ import { ImageUpload } from "@/components/ImageUpload";
 import {
   generateSlugForPostType,
   validateSlugForPostType,
+  isValidFeaturedImageSource,
 } from "@/lib/admin-utils";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -60,9 +61,12 @@ const formSchema = z.object({
   content: z.string().min(10, "Content is too short"),
   featuredImageUrl: z
     .string()
-    .url("Must be a valid URL")
+    .refine(isValidFeaturedImageSource, {
+      message: "Must be a valid URL or /images path",
+    })
     .optional()
     .or(z.literal("")),
+  featuredImageAlt: z.string().optional().or(z.literal("")),
   authorId: z.string().optional().or(z.literal("")),
   categoryId: z.string().optional().or(z.literal("")),
   customAuthor: z.string().optional().or(z.literal("")),
@@ -99,6 +103,7 @@ export default function GuideEditorForm({
       metaDescription: initialData?.metaDescription || "",
       content: initialData?.content || "",
       featuredImageUrl: initialData?.featuredImageUrl || "",
+      featuredImageAlt: initialData?.featuredImageAlt || "",
       tagIds: initialData?.tags?.map((t: any) => t.tagId) || [],
       authorId: initialData?.authorId || authors[0]?.id || "",
       categoryId: initialData?.categoryId || "",
@@ -448,6 +453,26 @@ export default function GuideEditorForm({
                           </FormDescription>
                         </TabsContent>
                       </Tabs>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="featuredImageAlt"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Featured Image Alt Text</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Describe the image for accessibility"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Used by screen readers and search engines.
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}

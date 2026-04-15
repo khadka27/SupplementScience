@@ -133,6 +133,26 @@ export function validateSlugForPostType(
 }
 
 /**
+ * Validate featured image URLs and local image paths.
+ */
+export function isValidFeaturedImageSource(value?: string | null): boolean {
+  if (!value) {
+    return true;
+  }
+
+  if (value.startsWith("/images/")) {
+    return true;
+  }
+
+  try {
+    const parsedUrl = new URL(value);
+    return parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Extract product name from review slug
  */
 export function extractProductNameFromSlug(slug: string): string {

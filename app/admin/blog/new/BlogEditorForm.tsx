@@ -31,6 +31,7 @@ import { toast } from "sonner";
 import { Save, Loader2, Globe, ImageIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageUpload } from "@/components/ImageUpload";
+import { isValidFeaturedImageSource } from "@/lib/admin-utils";
 
 // Calculate read time based on word count (avg 200 words per minute)
 const calculateReadTime = (content: string): number => {
@@ -49,9 +50,12 @@ const formSchema = z.object({
   content: z.string().min(10, "Content is too short"),
   featuredImageUrl: z
     .string()
-    .url("Must be a valid URL")
+    .refine(isValidFeaturedImageSource, {
+      message: "Must be a valid URL or /images path",
+    })
     .optional()
     .or(z.literal("")),
+  featuredImageAlt: z.string().optional().or(z.literal("")),
   authorId: z.string().optional().or(z.literal("")),
   categoryId: z.string().optional().or(z.literal("")),
   customAuthor: z.string().optional().or(z.literal("")),
@@ -88,6 +92,7 @@ export default function BlogEditorForm({
       metaDescription: initialData?.metaDescription || "",
       content: initialData?.content || "",
       featuredImageUrl: initialData?.featuredImageUrl || "",
+      featuredImageAlt: initialData?.featuredImageAlt || "",
       tagIds: initialData?.tags?.map((t: any) => t.tagId) || [],
       authorId: initialData?.authorId || authors[0]?.id || "",
       categoryId:
@@ -393,6 +398,26 @@ export default function BlogEditorForm({
                           </FormDescription>
                         </TabsContent>
                       </Tabs>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="featuredImageAlt"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Featured Image Alt Text</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Describe the image for accessibility"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Used by screen readers and search engines.
+                      </FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
