@@ -5,11 +5,11 @@ import {
   List,
   ListOrdered,
   Image,
-  Link,
   Quote,
   Code,
   Text,
 } from "lucide-react";
+import { toast } from "sonner";
 
 export const getSuggestionItems = ({ query }: { query: string }) => {
   return [
@@ -105,20 +105,59 @@ export const getSuggestionItems = ({ query }: { query: string }) => {
         editor.chain().focus().deleteRange(range).toggleCodeBlock().run(),
     },
     {
-      title: "Image URL",
-      description: "Insert an image via URL.",
+      title: "Image Upload",
+      description: "Upload from device and insert image.",
       searchTerms: ["photo", "picture", "media"],
       icon: Image,
-      command: ({ editor, range }: any) => {
-        const url = window.prompt("Enter image URL");
-        if (url) {
-          editor
-            .chain()
-            .focus()
-            .deleteRange(range)
-            .setImage({ src: url })
-            .run();
-        }
+      command: async ({ editor, range }: any) => {
+        const fileInput = document.createElement("input");
+        fileInput.type = "file";
+        fileInput.accept = "image/*";
+
+        fileInput.onchange = async () => {
+          const file = fileInput.files?.[0];
+          if (!file) return;
+
+          if (!file.type.startsWith("image/")) {
+            toast.error("Please choose a valid image file");
+            return;
+          }
+
+          if (file.size > 5 * 1024 * 1024) {
+            toast.error("Image must be smaller than 5MB");
+            return;
+          }
+
+          try {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            const response = await fetch("/api/upload", {
+              method: "POST",
+              body: formData,
+            });
+
+            const data = await response.json().catch(() => ({}));
+            if (!response.ok || !data.url) {
+              throw new Error(data.error || "Failed to upload image");
+            }
+
+            editor
+              .chain()
+              .focus()
+              .deleteRange(range)
+              .setImage({ src: data.url })
+              .run();
+
+            toast.success("Image uploaded to /public/images");
+          } catch (error) {
+            toast.error(
+              error instanceof Error ? error.message : "Failed to upload image",
+            );
+          }
+        };
+
+        fileInput.click();
       },
     },
   ].filter((item) => {
@@ -127,8 +166,7 @@ export const getSuggestionItems = ({ query }: { query: string }) => {
       return (
         item.title.toLowerCase().includes(search) ||
         item.description.toLowerCase().includes(search) ||
-        (item.searchTerms &&
-          item.searchTerms.some((term) => term.includes(search)))
+        item.searchTerms?.some((term: string) => term.includes(search))
       );
     }
     return true;

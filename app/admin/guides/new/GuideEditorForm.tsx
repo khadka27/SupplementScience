@@ -40,7 +40,6 @@ import { ImageUpload } from "@/components/ImageUpload";
 import {
   generateSlugForPostType,
   validateSlugForPostType,
-  GUIDE_TYPES,
 } from "@/lib/admin-utils";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -192,37 +191,6 @@ export default function GuideEditorForm({
           <div className="md:col-span-2 space-y-6">
             <Card>
               <CardContent className="pt-6 space-y-4">
-                <FormField
-                  control={form.control}
-                  name="guideType"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Guide Type *</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select guide type" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {GUIDE_TYPES.map((type) => (
-                            <SelectItem key={type.value} value={type.value}>
-                              {type.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormDescription>
-                        The type of guide you're creating
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
                 <FormField
                   control={form.control}
                   name="title"

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef, useState } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
@@ -29,9 +30,23 @@ import {
   Minus,
   Undo,
   Redo,
+  Upload,
+  FolderOpen,
+  Link2,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 interface TiptapEditorProps {
   content: string;
@@ -39,11 +54,214 @@ interface TiptapEditorProps {
   placeholder?: string;
 }
 
+interface EditorImageDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onInsertImage: (src: string) => void;
+}
+
+function EditorImageDialog({
+  open,
+  onOpenChange,
+  onInsertImage,
+}: EditorImageDialogProps) {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [isDraggingImage, setIsDraggingImage] = useState(false);
+
+  const validateImage = (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please choose a valid image file");
+      return false;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image must be smaller than 5MB");
+      return false;
+    }
+
+    return true;
+  };
+
+  const uploadImage = async (file: File) => {
+    if (!validateImage(file)) {
+      return;
+    }
+
+    try {
+      setIsUploadingImage(true);
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.url) {
+        throw new Error(data.error || "Failed to upload image");
+      }
+
+      onInsertImage(data.url);
+      onOpenChange(false);
+      setImageUrl("");
+      toast.success("Image uploaded to /public/images");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Upload failed");
+    } finally {
+      setIsUploadingImage(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleImageDrop = async (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDraggingImage(false);
+
+    if (isUploadingImage) return;
+    const file = e.dataTransfer.files?.[0];
+    if (!file) return;
+
+    await uploadImage(file);
+  };
+
+  const insertImageFromUrl = () => {
+    const value = imageUrl.trim();
+    if (!value) {
+      toast.error("Please enter an image URL");
+      return;
+    }
+
+    onInsertImage(value);
+    onOpenChange(false);
+    setImageUrl("");
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="max-w-xl">
+        <DialogHeader>
+          <DialogTitle>Insert Image</DialogTitle>
+          <DialogDescription>
+            Upload from your device to public/images or paste an existing URL.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4">
+          <div className="rounded-lg border bg-card/60 p-3 text-xs text-muted-foreground">
+            <p className="font-medium text-foreground">Local CMS Storage</p>
+            <p>
+              Uploaded images are saved in{" "}
+              <span className="font-mono">public/images</span> and used as{" "}
+              <span className="font-mono">/images/&lt;file&gt;</span>.
+            </p>
+          </div>
+
+          <label
+            htmlFor="editor-image-upload"
+            aria-label="Upload image for editor"
+            onDragOver={(e) => {
+              e.preventDefault();
+              if (!isUploadingImage) setIsDraggingImage(true);
+            }}
+            onDragLeave={(e) => {
+              e.preventDefault();
+              setIsDraggingImage(false);
+            }}
+            onDrop={handleImageDrop}
+            className={cn(
+              "block rounded-xl border-2 border-dashed p-6 transition-all",
+              "bg-linear-to-b from-muted/20 to-background",
+              isDraggingImage
+                ? "border-primary bg-primary/5 shadow-[0_0_0_4px_hsl(var(--primary)/0.12)]"
+                : "border-input",
+              isUploadingImage && "pointer-events-none opacity-60",
+            )}
+          >
+            <span className="sr-only">Upload image</span>
+            <div className="flex flex-col items-center gap-3 text-center">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 text-primary">
+                {isUploadingImage ? (
+                  <Loader2 className="h-6 w-6 animate-spin" />
+                ) : (
+                  <Upload className="h-6 w-6" />
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-foreground">
+                  {isUploadingImage
+                    ? "Uploading image..."
+                    : "Drop image here to upload"}
+                </p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  JPG, PNG, WEBP, SVG, GIF up to 5MB
+                </p>
+              </div>
+              <Button
+                type="button"
+                size="sm"
+                onClick={(e) => {
+                  e.preventDefault();
+                  fileInputRef.current?.click();
+                }}
+                disabled={isUploadingImage}
+              >
+                <FolderOpen className="h-4 w-4 mr-1.5" /> Choose From Device
+              </Button>
+            </div>
+            <input
+              id="editor-image-upload"
+              ref={fileInputRef}
+              type="file"
+              className="hidden"
+              accept="image/*"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                await uploadImage(file);
+              }}
+              disabled={isUploadingImage}
+            />
+          </label>
+
+          <div className="rounded-lg border p-3 space-y-3">
+            <p className="text-sm font-medium flex items-center gap-2">
+              <Link2 className="h-4 w-4" /> Insert From URL
+            </p>
+            <div className="flex gap-2">
+              <Input
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                placeholder="https://example.com/image.jpg"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                onClick={insertImageFromUrl}
+              >
+                Insert
+              </Button>
+            </div>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const TiptapEditor = ({
   content,
   onChange,
   placeholder = "Press '/' for commands...",
 }: TiptapEditorProps) => {
+  const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
+
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -105,7 +323,7 @@ const TiptapEditor = ({
 
   const setLink = () => {
     const previousUrl = editor.getAttributes("link").href;
-    const url = window.prompt("URL", previousUrl);
+    const url = globalThis.prompt("URL", previousUrl);
 
     if (url === null) {
       return;
@@ -120,11 +338,7 @@ const TiptapEditor = ({
   };
 
   const addImage = () => {
-    const url = window.prompt("Enter image URL:");
-
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
+    setIsImageDialogOpen(true);
   };
 
   const addTable = () => {
@@ -364,6 +578,14 @@ const TiptapEditor = ({
       )}
 
       <EditorContent editor={editor} />
+
+      <EditorImageDialog
+        open={isImageDialogOpen}
+        onOpenChange={setIsImageDialogOpen}
+        onInsertImage={(src) => {
+          editor.chain().focus().setImage({ src }).run();
+        }}
+      />
 
       <div className="mt-4 text-xs text-muted-foreground flex items-center gap-2">
         <kbd className="px-2 py-1 bg-muted border border-border rounded text-[10px]">
