@@ -44,6 +44,11 @@ const sidebarItems = [
     icon: Star,
   },
   {
+    title: "All Guides",
+    href: "/admin/guides",
+    icon: BookOpen,
+  },
+  {
     title: "New Guide",
     href: "/admin/guides/new",
     icon: BookOpen,

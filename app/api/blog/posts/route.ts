@@ -7,6 +7,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const status = searchParams.get("status");
     const search = searchParams.get("search");
+    const postType = searchParams.get("postType");
 
     const where: any = {};
 
@@ -19,6 +20,10 @@ export async function GET(req: Request) {
         { title: { contains: search, mode: "insensitive" } },
         { excerpt: { contains: search, mode: "insensitive" } },
       ];
+    }
+
+    if (postType) {
+      where.postType = postType;
     }
 
     const posts = await prisma.post.findMany({

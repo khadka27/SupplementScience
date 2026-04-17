@@ -160,7 +160,7 @@ export default function GuideEditorForm({
           ? "Guide updated successfully!"
           : "Guide created successfully!",
       );
-      router.push("/admin/blogs");
+      router.push("/admin/guides");
       router.refresh();
     } catch (error) {
       const errorMessage =
@@ -562,7 +562,7 @@ export default function GuideEditorForm({
                   type="button"
                   variant="outline"
                   className="w-full"
-                  onClick={() => router.push("/admin/blogs")}
+                  onClick={() => router.push("/admin/guides")}
                 >
                   Cancel
                 </Button>
