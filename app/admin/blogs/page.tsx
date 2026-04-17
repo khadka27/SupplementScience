@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import {
   Card,
@@ -47,6 +46,8 @@ import {
   Trash2,
   Eye,
   FileText,
+  BookOpen,
+  FlaskConical,
   Filter,
 } from "lucide-react";
 import Link from "next/link";
@@ -55,6 +56,7 @@ interface Post {
   id: string;
   title: string;
   slug: string;
+  postType: string;
   excerpt: string;
   status: string;
   viewCount: number;
@@ -65,8 +67,6 @@ interface Post {
 }
 
 function BlogsManagementContent() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const [posts, setPosts] = useState<Post[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
@@ -75,6 +75,7 @@ function BlogsManagementContent() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [postToDelete, setPostToDelete] = useState<string | null>(null);
   const [changingStatus, setChangingStatus] = useState<string | null>(null);
+  const [changingType, setChangingType] = useState<string | null>(null);
 
   useEffect(() => {
     fetchPosts();
@@ -86,13 +87,40 @@ function BlogsManagementContent() {
 
   const fetchPosts = async () => {
     try {
-      const res = await fetch("/api/blog/posts");
+      const res = await fetch("/api/blog/posts?postType=blog");
       const data = await res.json();
       setPosts(data);
     } catch (error) {
+      console.error("Failed to fetch posts", error);
       toast.error("Failed to fetch posts");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handlePostTypeChange = async (
+    postId: string,
+    newType: "guide" | "ingredient",
+  ) => {
+    setChangingType(postId);
+    try {
+      const res = await fetch(`/api/admin/posts/${postId}/type`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ postType: newType }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Failed to update post type");
+      }
+
+      toast.success(`Post moved to ${newType}`);
+      fetchPosts();
+    } catch (error) {
+      console.error(`Failed to move post to ${newType}`, error);
+      toast.error(`Failed to move post to ${newType}`);
+    } finally {
+      setChangingType(null);
     }
   };
 
@@ -134,6 +162,7 @@ function BlogsManagementContent() {
       toast.success(`Post status changed to ${newStatus.toLowerCase()}`);
       fetchPosts();
     } catch (error) {
+      console.error("Failed to update post status", error);
       toast.error("Failed to update post status");
     } finally {
       setChangingStatus(null);
@@ -157,6 +186,7 @@ function BlogsManagementContent() {
       setPostToDelete(null);
       fetchPosts();
     } catch (error) {
+      console.error("Failed to delete post", error);
       toast.error("Failed to delete post");
     }
   };
@@ -212,7 +242,7 @@ function BlogsManagementContent() {
                 />
               </div>
               <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-[180px]">
+                <SelectTrigger className="w-45">
                   <SelectValue placeholder="Filter by status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -261,6 +291,9 @@ function BlogsManagementContent() {
                           {post.status}
                         </Badge>
                         {changingStatus === post.id && (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        )}
+                        {changingType === post.id && (
                           <Loader2 className="h-4 w-4 animate-spin" />
                         )}
                       </div>
@@ -327,6 +360,23 @@ function BlogsManagementContent() {
                             <Pencil className="h-4 w-4 mr-2" />
                             Edit Post
                           </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() => handlePostTypeChange(post.id, "guide")}
+                          disabled={changingType === post.id}
+                        >
+                          <BookOpen className="h-4 w-4 mr-2" />
+                          Move to Guide
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() =>
+                            handlePostTypeChange(post.id, "ingredient")
+                          }
+                          disabled={changingType === post.id}
+                        >
+                          <FlaskConical className="h-4 w-4 mr-2" />
+                          Move to Ingredient
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
