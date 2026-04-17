@@ -122,16 +122,28 @@ export async function PUT(
         publishedAt: publishedAtData,
         readTimeMinutes: readTimeMinutes || 5,
         postType: postType || "blog",
-        ...(authorId && {
-          author: {
-            connect: { id: authorId },
-          },
-        }),
-        ...(categoryId && {
-          category: {
-            connect: { id: categoryId },
-          },
-        }),
+        ...(authorId
+          ? {
+              author: {
+                connect: { id: authorId },
+              },
+            }
+          : {
+              author: {
+                disconnect: true,
+              },
+            }),
+        ...(categoryId
+          ? {
+              category: {
+                connect: { id: categoryId },
+              },
+            }
+          : {
+              category: {
+                disconnect: true,
+              },
+            }),
         ...(tagIds &&
           Array.isArray(tagIds) && {
             tags: {
