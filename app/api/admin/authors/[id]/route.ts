@@ -14,7 +14,16 @@ export async function PUT(
 
     const { id } = await params;
     const body = await request.json();
-    const { name, slug, bio, avatarUrl, email, socialLinks } = body;
+    const {
+      name,
+      slug,
+      bio,
+      expertise,
+      qualification,
+      avatarUrl,
+      email,
+      socialLinks,
+    } = body;
 
     const author = await prisma.author.update({
       where: { id },
@@ -22,6 +31,8 @@ export async function PUT(
         name,
         slug,
         bio,
+        expertise,
+        qualification,
         avatarUrl,
         email,
         socialLinks,

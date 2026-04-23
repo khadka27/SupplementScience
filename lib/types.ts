@@ -3,6 +3,8 @@ export type Author = {
   name: string;
   slug: string;
   bio?: string | null;
+  expertise?: string | null;
+  qualification?: string | null;
   avatarUrl?: string | null;
   email?: string | null;
   socialLinks?: any;
@@ -66,6 +68,7 @@ export type Post = {
   author?: Author | null;
   category?: Category | null;
   tags?: Tag[] | null;
+  factCheckedBy?: string | null;
   reviewedBy?: string | null;
   reviewedAt?: Date | null;
 };

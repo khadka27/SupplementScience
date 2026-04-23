@@ -30,7 +30,16 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, slug, bio, avatarUrl, email, socialLinks } = body;
+    const {
+      name,
+      slug,
+      bio,
+      expertise,
+      qualification,
+      avatarUrl,
+      email,
+      socialLinks,
+    } = body;
 
     if (!name || !slug) {
       return NextResponse.json(
@@ -44,6 +53,8 @@ export async function POST(request: NextRequest) {
         name,
         slug,
         bio,
+        expertise,
+        qualification,
         avatarUrl,
         email,
         socialLinks: socialLinks || {},

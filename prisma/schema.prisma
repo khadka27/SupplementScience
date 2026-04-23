@@ -12,16 +12,18 @@ enum PostStatus {
 }
 
 model Author {
-  id          String   @id @default(uuid())
-  name        String
-  slug        String   @unique
-  bio         String?  @db.Text
-  avatarUrl   String?  @map("avatar_url")
-  email       String?
-  socialLinks Json?    @default("{}") @map("social_links")
-  posts       Post[]
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id            String   @id @default(uuid())
+  name          String
+  slug          String   @unique
+  bio           String?  @db.Text
+  expertise     String?
+  qualification String?
+  avatarUrl     String?  @map("avatar_url")
+  email         String?
+  socialLinks   Json?    @default("{}") @map("social_links")
+  posts         Post[]
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
 
   @@map("authors")
 }
@@ -75,9 +77,10 @@ model Post {
   isFeatured       Boolean    @default(false) @map("is_featured")
 
   // Trust & credibility features
-  reviewedBy String?   @map("reviewed_by")
-  reviewedAt DateTime? @map("reviewed_at")
-  references Json?     @default("[]")
+  factCheckedBy String?   @map("fact_checked_by")
+  reviewedBy    String?   @map("reviewed_by")
+  reviewedAt    DateTime? @map("reviewed_at")
+  references    Json?     @default("[]")
 
   // Content structure features
   sources Json? @default("[]")

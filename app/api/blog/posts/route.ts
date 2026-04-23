@@ -70,6 +70,8 @@ export async function POST(req: Request) {
       featuredImageUrl,
       featuredImageAlt,
       authorId,
+      factCheckedBy,
+      reviewedBy,
       categoryId,
       tagIds,
       status,
@@ -114,6 +116,31 @@ export async function POST(req: Request) {
         : excerpt ||
           content.substring(0, 155).replaceAll(/<[^>]*>/g, "") + "...";
 
+    const authorName = authorId
+      ? (
+          await prisma.author.findUnique({
+            where: { id: authorId },
+            select: { name: true },
+          })
+        )?.name
+      : null;
+
+    const selectedRoles = [authorName, factCheckedBy, reviewedBy]
+      .map((value) =>
+        typeof value === "string" ? value.trim().toLowerCase() : "",
+      )
+      .filter(Boolean);
+
+    if (new Set(selectedRoles).size !== selectedRoles.length) {
+      return new NextResponse(
+        JSON.stringify({
+          error:
+            "Author, Fact Checked By, and Reviewed By must be different people.",
+        }),
+        { status: 400, headers: { "Content-Type": "application/json" } },
+      );
+    }
+
     const post = await prisma.post.create({
       data: {
         title,
@@ -128,6 +155,8 @@ export async function POST(req: Request) {
         publishedAt: status?.toLowerCase() === "published" ? new Date() : null,
         readTimeMinutes: readTimeMinutes || 5,
         postType: postType || "blog",
+        factCheckedBy: factCheckedBy || null,
+        reviewedBy: reviewedBy || null,
         ...(authorId && {
           author: {
             connect: { id: authorId },

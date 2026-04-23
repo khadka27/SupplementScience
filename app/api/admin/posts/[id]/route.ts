@@ -54,6 +54,8 @@ export async function PUT(
       featuredImageUrl,
       featuredImageAlt,
       authorId,
+      factCheckedBy,
+      reviewedBy,
       categoryId,
       tagIds,
       status,
@@ -86,6 +88,31 @@ export async function PUT(
 
     const isNowPublished = status?.toUpperCase() === "PUBLISHED";
     const wasPublished = currentPost.status === "PUBLISHED";
+
+    const authorName = authorId
+      ? (
+          await prisma.author.findUnique({
+            where: { id: authorId },
+            select: { name: true },
+          })
+        )?.name
+      : null;
+
+    const selectedRoles = [authorName, factCheckedBy, reviewedBy]
+      .map((value) =>
+        typeof value === "string" ? value.trim().toLowerCase() : "",
+      )
+      .filter(Boolean);
+
+    if (new Set(selectedRoles).size !== selectedRoles.length) {
+      return NextResponse.json(
+        {
+          error:
+            "Author, Fact Checked By, and Reviewed By must be different people.",
+        },
+        { status: 400 },
+      );
+    }
 
     // Set publishedAt only if it's being published for the first time
     // or keep the existing publishedAt if it's already published
@@ -122,6 +149,8 @@ export async function PUT(
         publishedAt: publishedAtData,
         readTimeMinutes: readTimeMinutes || 5,
         postType: postType || "blog",
+        factCheckedBy: factCheckedBy || null,
+        reviewedBy: reviewedBy || null,
         ...(authorId
           ? {
               author: {

@@ -68,6 +68,8 @@ const formSchema = z.object({
     .or(z.literal("")),
   featuredImageAlt: z.string().optional().or(z.literal("")),
   authorId: z.string().optional().or(z.literal("")),
+  factCheckedById: z.string().optional().or(z.literal("")),
+  reviewedById: z.string().optional().or(z.literal("")),
   categoryId: z.string().optional().or(z.literal("")),
   customAuthor: z.string().optional().or(z.literal("")),
   tagIds: z.array(z.string()),
@@ -106,10 +108,20 @@ export default function GuideEditorForm({
       featuredImageAlt: initialData?.featuredImageAlt || "",
       tagIds: initialData?.tags?.map((t: any) => t.tagId) || [],
       authorId: initialData?.authorId || authors[0]?.id || "",
+      factCheckedById:
+        authors.find((author) => author.name === initialData?.factCheckedBy)
+          ?.id || "",
+      reviewedById:
+        authors.find((author) => author.name === initialData?.reviewedBy)?.id ||
+        "",
       categoryId: initialData?.categoryId || "",
       status: initialData?.status?.toLowerCase() || "draft",
     },
   });
+
+  const selectedAuthorId = form.watch("authorId");
+  const selectedFactCheckerId = form.watch("factCheckedById");
+  const selectedReviewerId = form.watch("reviewedById");
 
   const slug = form.watch("slug");
 
@@ -126,6 +138,30 @@ export default function GuideEditorForm({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     try {
+      const selectedIds = [
+        values.authorId,
+        values.factCheckedById,
+        values.reviewedById,
+      ].filter(Boolean);
+
+      if (new Set(selectedIds).size !== selectedIds.length) {
+        toast.error(
+          "Author, Fact Checked By, and Reviewed By must be different people.",
+        );
+        setIsSubmitting(false);
+        return;
+      }
+
+      const factCheckedBy = values.factCheckedById
+        ? authors.find((author) => author.id === values.factCheckedById)
+            ?.name || ""
+        : "";
+      const reviewedBy = values.reviewedById
+        ? authors.find((author) => author.id === values.reviewedById)?.name ||
+          ""
+        : "";
+      const { factCheckedById, reviewedById, ...payload } = values;
+
       const readTimeMinutes = calculateReadTime(values.content);
 
       // Validate slug format
@@ -144,7 +180,13 @@ export default function GuideEditorForm({
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...values, readTimeMinutes, postType: "guide" }),
+        body: JSON.stringify({
+          ...payload,
+          factCheckedBy,
+          reviewedBy,
+          readTimeMinutes,
+          postType: "guide",
+        }),
       });
 
       if (!response.ok) {
@@ -402,8 +444,10 @@ export default function GuideEditorForm({
                     <FormItem>
                       <FormLabel>Author</FormLabel>
                       <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
+                        onValueChange={(value) =>
+                          field.onChange(value === "none" ? "" : value)
+                        }
+                        value={field.value || "none"}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -411,8 +455,92 @@ export default function GuideEditorForm({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
+                          <SelectItem value="none">No author</SelectItem>
                           {authors.map((author) => (
-                            <SelectItem key={author.id} value={author.id}>
+                            <SelectItem
+                              key={author.id}
+                              value={author.id}
+                              disabled={
+                                author.id === selectedFactCheckerId ||
+                                author.id === selectedReviewerId
+                              }
+                            >
+                              {author.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="factCheckedById"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Fact Checked By</FormLabel>
+                      <Select
+                        onValueChange={(value) =>
+                          field.onChange(value === "none" ? "" : value)
+                        }
+                        value={field.value || "none"}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select fact checker" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="none">None</SelectItem>
+                          {authors.map((author) => (
+                            <SelectItem
+                              key={author.id}
+                              value={author.id}
+                              disabled={
+                                author.id === selectedAuthorId ||
+                                author.id === selectedReviewerId
+                              }
+                            >
+                              {author.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="reviewedById"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Reviewed By</FormLabel>
+                      <Select
+                        onValueChange={(value) =>
+                          field.onChange(value === "none" ? "" : value)
+                        }
+                        value={field.value || "none"}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select reviewer" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="none">None</SelectItem>
+                          {authors.map((author) => (
+                            <SelectItem
+                              key={author.id}
+                              value={author.id}
+                              disabled={
+                                author.id === selectedAuthorId ||
+                                author.id === selectedFactCheckerId
+                              }
+                            >
                               {author.name}
                             </SelectItem>
                           ))}

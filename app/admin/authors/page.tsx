@@ -49,6 +49,8 @@ interface Author {
   name: string;
   slug: string;
   bio: string | null;
+  expertise: string | null;
+  qualification: string | null;
   avatarUrl: string | null;
   email: string | null;
   socialLinks: any;
@@ -72,6 +74,8 @@ export default function AuthorsManagementPage() {
     name: "",
     slug: "",
     bio: "",
+    expertise: "",
+    qualification: "",
     avatarUrl: "",
     email: "",
     twitter: "",
@@ -118,6 +122,8 @@ export default function AuthorsManagementPage() {
           name: formData.name,
           slug: formData.slug,
           bio: formData.bio,
+          expertise: formData.expertise,
+          qualification: formData.qualification,
           avatarUrl: formData.avatarUrl,
           email: formData.email,
           socialLinks,
@@ -176,6 +182,8 @@ export default function AuthorsManagementPage() {
       name: author.name,
       slug: author.slug,
       bio: author.bio || "",
+      expertise: author.expertise || "",
+      qualification: author.qualification || "",
       avatarUrl: author.avatarUrl || "",
       email: author.email || "",
       twitter: author.socialLinks?.twitter || "",
@@ -195,6 +203,8 @@ export default function AuthorsManagementPage() {
       name: "",
       slug: "",
       bio: "",
+      expertise: "",
+      qualification: "",
       avatarUrl: "",
       email: "",
       twitter: "",
@@ -312,6 +322,35 @@ export default function AuthorsManagementPage() {
                     placeholder="Author biography..."
                     rows={4}
                   />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="expertise">Expertise</Label>
+                    <Input
+                      id="expertise"
+                      value={formData.expertise}
+                      onChange={(e) =>
+                        setFormData({ ...formData, expertise: e.target.value })
+                      }
+                      placeholder="e.g., Clinical Nutrition"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="qualification">Qualification</Label>
+                    <Input
+                      id="qualification"
+                      value={formData.qualification}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          qualification: e.target.value,
+                        })
+                      }
+                      placeholder="e.g., RD, PhD"
+                    />
+                  </div>
                 </div>
 
                 <div className="space-y-2">
@@ -462,6 +501,16 @@ export default function AuthorsManagementPage() {
                 )}
                 {author.bio && (
                   <p className="text-sm line-clamp-3">{author.bio}</p>
+                )}
+                {author.expertise && (
+                  <p className="text-xs text-muted-foreground">
+                    Expertise: {author.expertise}
+                  </p>
+                )}
+                {author.qualification && (
+                  <p className="text-xs text-muted-foreground">
+                    Qualification: {author.qualification}
+                  </p>
                 )}
                 <div className="flex items-center justify-between pt-2 border-t">
                   <span className="text-xs text-muted-foreground">

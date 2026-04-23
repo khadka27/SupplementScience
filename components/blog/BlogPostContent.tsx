@@ -323,11 +323,21 @@ export default function BlogPostContent({
                     <Clock className="w-3.5 h-3.5" />
                     <span>{post.readTimeMinutes} min read</span>
                   </div>
+                  {post.factCheckedBy && (
+                    <>
+                      <span className="text-black/20">·</span>
+                      <span className="flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 dark:text-emerald-300 dark:bg-emerald-900/30 px-2 py-0.5 rounded-full">
+                        <CheckCircle2 className="w-3 h-3" />
+                        Fact checked by {post.factCheckedBy}
+                      </span>
+                    </>
+                  )}
                   {post.reviewedBy && (
                     <>
                       <span className="text-black/20">·</span>
                       <span className="flex items-center gap-1 text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                        ✓ Reviewed by {post.reviewedBy}
+                        <CheckCircle2 className="w-3 h-3" />
+                        Reviewed by {post.reviewedBy}
                       </span>
                     </>
                   )}

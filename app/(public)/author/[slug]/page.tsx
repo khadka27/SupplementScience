@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import prisma from "@/lib/prisma";
 import BlogList from "@/components/blog/BlogList";
 import Image from "next/image";
-import { Twitter, Youtube, Instagram, Mail, Globe } from "lucide-react";
+import { Twitter, Youtube, Instagram, Globe } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 43200;
@@ -49,8 +49,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!data) return { title: "Author Not Found" };
 
   const { author } = data;
-  const baseUrl =
-    (((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || "https://www.supplementdecoded.com") as string);
+  const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
+    process.env.NEXT_PUBLIC_BASE_URL.replace(
+      /^https?:\/\/supplementdecoded\.com/i,
+      "https://www.supplementdecoded.com",
+    )) ||
+    "https://www.supplementdecoded.com") as string;
 
   return {
     title: `${author.name} | Expert Author`,
@@ -167,6 +171,23 @@ export default async function AuthorPage({ params }: Props) {
                 <p className="text-xl text-gray-800 leading-relaxed whitespace-pre-wrap">
                   {author.bio}
                 </p>
+              </div>
+            )}
+
+            {(author.expertise || author.qualification) && (
+              <div className="mt-6 flex flex-wrap gap-3">
+                {author.expertise && (
+                  <div className="inline-flex items-center gap-2 text-sm font-medium bg-slate-100 text-gray-800 px-4 py-2 rounded-full">
+                    <span className="font-semibold">Expertise:</span>
+                    <span>{author.expertise}</span>
+                  </div>
+                )}
+                {author.qualification && (
+                  <div className="inline-flex items-center gap-2 text-sm font-medium bg-slate-100 text-gray-800 px-4 py-2 rounded-full">
+                    <span className="font-semibold">Qualification:</span>
+                    <span>{author.qualification}</span>
+                  </div>
+                )}
               </div>
             )}
 
