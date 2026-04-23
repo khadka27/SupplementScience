@@ -657,7 +657,10 @@ export default async function Home() {
                           mainFeaturedPost.featuredImageUrl ||
                           ""
                         }
-                        alt={mainFeaturedPost.title}
+                        alt={
+                          mainFeaturedPost.featuredImageAlt ||
+                          mainFeaturedPost.title
+                        }
                         fill
                         sizes="(max-width: 768px) 100vw, 50vw"
                         priority
