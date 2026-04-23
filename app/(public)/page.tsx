@@ -648,15 +648,25 @@ export default async function Home() {
               <div className="relative rounded-[2.5rem] overflow-hidden border border-[#D9CFC7] dark:border-[#3B3028] bg-white dark:bg-[#0F0E0A] group-hover:shadow-2xl transition-all duration-500">
                 <div className="grid md:grid-cols-2 gap-0">
                   {/* Image */}
-                  {mainFeaturedPost.featuredImageUrl && (
+                  {(mainFeaturedPost.cardImageUrl ||
+                    mainFeaturedPost.featuredImageUrl) && (
                     <div className="relative h-72 md:h-96 overflow-hidden bg-[#F9F8F6] dark:bg-[#211A13]">
                       <Image
-                        src={mainFeaturedPost.featuredImageUrl}
+                        src={
+                          mainFeaturedPost.cardImageUrl ||
+                          mainFeaturedPost.featuredImageUrl ||
+                          ""
+                        }
                         alt={mainFeaturedPost.title}
                         fill
                         sizes="(max-width: 768px) 100vw, 50vw"
                         priority
                         className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
+                        unoptimized={(
+                          mainFeaturedPost.cardImageUrl ||
+                          mainFeaturedPost.featuredImageUrl ||
+                          ""
+                        ).startsWith("http")}
                       />
                       <div className="absolute inset-0 bg-linear-to-tr from-black/40 via-transparent to-transparent opacity-60" />
                     </div>

@@ -3,7 +3,8 @@ import { Metadata } from "next";
 import prisma from "@/lib/prisma";
 import BlogList from "@/components/blog/BlogList";
 import Image from "next/image";
-import { Twitter, Youtube, Instagram, Globe } from "lucide-react";
+import { format } from "date-fns";
+import { Globe, Mail, Link2, BadgeInfo } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 43200;
@@ -49,12 +50,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!data) return { title: "Author Not Found" };
 
   const { author } = data;
-  const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
-    process.env.NEXT_PUBLIC_BASE_URL.replace(
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL?.replace(
       /^https?:\/\/supplementdecoded\.com/i,
       "https://www.supplementdecoded.com",
-    )) ||
-    "https://www.supplementdecoded.com") as string;
+    ) || "https://www.supplementdecoded.com";
 
   return {
     title: `${author.name} | Expert Author`,
@@ -94,12 +94,33 @@ export default async function AuthorPage({ params }: Props) {
   const { author, posts } = data;
 
   const socialLinks = (author.socialLinks as Record<string, string>) || {};
+  const authorDetails = [
+    { label: "Slug", value: author.slug },
+    { label: "Email", value: author.email || "Not provided" },
+    { label: "Expertise", value: author.expertise || "Not provided" },
+    {
+      label: "Qualification",
+      value: author.qualification || "Not provided",
+    },
+    {
+      label: "Member Since",
+      value: format(new Date(author.createdAt), "MMMM d, yyyy"),
+    },
+    {
+      label: "Last Updated",
+      value: format(new Date(author.updatedAt), "MMMM d, yyyy"),
+    },
+    {
+      label: "Published Articles",
+      value: String(posts.length),
+    },
+  ];
 
   return (
     <div className="container mx-auto px-4 py-16 max-w-7xl mt-20 min-h-[60vh]">
       <div className="mb-16">
         <div className="flex flex-col md:flex-row gap-8 items-start">
-          <div className="w-32 h-32 md:w-48 md:h-48 rounded-[2rem] overflow-hidden shrink-0 border-4 border-white shadow-xl relative bg-[#EFE9E3]">
+          <div className="w-32 h-32 md:w-48 md:h-48 rounded-4xl overflow-hidden shrink-0 border-4 border-white shadow-xl relative bg-[#EFE9E3]">
             {author.avatarUrl ? (
               <Image
                 src={author.avatarUrl}
@@ -130,7 +151,7 @@ export default async function AuthorPage({ params }: Props) {
                     rel="noopener noreferrer"
                     className="p-2 rounded-full bg-slate-100 hover:bg-black hover:text-white transition-all text-gray-600"
                   >
-                    <Twitter className="w-4 h-4" />
+                    <Link2 className="w-4 h-4" />
                   </a>
                 )}
                 {socialLinks.youtube && (
@@ -140,7 +161,7 @@ export default async function AuthorPage({ params }: Props) {
                     rel="noopener noreferrer"
                     className="p-2 rounded-full bg-slate-100 hover:bg-black hover:text-white transition-all text-gray-600"
                   >
-                    <Youtube className="w-4 h-4" />
+                    <Link2 className="w-4 h-4" />
                   </a>
                 )}
                 {socialLinks.instagram && (
@@ -150,7 +171,7 @@ export default async function AuthorPage({ params }: Props) {
                     rel="noopener noreferrer"
                     className="p-2 rounded-full bg-slate-100 hover:bg-black hover:text-white transition-all text-gray-600"
                   >
-                    <Instagram className="w-4 h-4" />
+                    <Link2 className="w-4 h-4" />
                   </a>
                 )}
                 {socialLinks.website && (
@@ -188,6 +209,87 @@ export default async function AuthorPage({ params }: Props) {
                     <span>{author.qualification}</span>
                   </div>
                 )}
+              </div>
+            )}
+
+            <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {authorDetails.map((detail) => (
+                <div
+                  key={detail.label}
+                  className="rounded-2xl border border-[#D9CFC7] bg-white/70 backdrop-blur-sm p-4 shadow-sm"
+                >
+                  <div className="text-[11px] font-black uppercase tracking-[0.18em] text-gray-500 mb-2 flex items-center gap-2">
+                    <BadgeInfo className="w-3.5 h-3.5 text-[#A38E7A]" />
+                    {detail.label}
+                  </div>
+                  <div className="text-sm font-semibold text-black wrap-break-word">
+                    {detail.value}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {Object.entries(socialLinks).some(([, url]) => Boolean(url)) && (
+              <div className="mt-8 rounded-2xl border border-[#D9CFC7] bg-white/70 backdrop-blur-sm p-5 shadow-sm">
+                <div className="text-[11px] font-black uppercase tracking-[0.18em] text-gray-500 mb-4 flex items-center gap-2">
+                  <Link2 className="w-3.5 h-3.5 text-[#A38E7A]" />
+                  Social Links
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  {socialLinks.website && (
+                    <a
+                      href={socialLinks.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 text-gray-800 text-sm font-medium hover:bg-black hover:text-white transition-all"
+                    >
+                      <Globe className="w-4 h-4" />
+                      Website
+                    </a>
+                  )}
+                  {socialLinks.twitter && (
+                    <a
+                      href={socialLinks.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 text-gray-800 text-sm font-medium hover:bg-black hover:text-white transition-all"
+                    >
+                      <Link2 className="w-4 h-4" />
+                      Twitter/X
+                    </a>
+                  )}
+                  {socialLinks.youtube && (
+                    <a
+                      href={socialLinks.youtube}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 text-gray-800 text-sm font-medium hover:bg-black hover:text-white transition-all"
+                    >
+                      <Link2 className="w-4 h-4" />
+                      YouTube
+                    </a>
+                  )}
+                  {socialLinks.instagram && (
+                    <a
+                      href={socialLinks.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 text-gray-800 text-sm font-medium hover:bg-black hover:text-white transition-all"
+                    >
+                      <Link2 className="w-4 h-4" />
+                      Instagram
+                    </a>
+                  )}
+                  {author.email && (
+                    <a
+                      href={`mailto:${author.email}`}
+                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 text-gray-800 text-sm font-medium hover:bg-black hover:text-white transition-all"
+                    >
+                      <Mail className="w-4 h-4" />
+                      Email
+                    </a>
+                  )}
+                </div>
               </div>
             )}
 

@@ -1,17 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
-import { Clock, Calendar, TrendingUp, Sparkles } from "lucide-react";
+import { Clock, TrendingUp, Sparkles } from "lucide-react";
 import { Post } from "@/lib/types";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { cn, getPostHref } from "@/lib/utils";
+import { Card } from "@/components/ui/card";
+import { getPostHref } from "@/lib/utils";
 
 interface BlogListProps {
   posts: Post[];
@@ -36,6 +29,8 @@ export default function BlogList({ posts, title }: BlogListProps) {
 
   const featuredPost = posts[0];
   const remainingPosts = posts.slice(1);
+  const featuredPostImage =
+    featuredPost.cardImageUrl || featuredPost.featuredImageUrl;
 
   return (
     <div className="w-full space-y-16">
@@ -63,15 +58,16 @@ export default function BlogList({ posts, title }: BlogListProps) {
       >
         <Card className="overflow-hidden border border-[#D9CFC7] dark:border-[#3B3028] hover:border-[#D9CFC7] dark:hover:border-[#634F36] hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] dark:hover:shadow-[0_20px_50px_rgba(0,0,0,0.3)] bg-white/70 dark:bg-[#0F0E0A]/70 backdrop-blur-sm rounded-[2rem] transition-all duration-500">
           <div className="grid lg:grid-cols-5 gap-0">
-            {featuredPost.featuredImageUrl && (
+            {featuredPostImage && (
               <div className="lg:col-span-3 relative w-full h-[300px] lg:h-[450px] overflow-hidden">
                 <Image
-                  src={featuredPost.featuredImageUrl}
+                  src={featuredPostImage}
                   alt={featuredPost.featuredImageAlt || featuredPost.title}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
                   sizes="(max-width: 1024px) 100vw, 60vw"
                   priority
+                  unoptimized={featuredPostImage.startsWith("http")}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent" />
               </div>
@@ -101,7 +97,7 @@ export default function BlogList({ posts, title }: BlogListProps) {
                     <span>{featuredPost.author.name}</span>
                   </div>
                 )}
-                {featuredPost.readTimeMinutes && (
+                {!!featuredPost.readTimeMinutes && (
                   <div className="flex items-center gap-1.5 font-medium ml-auto">
                     <Clock className="w-4 h-4" />
                     <span>{featuredPost.readTimeMinutes} min</span>
@@ -115,17 +111,22 @@ export default function BlogList({ posts, title }: BlogListProps) {
 
       {/* All Other Articles Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {remainingPosts.map((post, index) => (
+        {remainingPosts.map((post) => (
           <Link key={post.id} href={getPostHref(post)} className="group block">
             <div className="h-full flex flex-col bg-white/70 dark:bg-[#0F0E0A]/70 backdrop-blur-sm overflow-hidden transition-all duration-300 group-hover:-translate-y-2 rounded-[1.5rem] p-4 border border-[#D9CFC7]/50 dark:border-[#3B3028]/50 group-hover:shadow-[0_15px_30px_rgba(0,0,0,0.05)] dark:group-hover:shadow-[0_15px_30px_rgba(0,0,0,0.2)] group-hover:border-[#D9CFC7] dark:group-hover:border-[#3B3028]">
-              {post.featuredImageUrl && (
+              {(post.cardImageUrl || post.featuredImageUrl) && (
                 <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden mb-6 shadow-sm ring-1 ring-[#D9CFC7]/30 dark:ring-[#3B3028]/50">
                   <Image
-                    src={post.featuredImageUrl}
+                    src={post.cardImageUrl || post.featuredImageUrl || ""}
                     alt={post.featuredImageAlt || post.title}
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                    unoptimized={(
+                      post.cardImageUrl ||
+                      post.featuredImageUrl ||
+                      ""
+                    ).startsWith("http")}
                   />
                 </div>
               )}

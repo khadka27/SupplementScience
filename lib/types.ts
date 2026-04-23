@@ -56,6 +56,7 @@ export type Post = {
   excerpt?: string | null;
   featuredImageUrl?: string | null;
   featuredImageAlt?: string | null;
+  cardImageUrl?: string | null;
   status: string;
   publishedAt?: Date | null;
   updatedAt: Date;

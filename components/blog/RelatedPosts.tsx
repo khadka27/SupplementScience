@@ -1,15 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
-import { Clock, Calendar } from "lucide-react";
+import { Clock } from "lucide-react";
 import { Post } from "@/lib/types";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getPostHref } from "@/lib/utils";
 
@@ -31,22 +25,26 @@ export default function RelatedPosts({
   return (
     <div className="my-16">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {displayPosts.map((post, index) => (
+        {displayPosts.map((post) => (
           <Link
             key={post.id}
             href={getPostHref(post)}
             className="group h-full block"
           >
             <article className="h-full flex flex-col space-y-4">
-              {post.featuredImageUrl && (
+              {(post.cardImageUrl || post.featuredImageUrl) && (
                 <div className="relative w-full aspect-video overflow-hidden rounded-2xl border border-border/50 shadow-sm group-hover:shadow-xl transition-all duration-300">
                   <Image
-                    src={post.featuredImageUrl}
+                    src={post.cardImageUrl || post.featuredImageUrl || ""}
                     alt={post.title}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, 33vw"
-                    unoptimized={post.featuredImageUrl.startsWith("http")}
+                    unoptimized={(
+                      post.cardImageUrl ||
+                      post.featuredImageUrl ||
+                      ""
+                    ).startsWith("http")}
                   />
                   {post.category && (
                     <div className="absolute top-4 left-4">

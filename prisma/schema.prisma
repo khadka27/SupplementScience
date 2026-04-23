@@ -69,6 +69,7 @@ model Post {
   excerpt          String?    @db.Text
   featuredImageUrl String?    @map("featured_image_url")
   featuredImageAlt String?    @map("featured_image_alt")
+  cardImageUrl     String?    @map("card_image_url")
   status           PostStatus @default(DRAFT)
   publishedAt      DateTime?  @map("published_at")
   scheduledFor     DateTime?  @map("scheduled_for")

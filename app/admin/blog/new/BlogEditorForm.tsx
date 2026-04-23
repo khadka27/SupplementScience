@@ -56,6 +56,13 @@ const formSchema = z.object({
     .optional()
     .or(z.literal("")),
   featuredImageAlt: z.string().optional().or(z.literal("")),
+  cardImageUrl: z
+    .string()
+    .refine(isValidFeaturedImageSource, {
+      message: "Must be a valid URL or /images path",
+    })
+    .optional()
+    .or(z.literal("")),
   authorId: z.string().optional().or(z.literal("")),
   factCheckedById: z.string().optional().or(z.literal("")),
   reviewedById: z.string().optional().or(z.literal("")),
@@ -95,6 +102,7 @@ export default function BlogEditorForm({
       content: initialData?.content || "",
       featuredImageUrl: initialData?.featuredImageUrl || "",
       featuredImageAlt: initialData?.featuredImageAlt || "",
+      cardImageUrl: initialData?.cardImageUrl || "",
       tagIds: initialData?.tags?.map((t: any) => t.tagId) || [],
       authorId: initialData?.authorId || authors[0]?.id || "",
       factCheckedById:
@@ -545,6 +553,42 @@ export default function BlogEditorForm({
                       <FormDescription>
                         Used by screen readers and search engines.
                       </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="cardImageUrl"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Featured Card Image</FormLabel>
+                      <Tabs defaultValue="upload" className="w-full">
+                        <TabsList className="mb-4">
+                          <TabsTrigger value="upload" className="gap-2">
+                            <ImageIcon className="h-4 w-4" /> Upload
+                          </TabsTrigger>
+                          <TabsTrigger value="url" className="gap-2">
+                            <Globe className="h-4 w-4" /> Link URL
+                          </TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="upload">
+                          <ImageUpload
+                            value={field.value || ""}
+                            onChange={field.onChange}
+                          />
+                        </TabsContent>
+                        <TabsContent value="url">
+                          <FormControl>
+                            <Input placeholder="https://..." {...field} />
+                          </FormControl>
+                          <FormDescription>
+                            Used in article cards, related posts, and listing
+                            cards. If blank, the hero image will be used.
+                          </FormDescription>
+                        </TabsContent>
+                      </Tabs>
                       <FormMessage />
                     </FormItem>
                   )}
