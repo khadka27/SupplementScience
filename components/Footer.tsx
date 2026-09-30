@@ -174,7 +174,7 @@ export function Footer() {
             <p className="text-sm text-slate-700 dark:text-zinc-300 leading-relaxed font-medium">
               Get the latest science-backed supplement guides delivered to your inbox.
             </p>
-            <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-3" suppressHydrationWarning>
+            <div className="flex flex-col gap-3" suppressHydrationWarning>
               <label htmlFor="footer-email-input" className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-zinc-300">
                 Email Address
               </label>
@@ -186,12 +186,12 @@ export function Footer() {
               />
               <Button
                 size="default"
-                type="submit"
+                type="button"
                 className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 min-h-[48px] rounded-lg shadow-sm text-base"
               >
                 Sign Up for Updates
               </Button>
-            </form>
+            </div>
           </div>
         </div>
 
