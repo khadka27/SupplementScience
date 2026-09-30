@@ -75,6 +75,10 @@ export default async function AuthorsPage() {
                     alt={author.name}
                     fill
                     className="object-cover transition-transform group-hover:scale-105"
+                    unoptimized={
+                      author.avatarUrl.startsWith("http") ||
+                      author.avatarUrl.startsWith("/images/")
+                    }
                   />
                 ) : (
                   <div

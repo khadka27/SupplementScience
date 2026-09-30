@@ -282,6 +282,10 @@ export default async function GenericSlugPage({ params }: Props) {
                       fill
                       className="object-cover"
                       priority
+                      unoptimized={
+                        category.imageUrl.startsWith("http") ||
+                        category.imageUrl.startsWith("/images/")
+                      }
                     />
                   </div>
                 )}

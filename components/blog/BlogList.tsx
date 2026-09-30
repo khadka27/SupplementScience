@@ -67,7 +67,10 @@ export default function BlogList({ posts, title }: BlogListProps) {
                   className="object-cover group-hover:scale-105 transition-transform duration-1000 ease-out"
                   sizes="(max-width: 1024px) 100vw, 60vw"
                   priority
-                  unoptimized={featuredPostImage.startsWith("http")}
+                  unoptimized={
+                    featuredPostImage.startsWith("http") ||
+                    featuredPostImage.startsWith("/images/")
+                  }
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent" />
               </div>
@@ -122,11 +125,18 @@ export default function BlogList({ posts, title }: BlogListProps) {
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                    unoptimized={(
-                      post.cardImageUrl ||
-                      post.featuredImageUrl ||
-                      ""
-                    ).startsWith("http")}
+                    unoptimized={
+                      (
+                        post.cardImageUrl ||
+                        post.featuredImageUrl ||
+                        ""
+                      ).startsWith("http") ||
+                      (
+                        post.cardImageUrl ||
+                        post.featuredImageUrl ||
+                        ""
+                      ).startsWith("/images/")
+                    }
                   />
                 </div>
               )}

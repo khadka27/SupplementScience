@@ -39,12 +39,18 @@ export default function RelatedPosts({
                     alt={post.title}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    unoptimized={(
-                      post.cardImageUrl ||
-                      post.featuredImageUrl ||
-                      ""
-                    ).startsWith("http")}
+                    unoptimized={
+                      (
+                        post.cardImageUrl ||
+                        post.featuredImageUrl ||
+                        ""
+                      ).startsWith("http") ||
+                      (
+                        post.cardImageUrl ||
+                        post.featuredImageUrl ||
+                        ""
+                      ).startsWith("/images/")
+                    }
                   />
                   {post.category && (
                     <div className="absolute top-4 left-4">

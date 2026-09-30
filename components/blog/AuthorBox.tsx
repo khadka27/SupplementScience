@@ -23,6 +23,10 @@ export default function AuthorBox({ author, className }: AuthorBoxProps) {
             alt={author.name}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-110"
+            unoptimized={
+              author.avatarUrl.startsWith("http") ||
+              author.avatarUrl.startsWith("/images/")
+            }
           />
         </div>
       )}

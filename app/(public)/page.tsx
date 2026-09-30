@@ -689,11 +689,18 @@ export default async function Home() {
                         sizes="(max-width: 768px) 100vw, 50vw"
                         priority
                         className="object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
-                        unoptimized={(
-                          mainFeaturedPost.cardImageUrl ||
-                          mainFeaturedPost.featuredImageUrl ||
-                          ""
-                        ).startsWith("http")}
+                        unoptimized={
+                          (
+                            mainFeaturedPost.cardImageUrl ||
+                            mainFeaturedPost.featuredImageUrl ||
+                            ""
+                          ).startsWith("http") ||
+                          (
+                            mainFeaturedPost.cardImageUrl ||
+                            mainFeaturedPost.featuredImageUrl ||
+                            ""
+                          ).startsWith("/images/")
+                        }
                       />
                       <div className="absolute inset-0 bg-linear-to-tr from-black/40 via-transparent to-transparent opacity-60" />
                     </div>

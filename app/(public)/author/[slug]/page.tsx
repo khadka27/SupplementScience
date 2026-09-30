@@ -127,6 +127,10 @@ export default async function AuthorPage({ params }: Props) {
                 alt={author.name}
                 fill
                 className="object-cover"
+                unoptimized={
+                  author.avatarUrl.startsWith("http") ||
+                  author.avatarUrl.startsWith("/images/")
+                }
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-4xl font-bold text-[#D9CFC7]">

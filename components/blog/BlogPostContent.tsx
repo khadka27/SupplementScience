@@ -280,6 +280,10 @@ export default function BlogPostContent({
                           alt={post.author.name}
                           fill
                           className="object-cover"
+                          unoptimized={
+                            post.author.avatarUrl.startsWith("http") ||
+                            post.author.avatarUrl.startsWith("/images/")
+                          }
                         />
                       </div>
                     ) : (
@@ -405,13 +409,11 @@ export default function BlogPostContent({
                     quality={85}
                     unoptimized={
                       post.featuredImageUrl?.startsWith("http") ||
-                      post.featuredImageUrl?.startsWith("https")
+                      post.featuredImageUrl?.startsWith("https") ||
+                      post.featuredImageUrl?.startsWith("/images/")
                     }
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 40vw"
                     onError={() => {
-                      console.warn(
-                        `Failed to load image: ${post.featuredImageUrl}`,
-                      );
                       setImgError(true);
                     }}
                   />

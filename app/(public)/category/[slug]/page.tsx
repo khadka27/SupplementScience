@@ -110,6 +110,10 @@ export default async function CategoryPage({ params }: Props) {
               alt={category.name}
               fill
               className="object-cover"
+              unoptimized={
+                category.imageUrl.startsWith("http") ||
+                category.imageUrl.startsWith("/images/")
+              }
             />
           </div>
         )}
