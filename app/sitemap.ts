@@ -4,6 +4,14 @@ import prisma from "@/lib/prisma";
 const baseUrl =
   (((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || "https://www.supplementdecoded.com") as string);
 
+/** Ensure image URLs are always absolute. Google rejects relative paths in sitemaps. */
+function absoluteImageUrl(url: string | null | undefined): string | undefined {
+  if (!url) return undefined;
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  // Relative path — prepend baseUrl
+  return `${baseUrl}${url.startsWith("/") ? "" : "/"}${url}`;
+}
+
 export const revalidate = 3600; // revalidate every hour
 export const dynamic = "force-dynamic";
 
@@ -94,25 +102,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url = `${baseUrl}/${post.slug}`;
       }
 
+      const absImage = absoluteImageUrl(post.featuredImageUrl);
       return {
         url,
         lastModified: post.updatedAt,
         changeFrequency: "monthly" as const,
         priority: 0.8,
-        ...(post.featuredImageUrl && { images: [post.featuredImageUrl] }),
+        ...(absImage && { images: [absImage] }),
       };
     });
 
     const categoryUrls = categories.map(
-      (category: (typeof categories)[number]) => ({
-        url: category.isHub
-          ? `${baseUrl}/${category.slug}`
-          : `${baseUrl}/category/${category.slug}`,
-        lastModified: category.updatedAt,
-        changeFrequency: "weekly" as const,
-        priority: 0.7,
-        ...(category.imageUrl && { images: [category.imageUrl] }),
-      }),
+      (category: (typeof categories)[number]) => {
+        const absImage = absoluteImageUrl(category.imageUrl);
+        return {
+          url: category.isHub
+            ? `${baseUrl}/${category.slug}`
+            : `${baseUrl}/category/${category.slug}`,
+          lastModified: category.updatedAt,
+          changeFrequency: "weekly" as const,
+          priority: 0.7,
+          ...(absImage && { images: [absImage] }),
+        };
+      },
     );
 
     const tagUrls = tags.map((tag: (typeof tags)[number]) => ({

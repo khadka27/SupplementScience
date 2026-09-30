@@ -5,9 +5,20 @@ import { Metadata } from "next";
 export const dynamic = "force-dynamic";
 export const revalidate = 21600;
 
+const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
+  process.env.NEXT_PUBLIC_BASE_URL.replace(
+    /^https?:\/\/supplementdecoded\.com/i,
+    "https://www.supplementdecoded.com",
+  )) ||
+  "https://www.supplementdecoded.com") as string;
+
 export const metadata: Metadata = {
-  title: "Categories | Supplement Science",
-  description: "Browse all our supplement categories and expert guides.",
+  title: "Supplement Categories | SupplementDecoded",
+  description:
+    "Browse all supplement research categories — independent evidence-based analysis of ingredients, safety, and product claims organized by health topic.",
+  alternates: {
+    canonical: `${baseUrl}/category`,
+  },
 };
 
 export default async function CategoriesPage() {
@@ -18,6 +29,11 @@ export default async function CategoriesPage() {
     orderBy: {
       name: "asc",
     },
+    include: {
+      _count: {
+        select: { posts: { where: { status: "PUBLISHED" } } },
+      },
+    },
   });
 
   const hubCategories = await prisma.category.findMany({
@@ -27,7 +43,13 @@ export default async function CategoriesPage() {
     orderBy: {
       name: "asc",
     },
+    include: {
+      _count: {
+        select: { posts: { where: { status: "PUBLISHED" } } },
+      },
+    },
   });
+
 
   const posts = await prisma.post.findMany({
     where: {
@@ -106,9 +128,9 @@ export default async function CategoriesPage() {
                 </p>
               )}
               <div className="inline-flex flex-wrap items-center gap-2 bg-[#EFE9E3] text-black px-4 py-2 rounded-full text-sm font-semibold group-hover:bg-black group-hover:text-white transition-colors">
-                <span>{category.postCount || 0}</span>
+                <span>{category._count.posts}</span>
                 <span>
-                  {(category.postCount || 0) === 1 ? "Guide" : "Guides"}
+                  {category._count.posts === 1 ? "Guide" : "Guides"}
                 </span>
               </div>
             </a>

@@ -35,6 +35,8 @@ import ShareButtons from "./ShareButtons";
 import { NewsletterForm } from "@/components/NewsletterForm";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { TakeawayBox } from "@/components/article/TakeawayBox";
+import { DoctorCallout } from "@/components/article/DoctorCallout";
 import { cn, getPostHref } from "@/lib/utils";
 
 interface AdjacentPost {
@@ -301,26 +303,32 @@ export default function BlogPostContent({
 
                 <div className="hidden sm:block w-px h-8 bg-black/10 dark:bg-white/10" />
 
-                <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-zinc-500 flex-wrap">
-                  <div className="flex items-center gap-1.5">
-                    <Calendar className="w-3.5 h-3.5" />
+                <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-zinc-400 flex-wrap">
+                  <div className="flex items-center gap-1.5 font-medium">
+                    <Calendar className="w-4 h-4 text-primary" />
+                    <span>Last reviewed:</span>
                     <time
                       dateTime={
+                        post.reviewedAt?.toString() ||
                         post.updatedAt?.toString() ||
                         post.publishedAt?.toString()
                       }
+                      className="font-semibold text-gray-800 dark:text-zinc-200"
                     >
-                      {post.updatedAt
-                        ? format(new Date(post.updatedAt), "MMM d, yyyy")
-                        : format(
-                            new Date(post.publishedAt || new Date()),
-                            "MMM d, yyyy",
-                          )}
+                      {format(
+                        new Date(
+                          post.reviewedAt ||
+                            post.updatedAt ||
+                            post.publishedAt ||
+                            new Date(),
+                        ),
+                        "MMMM d, yyyy",
+                      )}
                     </time>
                   </div>
                   <span className="text-black/20">·</span>
                   <div className="flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5" />
+                    <Clock className="w-4 h-4" />
                     <span>{post.readTimeMinutes} min read</span>
                   </div>
                   {post.factCheckedBy && (
@@ -461,27 +469,25 @@ export default function BlogPostContent({
                   </div>
                 </div>
 
-                {/* Quick Summary Card */}
+                {/* Key Takeaways Box — 3-5 quick bullets readable in 30 seconds */}
                 {post.excerpt && (
-                  <div className="mb-12 bg-primary/[0.03] dark:bg-primary/[0.05] border-2 border-primary/10 rounded-[2rem] p-7 lg:p-10 relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 p-6 opacity-[0.03] group-hover:scale-110 transition-transform duration-700">
-                      <Bookmark className="w-24 h-24 text-primary" />
-                    </div>
-                    <div className="flex flex-col sm:flex-row items-start gap-6 relative z-10">
-                      <div className="p-3 bg-primary text-white rounded-2xl shadow-xl shadow-primary/20 shrink-0">
-                        <CheckCircle2 className="w-6 h-6" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-2xl font-black text-black dark:text-white mb-3 tracking-tight">
-                          Key Insights
-                        </h3>
-                        <p className="text-lg text-gray-700 dark:text-zinc-300 leading-relaxed font-medium">
-                          {post.excerpt}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  <TakeawayBox
+                    items={
+                      post.excerpt
+                        .split(/(?<=[.?!])\s+/)
+                        .map((s) => s.trim())
+                        .filter((s) => s.length > 10).length > 0
+                        ? post.excerpt
+                            .split(/(?<=[.?!])\s+/)
+                            .map((s) => s.trim())
+                            .filter((s) => s.length > 10)
+                        : [post.excerpt]
+                    }
+                  />
                 )}
+
+                {/* Doctor / Pharmacist Consultation Callout */}
+                <DoctorCallout />
 
                 {/* Medical Disclaimer */}
                 <div className="mb-12 bg-amber-50/50 dark:bg-amber-950/10 border-l-4 border-amber-500 rounded-r-2xl p-6 shadow-sm flex gap-4">

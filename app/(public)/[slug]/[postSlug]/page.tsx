@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import prisma from "@/lib/prisma";
 import BlogPostContent from "@/components/blog/BlogPostContent";
 import { generateBlogPostSchema, generateBreadcrumbSchema } from "@/lib/schema";
+import { normalizeSlug } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 10;
@@ -61,7 +62,9 @@ async function getData(categorySlug: string, postSlug: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug, postSlug } = await params;
+  const raw = await params;
+  const slug = normalizeSlug(raw.slug);
+  const postSlug = normalizeSlug(raw.postSlug);
   const data = await getData(slug, postSlug);
 
   if (!data) return { title: "Not Found" };
@@ -124,7 +127,15 @@ export async function generateStaticParams() {
 }
 
 export default async function CategorizedPostPage({ params }: Props) {
-  const { slug, postSlug } = await params;
+  const raw = await params;
+  const slug = normalizeSlug(raw.slug);
+  const postSlug = normalizeSlug(raw.postSlug);
+
+  // Redirect broken space-encoded URLs to canonical hyphenated form
+  if (raw.slug !== slug || raw.postSlug !== postSlug) {
+    redirect(`/${slug}/${postSlug}`);
+  }
+
   const data = await getData(slug, postSlug);
 
   if (!data) notFound();

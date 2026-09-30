@@ -1,8 +1,9 @@
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import prisma from "@/lib/prisma";
 import BlogList from "@/components/blog/BlogList";
 import Image from "next/image";
+import { normalizeSlug } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 10;
@@ -54,10 +55,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!data) return { title: "Category Not Found" };
 
+  const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
+    process.env.NEXT_PUBLIC_BASE_URL.replace(
+      /^https?:\/\/supplementdecoded\.com/i,
+      "https://www.supplementdecoded.com",
+    )) ||
+    "https://www.supplementdecoded.com") as string;
+
   return {
-    title: `${data.category.metaTitle || data.category.name} | Supplement Science`,
+    title: `${data.category.metaTitle || data.category.name} | SupplementDecoded`,
     description:
       data.category.metaDescription || data.category.description || "",
+    alternates: {
+      canonical: `${baseUrl}/category/${slug}`,
+    },
   };
 }
 
@@ -76,7 +87,13 @@ export async function generateStaticParams() {
 }
 
 export default async function CategoryPage({ params }: Props) {
-  const { slug } = await params;
+  const rawSlug = (await params).slug;
+  const slug = normalizeSlug(rawSlug);
+
+  if (rawSlug !== slug) {
+    redirect(`/category/${slug}`);
+  }
+
   const data = await getData(slug);
 
   if (!data) notFound();
@@ -106,7 +123,7 @@ export default async function CategoryPage({ params }: Props) {
             </p>
           )}
           <div className="mt-4 text-sm font-medium text-primary">
-            {posts.length} Professional Guides & Articles
+            {data.category._count.posts} Professional Guides &amp; Articles
           </div>
         </div>
       </div>

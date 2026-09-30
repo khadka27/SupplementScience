@@ -3,6 +3,18 @@ import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
+/** Recalculate and persist the published post count for a category. */
+async function syncCategoryPostCount(categoryId: string | null | undefined) {
+  if (!categoryId) return;
+  const count = await prisma.post.count({
+    where: { categoryId, status: "PUBLISHED" },
+  });
+  await prisma.category.update({
+    where: { id: categoryId },
+    data: { postCount: count },
+  });
+}
+
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
@@ -193,7 +205,25 @@ export async function PUT(
         tags: true,
       },
     });
+
+    // Keep postCount in sync:
+    // If the category changed, sync both old and new category counts
+    const oldCategoryId = currentPost.categoryId;
+    const newCategoryId = categoryId || null;
+    const categoryChanged = oldCategoryId !== newCategoryId;
+
+    if (categoryChanged) {
+      await Promise.all([
+        syncCategoryPostCount(oldCategoryId),
+        syncCategoryPostCount(newCategoryId),
+      ]);
+    } else if (isNowPublished !== wasPublished) {
+      // Status toggled — just update this category's count
+      await syncCategoryPostCount(newCategoryId);
+    }
+
     revalidatePath("/sitemap.xml");
+    revalidatePath("/category");
     return NextResponse.json(post);
   } catch (error) {
     console.error("Error updating post:", error);
@@ -217,11 +247,24 @@ export async function DELETE(
     }
 
     const { id } = await params;
+
+    // Get category before deleting so we can sync the count after
+    const toDelete = await prisma.post.findUnique({
+      where: { id },
+      select: { categoryId: true },
+    });
+
     await prisma.post.delete({
       where: { id },
     });
 
+    // Sync the count for the category this post belonged to
+    if (toDelete?.categoryId) {
+      await syncCategoryPostCount(toDelete.categoryId);
+    }
+
     revalidatePath("/sitemap.xml");
+    revalidatePath("/category");
     return NextResponse.json({ message: "Post deleted successfully" });
   } catch (error) {
     console.error("Error deleting post:", error);

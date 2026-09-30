@@ -5,6 +5,37 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+/**
+ * Normalizes a URL param slug that may contain spaces (decoded from %20)
+ * into a proper hyphenated slug. Handles the case where a slug was saved
+ * to the DB with spaces (e.g. "omega 3" → "omega-3").
+ *
+ * Use this on every dynamic route param before DB lookups.
+ */
+export function normalizeSlug(slug: string): string {
+  return decodeURIComponent(slug)
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, "-")     // spaces → hyphens
+    .replace(/[^a-z0-9-]/g, "") // strip non-slug chars
+    .replace(/-+/g, "-")      // collapse multiple hyphens
+    .replace(/^-+|-+$/g, ""); // trim leading/trailing hyphens
+}
+
+/**
+ * Converts any string into a valid URL slug.
+ * Use this on the admin side when creating/updating slugs.
+ */
+export function slugify(text: string): string {
+  return text
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/[\s_]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export function getPostHref(post: {
   slug: string;
   postType?: string;

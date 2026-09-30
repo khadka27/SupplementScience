@@ -12,6 +12,8 @@ import {
   generateBreadcrumbSchema,
   generateFAQSchema,
 } from "@/lib/schema";
+import { normalizeSlug } from "@/lib/utils";
+
 
 export const dynamic = "force-dynamic";
 export const revalidate = 10;
@@ -174,7 +176,14 @@ export async function generateStaticParams() {
 }
 
 export default async function GenericSlugPage({ params }: Props) {
-  const { slug } = await params;
+  const rawSlug = (await params).slug;
+  const slug = normalizeSlug(rawSlug);
+
+  // Redirect broken space-encoded URLs to clean canonical form
+  if (rawSlug !== slug) {
+    redirect(`/${slug}`);
+  }
+
   const data = await getData(slug);
 
   if (!data) notFound();

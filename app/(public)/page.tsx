@@ -30,6 +30,30 @@ import {
   TrendingUp,
 } from "lucide-react";
 
+import { Metadata } from "next";
+
+const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
+  process.env.NEXT_PUBLIC_BASE_URL.replace(
+    /^https?:\/\/supplementdecoded\.com/i,
+    "https://www.supplementdecoded.com",
+  )) ||
+  "https://www.supplementdecoded.com") as string;
+
+export const metadata: Metadata = {
+  title: "SupplementDecoded | Independent Supplement Research & Scam Analysis",
+  description:
+    "We analyze supplements others just sell. No affiliate links, no sponsor influence — just transparent ingredient research, safety evaluations, and scam exposure based on public evidence.",
+  alternates: {
+    canonical: baseUrl,
+  },
+  openGraph: {
+    title: "SupplementDecoded | Independent Supplement Research & Scam Analysis",
+    description:
+      "No affiliate links. No sponsored content. Transparent ingredient research, safety reviews, and scam exposure for anyone who refuses to be misled.",
+    url: baseUrl,
+  },
+};
+
 export const dynamic = "force-dynamic";
 export const revalidate = 43200;
 
@@ -756,10 +780,11 @@ export default async function Home() {
                 Strong Trust Signals You Should Know
               </h2>
               <p className="text-xl text-gray-700 dark:text-zinc-300 mb-10 leading-relaxed font-medium">
-                We are committed to editorial independence. We do not sell
-                supplements, we do not accept sponsorships that influence
-                content, and affiliate links, when present, never affect our
-                evaluations.
+                We are committed to complete editorial independence. We accept
+                zero affiliate partnerships, publish no sponsored content, and
+                receive no compensation from supplement manufacturers or
+                retailers. Our evaluations are free from any commercial
+                influence.
               </p>
               <ul className="space-y-6">
                 {trustSignals.map((item, i) => (

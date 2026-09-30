@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
+import { Inter, Outfit, Atkinson_Hyperlegible } from "next/font/google";
 import {
   generateOrganizationSchema,
   generateWebsiteSchema,
@@ -9,6 +9,12 @@ import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
+const atkinson = Atkinson_Hyperlegible({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-atkinson",
+  display: "swap",
+});
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID; // Add to .env
 
@@ -73,7 +79,8 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "your-google-verification-code",
+    // TODO: Replace with your actual code from Google Search Console
+    // google: "paste-your-verification-code-here",
   },
 };
 
@@ -81,6 +88,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider } from "@/components/AuthProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { ClarityProvider } from "@/components/ClarityProvider";
+import { BackToTop } from "@/components/BackToTop";
 
 export default function RootLayout({
   children,
@@ -93,10 +101,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <meta
-          name="google-site-verification"
-          content="your-actual-verification-code-here"
-        />
+        {/* TODO: Once you have your Google Search Console verification code,
+             either add it here OR use the metadata.verification.google field above — not both. */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -143,9 +149,13 @@ export default function RootLayout({
         )}
       </head>
       <body
-        className={`${inter.variable} ${outfit.variable} font-sans antialiased min-h-screen relative`}
+        className={`${inter.variable} ${outfit.variable} ${atkinson.variable} font-sans antialiased min-h-screen relative`}
         suppressHydrationWarning={true}
       >
+        {/* Skip to content — first focusable element for keyboard/screen reader users */}
+        <a href="#main-content" className="skip-to-content">
+          Skip to main content
+        </a>
         <AuthProvider>
           <ClarityProvider />
           <ThemeProvider
@@ -169,7 +179,10 @@ export default function RootLayout({
               />
             </div>
 
-            {children}
+            <main id="main-content">
+              {children}
+            </main>
+            <BackToTop />
             <Toaster />
           </ThemeProvider>
         </AuthProvider>
