@@ -9,10 +9,14 @@ export default function HomeLayout({
   return (
     <div className="flex flex-col min-h-screen" suppressHydrationWarning>
       <Navbar />
-      <main className="grow pt-24" suppressHydrationWarning>
+      {/* Each page/section handles its own top-spacing to accommodate
+          the announcement strip (24px) + navbar (56px) = 80px offset */}
+      <main className="grow" suppressHydrationWarning>
         {children}
       </main>
       <Footer />
     </div>
   );
 }
+
+

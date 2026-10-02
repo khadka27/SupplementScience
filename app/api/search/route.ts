@@ -1,49 +1,59 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { fuzzySearch } from "@/lib/fuzzy-search";
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const query = searchParams.get("q");
 
-    if (!query || query.length < 2) {
-      return NextResponse.json({ results: [] });
+    // If query is empty or less than 1 char, return popular/top ingredient monographs
+    if (!query || query.trim().length === 0) {
+      const topIngredients = await prisma.post.findMany({
+        where: {
+          status: "PUBLISHED",
+        },
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          postType: true,
+          excerpt: true,
+          featuredImageUrl: true,
+          category: {
+            select: {
+              name: true,
+              slug: true,
+            },
+          },
+        },
+        orderBy: [
+          { postType: "desc" }, // prioritize ingredient monographs
+          { publishedAt: "desc" },
+        ],
+        take: 6,
+      });
+
+      return NextResponse.json({
+        results: topIngredients.map((item) => ({
+          ...item,
+          matchPercentage: 100,
+        })),
+      });
     }
 
-    const searchQuery = query.toLowerCase();
+    const searchQuery = query.trim();
 
-    // Search posts by title and content
-    const posts = await prisma.post.findMany({
+    // 1. Fetch published records from database
+    const allPublished = await prisma.post.findMany({
       where: {
         status: "PUBLISHED",
-        publishedAt: {
-          lte: new Date(),
-        },
-        OR: [
-          {
-            title: {
-              contains: searchQuery,
-              mode: "insensitive",
-            },
-          },
-          {
-            content: {
-              contains: searchQuery,
-              mode: "insensitive",
-            },
-          },
-          {
-            excerpt: {
-              contains: searchQuery,
-              mode: "insensitive",
-            },
-          },
-        ],
       },
       select: {
         id: true,
         title: true,
         slug: true,
+        postType: true,
         excerpt: true,
         featuredImageUrl: true,
         category: {
@@ -53,55 +63,22 @@ export async function GET(req: Request) {
           },
         },
       },
-      take: 10,
+      take: 100,
     });
 
-    // Calculate match percentages
-    const results = posts.map((post: (typeof posts)[number]) => {
-      const titleLower = post.title.toLowerCase();
-      const excerptLower = post.excerpt?.toLowerCase() || "";
-
-      // Calculate title match percentage
-      let matchScore = 0;
-
-      // Exact match = 100%
-      if (titleLower === searchQuery) {
-        matchScore = 100;
-      }
-      // Title starts with query = 90%
-      else if (titleLower.startsWith(searchQuery)) {
-        matchScore = 90;
-      }
-      // Title contains query as whole word = 80%
-      else if (
-        titleLower.includes(` ${searchQuery} `) ||
-        titleLower.includes(` ${searchQuery}`)
-      ) {
-        matchScore = 80;
-      }
-      // Title contains query = 70%
-      else if (titleLower.includes(searchQuery)) {
-        matchScore = 70;
-      }
-      // Excerpt contains query = 60%
-      else if (excerptLower.includes(searchQuery)) {
-        matchScore = 60;
-      }
-      // Content match (if we got here) = 50%
-      else {
-        matchScore = 50;
-      }
-
-      return {
-        ...post,
-        matchPercentage: matchScore,
-      };
+    // 2. Perform high-precision fuzzy search across titles, slugs, categories, and excerpts
+    const fuzzyResults = fuzzySearch(searchQuery, allPublished, {
+      weights: {
+        title: 1.0,
+        slug: 0.9,
+        category: 0.75,
+        excerpt: 0.5,
+      },
+      minScoreThreshold: 0.3,
+      maxResults: 10,
     });
 
-    // Sort by match percentage (highest first)
-    results.sort((a, b) => b.matchPercentage - a.matchPercentage);
-
-    return NextResponse.json({ results });
+    return NextResponse.json({ results: fuzzyResults });
   } catch (error) {
     console.error("[SEARCH_GET]", error);
     return new NextResponse("Internal Error", { status: 500 });

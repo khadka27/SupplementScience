@@ -29,6 +29,11 @@ import {
   Sparkles,
   TrendingUp,
 } from "lucide-react";
+import {
+  ClinicalHeroSearch,
+  DosageEvaluator,
+  MultiFormComparisonMatrix,
+} from "@/components/redesign";
 
 import { Metadata } from "next";
 
@@ -58,70 +63,82 @@ export const dynamic = "force-dynamic";
 export const revalidate = 43200;
 
 async function getFeaturedPosts(): Promise<any[]> {
-  const data = await prisma.post.findMany({
-    where: {
-      status: "PUBLISHED",
-      isFeatured: true,
-      publishedAt: {
-        lte: new Date(),
+  try {
+    const data = await prisma.post.findMany({
+      where: {
+        status: "PUBLISHED",
+        isFeatured: true,
+        publishedAt: {
+          lte: new Date(),
+        },
       },
-    },
-    include: {
-      author: {
-        select: { name: true, slug: true, avatarUrl: true },
+      include: {
+        author: {
+          select: { name: true, slug: true, avatarUrl: true },
+        },
+        category: {
+          select: { name: true, slug: true },
+        },
       },
-      category: {
-        select: { name: true, slug: true },
+      orderBy: {
+        publishedAt: "desc",
       },
-    },
-    orderBy: {
-      publishedAt: "desc",
-    },
-    take: 3,
-  });
-
-  return data || [];
+      take: 3,
+    });
+    return data || [];
+  } catch (error) {
+    console.error("Database connection notice (getFeaturedPosts):", error);
+    return [];
+  }
 }
 
 async function getRecentPosts(): Promise<any[]> {
-  const data = await prisma.post.findMany({
-    where: {
-      status: "PUBLISHED",
-      publishedAt: {
-        lte: new Date(),
+  try {
+    const data = await prisma.post.findMany({
+      where: {
+        status: "PUBLISHED",
+        publishedAt: {
+          lte: new Date(),
+        },
       },
-    },
-    include: {
-      author: {
-        select: { name: true, slug: true, avatarUrl: true },
+      include: {
+        author: {
+          select: { name: true, slug: true, avatarUrl: true },
+        },
+        category: {
+          select: { name: true, slug: true },
+        },
       },
-      category: {
-        select: { name: true, slug: true },
+      orderBy: {
+        publishedAt: "desc",
       },
-    },
-    orderBy: {
-      publishedAt: "desc",
-    },
-    take: 6,
-  });
-
-  return data || [];
+      take: 6,
+    });
+    return data || [];
+  } catch (error) {
+    console.error("Database connection notice (getRecentPosts):", error);
+    return [];
+  }
 }
 
 async function getCategories(): Promise<any[]> {
-  const data = await prisma.category.findMany({
-    where: {
-      postCount: {
-        gte: 1,
+  try {
+    const data = await prisma.category.findMany({
+      where: {
+        postCount: {
+          gte: 1,
+        },
       },
-    },
-    orderBy: {
-      postCount: "desc",
-    },
-    take: 8,
-  });
-
-  return data || [];
+      orderBy: {
+        postCount: "desc",
+      },
+      take: 8,
+    });
+    return data || [];
+  } catch (error) {
+    console.error("Database connection notice (getCategories):", error);
+    return [];
+  }
 }
 
 export default async function Home() {
@@ -272,186 +289,121 @@ export default async function Home() {
       className="min-h-screen bg-white dark:bg-[#0F0E0A] text-slate-900 dark:text-zinc-100 transition-colors duration-300"
       suppressHydrationWarning={true}
     >
-      {/* Hero Section */}
-      <section className="relative bg-[#F9F8F6] dark:bg-[#0D0C09] pt-[104px] pb-20 px-4 overflow-hidden border-b border-[#D9CFC7] dark:border-[#2A221A]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.06),transparent_50%)] dark:bg-[radial-gradient(circle_at_80%_20%,rgba(16,185,129,0.12),transparent_50%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_15%_80%,rgba(217,207,199,0.25),transparent_50%)] dark:bg-[radial-gradient(circle_at_15%_80%,rgba(59,48,40,0.4),transparent_50%)]" />
+      {/* Redesigned Clinical Editorial Hero & Search Engine */}
+      <ClinicalHeroSearch />
 
-        <div className="container mx-auto max-w-5xl relative z-10">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-white/90 dark:bg-[#1D150E]/90 backdrop-blur-md px-5 py-2.5 rounded-full border border-[#D9CFC7] dark:border-[#4A3A2A] mb-8 shadow-sm hover:shadow-md transition-shadow">
-              <ShieldCheck className="w-5 h-5 text-primary" />
-              <span className="text-sm font-semibold text-gray-800 dark:text-zinc-200 uppercase tracking-wider">
-                Evidence-Based Resource
-              </span>
-            </div>
-
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold mb-8 text-black dark:text-white leading-[1.1] tracking-tight drop-shadow-sm">
-              An Evidence-Based Resource for{" "}
-              <span className="text-primary relative whitespace-nowrap">
-                <span className="relative z-10 text-primary">
-                  Understanding Supplements
-                </span>
-                <span className="absolute bottom-1 left-0 w-full h-3 bg-primary/20 -rotate-1 z-0 rounded-full"></span>
-              </span>
-            </h1>
-
-            <p className="text-xl md:text-2xl text-gray-700 dark:text-zinc-300 mb-10 max-w-4xl mx-auto leading-relaxed font-medium">
-              Welcome to our evidence-based health resource. We are a
-              research-driven health information platform dedicated to helping
-              readers understand supplements, nutrition, and safety through{" "}
-              <strong className="text-black dark:text-white">
-                evidence, context, and transparency
-              </strong>
-              , so you can make informed decisions about your health.
-            </p>
-
-            <p className="text-lg md:text-xl text-gray-600 dark:text-zinc-400 mb-10 max-w-4xl mx-auto leading-relaxed">
-              Unlike many sites that lead with product recommendations, we start
-              with science, safety, and sound lifestyle guidance. Diet,
-              exercise, sleep, and medical care are the cornerstones of
-              well-being. Supplements, where discussed, are considered optional,
-              supportive tools, never primary or curative solutions.
-            </p>
-
-            <div className="bg-amber-50/90 dark:bg-[#1A1200]/80 backdrop-blur-md border border-amber-200/80 dark:border-amber-800/60 p-5 rounded-2xl max-w-3xl mx-auto mb-10 text-left flex gap-4 items-start shadow-sm relative overflow-hidden">
-              <div className="absolute left-0 top-0 bottom-0 w-1 bg-amber-400 dark:bg-amber-500" />
-              <Info className="w-6 h-6 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-              <p className="text-sm md:text-base text-amber-900 dark:text-amber-200 leading-snug">
-                <strong className="font-bold">Plain-language note:</strong> The
-                information on this site is for educational purposes only and
-                does not replace professional medical advice.
-              </p>
-            </div>
-
-            <div className="flex flex-col lg:flex-row justify-center gap-4">
-              <Link href="/ingredients">
-                <Button
-                  size="lg"
-                  className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 transition-all text-lg h-14 px-8 rounded-full font-bold"
-                >
-                  <Search className="mr-2 w-5 h-5" />
-                  Browse Ingredients
-                </Button>
-              </Link>
-              <Link href="/category">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full sm:w-auto border-[#D9CFC7] dark:border-[#634F36] bg-white dark:bg-[#211A13] text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-[#3B3028] hover:-translate-y-0.5 transition-all text-lg h-14 px-8 rounded-full shadow-sm font-bold"
-                >
-                  Explore Health Categories
-                </Button>
-              </Link>
-              <Link href="/editorial-policy">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full sm:w-auto border-[#D9CFC7] dark:border-[#634F36] bg-transparent text-gray-900 dark:text-white hover:bg-white/70 dark:hover:bg-[#211A13] hover:-translate-y-0.5 transition-all text-lg h-14 px-8 rounded-full shadow-sm font-bold"
-                >
-                  Learn How We Evaluate
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Target Audience Section */}
-      <section className="py-24 px-4 bg-white dark:bg-[#0D0C09] relative border-t border-[#D9CFC7] dark:border-[#2A221A]">
+      {/* ══ Who This Is For ════════════════════════════════════════════ */}
+      <section className="relative py-24 px-4 bg-white dark:bg-[#07090B] overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent" />
         <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-black dark:text-white tracking-tight">
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 mb-5">
+              <Search className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+              <span className="text-[11px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Audience</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold mb-5 text-[#0A0F14] dark:text-white tracking-tight">
               Who This Resource Is For
             </h2>
-            <p className="text-lg md:text-xl text-gray-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg text-gray-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
               This site is designed for readers who value clarity over hype and
               want careful explanations grounded in research.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-            {/* For */}
-            <Card className="bg-linear-to-br from-[#F0FDF7] to-[#DCFCE7] dark:from-[#071a0e] dark:to-[#0a2214] border border-green-200 dark:border-green-900/70 shadow-xl shadow-green-900/5 dark:shadow-green-950/30 rounded-[2.5rem] overflow-hidden hover:shadow-2xl transition-shadow h-full">
-              <CardContent className="p-8 md:p-12 flex flex-col h-full">
-                <div className="flex items-center gap-4 mb-10">
-                  <div className="w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-900/60 flex items-center justify-center shadow-inner border border-green-200 dark:border-green-700/70">
-                    <CheckCircle2 className="w-7 h-7 text-green-600 dark:text-green-400" />
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+            {/* For — Clinical Green Accent */}
+            <div className="relative bg-white dark:bg-[#0D1217] border border-stone-200 dark:border-stone-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <div className="h-1.5 w-full bg-emerald-600 dark:bg-emerald-500" />
+              <div className="p-8 md:p-10 flex flex-col h-full">
+                <div className="flex items-center gap-3.5 mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/80 flex items-center justify-center text-emerald-700 dark:text-emerald-400">
+                    <CheckCircle2 className="w-5 h-5" />
                   </div>
-                  <h3 className="text-3xl font-bold text-green-950 dark:text-green-100 tracking-tight">
-                    Who This Is For
-                  </h3>
+                  <div>
+                    <span className="text-[10px] font-mono uppercase font-bold text-emerald-700 dark:text-emerald-400 tracking-wider">
+                      Optimal Match
+                    </span>
+                    <h3 className="text-xl font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+                      Who This Is For
+                    </h3>
+                  </div>
                 </div>
-                <ul className="space-y-6 grow">
+                <ul className="space-y-3.5 grow">
                   {whoThisIsFor.map((item, i) => (
-                    <li
-                      key={i}
-                      className="flex gap-4 text-green-900/90 dark:text-green-200/90 leading-relaxed text-lg"
-                    >
-                      <div className="mt-1 bg-green-200/50 dark:bg-green-900/50 rounded-full p-1 border border-green-300 dark:border-green-800">
-                        <CheckCircle2 className="w-4 h-4 text-green-600 dark:text-green-400" />
+                    <li key={i} className="flex gap-3 text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
+                      <div className="mt-0.5 w-4 h-4 rounded-full bg-emerald-100/80 dark:bg-emerald-950 flex items-center justify-center shrink-0 text-emerald-700 dark:text-emerald-400">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
                       </div>
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-10 pt-8 border-t border-green-200/50 dark:border-green-900/50">
-                  <p className="font-bold text-green-950 dark:text-green-100 text-xl leading-snug">
-                    If you prefer careful explanations grounded in research,
-                    you&rsquo;re in the right place.
+                <div className="mt-8 pt-5 border-t border-stone-100 dark:border-stone-800">
+                  <p className="text-xs font-semibold text-emerald-800 dark:text-emerald-300">
+                    If you prefer careful explanations grounded in research, you&rsquo;re in the right place.
                   </p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            {/* Not For */}
-            <Card className="bg-linear-to-br from-[#FFF5F5] to-[#FFE8E8] dark:from-[#1a0707] dark:to-[#220a0a] border border-red-200 dark:border-red-900/70 shadow-xl shadow-red-900/5 dark:shadow-red-950/30 rounded-[2.5rem] overflow-hidden hover:shadow-2xl transition-shadow h-full">
-              <CardContent className="p-8 md:p-12 flex flex-col h-full">
-                <div className="flex items-center gap-4 mb-10">
-                  <div className="w-14 h-14 rounded-2xl bg-red-100 dark:bg-red-900/60 flex items-center justify-center shadow-inner border border-red-200 dark:border-red-700/70">
-                    <XCircle className="w-7 h-7 text-red-600 dark:text-red-400" />
+            {/* Not For — Clear Boundary Accent */}
+            <div className="relative bg-white dark:bg-[#0D1217] border border-stone-200 dark:border-stone-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <div className="h-1.5 w-full bg-rose-600 dark:bg-rose-500" />
+              <div className="p-8 md:p-10 flex flex-col h-full">
+                <div className="flex items-center gap-3.5 mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/80 flex items-center justify-center text-rose-700 dark:text-rose-400">
+                    <XCircle className="w-5 h-5" />
                   </div>
-                  <h3 className="text-3xl font-bold text-red-950 dark:text-red-100 tracking-tight">
-                    Who This Is Not For
-                  </h3>
+                  <div>
+                    <span className="text-[10px] font-mono uppercase font-bold text-rose-700 dark:text-rose-400 tracking-wider">
+                      Not Recommended
+                    </span>
+                    <h3 className="text-xl font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+                      Who This Is Not For
+                    </h3>
+                  </div>
                 </div>
-                <ul className="space-y-6 grow">
+                <ul className="space-y-3.5 grow">
                   {whoThisIsNotFor.map((item, i) => (
-                    <li
-                      key={i}
-                      className="flex gap-4 text-red-900/90 dark:text-red-200 leading-relaxed text-lg"
-                    >
-                      <div className="mt-1 bg-red-200/60 dark:bg-red-800/60 rounded-full p-1 border border-red-300 dark:border-red-700 shrink-0">
-                        <XCircle className="w-4 h-4 text-red-600 dark:text-red-300" />
+                    <li key={i} className="flex gap-3 text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
+                      <div className="mt-0.5 w-4 h-4 rounded-full bg-rose-100/80 dark:bg-rose-950 flex items-center justify-center shrink-0 text-rose-700 dark:text-rose-400">
+                        <XCircle className="w-3.5 h-3.5" />
                       </div>
                       <span>{item}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-10 pt-8 border-t border-red-200/60 dark:border-red-800/50">
-                  <p className="font-bold text-red-950 dark:text-red-100 text-xl leading-snug">
-                    This site is not intended for quick fixes, guarantees, or
-                    promotional recommendations.
+                <div className="mt-8 pt-5 border-t border-stone-100 dark:border-stone-800">
+                  <p className="text-xs font-semibold text-rose-800 dark:text-rose-300">
+                    This site is not intended for quick fixes, guarantees, or promotional recommendations.
                   </p>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Mission & Evaluation */}
-      <section className="py-28 px-4 bg-[#F4F2EF] dark:bg-[#110E09] text-slate-900 dark:text-white relative overflow-hidden border-t border-[#D9CFC7] dark:border-[#2A221A]">
-        {/* Glow effects */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-primary/10 dark:bg-primary/20 rounded-full blur-[140px] -translate-y-1/2 translate-x-1/2 pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-teal-500/10 dark:bg-[#3B3028] rounded-full blur-[140px] translate-y-1/2 -translate-x-1/2 pointer-events-none" />
+      {/* Interactive Clinical Evaluation Tools Suite */}
+      <DosageEvaluator />
+      <MultiFormComparisonMatrix />
+
+      {/* ══ Mission & Evaluation ════════════════════════════════════ */}
+      <section className="relative py-24 px-4 overflow-hidden bg-stone-50/80 dark:bg-[#080C0E] border-t border-b border-stone-200/80 dark:border-stone-800">
+        <div className="absolute inset-0 pointer-events-none opacity-[0.025] dark:opacity-[0.04]"
+          style={{
+            backgroundImage: `linear-gradient(#0E3B2F 1px, transparent 1px), linear-gradient(90deg, #0E3B2F 1px, transparent 1px)`,
+            backgroundSize: "32px 32px",
+          }}
+          aria-hidden="true"
+        />
 
         <div className="container mx-auto max-w-7xl relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 dark:border-primary/30 bg-white/50 dark:bg-primary/10 mb-8 backdrop-blur-sm shadow-sm dark:shadow-none">
-                <Shield className="w-4 h-4 text-primary" />
-                <span className="text-xs font-bold text-primary uppercase tracking-widest">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#0E3B2F]/20 dark:border-emerald-800/40 bg-[#0E3B2F]/6 dark:bg-emerald-950/40 mb-8">
+                <Shield className="w-3.5 h-3.5 text-[#0E3B2F] dark:text-emerald-400" />
+                <span className="text-[11px] font-black text-[#0E3B2F] dark:text-emerald-300 uppercase tracking-widest">
                   Editorial Independence
                 </span>
               </div>
@@ -465,113 +417,82 @@ export default async function Home() {
                 potential benefits and real limitations.
               </p>
 
-              <div className="space-y-8">
-                <div className="bg-white/70 dark:bg-[#18120C]/80 border border-[#D9CFC7] dark:border-[#3B2E22] rounded-[2rem] p-6 md:p-8 shadow-sm">
-                  <h3 className="text-2xl font-bold text-black dark:text-white mb-6">
+              <div className="space-y-6">
+                <div className="bg-white/80 dark:bg-[#0D1510]/80 backdrop-blur-sm border border-emerald-100 dark:border-emerald-900/40 rounded-3xl p-7 shadow-sm">
+                  <h3 className="text-lg font-bold text-[#0A1A13] dark:text-white mb-5 flex items-center gap-2.5">
+                    <span className="w-1.5 h-5 rounded-full bg-gradient-to-b from-[#0E3B2F] to-emerald-500 inline-block" />
                     Our mission includes:
                   </h3>
-                  <ul className="space-y-4">
+                  <ul className="space-y-3.5">
                     {missionPoints.map((item, index) => (
-                      <li
-                        key={index}
-                        className="flex gap-4 text-slate-700 dark:text-zinc-300 leading-relaxed text-lg"
-                      >
-                        <CheckCircle2 className="w-5 h-5 text-primary shrink-0 mt-1" />
-                        <span>{item}</span>
+                      <li key={index} className="flex gap-3 text-slate-700 dark:text-zinc-300 leading-relaxed">
+                        <div className="mt-1 w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center shrink-0 border border-emerald-200 dark:border-emerald-800">
+                          <CheckCircle2 className="w-3 h-3 text-[#0E3B2F] dark:text-emerald-400" />
+                        </div>
+                        <span className="text-sm">{item}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
 
-                <div className="flex gap-5 group">
-                  <div className="w-14 h-14 rounded-2xl bg-white dark:bg-[#211A13] border border-[#D9CFC7] dark:border-[#3B3028] flex items-center justify-center shrink-0 group-hover:bg-primary/5 dark:group-hover:bg-primary/10 group-hover:border-primary/30 dark:group-hover:border-primary/50 transition-colors shadow-sm dark:shadow-inner">
-                    <Scale className="w-7 h-7 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold mb-2 text-black dark:text-zinc-100">
-                      Neutral, Research-Backed Language
-                    </h4>
-                    <p className="text-slate-600 dark:text-zinc-400 leading-relaxed text-lg">
-                      Every piece is created by our Research Editorial Team and
-                      reviewed through a defined editorial and fact-checking
-                      process. We rely on peer-reviewed journals, authoritative
-                      health organizations, and public research databases
-                      including the NIH and WHO.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-5 group">
-                  <div className="w-14 h-14 rounded-2xl bg-white dark:bg-[#211A13] border border-[#D9CFC7] dark:border-[#3B3028] flex items-center justify-center shrink-0 group-hover:bg-primary/5 dark:group-hover:bg-primary/10 group-hover:border-primary/30 dark:group-hover:border-primary/50 transition-colors shadow-sm dark:shadow-inner">
-                    <AlertTriangle className="w-7 h-7 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold mb-2 text-black dark:text-zinc-100">
-                      Strict Safety Standards
-                    </h4>
-                    <p className="text-slate-600 dark:text-zinc-400 leading-relaxed text-lg">
-                      When research is mixed, limited, or inconclusive, we say
-                      so directly. We do not overstate effectiveness or
-                      certainty, and we disclose side effects, risks, and
-                      important limitations.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-5 group">
-                  <div className="w-14 h-14 rounded-2xl bg-white dark:bg-[#211A13] border border-[#D9CFC7] dark:border-[#3B3028] flex items-center justify-center shrink-0 group-hover:bg-primary/5 dark:group-hover:bg-primary/10 group-hover:border-primary/30 dark:group-hover:border-primary/50 transition-colors shadow-sm dark:shadow-inner">
-                    <HeartPulse className="w-7 h-7 text-primary" />
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-bold mb-2 text-black dark:text-zinc-100">
-                      The Foundation: Lifestyle Comes First
-                    </h4>
-                    <p className="text-slate-600 dark:text-zinc-400 leading-relaxed text-lg">
-                      Consistent evidence shows that balanced nutrition, regular
-                      physical activity, adequate sleep, and professional
-                      healthcare have the greatest impact on long-term health.
-                      Supplements do not replace these fundamentals.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white/80 dark:bg-[#18120C]/90 backdrop-blur-xl border border-[#D9CFC7] dark:border-[#3B2E22] rounded-[2.5rem] p-8 md:p-12 shadow-xl dark:shadow-2xl relative">
-              <h3 className="text-3xl font-bold mb-10 flex items-center gap-4 text-black dark:text-white">
-                <ListChecks className="text-primary w-8 h-8" />
-                How We Evaluate Supplements
-              </h3>
-              <div className="space-y-8 relative before:absolute before:inset-0 before:ml-[1.4rem] before:-translate-x-px before:h-full before:w-0.5 before:bg-linear-to-b before:from-primary/50 before:via-[#D9CFC7] dark:before:via-zinc-700 before:to-transparent">
-                {evaluationSteps.map((step, i) => (
-                  <div
-                    key={i}
-                    className="relative flex items-start gap-6 group hover:-translate-y-1 transition-transform"
-                  >
-                    <div className="flex items-center justify-center w-12 h-12 rounded-full border-4 border-white dark:border-[#18120C] bg-white dark:bg-[#2C2218] text-slate-800 dark:text-zinc-100 font-bold z-10 shrink-0 group-hover:bg-primary group-hover:text-white group-hover:border-primary/20 dark:group-hover:border-primary/30 transition-all shadow-md dark:shadow-lg text-lg">
-                      {i + 1}
+                {[
+                  { icon: Scale, title: "Neutral, Research-Backed Language", body: "Every piece is created by our Research Editorial Team and reviewed through a defined editorial and fact-checking process. We rely on peer-reviewed journals, authoritative health organizations, and public research databases including the NIH and WHO." },
+                  { icon: AlertTriangle, title: "Strict Safety Standards", body: "When research is mixed, limited, or inconclusive, we say so directly. We do not overstate effectiveness or certainty, and we disclose side effects, risks, and important limitations." },
+                  { icon: HeartPulse, title: "The Foundation: Lifestyle Comes First", body: "Consistent evidence shows that balanced nutrition, regular physical activity, adequate sleep, and professional healthcare have the greatest impact on long-term health. Supplements do not replace these fundamentals." },
+                ].map((feat, i) => (
+                  <div key={i} className="flex gap-4 group">
+                    <div className="w-11 h-11 rounded-xl bg-white dark:bg-[#0D1510] border border-emerald-100 dark:border-emerald-900/40 flex items-center justify-center shrink-0 group-hover:bg-[#0E3B2F] group-hover:border-transparent transition-all duration-300 shadow-sm mt-0.5">
+                      <feat.icon className="w-5 h-5 text-[#0E3B2F] dark:text-emerald-400 group-hover:text-white transition-colors" />
                     </div>
-                    <div className="bg-white/90 dark:bg-[#0D0C09]/80 hover:bg-white dark:hover:bg-[#2C2218]/90 border border-[#D9CFC7]/70 dark:border-[#3B2E22] p-6 rounded-2xl transition-colors w-full shadow-sm">
-                      <h4 className="font-bold text-xl mb-2 text-black dark:text-zinc-100">
-                        {step.title}
-                      </h4>
-                      <p className="text-slate-600 dark:text-zinc-400 text-base leading-relaxed">
-                        {step.desc}
-                      </p>
+                    <div>
+                      <h4 className="text-base font-bold mb-1.5 text-[#0A1A13] dark:text-zinc-100">{feat.title}</h4>
+                      <p className="text-slate-600 dark:text-zinc-400 leading-relaxed text-sm">{feat.body}</p>
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+
+            <div className="lg:sticky lg:top-28">
+              <div className="bg-white dark:bg-[#0D1217] border border-stone-200 dark:border-stone-800 rounded-2xl p-8 md:p-10 shadow-lg shadow-stone-900/5 relative overflow-hidden">
+                <h3 className="text-xl font-bold mb-7 flex items-center gap-3 text-[#0A1A13] dark:text-white relative z-10">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#0E3B2F] to-emerald-600 flex items-center justify-center shadow-md">
+                    <ListChecks className="text-white w-4 h-4" />
+                  </div>
+                  How We Evaluate Supplements
+                </h3>
+                <div className="space-y-3.5 relative">
+                  <div className="absolute left-[17px] top-5 bottom-5 w-px bg-gradient-to-b from-[#0E3B2F]/30 via-emerald-300/20 dark:via-emerald-700/20 to-transparent" />
+                  {evaluationSteps.map((step, i) => (
+                    <div key={i} className="relative flex items-start gap-4 group">
+                      <div className="flex items-center justify-center w-9 h-9 rounded-full border-2 border-white dark:border-[#0A1410] bg-slate-100 dark:bg-[#172218] text-slate-700 dark:text-emerald-300 font-black z-10 shrink-0 group-hover:bg-gradient-to-br group-hover:from-[#0E3B2F] group-hover:to-emerald-600 group-hover:text-white group-hover:border-[#0E3B2F]/20 transition-all duration-300 shadow-sm text-xs">
+                        {i + 1}
+                      </div>
+                      <div className="bg-slate-50/80 dark:bg-[#0F1A12]/60 hover:bg-white dark:hover:bg-[#172218]/80 border border-slate-100 dark:border-emerald-900/25 hover:border-emerald-200 dark:hover:border-emerald-800/50 p-4 rounded-2xl transition-all w-full group-hover:shadow-sm">
+                        <h4 className="font-bold text-sm mb-1 text-[#0A1A13] dark:text-zinc-100">{step.title}</h4>
+                        <p className="text-slate-500 dark:text-zinc-400 text-xs leading-relaxed">{step.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Getting Started & Categories */}
-      <section className="py-24 px-4 bg-[#F0EDE8] dark:bg-[#0A0907] relative border-t border-[#D9CFC7] dark:border-[#2A221A]">
-        <div className="absolute inset-0 bg-white/30 dark:bg-[#0D0C09]/40" />
+      {/* ══ Guides & Categories ═════════════════════════════════════ */}
+      <section className="relative py-24 px-4 bg-[#F8FAFB] dark:bg-[#06080A] overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300/50 dark:via-slate-700/50 to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(14,59,47,0.04)_0%,_transparent_70%)] dark:bg-[radial-gradient(ellipse_at_center,_rgba(14,59,47,0.08)_0%,_transparent_70%)] pointer-events-none" />
         <div className="container mx-auto max-w-7xl relative z-10">
           <div className="mb-24">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-black dark:text-white tracking-tight">
+            <div className="text-center mb-14">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/50 mb-5">
+                <BookOpen className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                <span className="text-[11px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-300">Start Here</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-extrabold mb-5 text-[#0A0F14] dark:text-white tracking-tight">
                 New Here? Start With These Guides
               </h2>
               <p className="text-xl text-gray-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
@@ -580,22 +501,24 @@ export default async function Home() {
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
               {recommendedGuides.map((guide, i) => (
-                <Link key={i} href={guide.href}>
-                  <Card className="group h-full bg-white dark:bg-[#17120D] border border-[#D9CFC7]/80 dark:border-[#3B2E22] hover:border-primary/60 dark:hover:border-primary/60 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 rounded-4xl overflow-hidden">
-                    <CardContent className="p-8">
-                      <div className="w-14 h-14 bg-[#F4F2EF] dark:bg-[#251D14] border border-[#D9CFC7]/70 dark:border-[#4A3A2A] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform shadow-sm">
-                        <guide.icon className="w-7 h-7 text-primary drop-shadow-sm" />
-                      </div>
-                      <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-zinc-100 group-hover:text-primary transition-colors">
-                        {guide.title}
-                      </h3>
-                      <p className="text-base text-gray-600 dark:text-zinc-400 leading-relaxed">
-                        {guide.desc}
-                      </p>
-                    </CardContent>
-                  </Card>
+                <Link key={i} href={guide.href} className="group">
+                  <div className="h-full bg-white dark:bg-[#0C1117] border border-slate-200 dark:border-slate-800 hover:border-[#0E3B2F]/60 dark:hover:border-emerald-700/60 hover:shadow-xl hover:shadow-emerald-900/8 dark:hover:shadow-emerald-950/25 hover:-translate-y-2 transition-all duration-300 rounded-3xl overflow-hidden p-7 flex flex-col relative">
+                    <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#0E3B2F] to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-gradient-to-br group-hover:from-[#0E3B2F] group-hover:to-emerald-600 group-hover:border-transparent transition-all duration-300 shadow-sm">
+                      <guide.icon className="w-5 h-5 text-slate-600 dark:text-slate-300 group-hover:text-white transition-colors duration-300" />
+                    </div>
+                    <h3 className="text-lg font-bold mb-2 text-[#0A0F14] dark:text-zinc-100 group-hover:text-[#0E3B2F] dark:group-hover:text-emerald-400 transition-colors leading-snug">
+                      {guide.title}
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-zinc-400 leading-relaxed flex-1">
+                      {guide.desc}
+                    </p>
+                    <div className="flex items-center gap-1 mt-5 text-xs font-bold text-[#0E3B2F] dark:text-emerald-400 opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0">
+                      Read guide <ArrowRight className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
                 </Link>
               ))}
             </div>
@@ -604,8 +527,12 @@ export default async function Home() {
           {/* Categories */}
           {categories.length > 0 && (
             <div>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-black dark:text-white tracking-tight">
+              <div className="text-center mb-14">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-violet-50 dark:bg-violet-950/40 border border-violet-200 dark:border-violet-800/50 mb-5">
+                  <Leaf className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
+                  <span className="text-[11px] font-black uppercase tracking-widest text-violet-600 dark:text-violet-300">Research Areas</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-extrabold mb-5 text-[#0A0F14] dark:text-white tracking-tight">
                   Health Categories We Cover
                 </h2>
                 <p className="text-xl text-gray-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
@@ -615,33 +542,31 @@ export default async function Home() {
                 </p>
               </div>
 
-              <div className="flex flex-wrap justify-center gap-3 mb-10">
+              <div className="flex flex-wrap justify-center gap-2.5 mb-12">
                 {healthTopics.map((topic) => (
                   <div
                     key={topic}
-                    className="px-5 py-3 rounded-full bg-white dark:bg-[#17120D] border border-[#D9CFC7]/80 dark:border-[#3B2E22] text-sm md:text-base font-semibold text-gray-800 dark:text-zinc-200 shadow-sm"
+                    className="px-4 py-2 rounded-full bg-white dark:bg-[#0C1117] border border-slate-200 dark:border-slate-800 text-sm font-semibold text-slate-700 dark:text-zinc-300 shadow-sm hover:border-[#0E3B2F]/50 dark:hover:border-emerald-700/50 hover:text-[#0E3B2F] dark:hover:text-emerald-400 transition-all cursor-default"
                   >
                     {topic}
                   </div>
                 ))}
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
                 {categories.map((category) => {
                   const Icon = categoryIcons[category.name] || Leaf;
                   return (
-                    <Link key={category.id} href={`/category/${category.slug}`}>
-                      <Card className="group hover:shadow-xl hover:border-primary/40 dark:hover:border-primary/50 hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-[#17120D] rounded-4xl border border-[#D9CFC7]/70 dark:border-[#3B2E22] h-full overflow-hidden">
-                        <CardContent className="p-8 text-center flex flex-col items-center justify-center h-full relative">
-                          <div className="absolute top-0 left-0 w-full h-1 bg-primary/0 group-hover:bg-primary transition-colors" />
-                          <div className="w-20 h-20 mb-6 rounded-full bg-[#F4F2EF] dark:bg-[#251D14] flex items-center justify-center group-hover:bg-primary/10 dark:group-hover:bg-primary/15 transition-colors border border-[#D9CFC7] dark:border-[#4A3A2A] shadow-sm relative group-hover:scale-105">
-                            <Icon className="w-10 h-10 text-primary drop-shadow-sm" />
-                          </div>
-                          <h3 className="font-bold text-xl mb-2 group-hover:text-primary transition-colors text-black dark:text-zinc-100">
-                            {category.name}
-                          </h3>
-                        </CardContent>
-                      </Card>
+                    <Link key={category.id} href={`/category/${category.slug}`} className="group">
+                      <div className="relative h-full bg-white dark:bg-[#0C1117] border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden hover:border-[#0E3B2F]/50 dark:hover:border-emerald-700/60 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-6 flex flex-col items-center text-center">
+                        <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#0E3B2F] to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        <div className="relative z-10 w-14 h-14 mb-4 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-[#0E3B2F] group-hover:to-emerald-600 transition-all duration-300 border border-slate-200 dark:border-slate-700 group-hover:border-transparent group-hover:shadow-lg group-hover:shadow-emerald-900/20">
+                          <Icon className="w-6 h-6 text-slate-600 dark:text-slate-300 group-hover:text-white transition-colors duration-300" />
+                        </div>
+                        <h3 className="relative z-10 font-bold text-sm mb-0.5 text-[#0A0F14] dark:text-zinc-100 group-hover:text-[#0E3B2F] dark:group-hover:text-emerald-400 transition-colors leading-snug">
+                          {category.name}
+                        </h3>
+                      </div>
                     </Link>
                   );
                 })}
@@ -667,9 +592,9 @@ export default async function Home() {
           {mainFeaturedPost && (
             <Link
               href={getPostHref(mainFeaturedPost)}
-              className="block mb-20 group text-black dark:text-white"
+              className="block mb-16 group text-black dark:text-white"
             >
-              <div className="relative rounded-[2.5rem] overflow-hidden border border-[#D9CFC7] dark:border-[#3B3028] bg-white dark:bg-[#0F0E0A] group-hover:shadow-2xl transition-all duration-500">
+              <div className="relative rounded-[2rem] overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0C1117] group-hover:shadow-2xl group-hover:shadow-slate-900/12 dark:group-hover:shadow-black/40 group-hover:border-[#0E3B2F]/30 dark:group-hover:border-emerald-800/50 transition-all duration-500">
                 <div className="grid md:grid-cols-2 gap-0">
                   {/* Image */}
                   {(mainFeaturedPost.cardImageUrl ||
@@ -707,19 +632,19 @@ export default async function Home() {
                   )}
 
                   {/* Content */}
-                  <div className="p-10 md:p-16 flex flex-col justify-center bg-linear-to-br from-white to-[#F9F8F6] dark:from-[#0F0E0A] dark:to-[#211A13]">
+                  <div className="p-10 md:p-14 flex flex-col justify-center bg-gradient-to-br from-white to-slate-50/80 dark:from-[#0C1117] dark:to-[#0F1720]">
                     <div className="flex items-center gap-3 mb-6">
                       <div className="bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 border border-amber-200 dark:border-amber-800/50 shadow-sm">
                         <Sparkles className="w-3.5 h-3.5" /> Research Spotlight
                       </div>
                       {mainFeaturedPost.category && (
-                        <div className="bg-primary/10 text-primary dark:text-primary dark:bg-primary/20 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-primary/20 dark:border-primary/30">
+                        <div className="bg-[#0E3B2F]/10 text-[#0E3B2F] dark:text-emerald-300 dark:bg-emerald-950/50 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-[#0E3B2F]/20 dark:border-emerald-800/50">
                           {mainFeaturedPost.category.name}
                         </div>
                       )}
                     </div>
 
-                    <h3 className="text-3xl md:text-5xl font-bold mb-6 text-black dark:text-white group-hover:text-primary transition-colors leading-[1.1] tracking-tight">
+                    <h3 className="text-3xl md:text-4xl font-bold mb-5 text-[#0A0F14] dark:text-white group-hover:text-[#0E3B2F] dark:group-hover:text-emerald-400 transition-colors leading-[1.15] tracking-tight">
                       {mainFeaturedPost.title}
                     </h3>
 
@@ -729,9 +654,9 @@ export default async function Home() {
                       </p>
                     )}
 
-                    <div className="flex items-center gap-6 text-sm text-gray-500 dark:text-zinc-400 font-medium">
-                      <div className="flex items-center gap-2 bg-white dark:bg-[#211A13] px-3 py-1.5 rounded-full border border-gray-100 dark:border-[#3B3028] shadow-sm">
-                        <Clock className="w-4 h-4 text-primary" />
+                    <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-zinc-400 font-medium">
+                      <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700">
+                        <Clock className="w-3.5 h-3.5 text-[#0E3B2F] dark:text-emerald-400" />
                         {mainFeaturedPost.readTimeMinutes} min read
                       </div>
                       {mainFeaturedPost.publishedAt && (
@@ -756,14 +681,14 @@ export default async function Home() {
           {postsToShow.length > 0 && (
             <>
               <BlogList posts={postsToShow} />
-              <div className="text-center mt-16">
+              <div className="text-center mt-14">
                 <Link href="/category">
                   <Button
                     size="lg"
-                    className="bg-white dark:bg-[#0F0E0A] text-primary border-2 border-[#D9CFC7] dark:border-[#3B3028] hover:bg-[#F9F8F6] dark:hover:bg-[#211A13] hover:border-primary/50 dark:hover:border-primary/50 text-lg h-14 px-10 rounded-full font-bold shadow-sm hover:shadow-md transition-all"
+                    className="bg-[#0E3B2F] hover:bg-[#134E4A] text-white border-0 text-base h-12 px-10 rounded-2xl font-bold shadow-lg hover:shadow-emerald-900/30 hover:-translate-y-0.5 transition-all"
                   >
                     View All Articles
-                    <ArrowRight className="ml-2 w-5 h-5" />
+                    <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </Link>
               </div>
@@ -772,78 +697,78 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Trust & Transparency */}
-      <section className="py-24 px-4 bg-linear-to-b from-[#F9F8F6] to-[#EFE9E3] dark:from-[#0F0E0A] dark:to-[#211A13]">
-        <div className="container mx-auto max-w-6xl">
+      {/* ══ Trust & Transparency ════════════════════════════════════ */}
+      <section className="relative py-24 px-4 overflow-hidden bg-stone-50/70 dark:bg-[#080B0E] border-t border-stone-200/80 dark:border-stone-800">
+        <div className="container mx-auto max-w-6xl relative z-10">
           <div className="grid md:grid-cols-2 gap-16 lg:gap-20 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 dark:border-primary/30 bg-primary/5 dark:bg-primary/10 mb-6">
-                <ShieldCheck className="w-5 h-5 text-primary" />
-                <span className="text-sm font-bold text-gray-900 dark:text-zinc-100 uppercase tracking-widest">
-                  Transparency
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded border border-emerald-200/80 dark:border-emerald-900/60 bg-emerald-50/70 dark:bg-emerald-950/40 mb-6">
+                <ShieldCheck className="w-3.5 h-3.5 text-[#0E3B2F] dark:text-emerald-400" />
+                <span className="text-[10px] font-mono font-bold text-[#0E3B2F] dark:text-emerald-300 uppercase tracking-widest">
+                  Transparency Protocol
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-extrabold mb-8 text-black dark:text-white tracking-tight leading-tight">
-                Strong Trust Signals You Should Know
+              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-stone-900 dark:text-white tracking-tight leading-[1.12]">
+                Strong Trust Signals{" "}
+                <span className="italic font-normal text-[#0E3B2F] dark:text-emerald-400">
+                  You Should Know
+                </span>
               </h2>
-              <p className="text-xl text-gray-700 dark:text-zinc-300 mb-10 leading-relaxed font-medium">
+              <p className="text-base text-stone-600 dark:text-stone-300 mb-8 leading-relaxed">
                 We are committed to complete editorial independence. We accept
                 zero affiliate partnerships, publish no sponsored content, and
                 receive no compensation from supplement manufacturers or
                 retailers. Our evaluations are free from any commercial
                 influence.
               </p>
-              <ul className="space-y-6">
+              <ul className="space-y-3">
                 {trustSignals.map((item, i) => (
                   <li
                     key={i}
-                    className="flex gap-4 text-gray-800 dark:text-zinc-200 text-lg leading-relaxed bg-white/60 dark:bg-[#1A1208]/80 p-3 rounded-2xl border border-white/70 dark:border-[#3B2E22]/80 shadow-sm"
+                    className="flex gap-3 text-stone-700 dark:text-stone-300 bg-white dark:bg-[#0D1217] p-4 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
                   >
-                    <CheckCircle2 className="w-6 h-6 text-primary shrink-0 mt-0.5 drop-shadow-sm" />
-                    <span className="font-medium">{item}</span>
+                    <div className="mt-0.5 w-4 h-4 rounded-full bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center shrink-0 text-emerald-700 dark:text-emerald-400">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                    </div>
+                    <span className="text-sm leading-relaxed">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="bg-white dark:bg-[#17120D] p-10 md:p-12 rounded-[3rem] shadow-2xl border border-[#D9CFC7]/60 dark:border-[#3B2E22] relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/2 group-hover:bg-primary/20 transition-colors duration-1000" />
-              <div className="absolute bottom-0 left-0 w-64 h-64 bg-amber-500/10 dark:bg-amber-500/5 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2" />
-
+            <div className="bg-white dark:bg-[#0D1217] border border-stone-200 dark:border-stone-800 rounded-2xl p-8 md:p-10 shadow-lg shadow-stone-900/5 relative overflow-hidden">
               <div className="relative z-10 text-center">
-                <div className="mx-auto w-20 h-20 bg-primary/10 text-primary flex items-center justify-center rounded-full mb-8 shadow-inner border border-primary/20">
-                  <ArrowRight className="w-10 h-10" />
+                <div className="mx-auto w-12 h-12 bg-[#0E3B2F] dark:bg-emerald-600 flex items-center justify-center rounded-xl mb-6 shadow-md shadow-[#0E3B2F]/20 text-white">
+                  <ArrowRight className="w-5 h-5" />
                 </div>
-                <h3 className="text-3xl font-extrabold mb-4 text-black dark:text-white tracking-tight">
+                <h3 className="text-2xl font-extrabold mb-3 text-[#0A1A13] dark:text-white tracking-tight">
                   Where to Go Next
                 </h3>
-                <p className="text-lg text-gray-600 dark:text-zinc-400 mb-10 leading-relaxed max-w-sm mx-auto">
+                <p className="text-base text-slate-500 dark:text-zinc-400 mb-8 leading-relaxed max-w-sm mx-auto">
                   Our goal is to empower you with knowledge, not persuade you to
                   buy. Continue exploring the site through ingredients, category
                   overviews, and our editorial standards.
                 </p>
-                <div className="space-y-4 w-full relative z-20 text-left">
+                <div className="space-y-3 w-full text-left">
                   {nextSteps.map((step) => (
                     <Link
                       key={step.title}
                       href={step.href}
-                      className="block rounded-[1.75rem] border border-[#D9CFC7]/80 dark:border-[#3B2E22] bg-[#F9F8F6] dark:bg-[#211A13] p-5 hover:border-primary/50 hover:-translate-y-0.5 transition-all"
+                      className="flex items-start justify-between gap-4 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-[#111A14]/60 hover:border-[#0E3B2F]/50 dark:hover:border-emerald-700/60 hover:bg-white dark:hover:bg-[#172818]/70 hover:-translate-y-0.5 hover:shadow-md transition-all group"
                     >
-                      <div className="flex items-start justify-between gap-4">
-                        <div>
-                          <h4 className="text-lg font-bold text-black dark:text-white mb-1">
-                            {step.title}
-                          </h4>
-                          <p className="text-sm md:text-base text-gray-600 dark:text-zinc-400 leading-relaxed">
-                            {step.desc}
-                          </p>
-                        </div>
-                        <ArrowRight className="w-5 h-5 text-primary shrink-0 mt-1" />
+                      <div>
+                        <h4 className="text-sm font-bold text-[#0A1A13] dark:text-zinc-100 mb-0.5 group-hover:text-[#0E3B2F] dark:group-hover:text-emerald-400 transition-colors">
+                          {step.title}
+                        </h4>
+                        <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
+                          {step.desc}
+                        </p>
                       </div>
+                      <ArrowRight className="w-4 h-4 text-[#0E3B2F] dark:text-emerald-400 shrink-0 mt-0.5 group-hover:translate-x-0.5 transition-transform" />
                     </Link>
                   ))}
                 </div>
-                <p className="text-sm text-center mt-6 text-gray-500 dark:text-zinc-500 font-medium leading-relaxed">
+                <p className="text-xs text-center mt-7 text-slate-400 dark:text-zinc-500 leading-relaxed">
                   Thank you for visiting. We invite you to explore, learn, and
                   approach health decisions with clarity and evidence.
                 </p>

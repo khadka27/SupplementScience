@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter, Outfit, Atkinson_Hyperlegible } from "next/font/google";
+import { Inter, Outfit, Atkinson_Hyperlegible, Newsreader } from "next/font/google";
 import {
   generateOrganizationSchema,
   generateWebsiteSchema,
@@ -14,6 +14,12 @@ const atkinson = Atkinson_Hyperlegible({
   weight: ["400", "700"],
   variable: "--font-atkinson",
   display: "swap",
+});
+const newsreader = Newsreader({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+  style: ["normal", "italic"],
 });
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID; // Add to .env
@@ -149,7 +155,7 @@ export default function RootLayout({
         )}
       </head>
       <body
-        className={`${inter.variable} ${outfit.variable} ${atkinson.variable} font-sans antialiased min-h-screen relative`}
+        className={`${inter.variable} ${outfit.variable} ${atkinson.variable} ${newsreader.variable} font-sans antialiased min-h-screen relative`}
         suppressHydrationWarning={true}
       >
         {/* Skip to content — first focusable element for keyboard/screen reader users */}
@@ -164,20 +170,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {/* Premium Background Decoration */}
+            {/* Global clean subtle ambient foundation */}
             <div
-              className="fixed inset-0 -z-10 overflow-hidden pointer-events-none opacity-50 dark:opacity-20"
-              suppressHydrationWarning={true}
-            >
-              <div
-                className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 rounded-full blur-[120px] animate-pulse"
-                suppressHydrationWarning={true}
-              />
-              <div
-                className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-blue-500/10 rounded-full blur-[120px]"
-                suppressHydrationWarning={true}
-              />
-            </div>
+              className="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-gradient-to-b from-stone-50/50 via-white to-stone-50/30 dark:from-[#080B0E] dark:via-[#0A0D10] dark:to-[#080B0E]"
+              aria-hidden="true"
+            />
 
             <main id="main-content">
               {children}
