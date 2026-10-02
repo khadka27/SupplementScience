@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   FlaskConical,
   ShieldCheck,
@@ -117,20 +118,16 @@ export function Footer() {
           <div className="lg:col-span-4 space-y-5">
             <Link
               href="/"
-              className="inline-flex items-center gap-2.5 group"
+              className="inline-flex items-center group"
               aria-label="SupplementDecoded — Home"
             >
-              <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#0E3B2F] to-[#1a6b55] flex items-center justify-center shadow-lg group-hover:shadow-emerald-500/30 transition-shadow">
-                <FlaskConical className="w-4 h-4 text-white" />
-              </div>
-              <div className="flex flex-col leading-none">
-                <span className="font-serif font-black text-lg text-white tracking-tight">
-                  Supplement<span className="text-emerald-400">Decoded</span>
-                </span>
-                <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-emerald-400/80 mt-0.5">
-                  Independent Clinical Research
-                </span>
-              </div>
+              <Image
+                src="/logo.png"
+                alt="SupplementDecoded"
+                width={200}
+                height={40}
+                className="h-9 w-auto object-contain invert opacity-95 group-hover:opacity-100 transition-opacity"
+              />
             </Link>
 
             <p className="text-xs sm:text-sm text-stone-400 leading-relaxed font-sans max-w-sm">

@@ -117,24 +117,17 @@ export function Navbar() {
             {/* ── Logo ───────────────────────────────────── */}
             <Link
               href="/"
-              className="flex items-center gap-2.5 group shrink-0"
+              className="flex items-center group shrink-0"
               aria-label="SupplementDecoded — Home"
             >
-              {/* Icon mark */}
-              <div className="relative w-8 h-8 rounded-xl bg-gradient-to-br from-[#0E3B2F] to-[#1a6b55] flex items-center justify-center shadow-lg group-hover:shadow-emerald-500/30 transition-shadow duration-300">
-                <FlaskConical className="w-4 h-4 text-white" />
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </div>
-
-              {/* Text mark */}
-              <div className="flex flex-col leading-none">
-                <span className="font-heading font-black text-[15px] tracking-tight text-[#0F172A] dark:text-white group-hover:text-[#0E3B2F] dark:group-hover:text-emerald-400 transition-colors duration-200">
-                  Supplement<span className="text-[#0E3B2F] dark:text-emerald-400">Decoded</span>
-                </span>
-                <span className="text-[9px] font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mt-0.5">
-                  Independent Clinical Research
-                </span>
-              </div>
+              <Image
+                src="/logo.png"
+                alt="SupplementDecoded"
+                width={190}
+                height={38}
+                priority
+                className="h-8 sm:h-9 w-auto object-contain dark:invert opacity-95 group-hover:opacity-100 transition-opacity"
+              />
             </Link>
 
             {/* ── Desktop Nav Links ───────────────────────── */}
@@ -232,19 +225,21 @@ export function Navbar() {
                 >
                   <SheetHeader className="px-6 pt-6 pb-4 border-b border-slate-200 dark:border-slate-800">
                     <SheetTitle className="text-left">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#0E3B2F] to-[#1a6b55] flex items-center justify-center shadow-md">
-                          <FlaskConical className="w-4 h-4 text-white" />
-                        </div>
-                        <div>
-                          <div className="font-black text-sm text-[#0F172A] dark:text-white">
-                            Supplement<span className="text-[#0E3B2F] dark:text-emerald-400">Decoded</span>
-                          </div>
-                          <div className="text-[9px] font-bold uppercase tracking-wider text-slate-400 mt-0.5">
-                            Clinical Research Platform
-                          </div>
-                        </div>
-                      </div>
+                      <Link
+                        href="/"
+                        onClick={() => setMobileOpen(false)}
+                        aria-label="SupplementDecoded — Home"
+                        className="inline-block"
+                      >
+                        <Image
+                          src="/logo.png"
+                          alt="SupplementDecoded"
+                          width={160}
+                          height={32}
+                          priority
+                          className="h-7 w-auto object-contain dark:invert"
+                        />
+                      </Link>
                     </SheetTitle>
                   </SheetHeader>
 
