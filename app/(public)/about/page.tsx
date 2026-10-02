@@ -185,10 +185,10 @@ export default function AboutPage() {
       {/* ── 3. THE REGULATORY REALITY & WHY WE EXIST ───────────────── */}
       <section className="py-16 sm:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14 items-start w-full">
             
             {/* Left Column: The Problem with Supplement Marketing */}
-            <div className="lg:col-span-6 space-y-6 text-left">
+            <div className="space-y-6 text-left w-full min-w-0">
               <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-stone-100 dark:bg-stone-800 text-[10px] font-mono font-bold text-stone-600 dark:text-stone-300 uppercase tracking-wider">
                 THE REGULATORY BLINDSPOT
               </div>
@@ -245,7 +245,7 @@ export default function AboutPage() {
             </div>
 
             {/* Right Column: The SupplementDecoded Human-Trial Counter-Model */}
-            <div className="lg:col-span-6 space-y-6 text-left">
+            <div className="space-y-6 text-left w-full min-w-0">
               <div className="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-[10px] font-mono font-bold text-emerald-800 dark:text-emerald-300 uppercase tracking-wider">
                 OUR CLINICAL COUNTER-MODEL
               </div>

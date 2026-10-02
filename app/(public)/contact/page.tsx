@@ -141,10 +141,10 @@ export default function ContactPage() {
       {/* ── MAIN CONTENT: DIRECT DESKS (LEFT) + INTERACTIVE FORM (RIGHT) ── */}
       <section className="py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-start w-full">
             
-            {/* Left Column (5 Cols): Direct Specialized Channels */}
-            <div className="lg:col-span-5 space-y-6">
+            {/* Left Column: Direct Specialized Channels */}
+            <div className="w-full lg:w-[42%] space-y-6 shrink-0">
               <div>
                 <h2 className="font-serif text-2xl font-bold text-stone-900 dark:text-stone-100 tracking-tight mb-2">
                   Direct Specialized Desks
@@ -227,8 +227,8 @@ export default function ContactPage() {
 
             </div>
 
-            {/* Right Column (7 Cols): Interactive Clinical Intake Form */}
-            <div className="lg:col-span-7">
+            {/* Right Column: Interactive Clinical Intake Form */}
+            <div className="w-full lg:w-[58%] flex-1 min-w-0">
               <ContactForm />
             </div>
 
