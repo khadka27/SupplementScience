@@ -273,17 +273,17 @@ export function ClinicalHeroSearch() {
                   {/* Autocomplete Dropdown: Displaying REAL Database Results */}
                   {isOpen && (
                     <div
-                      className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-[#0D1217] rounded-2xl border border-stone-200 dark:border-stone-800 shadow-2xl overflow-hidden z-50 text-left max-h-[380px] flex flex-col"
+                      className="absolute top-full left-0 w-full min-w-[320px] sm:min-w-[480px] md:min-w-[560px] max-w-[calc(100vw-32px)] mt-2 bg-white dark:bg-[#0D1217] rounded-2xl border border-stone-200 dark:border-stone-800 shadow-2xl shadow-black/25 overflow-hidden z-50 text-left max-h-[420px] flex flex-col"
                       role="listbox"
                     >
                       {/* Dropdown Header */}
-                      <div className="px-4 py-2 bg-stone-50 dark:bg-stone-900/60 border-b border-stone-100 dark:border-stone-800 flex items-center justify-between shrink-0">
-                        <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-stone-500">
+                      <div className="px-4 py-2.5 bg-stone-50 dark:bg-stone-900/80 border-b border-stone-100 dark:border-stone-800 flex items-center justify-between shrink-0 gap-3">
+                        <span className="text-[10px] font-mono uppercase tracking-wider font-bold text-stone-500 shrink-0 whitespace-nowrap">
                           {query.trim()
                             ? `CLINICAL RESULTS (${results.length})`
                             : "TOP VERIFIED CLINICAL MONOGRAPHS"}
                         </span>
-                        <span className="text-[10px] text-stone-400 font-mono">
+                        <span className="text-[10px] text-stone-400 font-mono shrink-0 whitespace-nowrap">
                           ↑↓ to navigate · Enter to view
                         </span>
                       </div>
@@ -303,25 +303,25 @@ export function ClinicalHeroSearch() {
                                 aria-selected={isSelected}
                                 onMouseEnter={() => setSelectedIndex(index)}
                                 onClick={() => handleSelect(item)}
-                                className={`w-full text-left px-4 py-3 flex items-start gap-3.5 transition-colors ${
+                                className={`w-full text-left px-4 py-3 flex flex-col gap-1 transition-colors ${
                                   isSelected
-                                    ? "bg-emerald-50/70 dark:bg-emerald-950/40"
-                                    : "hover:bg-stone-50/70 dark:hover:bg-stone-900/40"
+                                    ? "bg-emerald-50/80 dark:bg-emerald-950/40"
+                                    : "hover:bg-stone-50/80 dark:hover:bg-stone-900/40"
                                 }`}
                               >
-                                {/* Content Details */}
-                                <div className="min-w-0 flex-1">
-                                  <div className="flex items-center gap-2 flex-wrap">
-                                    <span className="font-bold text-[13px] text-stone-900 dark:text-stone-100">
-                                      {item.title}
-                                    </span>
+                                {/* Line 1: Title + Monograph/Guide Tag + Match Percentage */}
+                                <div className="flex items-center justify-between gap-3 min-w-0">
+                                  <span className="font-bold text-[13px] sm:text-sm text-stone-900 dark:text-stone-100 truncate">
+                                    {item.title}
+                                  </span>
 
+                                  <div className="flex items-center gap-1.5 shrink-0">
                                     {/* Type Tag */}
                                     <span
-                                      className={`px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-wider ${
+                                      className={`px-1.5 py-0.5 rounded text-[9px] font-mono font-bold uppercase tracking-wider shrink-0 ${
                                         isMonograph
-                                          ? "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300"
-                                          : "bg-sky-100 dark:bg-sky-900/50 text-sky-800 dark:text-sky-300"
+                                          ? "bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/60"
+                                          : "bg-sky-100 dark:bg-sky-900/50 text-sky-800 dark:text-sky-300 border border-sky-200/80 dark:border-sky-800/60"
                                       }`}
                                     >
                                       {isMonograph ? "Monograph" : "Guide"}
@@ -330,31 +330,31 @@ export function ClinicalHeroSearch() {
                                     {/* Fuzzy Match Percentage */}
                                     {item.matchPercentage !== undefined && query.trim() && (
                                       <span
-                                        className={`px-1.5 py-0.5 rounded text-[9px] font-mono font-semibold ${
+                                        className={`px-1.5 py-0.5 rounded text-[9px] font-mono font-semibold shrink-0 ${
                                           item.matchPercentage >= 75
-                                            ? "text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50"
-                                            : "text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50"
+                                            ? "text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/60 dark:border-emerald-800/40"
+                                            : "text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50 border border-amber-200/60 dark:border-amber-800/40"
                                         }`}
                                       >
                                         {item.matchPercentage}% match
                                       </span>
                                     )}
                                   </div>
+                                </div>
 
-                                  {/* Category & Excerpt */}
-                                  <div className="flex items-center gap-2 text-[11px] text-stone-500 dark:text-stone-400 mt-0.5">
-                                    {item.category?.name && (
-                                      <>
-                                        <span className="font-semibold text-emerald-700 dark:text-emerald-400">
-                                          {item.category.name}
-                                        </span>
-                                        <span>•</span>
-                                      </>
-                                    )}
-                                    <span className="truncate max-w-sm text-stone-400">
-                                      {item.excerpt || "Peer-reviewed clinical evidence synthesis."}
-                                    </span>
-                                  </div>
+                                {/* Line 2: Category & Excerpt */}
+                                <div className="flex items-center gap-2 text-[11px] text-stone-500 dark:text-stone-400 min-w-0 overflow-hidden">
+                                  {item.category?.name && (
+                                    <>
+                                      <span className="shrink-0 whitespace-nowrap font-semibold text-emerald-700 dark:text-emerald-400">
+                                        {item.category.name}
+                                      </span>
+                                      <span className="shrink-0 text-stone-300 dark:text-stone-600">•</span>
+                                    </>
+                                  )}
+                                  <span className="truncate text-stone-400 dark:text-stone-500 flex-1">
+                                    {item.excerpt || "Peer-reviewed clinical evidence synthesis."}
+                                  </span>
                                 </div>
                               </button>
                             );
@@ -375,11 +375,11 @@ export function ClinicalHeroSearch() {
                       </div>
 
                       {/* Dropdown Footer */}
-                      <div className="px-4 py-2 bg-stone-50 dark:bg-stone-900/60 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-[10px] text-stone-500 shrink-0">
-                        <span>Database: 1,420+ RCTs indexed</span>
+                      <div className="px-4 py-2.5 bg-stone-50 dark:bg-stone-900/80 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-[10px] text-stone-500 shrink-0">
+                        <span className="shrink-0">Database: 1,420+ RCTs indexed</span>
                         <Link
                           href="/ingredients"
-                          className="font-bold text-[#0E3B2F] dark:text-emerald-400 hover:underline"
+                          className="font-bold text-[#0E3B2F] dark:text-emerald-400 hover:underline shrink-0"
                         >
                           Browse All Ingredients →
                         </Link>
