@@ -28,15 +28,28 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
-import { Save, Loader2, Globe, ImageIcon, Sparkles } from "lucide-react";
+import {
+  Save,
+  Loader2,
+  Globe,
+  ImageIcon,
+  Sparkles,
+  ArrowLeft,
+  FileText,
+  RefreshCw,
+  CheckCircle2,
+  Clock,
+} from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageUpload } from "@/components/ImageUpload";
 import { isValidFeaturedImageSource } from "@/lib/admin-utils";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 // Calculate read time based on word count (avg 200 words per minute)
 const calculateReadTime = (content: string): number => {
   const text = content.replace(/<[^>]*>/g, ""); // Remove HTML tags
-  const words = text.trim().split(/\s+/).length;
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
   const minutes = Math.ceil(words / 200);
   return Math.max(1, minutes); // Minimum 1 minute
 };
@@ -90,6 +103,9 @@ export default function BlogEditorForm({
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const isEditing = !!initialData;
+  const [isSlugCustomized, setIsSlugCustomized] = useState(
+    isEditing && !!initialData?.slug
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -120,6 +136,48 @@ export default function BlogEditorForm({
   const selectedAuthorId = form.watch("authorId");
   const selectedFactCheckerId = form.watch("factCheckedById");
   const selectedReviewerId = form.watch("reviewedById");
+
+  const watchedTitle = form.watch("title");
+  const watchedContent = form.watch("content");
+  const watchedMetaTitle = form.watch("metaTitle") || "";
+  const watchedMetaDescription = form.watch("metaDescription") || "";
+  const watchedExcerpt = form.watch("excerpt") || "";
+  const watchedStatus = form.watch("status");
+
+  // Word count & read time live stats
+  const wordCount = watchedContent
+    ? watchedContent
+        .replace(/<[^>]*>/g, " ")
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean).length
+    : 0;
+  const readTime = Math.max(1, Math.ceil(wordCount / 200));
+
+  // Auto-sync slug from title if not customized
+  useEffect(() => {
+    if (!isSlugCustomized && watchedTitle) {
+      const slug = watchedTitle
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, "")
+        .replace(/[\s_-]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+      form.setValue("slug", slug, { shouldValidate: false });
+    }
+  }, [watchedTitle, isSlugCustomized, form]);
+
+  // Unsaved changes warning
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (form.formState.isDirty && !isSubmitting) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [form.formState.isDirty, isSubmitting]);
 
   // Shortcut: Ctrl+S / Cmd+S
   useEffect(() => {
@@ -225,11 +283,102 @@ export default function BlogEditorForm({
       .replace(/^-+|-+$/g, "");
 
     form.setValue("slug", slug, { shouldValidate: true });
+    setIsSlugCustomized(false);
+    toast.success("Slug re-synced with title");
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* ── Sticky Top Action Bar ────────────────────────── */}
+        <div className="sticky top-16 z-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 bg-white/95 dark:bg-[#070A0E]/95 backdrop-blur-md border-b border-stone-200/90 dark:border-stone-800 flex flex-wrap items-center justify-between gap-3 transition-colors shadow-2xs">
+          <div className="flex items-center gap-3">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push("/admin/blogs")}
+              className="text-xs text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white h-8 px-2.5"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 mr-1" />
+              All Content
+            </Button>
+            <div className="h-4 w-px bg-stone-300 dark:bg-stone-700 hidden sm:block" />
+            <Badge
+              variant="outline"
+              className="bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800/40 text-xs font-semibold gap-1 py-0.5"
+            >
+              <FileText className="w-3 h-3" />
+              Article
+            </Badge>
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium hidden md:inline">
+              {wordCount} words · {readTime} min read
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            {/* Quick Status Toggle */}
+            <div className="flex items-center rounded-xl bg-stone-100 dark:bg-stone-900 p-1 border border-stone-200/80 dark:border-stone-800">
+              <button
+                type="button"
+                onClick={() =>
+                  form.setValue("status", "draft", { shouldDirty: true })
+                }
+                className={cn(
+                  "px-2.5 py-1 text-xs font-semibold rounded-lg transition-all",
+                  watchedStatus === "draft"
+                    ? "bg-white dark:bg-stone-800 text-slate-900 dark:text-white shadow-2xs font-bold"
+                    : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                )}
+              >
+                Draft
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  form.setValue("status", "published", { shouldDirty: true })
+                }
+                className={cn(
+                  "px-2.5 py-1 text-xs font-semibold rounded-lg transition-all",
+                  watchedStatus === "published"
+                    ? "bg-emerald-600 text-white shadow-2xs font-bold"
+                    : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                )}
+              >
+                Published
+              </button>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={autoGenerateSEO}
+              className="text-xs h-8 gap-1.5 text-emerald-700 dark:text-emerald-400 border-emerald-300/70 dark:border-emerald-800/60 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 font-semibold"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Auto-Fill SEO</span>
+            </Button>
+
+            <Button
+              type="submit"
+              size="sm"
+              disabled={isSubmitting}
+              className="h-8 px-3.5 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs rounded-xl shadow-xs gap-1.5"
+            >
+              {isSubmitting ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Save className="w-3.5 h-3.5" />
+              )}
+              <span>{isEditing ? "Update Post" : "Save Post"}</span>
+              <kbd className="hidden lg:inline-block ml-1 px-1.5 py-0.5 text-[10px] font-mono bg-emerald-900/40 rounded text-emerald-200">
+                ⌘S
+              </kbd>
+            </Button>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-2 space-y-6">
             <Card>
@@ -253,18 +402,32 @@ export default function BlogEditorForm({
                   name="slug"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="flex justify-between">
-                        Slug
-                        <button
-                          type="button"
-                          onClick={generateSlug}
-                          className="text-xs text-primary hover:underline"
-                        >
-                          Generate from title
-                        </button>
-                      </FormLabel>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Slug</FormLabel>
+                        {isSlugCustomized ? (
+                          <button
+                            type="button"
+                            onClick={generateSlug}
+                            className="text-xs text-primary hover:underline flex items-center gap-1 text-emerald-600 dark:text-emerald-400"
+                          >
+                            <RefreshCw className="w-3 h-3" />
+                            Re-sync with title
+                          </button>
+                        ) : (
+                          <span className="text-[11px] text-slate-400 dark:text-slate-400">
+                            Auto-syncs from title
+                          </span>
+                        )}
+                      </div>
                       <FormControl>
-                        <Input placeholder="post-url-slug" {...field} />
+                        <Input
+                          placeholder="post-url-slug"
+                          {...field}
+                          onChange={(e) => {
+                            setIsSlugCustomized(true);
+                            field.onChange(e);
+                          }}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -276,7 +439,19 @@ export default function BlogEditorForm({
                   name="excerpt"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Excerpt (Short Summary)</FormLabel>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Excerpt (Short Summary)</FormLabel>
+                        <span
+                          className={cn(
+                            "text-[11px] font-mono",
+                            (field.value?.length || 0) > 200
+                              ? "text-amber-600 dark:text-amber-400 font-semibold"
+                              : "text-slate-400"
+                          )}
+                        >
+                          {field.value?.length || 0}/200 chars
+                        </span>
+                      </div>
                       <FormControl>
                         <Input
                           placeholder="A brief summary of the post..."
@@ -289,7 +464,9 @@ export default function BlogEditorForm({
                 />
 
                 <div className="flex items-center justify-between pt-2 pb-1">
-                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Search Engine Optimization</h4>
+                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                    Search Engine Optimization
+                  </h4>
                   <Button
                     type="button"
                     variant="outline"
@@ -307,7 +484,21 @@ export default function BlogEditorForm({
                   name="metaTitle"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Meta Title (SEO)</FormLabel>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Meta Title (SEO)</FormLabel>
+                        <span
+                          className={cn(
+                            "text-[11px] font-mono",
+                            (field.value?.length || 0) > 60
+                              ? "text-amber-600 dark:text-amber-400 font-semibold"
+                              : (field.value?.length || 0) >= 40
+                              ? "text-emerald-600 dark:text-emerald-400 font-semibold"
+                              : "text-slate-400"
+                          )}
+                        >
+                          {field.value?.length || 0}/60 chars
+                        </span>
+                      </div>
                       <FormControl>
                         <Input
                           placeholder="Leave blank to use post title"
@@ -315,7 +506,7 @@ export default function BlogEditorForm({
                         />
                       </FormControl>
                       <FormDescription>
-                        Recommended length: 50-60 characters
+                        Ideal length: 50-60 characters
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -327,7 +518,21 @@ export default function BlogEditorForm({
                   name="metaDescription"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Meta Description (SEO)</FormLabel>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Meta Description (SEO)</FormLabel>
+                        <span
+                          className={cn(
+                            "text-[11px] font-mono",
+                            (field.value?.length || 0) > 160
+                              ? "text-amber-600 dark:text-amber-400 font-semibold"
+                              : (field.value?.length || 0) >= 120
+                              ? "text-emerald-600 dark:text-emerald-400 font-semibold"
+                              : "text-slate-400"
+                          )}
+                        >
+                          {field.value?.length || 0}/160 chars
+                        </span>
+                      </div>
                       <FormControl>
                         <Input
                           placeholder="Leave blank to auto-generate from excerpt/content"
@@ -335,7 +540,7 @@ export default function BlogEditorForm({
                         />
                       </FormControl>
                       <FormDescription>
-                        Recommended length: 140-160 characters
+                        Ideal length: 140-160 characters
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

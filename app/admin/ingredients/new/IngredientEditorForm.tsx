@@ -35,6 +35,9 @@ import {
   Globe,
   ImageIcon,
   Sparkles,
+  ArrowLeft,
+  FlaskConical,
+  RefreshCw,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageUpload } from "@/components/ImageUpload";
@@ -44,10 +47,12 @@ import {
   isValidFeaturedImageSource,
 } from "@/lib/admin-utils";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 const calculateReadTime = (content: string): number => {
   const text = content.replace(/<[^>]*>/g, "");
-  const words = text.trim().split(/\s+/).length;
+  const words = text.trim().split(/\s+/).filter(Boolean).length;
   const minutes = Math.ceil(words / 200);
   return Math.max(1, minutes);
 };
@@ -101,6 +106,20 @@ export default function IngredientEditorForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const isEditing = !!initialData;
+  const [isSlugCustomized, setIsSlugCustomized] = useState(
+    isEditing && !!initialData?.slug
+  );
+
+  const defaultCategory =
+    initialData?.categoryId ||
+    categories.find(
+      (c) =>
+        c.slug === "ingredients" ||
+        c.name.toLowerCase() === "ingredients" ||
+        c.name.toLowerCase().includes("ingredient")
+    )?.id ||
+    categories[0]?.id ||
+    "";
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -123,7 +142,7 @@ export default function IngredientEditorForm({
       reviewedById:
         authors.find((author) => author.name === initialData?.reviewedBy)?.id ||
         "",
-      categoryId: initialData?.categoryId || "",
+      categoryId: defaultCategory,
       status: initialData?.status?.toLowerCase() || "draft",
     },
   });
@@ -133,7 +152,34 @@ export default function IngredientEditorForm({
   const selectedReviewerId = form.watch("reviewedById");
 
   const ingredientName = form.watch("ingredientName");
+  const watchedTitle = form.watch("title");
+  const watchedContent = form.watch("content");
+  const watchedMetaTitle = form.watch("metaTitle") || "";
+  const watchedMetaDescription = form.watch("metaDescription") || "";
+  const watchedExcerpt = form.watch("excerpt") || "";
+  const watchedStatus = form.watch("status");
   const slug = form.watch("slug");
+
+  // Word count & read time live stats
+  const wordCount = watchedContent
+    ? watchedContent
+        .replace(/<[^>]*>/g, " ")
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean).length
+    : 0;
+  const readTime = Math.max(1, Math.ceil(wordCount / 200));
+
+  // Auto-sync slug from ingredientName or title if not customized
+  useEffect(() => {
+    if (!isSlugCustomized && (ingredientName || watchedTitle)) {
+      const source = ingredientName || watchedTitle;
+      const generatedSlug = generateSlugForPostType("ingredient", source);
+      if (generatedSlug) {
+        form.setValue("slug", generatedSlug, { shouldValidate: false });
+      }
+    }
+  }, [ingredientName, watchedTitle, isSlugCustomized, form]);
 
   // Generate preview URL when slug changes
   useEffect(() => {
@@ -144,6 +190,18 @@ export default function IngredientEditorForm({
       setPreviewUrl("");
     }
   }, [slug]);
+
+  // Unsaved changes warning
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (form.formState.isDirty && !isSubmitting) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [form.formState.isDirty, isSubmitting]);
 
   // Shortcut: Ctrl+S / Cmd+S
   useEffect(() => {
@@ -237,7 +295,7 @@ export default function IngredientEditorForm({
   };
 
   const generateSlug = () => {
-    const ingredient = ingredientName || form.getValues("ingredientName");
+    const ingredient = ingredientName || form.getValues("ingredientName") || form.getValues("title");
     if (!ingredient) {
       toast.error("Please enter an ingredient name first");
       return;
@@ -245,11 +303,102 @@ export default function IngredientEditorForm({
 
     const generatedSlug = generateSlugForPostType("ingredient", ingredient);
     form.setValue("slug", generatedSlug, { shouldValidate: true });
+    setIsSlugCustomized(false);
+    toast.success("Slug re-synced with ingredient name");
   };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        {/* ── Sticky Top Action Bar ────────────────────────── */}
+        <div className="sticky top-16 z-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 bg-white/95 dark:bg-[#070A0E]/95 backdrop-blur-md border-b border-stone-200/90 dark:border-stone-800 flex flex-wrap items-center justify-between gap-3 transition-colors shadow-2xs">
+          <div className="flex items-center gap-3">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => router.push("/admin/ingredients")}
+              className="text-xs text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white h-8 px-2.5"
+            >
+              <ArrowLeft className="w-3.5 h-3.5 mr-1" />
+              All Ingredients
+            </Button>
+            <div className="h-4 w-px bg-stone-300 dark:bg-stone-700 hidden sm:block" />
+            <Badge
+              variant="outline"
+              className="bg-violet-50 text-violet-700 border-violet-200 dark:bg-violet-950/40 dark:text-violet-300 dark:border-violet-800/40 text-xs font-semibold gap-1 py-0.5"
+            >
+              <FlaskConical className="w-3 h-3" />
+              Ingredient Monograph
+            </Badge>
+            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium hidden md:inline">
+              {wordCount} words · {readTime} min read
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            {/* Quick Status Toggle */}
+            <div className="flex items-center rounded-xl bg-stone-100 dark:bg-stone-900 p-1 border border-stone-200/80 dark:border-stone-800">
+              <button
+                type="button"
+                onClick={() =>
+                  form.setValue("status", "draft", { shouldDirty: true })
+                }
+                className={cn(
+                  "px-2.5 py-1 text-xs font-semibold rounded-lg transition-all",
+                  watchedStatus === "draft"
+                    ? "bg-white dark:bg-stone-800 text-slate-900 dark:text-white shadow-2xs font-bold"
+                    : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                )}
+              >
+                Draft
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  form.setValue("status", "published", { shouldDirty: true })
+                }
+                className={cn(
+                  "px-2.5 py-1 text-xs font-semibold rounded-lg transition-all",
+                  watchedStatus === "published"
+                    ? "bg-violet-600 text-white shadow-2xs font-bold"
+                    : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                )}
+              >
+                Published
+              </button>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={autoGenerateSEO}
+              className="text-xs h-8 gap-1.5 text-violet-700 dark:text-violet-400 border-violet-300/70 dark:border-violet-800/60 hover:bg-violet-50 dark:hover:bg-violet-950/40 font-semibold"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Auto-Fill SEO</span>
+            </Button>
+
+            <Button
+              type="submit"
+              size="sm"
+              disabled={isSubmitting}
+              className="h-8 px-3.5 bg-violet-700 hover:bg-violet-800 text-white font-semibold text-xs rounded-xl shadow-xs gap-1.5"
+            >
+              {isSubmitting ? (
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
+              ) : (
+                <Save className="w-3.5 h-3.5" />
+              )}
+              <span>{isEditing ? "Update Monograph" : "Save Monograph"}</span>
+              <kbd className="hidden lg:inline-block ml-1 px-1.5 py-0.5 text-[10px] font-mono bg-violet-900/40 rounded text-violet-200">
+                ⌘S
+              </kbd>
+            </Button>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="md:col-span-2 space-y-6">
             <Card>
@@ -261,10 +410,22 @@ export default function IngredientEditorForm({
                     <FormItem>
                       <FormLabel>Ingredient Name *</FormLabel>
                       <FormControl>
-                        <Input placeholder="e.g., Glucosamine" {...field} />
+                        <Input
+                          placeholder="e.g., Glucosamine"
+                          {...field}
+                          onChange={(e) => {
+                            field.onChange(e);
+                            if (!form.getValues("title")) {
+                              form.setValue(
+                                "title",
+                                `${e.target.value}: Clinical Evidence, Benefits & Dosage`
+                              );
+                            }
+                          }}
+                        />
                       </FormControl>
                       <FormDescription>
-                        The name of the ingredient
+                        Common name of the active ingredient
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -279,7 +440,7 @@ export default function IngredientEditorForm({
                       <FormLabel>Page Title *</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="e.g., Glucosamine: Complete Guide"
+                          placeholder="e.g., Glucosamine: Complete Evidence & Clinical Guide"
                           {...field}
                         />
                       </FormControl>
@@ -293,30 +454,42 @@ export default function IngredientEditorForm({
                   name="slug"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="flex justify-between items-center">
-                        <span>Slug *</span>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          onClick={generateSlug}
-                          className="text-xs h-auto py-1"
-                        >
-                          Generate from ingredient name
-                        </Button>
-                      </FormLabel>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Slug *</FormLabel>
+                        {isSlugCustomized ? (
+                          <button
+                            type="button"
+                            onClick={generateSlug}
+                            className="text-xs text-primary hover:underline flex items-center gap-1 text-violet-600 dark:text-violet-400"
+                          >
+                            <RefreshCw className="w-3 h-3" />
+                            Re-sync with ingredient name
+                          </button>
+                        ) : (
+                          <span className="text-[11px] text-slate-400 dark:text-slate-400">
+                            Auto-syncs from ingredient name
+                          </span>
+                        )}
+                      </div>
                       <FormControl>
-                        <Input placeholder="glucosamine" {...field} />
+                        <Input
+                          placeholder="glucosamine"
+                          {...field}
+                          onChange={(e) => {
+                            setIsSlugCustomized(true);
+                            field.onChange(e);
+                          }}
+                        />
                       </FormControl>
                       <FormDescription>
                         URL-friendly identifier for the ingredient
                       </FormDescription>
                       {previewUrl && (
-                        <Alert>
-                          <LinkIcon className="h-4 w-4" />
-                          <AlertDescription>
-                            Preview URL:{" "}
-                            <code className="text-xs bg-muted px-1 py-0.5 rounded">
+                        <Alert className="mt-2 py-2">
+                          <LinkIcon className="h-3.5 w-3.5 text-violet-600" />
+                          <AlertDescription className="text-xs">
+                            Public URL:{" "}
+                            <code className="text-xs bg-muted px-1 py-0.5 rounded font-mono">
                               {previewUrl}
                             </code>
                           </AlertDescription>
@@ -332,7 +505,19 @@ export default function IngredientEditorForm({
                   name="excerpt"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Excerpt (Short Summary)</FormLabel>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Excerpt (Short Summary)</FormLabel>
+                        <span
+                          className={cn(
+                            "text-[11px] font-mono",
+                            (field.value?.length || 0) > 200
+                              ? "text-amber-600 dark:text-amber-400 font-semibold"
+                              : "text-slate-400"
+                          )}
+                        >
+                          {field.value?.length || 0}/200 chars
+                        </span>
+                      </div>
                       <FormControl>
                         <Input
                           placeholder="A brief summary of the ingredient..."
@@ -345,13 +530,15 @@ export default function IngredientEditorForm({
                 />
 
                 <div className="flex items-center justify-between pt-2 pb-1">
-                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Search Engine Optimization</h4>
+                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                    Search Engine Optimization
+                  </h4>
                   <Button
                     type="button"
                     variant="outline"
                     size="sm"
                     onClick={autoGenerateSEO}
-                    className="text-xs h-7 gap-1.5 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
+                    className="text-xs h-7 gap-1.5 text-violet-600 hover:text-violet-700 hover:bg-violet-50 dark:hover:bg-violet-950/40"
                   >
                     <Sparkles className="w-3.5 h-3.5" />
                     Auto-Fill SEO
@@ -363,7 +550,21 @@ export default function IngredientEditorForm({
                   name="metaTitle"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Meta Title (SEO)</FormLabel>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Meta Title (SEO)</FormLabel>
+                        <span
+                          className={cn(
+                            "text-[11px] font-mono",
+                            (field.value?.length || 0) > 60
+                              ? "text-amber-600 dark:text-amber-400 font-semibold"
+                              : (field.value?.length || 0) >= 40
+                              ? "text-violet-600 dark:text-violet-400 font-semibold"
+                              : "text-slate-400"
+                          )}
+                        >
+                          {field.value?.length || 0}/60 chars
+                        </span>
+                      </div>
                       <FormControl>
                         <Input
                           placeholder="Leave blank to use page title"
@@ -371,7 +572,7 @@ export default function IngredientEditorForm({
                         />
                       </FormControl>
                       <FormDescription>
-                        Recommended length: 50-60 characters
+                        Ideal length: 50-60 characters
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -383,7 +584,21 @@ export default function IngredientEditorForm({
                   name="metaDescription"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Meta Description (SEO)</FormLabel>
+                      <div className="flex items-center justify-between">
+                        <FormLabel>Meta Description (SEO)</FormLabel>
+                        <span
+                          className={cn(
+                            "text-[11px] font-mono",
+                            (field.value?.length || 0) > 160
+                              ? "text-amber-600 dark:text-amber-400 font-semibold"
+                              : (field.value?.length || 0) >= 120
+                              ? "text-violet-600 dark:text-violet-400 font-semibold"
+                              : "text-slate-400"
+                          )}
+                        >
+                          {field.value?.length || 0}/160 chars
+                        </span>
+                      </div>
                       <FormControl>
                         <Input
                           placeholder="Leave blank to auto-generate from excerpt/content"
@@ -391,7 +606,7 @@ export default function IngredientEditorForm({
                         />
                       </FormControl>
                       <FormDescription>
-                        Recommended length: 140-160 characters
+                        Ideal length: 140-160 characters
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

@@ -110,6 +110,49 @@ const pageMeta: Record<
   },
 };
 
+function getPageMeta(pathname: string): {
+  title: string;
+  category: string;
+  description: string;
+} {
+  if (pageMeta[pathname]) return pageMeta[pathname];
+
+  if (pathname.startsWith("/admin/ingredients/")) {
+    return {
+      title: "Edit Ingredient Monograph",
+      category: "Encyclopedia",
+      description: "Manage clinical dosages, mechanisms, and evidence grade.",
+    };
+  }
+  if (pathname.startsWith("/admin/reviews/")) {
+    return {
+      title: "Edit Product Review",
+      category: "Testing",
+      description: "Manage lab evaluation, brand rating, and evidence score.",
+    };
+  }
+  if (pathname.startsWith("/admin/guides/")) {
+    return {
+      title: "Edit Safety Guide",
+      category: "Guides",
+      description: "Manage consumer protocols and safety guidelines.",
+    };
+  }
+  if (pathname.startsWith("/admin/blog/")) {
+    return {
+      title: "Edit Article",
+      category: "Content",
+      description: "Update clinical article details and editorial metadata.",
+    };
+  }
+
+  return {
+    title: "Editorial Panel",
+    category: "Admin",
+    description: "Manage website content and evidence archives.",
+  };
+}
+
 interface AdminNavbarProps {
   onMobileMenuToggle?: () => void;
 }
@@ -118,11 +161,7 @@ export function AdminNavbar({ onMobileMenuToggle }: AdminNavbarProps) {
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  const currentMeta = pageMeta[pathname] || {
-    title: "Editorial Panel",
-    category: "Admin",
-    description: "Manage website content and evidence archives.",
-  };
+  const currentMeta = getPageMeta(pathname || "");
 
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-stone-200/90 dark:border-stone-800 bg-white/90 dark:bg-[#070A0E]/90 backdrop-blur-md px-4 sm:px-6 transition-colors">

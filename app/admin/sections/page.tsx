@@ -24,6 +24,8 @@ import {
   ExternalLink,
   Globe,
   ImageIcon,
+  Search,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { ImageUpload } from "@/components/ImageUpload";
@@ -63,6 +65,7 @@ interface Section {
 export default function SectionsManagementPage() {
   const [sections, setSections] = useState<Section[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   const [dialogOpen, setDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [editingSection, setEditingSection] = useState<Section | null>(null);
@@ -364,91 +367,174 @@ export default function SectionsManagementPage() {
           </Dialog>
         </div>
 
-        {sections.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {sections.map((section) => (
-              <Card key={section.id} className="relative overflow-hidden">
-                <div className="absolute top-2 right-2 bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 px-2 py-1 rounded-full text-[10px] font-medium">
-                  TOP-LEVEL HUB
-                </div>
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex items-center gap-2 flex-1 pr-20">
-                      <Layers className="w-5 h-5 text-primary flex-shrink-0" />
-                      <CardTitle className="text-lg">{section.name}</CardTitle>
+        {/* Search Bar */}
+        <div className="flex items-center gap-3">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Input
+              placeholder="Search sections by name, slug, or description..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 pr-9 bg-white dark:bg-stone-900 border-stone-200 dark:border-stone-800"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+          <span className="text-xs text-slate-500 font-medium">
+            {sections.filter((s) => {
+              if (!searchQuery.trim()) return true;
+              const q = searchQuery.toLowerCase().trim();
+              return (
+                s.name.toLowerCase().includes(q) ||
+                s.slug.toLowerCase().includes(q) ||
+                s.description?.toLowerCase().includes(q)
+              );
+            }).length} of {sections.length} hubs
+          </span>
+        </div>
+
+        {(() => {
+          const filtered = sections.filter((s) => {
+            if (!searchQuery.trim()) return true;
+            const q = searchQuery.toLowerCase().trim();
+            return (
+              s.name.toLowerCase().includes(q) ||
+              s.slug.toLowerCase().includes(q) ||
+              s.description?.toLowerCase().includes(q)
+            );
+          });
+
+          if (filtered.length > 0) {
+            return (
+              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {filtered.map((section) => (
+                  <Card key={section.id} className="relative overflow-hidden border border-stone-200/90 dark:border-stone-800 hover:shadow-md transition-shadow">
+                    <div className="absolute top-3 right-3 bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 px-2 py-0.5 rounded-full text-[10px] font-bold border border-blue-200 dark:border-blue-800/40">
+                      TOP-LEVEL HUB
                     </div>
-                  </div>
-                  <CardDescription className="font-mono text-xs flex items-center gap-1">
-                    <span>/{section.slug}</span>
-                    <ExternalLink className="w-3 h-3" />
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {section.description && (
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {section.description}
-                    </p>
-                  )}
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between">
+                        <div className="flex items-center gap-2 flex-1 pr-24">
+                          <Layers className="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                          <CardTitle className="text-base font-bold text-slate-900 dark:text-white truncate">
+                            {section.name}
+                          </CardTitle>
+                        </div>
+                      </div>
+                      <CardDescription className="font-mono text-xs flex items-center gap-1 text-slate-500 mt-1">
+                        <a
+                          href={`/${section.slug}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:underline flex items-center gap-1 hover:text-emerald-600"
+                        >
+                          <span>/{section.slug}</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {section.description && (
+                        <p className="text-xs text-slate-600 dark:text-slate-300 line-clamp-2">
+                          {section.description}
+                        </p>
+                      )}
 
-                  <div className="flex items-center justify-between text-sm border-t pt-3">
-                    <span className="text-muted-foreground font-medium">
-                      {section.postCount} articles
-                    </span>
-                    <span className="text-xs text-muted-foreground">
-                      {new Date(section.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
+                      <div className="flex items-center justify-between text-xs border-t border-stone-200/80 dark:border-stone-800 pt-3">
+                        <span className="text-slate-600 dark:text-slate-300 font-semibold">
+                          {section.postCount} articles
+                        </span>
+                        <span className="text-[11px] text-slate-400">
+                          {new Date(section.createdAt).toLocaleDateString()}
+                        </span>
+                      </div>
 
-                  <div className="flex gap-2 pt-2">
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="flex-1"
-                      asChild
-                    >
-                      <Link href={`/admin/blog/new?categoryId=${section.id}`}>
-                        <PenLine className="w-4 h-4 mr-2" />
-                        Write Article
-                      </Link>
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => openEditDialog(section)}
-                    >
-                      <Pencil className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={() => {
-                        setSectionToDelete(section.id);
-                        setDeleteDialogOpen(true);
-                      }}
-                    >
-                      <Trash2 className="w-4 h-4 text-destructive" />
-                    </Button>
-                  </div>
+                      <div className="flex gap-2 pt-1">
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="flex-1 text-xs font-semibold h-8"
+                          asChild
+                        >
+                          <Link href={`/admin/blog/new?categoryId=${section.id}`}>
+                            <PenLine className="w-3.5 h-3.5 mr-1.5 text-emerald-600" />
+                            Write Article
+                          </Link>
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-8 w-8 p-0"
+                          onClick={() => openEditDialog(section)}
+                          title="Edit Section"
+                        >
+                          <Pencil className="w-3.5 h-3.5 text-slate-600" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          className="h-8 w-8 p-0 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/40"
+                          onClick={() => {
+                            setSectionToDelete(section.id);
+                            setDeleteDialogOpen(true);
+                          }}
+                          title="Delete Section"
+                        >
+                          <Trash2 className="w-3.5 h-3.5 text-rose-600" />
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            );
+          }
+
+          if (sections.length > 0) {
+            return (
+              <Card className="border border-dashed border-stone-300 dark:border-stone-800">
+                <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+                  <Search className="w-8 h-8 text-slate-400 mb-2" />
+                  <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                    No sections match &quot;{searchQuery}&quot;
+                  </p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setSearchQuery("")}
+                    className="mt-3 text-xs"
+                  >
+                    Clear Search
+                  </Button>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-        ) : (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <Layers className="w-12 h-12 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No sections yet</h3>
-              <p className="text-muted-foreground text-center mb-4 max-w-md">
-                Create your first authority section like "Ingredients", "Safety
-                Measures", or "How to Choose" to organize your global content.
-              </p>
-              <Button onClick={openCreateDialog}>
-                <Plus className="w-4 h-4 mr-2" />
-                Create Your First Section
-              </Button>
-            </CardContent>
-          </Card>
-        )}
+            );
+          }
+
+          return (
+            <Card>
+              <CardContent className="flex flex-col items-center justify-center py-12">
+                <Layers className="w-12 h-12 text-muted-foreground mb-4" />
+                <h3 className="text-lg font-semibold mb-2">No sections yet</h3>
+                <p className="text-muted-foreground text-center mb-4 max-w-md">
+                  Create your first authority section like &quot;Ingredients&quot;, &quot;Safety
+                  Measures&quot;, or &quot;How to Choose&quot; to organize your global content.
+                </p>
+                <Button onClick={openCreateDialog}>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Your First Section
+                </Button>
+              </CardContent>
+            </Card>
+          );
+        })()}
 
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <AlertDialogContent>
