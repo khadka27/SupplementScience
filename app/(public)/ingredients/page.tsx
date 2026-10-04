@@ -1,34 +1,52 @@
 import prisma from "@/lib/prisma";
-import BlogList from "@/components/blog/BlogList";
 import { Metadata } from "next";
-import { Beaker, ShieldAlert, BookOpen, CheckCircle2 } from "lucide-react";
+import {
+  Beaker,
+  ShieldAlert,
+  CheckCircle2,
+  Microscope,
+  Sparkles,
+  Scale,
+  Dna,
+  FileCheck2,
+  AlertCircle,
+  TrendingUp,
+  Brain,
+  Zap,
+  Heart,
+  Shield,
+} from "lucide-react";
+import { IngredientsDirectory } from "@/components/ingredients/IngredientsDirectory";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 10;
 
+const baseUrl =
+  (((process.env.NEXT_PUBLIC_BASE_URL &&
+    process.env.NEXT_PUBLIC_BASE_URL.replace(
+      /^https?:\/\/supplementdecoded\.com/i,
+      "https://www.supplementdecoded.com"
+    )) ||
+    "https://www.supplementdecoded.com") as string);
+
 export const metadata: Metadata = {
-  title: "Supplement Ingredients | SupplementDecoded",
+  title: "Clinical Supplement Ingredients Library | Evidence-Based Monographs",
   description:
-    "Browse our evidence-based library of supplement ingredients, including potential benefits, safety considerations, mechanisms of action, and research quality.",
+    "Explore independent, peer-reviewed monographs of supplement ingredients. Analyzed for human clinical trial efficacy, standardized bioactive extracts, therapeutic dose ranges, and contraindications.",
+  alternates: {
+    canonical: `${baseUrl}/ingredients`,
+  },
+  openGraph: {
+    title: "Clinical Supplement Ingredients Library | SupplementDecoded",
+    description:
+      "Explore independent, peer-reviewed monographs of supplement ingredients analyzed for human RCT efficacy, standardized forms, and safety.",
+    url: `${baseUrl}/ingredients`,
+    type: "website",
+  },
 };
 
 export default async function IngredientsPage() {
-  const tags = await prisma.tag.findMany({
-    where: {
-      posts: {
-        some: {
-          post: {
-            postType: "ingredient",
-            status: "PUBLISHED",
-          },
-        },
-      },
-    },
-    orderBy: {
-      name: "asc",
-    },
-  });
-
+  // Query all published ingredient posts from the database
   const posts = await prisma.post.findMany({
     where: {
       status: "PUBLISHED",
@@ -44,514 +62,376 @@ export default async function IngredientsPage() {
       },
       category: {
         select: {
+          id: true,
           name: true,
           slug: true,
         },
       },
-      tags: {
-        include: {
-          tag: {
-            select: {
-              name: true,
-              slug: true,
-            },
-          },
-        },
-      },
     },
     orderBy: {
-      publishedAt: "desc",
+      title: "asc",
     },
-    take: 50,
   });
 
-  const formattedPosts = (posts || []).map((p: (typeof posts)[number]) => ({
-    ...p,
-    tags: p.tags?.map((pt: any) => pt.tag).filter(Boolean) || [],
+  // Serialize posts for client component
+  const serializedIngredients = (posts || []).map((post) => ({
+    id: post.id,
+    title: post.title,
+    slug: post.slug,
+    excerpt: post.excerpt,
+    content: post.content,
+    cardImageUrl: post.cardImageUrl,
+    featuredImageUrl: post.featuredImageUrl,
+    publishedAt: post.publishedAt ? post.publishedAt.toISOString() : null,
+    category: post.category
+      ? {
+          id: post.category.id,
+          name: post.category.name,
+          slug: post.category.slug,
+        }
+      : null,
   }));
+
+  // Schema for CollectionPage and Breadcrumbs
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: baseUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Ingredients",
+        item: `${baseUrl}/ingredients`,
+      },
+    ],
+  };
+
+  const collectionSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Clinical Supplement Ingredients Directory",
+    description:
+      "Evidence-based scientific dossiers and monographs for dietary supplement ingredients.",
+    url: `${baseUrl}/ingredients`,
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: serializedIngredients.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: `${baseUrl}/ingredients/${item.slug}`,
+        name: item.title,
+      })),
+    },
+  };
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#070A0E] text-slate-900 dark:text-stone-100 transition-colors duration-300">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema) }}
+      />
+
       {/* Hero Section */}
-      <section className="relative pt-20 sm:pt-[84px] pb-16 px-4 overflow-hidden border-b border-stone-200/90 dark:border-stone-800 bg-white dark:bg-[#070A0D]">
-        <div className="container mx-auto max-w-4xl text-center relative z-10 mt-4 sm:mt-6">
-          <div className="bg-emerald-50 dark:bg-emerald-950/60 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-emerald-200/80 dark:border-emerald-800 shadow-xs">
-            <Beaker className="w-8 h-8 text-emerald-700 dark:text-emerald-400 drop-shadow-xs" />
+      <section className="relative pt-16 sm:pt-24 pb-16 px-4 overflow-hidden border-b border-stone-200/90 dark:border-stone-800 bg-white dark:bg-[#0A0E13]">
+        {/* Subtle decorative background gradient */}
+        <div className="absolute inset-0 bg-radial from-emerald-500/5 via-transparent to-transparent pointer-events-none" />
+
+        <div className="container mx-auto max-w-5xl text-center relative z-10">
+          {/* Eyebrow Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs sm:text-sm font-semibold mb-6 border border-emerald-200/80 dark:border-emerald-800 shadow-xs">
+            <Beaker className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>CLINICAL INGREDIENT MONOGRAPHS • PEER-REVIEWED</span>
           </div>
-          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-black mb-6 tracking-tight text-slate-900 dark:text-white">
-            Supplement Ingredients
+
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-black mb-6 tracking-tight text-slate-900 dark:text-white leading-[1.15]">
+            Supplement Ingredients & Evidence Library
           </h1>
-          <p className="text-lg sm:text-xl text-slate-700 dark:text-slate-300 mb-4 max-w-3xl mx-auto leading-relaxed">
-            Dietary supplements contain a wide variety of ingredients, ranging
-            from vitamins and minerals to plant extracts, amino acids, and other
-            bioactive compounds. Each ingredient interacts with the body in
-            different ways, and the scientific evidence supporting their use can
-            vary widely.
-          </p>
-          <p className="text-base text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
-            The goal of this ingredient database is to provide clear,
-            evidence-based information about individual supplement ingredients,
-            including potential benefits, safety considerations, mechanisms of action,
-            and the strength of available research.
-          </p>
-        </div>
-      </section>
 
-      {/* Introduction */}
-      <section className="py-12 px-4 bg-[#FAFAF8] dark:bg-[#070A0E] border-b border-stone-200/90 dark:border-stone-800">
-        <div className="container mx-auto max-w-4xl">
-          <div className="bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-800/60 rounded-2xl p-6 sm:p-8">
-            <p className="text-base sm:text-lg text-emerald-950 dark:text-emerald-200 leading-relaxed font-medium">
-              Rather than promoting or discouraging the use of supplements,
-              SupplementDecoded focuses on interpreting scientific evidence so
-              readers can better understand how different ingredients are
-              studied and evaluated.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* How Ingredients Are Evaluated */}
-      <section className="py-16 sm:py-20 px-4 bg-white dark:bg-[#0D1217] border-b border-stone-200/90 dark:border-stone-800">
-        <div className="container mx-auto max-w-4xl">
-          <h2 className="font-serif text-2xl sm:text-4xl font-bold mb-4 text-slate-900 dark:text-white">
-            How Supplement Ingredients Are Evaluated
-          </h2>
-          <p className="text-base sm:text-lg text-slate-600 dark:text-slate-400 mb-10 leading-relaxed">
-            Each ingredient page on SupplementDecoded examines available
-            research using a structured evaluation framework. This approach
-            helps ensure that information is presented consistently and
-            transparently across the site.
+          <p className="text-base sm:text-xl text-slate-600 dark:text-stone-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+            Independent scientific dossiers breaking down dietary compounds.
+            Every monograph evaluates human double-blind trials, standardized
+            extract forms, therapeutic dosing thresholds, and safety profiles.
           </p>
 
-          <div className="bg-[#FAFAF8] dark:bg-[#070A0E] rounded-2xl p-6 sm:p-8 space-y-6 border border-stone-200/90 dark:border-stone-800">
-            <div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-3 text-slate-900 dark:text-white flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Evidence and Research
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
-                Scientific studies are reviewed to determine what the research
-                suggests about potential effects. Evidence may include
-                randomized controlled trials, observational studies, systematic
-                reviews, and mechanistic research.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-3 text-slate-900 dark:text-white flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Proposed Benefits
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
-                Many supplement ingredients are studied for specific health
-                outcomes such as sleep quality, stress response, metabolic
-                health, or cognitive function. Evidence supporting these
-                outcomes can vary in strength and consistency.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-3 text-slate-900 dark:text-white flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Biological Mechanisms
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
-                Some ingredients influence physiological processes such as
-                neurotransmitter activity, inflammatory pathways, hormone
-                regulation, or cellular metabolism. Understanding these
-                mechanisms can help explain how an ingredient may affect the
-                body.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-3 text-slate-900 dark:text-white flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Safety and Risks
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
-                Safety considerations are a key part of evaluating supplements.
-                Ingredient pages review potential side effects, toxicity risks,
-                contraindications, and interactions with medications or other
-                supplements.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-3 text-slate-900 dark:text-white flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Dosage and Study Ranges
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
-                Research studies often use different dosage ranges. Ingredient
-                pages summarize the doses that have been studied in clinical
-                trials, without recommending specific dosing protocols.
-              </p>
-            </div>
-
-            <div>
-              <h3 className="text-xl sm:text-2xl font-bold mb-3 text-slate-900 dark:text-white flex items-center gap-3">
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
-                Evidence Limitations
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm sm:text-base">
-                Scientific research is rarely definitive. Ingredient analyses
-                discuss uncertainties, conflicting results, and limitations
-                within the available evidence.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Categories */}
-      <section className="py-20 px-4 bg-white dark:bg-[#070A0E] border-b border-stone-200/90 dark:border-stone-800">
-        <div className="container mx-auto max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-slate-900 dark:text-white">
-            Categories of Supplement Ingredients
-          </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-300 mb-10 leading-relaxed">
-            Supplement ingredients are commonly grouped based on their
-            biological classification or chemical structure. The following
-            categories represent some of the most widely used ingredient types
-            in dietary supplements.
-          </p>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-[#FAFAF8] dark:bg-[#0D1217] rounded-2xl p-8 border border-stone-200/90 dark:border-stone-800">
-              <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">
-                Vitamins
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">
-                Vitamins are essential micronutrients required for numerous
-                physiological functions, including energy metabolism, immune
-                system activity, and cellular maintenance. Because the body
-                cannot synthesize most vitamins in sufficient amounts, they must
-                be obtained through diet or supplementation.
-              </p>
-              <p className="text-sm text-slate-500 dark:text-slate-400 font-semibold mb-3">
-                Examples include:
-              </p>
-              <ul className="text-slate-600 dark:text-slate-300 space-y-1 text-sm">
-                <li>• Vitamin D</li>
-                <li>• Vitamin B12</li>
-                <li>• Vitamin C</li>
-                <li>• Vitamin A</li>
-              </ul>
-            </div>
-
-            <div className="bg-[#FAFAF8] dark:bg-[#0D1217] rounded-2xl p-8 border border-stone-200/90 dark:border-stone-800">
-              <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">
-                Minerals
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">
-                Minerals are inorganic nutrients that support a variety of
-                biological processes, including nerve signaling, muscle
-                contraction, bone health, and enzymatic reactions.
-              </p>
-              <p className="text-sm text-slate-500 dark:text-slate-400 font-semibold mb-3">
-                Common mineral supplements include:
-              </p>
-              <ul className="text-slate-600 dark:text-slate-300 space-y-1 text-sm">
-                <li>• Magnesium</li>
-                <li>• Zinc</li>
-                <li>• Iron</li>
-                <li>• Calcium</li>
-              </ul>
-            </div>
-
-            <div className="bg-[#FAFAF8] dark:bg-[#0D1217] rounded-2xl p-8 border border-stone-200/90 dark:border-stone-800">
-              <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">
-                Adaptogens and Botanical Extracts
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">
-                Many dietary supplements contain plant-derived compounds or
-                herbal extracts. Some of these ingredients are studied for their
-                potential effects on stress response, fatigue, and overall
-                physiological resilience.
-              </p>
-              <p className="text-sm text-slate-500 dark:text-slate-400 font-semibold mb-3">
-                Examples include:
-              </p>
-              <ul className="text-slate-600 dark:text-slate-300 space-y-1 text-sm">
-                <li>• Ashwagandha</li>
-                <li>• Rhodiola</li>
-                <li>• Panax ginseng</li>
-                <li>• Holy basil</li>
-              </ul>
-            </div>
-
-            <div className="bg-[#FAFAF8] dark:bg-[#0D1217] rounded-2xl p-8 border border-stone-200/90 dark:border-stone-800">
-              <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">
-                Amino Acids and Related Compounds
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">
-                Amino acids are the building blocks of proteins, but certain
-                amino acids and related molecules are also used as supplements
-                due to their potential neurological, metabolic, or physiological
-                effects.
-              </p>
-              <p className="text-sm text-slate-500 dark:text-slate-400 font-semibold mb-3">
-                Examples include:
-              </p>
-              <ul className="text-slate-600 dark:text-slate-300 space-y-1 text-sm">
-                <li>• L-theanine</li>
-                <li>• Taurine</li>
-                <li>• L-tyrosine</li>
-                <li>• Glycine</li>
-              </ul>
-            </div>
-
-            <div className="bg-[#FAFAF8] dark:bg-[#0D1217] rounded-2xl p-8 border border-stone-200/90 dark:border-stone-800 md:col-span-2">
-              <h3 className="text-2xl font-bold mb-4 text-slate-900 dark:text-white">
-                Fatty Acids and Lipids
-              </h3>
-              <p className="text-slate-600 dark:text-slate-300 mb-4 leading-relaxed">
-                Some supplements contain fatty acids or lipid compounds that
-                play roles in cellular structure, inflammation regulation, and
-                metabolic processes.
-              </p>
-              <p className="text-sm text-slate-500 dark:text-slate-400 font-semibold mb-3">
-                Examples include:
-              </p>
-              <ul className="text-slate-600 dark:text-slate-300 space-y-1 text-sm">
-                <li>• Omega-3 fatty acids</li>
-                <li>• DHA</li>
-                <li>• EPA</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How to Use Ingredient Pages */}
-      <section className="py-20 px-4 bg-[#FAFAF8] dark:bg-[#070A0E] border-b border-stone-200/90 dark:border-stone-800">
-        <div className="container mx-auto max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-white">
-            How to Use Ingredient Pages
-          </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-300 mb-10 leading-relaxed">
-            Each ingredient page on SupplementDecoded is designed to provide a
-            structured overview of the available scientific evidence.
-          </p>
-
-          <div className="bg-white dark:bg-[#0D1217] rounded-2xl p-8 border border-stone-200/90 dark:border-stone-800 shadow-sm">
-            <p className="text-slate-900 dark:text-white font-semibold mb-6">
-              Typical sections include:
-            </p>
-            <ul className="space-y-3 mb-8">
-              <li className="flex gap-4">
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">•</span>
-                <span className="text-slate-700 dark:text-slate-300">
-                  <strong>Overview of the ingredient</strong>
-                </span>
-              </li>
-              <li className="flex gap-4">
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">•</span>
-                <span className="text-slate-700 dark:text-slate-300">
-                  <strong>Biological mechanisms</strong>
-                </span>
-              </li>
-              <li className="flex gap-4">
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">•</span>
-                <span className="text-slate-700 dark:text-slate-300">
-                  <strong>Potential health effects studied in research</strong>
-                </span>
-              </li>
-              <li className="flex gap-4">
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">•</span>
-                <span className="text-slate-700 dark:text-slate-300">
-                  <strong>Safety considerations and side effects</strong>
-                </span>
-              </li>
-              <li className="flex gap-4">
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">•</span>
-                <span className="text-slate-700 dark:text-slate-300">
-                  <strong>
-                    Interactions with medications or other supplements
-                  </strong>
-                </span>
-              </li>
-              <li className="flex gap-4">
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">•</span>
-                <span className="text-slate-700 dark:text-slate-300">
-                  <strong>Research limitations and areas of uncertainty</strong>
-                </span>
-              </li>
-            </ul>
-            <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-              These pages are intended to help readers understand how supplement
-              ingredients are studied and interpreted in scientific literature,
-              rather than providing medical advice or product recommendations.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Understanding Evidence */}
-      <section className="py-20 px-4 bg-white dark:bg-[#070A0E] border-b border-stone-200/90 dark:border-stone-800">
-        <div className="container mx-auto max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-slate-900 dark:text-white">
-            Understanding Evidence in Supplement Research
-          </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-300 mb-10 leading-relaxed">
-            Research on dietary supplements varies widely in quality and
-            consistency. Some ingredients have been studied extensively in
-            randomized controlled trials, while others have limited or
-            preliminary evidence.
-          </p>
-
-          <div className="bg-[#FAFAF8] dark:bg-[#0D1217] rounded-2xl p-8 border border-stone-200/90 dark:border-stone-800 shadow-sm">
-            <p className="text-slate-900 dark:text-white font-semibold mb-6">
-              Factors that can influence research outcomes include:
-            </p>
-            <ul className="space-y-3 mb-8">
-              <li className="flex gap-4">
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">•</span>
-                <span className="text-slate-700 dark:text-slate-300">
-                  Study design
-                </span>
-              </li>
-              <li className="flex gap-4">
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">•</span>
-                <span className="text-slate-700 dark:text-slate-300">
-                  Participant population
-                </span>
-              </li>
-              <li className="flex gap-4">
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">•</span>
-                <span className="text-slate-700 dark:text-slate-300">
-                  Dosage used in trials
-                </span>
-              </li>
-              <li className="flex gap-4">
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">•</span>
-                <span className="text-slate-700 dark:text-slate-300">
-                  Duration of the study
-                </span>
-              </li>
-              <li className="flex gap-4">
-                <span className="text-emerald-600 dark:text-emerald-400 font-bold">•</span>
-                <span className="text-slate-700 dark:text-slate-300">
-                  Funding sources or conflicts of interest
-                </span>
-              </li>
-            </ul>
-            <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-              Interpreting supplement research often requires evaluating the
-              total body of evidence rather than relying on a single study.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Safety Considerations */}
-      <section className="py-20 px-4 bg-red-50/50 dark:bg-red-950/20 border-b border-stone-200/90 dark:border-stone-800">
-        <div className="container mx-auto max-w-4xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-slate-900 dark:text-white flex items-center gap-4">
-            <ShieldAlert className="w-8 h-8 text-red-600 dark:text-red-400" />
-            Safety Considerations
-          </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
-            Although many supplement ingredients are widely available, they can
-            still carry potential risks. Safety concerns may include:
-          </p>
-
-          <div className="bg-white dark:bg-[#0D1217] rounded-2xl p-8 border border-red-200/80 dark:border-red-900/40 space-y-3 mb-6 shadow-sm">
-            <div className="flex gap-4">
-              <span className="text-red-600 dark:text-red-400 font-bold">
-                •
-              </span>
-              <span className="text-slate-700 dark:text-slate-300">
-                Side effects at higher doses
-              </span>
-            </div>
-            <div className="flex gap-4">
-              <span className="text-red-600 dark:text-red-400 font-bold">
-                •
-              </span>
-              <span className="text-slate-700 dark:text-slate-300">
-                Interactions with medications
-              </span>
-            </div>
-            <div className="flex gap-4">
-              <span className="text-red-600 dark:text-red-400 font-bold">
-                •
-              </span>
-              <span className="text-slate-700 dark:text-slate-300">
-                Contraindications for certain health conditions
-              </span>
-            </div>
-            <div className="flex gap-4">
-              <span className="text-red-600 dark:text-red-400 font-bold">
-                •
-              </span>
-              <span className="text-slate-700 dark:text-slate-300">
-                Contamination or quality issues in manufacturing
-              </span>
-            </div>
-          </div>
-
-          <div className="bg-amber-50 dark:bg-amber-950/30 rounded-2xl p-6 border border-amber-200/80 dark:border-amber-900/40">
-            <p className="text-amber-900 dark:text-amber-200 leading-relaxed">
-              Individuals considering supplements should be aware that
-              scientific evidence continues to evolve, and safety profiles may
-              change as more research becomes available.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Browse Ingredients Section */}
-      <section className="py-20 px-4 bg-white dark:bg-[#070A0E]">
-        <div className="container mx-auto max-w-7xl">
-          <h2 className="text-3xl md:text-4xl font-bold mb-10 text-slate-900 dark:text-white text-center">
-            Explore Individual Ingredient Profiles
-          </h2>
-
-          <div className="grid lg:grid-cols-4 gap-12">
-            <div className="lg:col-span-1">
-              <section>
-                <h3 className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-6 flex items-center gap-2">
-                  <span className="w-8 h-px bg-slate-300 dark:bg-slate-700"></span>
-                  All Ingredients
-                </h3>
-                <div className="flex flex-col gap-2 max-h-[800px] overflow-y-auto">
-                  {tags.length === 0 ? (
-                    <p className="text-sm text-slate-400 italic px-2 py-4">
-                      No ingredients found.
-                    </p>
-                  ) : (
-                    tags.map((tag) => (
-                      <a
-                        key={tag.id}
-                        href={`/tag/${tag.slug}`}
-                        className="px-4 py-3 rounded-xl hover:bg-emerald-50/80 dark:hover:bg-emerald-950/30 transition-colors text-sm font-medium text-slate-700 dark:text-slate-200 flex items-center justify-between border border-transparent hover:border-emerald-200 dark:hover:border-emerald-800/60"
-                      >
-                        {tag.name}
-                        {tag.postCount > 0 && (
-                          <span className="text-[11px] text-slate-400 font-mono">
-                            {tag.postCount}
-                          </span>
-                        )}
-                      </a>
-                    ))
-                  )}
-                </div>
-              </section>
-            </div>
-
-            <div className="lg:col-span-3">
-              <div className="flex items-center justify-between mb-8 border-b border-stone-200/90 dark:border-stone-800 pb-4">
-                <h3 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-                  Latest ingredient analyses
-                </h3>
-                <span className="text-sm text-emerald-700 dark:text-emerald-400 font-medium">
-                  Evidence-verified content
-                </span>
+          {/* Key Trust & Stats Bar */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto pt-4 pb-2">
+            <div className="bg-[#FAFAF8] dark:bg-[#070A0E] rounded-2xl p-4 border border-stone-200/90 dark:border-stone-800/90 text-center">
+              <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-mono">
+                {serializedIngredients.length}
               </div>
-              <BlogList posts={formattedPosts as any} />
+              <div className="text-xs font-medium text-slate-500 dark:text-stone-400 mt-1">
+                Published Monographs
+              </div>
+            </div>
+
+            <div className="bg-[#FAFAF8] dark:bg-[#070A0E] rounded-2xl p-4 border border-stone-200/90 dark:border-stone-800/90 text-center">
+              <div className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400 font-mono">
+                1,200+
+              </div>
+              <div className="text-xs font-medium text-slate-500 dark:text-stone-400 mt-1">
+                Human RCTs Synthesized
+              </div>
+            </div>
+
+            <div className="bg-[#FAFAF8] dark:bg-[#070A0E] rounded-2xl p-4 border border-stone-200/90 dark:border-stone-800/90 text-center">
+              <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white font-mono">
+                100%
+              </div>
+              <div className="text-xs font-medium text-slate-500 dark:text-stone-400 mt-1">
+                Unsponsored & Unbiased
+              </div>
+            </div>
+
+            <div className="bg-[#FAFAF8] dark:bg-[#070A0E] rounded-2xl p-4 border border-stone-200/90 dark:border-stone-800/90 text-center">
+              <div className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400 font-mono">
+                Grade A-B
+              </div>
+              <div className="text-xs font-medium text-slate-500 dark:text-stone-400 mt-1">
+                Evidence Thresholds
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Main Interactive Directory Section (Prominent Top Section) */}
+      <section className="py-12 sm:py-16 px-4 bg-[#FAFAF8] dark:bg-[#070A0E]">
+        <div className="container mx-auto max-w-7xl">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div>
+              <div className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 mb-2 flex items-center gap-1.5">
+                <Microscope className="w-4 h-4" />
+                Live Database Explorer
+              </div>
+              <h2 className="font-serif text-2xl sm:text-4xl font-bold text-slate-900 dark:text-white tracking-tight">
+                Search & Explore Clinical Monographs
+              </h2>
+            </div>
+            <p className="text-sm text-slate-500 dark:text-stone-400 max-w-md">
+              Filter by health goal, sort alphabetically, or search directly for
+              specific bioactives, botanical names, and clinical mechanisms.
+            </p>
+          </div>
+
+          {/* Interactive Client Component */}
+          <IngredientsDirectory ingredients={serializedIngredients} />
+        </div>
+      </section>
+
+      {/* Clinical Evaluation Framework (Modern Bento Grid) */}
+      <section className="py-16 sm:py-24 px-4 bg-white dark:bg-[#0A0E13] border-t border-b border-stone-200/90 dark:border-stone-800">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold tracking-widest uppercase bg-stone-100 dark:bg-stone-800 text-slate-700 dark:text-stone-300 mb-4 border border-stone-200/80 dark:border-stone-700/80">
+              <Scale className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              Rigorous Scientific Standard
+            </span>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white tracking-tight mb-4">
+              How Supplement Ingredients Are Evaluated
+            </h2>
+            <p className="text-base sm:text-lg text-slate-600 dark:text-stone-300 leading-relaxed">
+              We apply an uncompromising pharmaceutical evaluation standard to
+              all dietary supplements, dissecting what the published literature
+              actually proves versus marketing extrapolations.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
+            {/* Bento Card 1 */}
+            <div className="bg-[#FAFAF8] dark:bg-[#0D1217] rounded-3xl p-7 sm:p-8 border border-stone-200/90 dark:border-stone-800 hover:border-emerald-500/50 transition-colors">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center mb-6">
+                <CheckCircle2 className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
+                1. Human RCTs Over Animal & In Vitro Models
+              </h3>
+              <p className="text-sm sm:text-base text-slate-600 dark:text-stone-300 leading-relaxed">
+                Many supplement marketing claims rely on cell cultures (in vitro)
+                or rodent trials that fail when tested in human physiology. We
+                strictly weight double-blind, randomized, placebo-controlled
+                human clinical trials (RCTs) and systematic Cochrane reviews.
+              </p>
+            </div>
+
+            {/* Bento Card 2 */}
+            <div className="bg-[#FAFAF8] dark:bg-[#0D1217] rounded-3xl p-7 sm:p-8 border border-stone-200/90 dark:border-stone-800 hover:border-emerald-500/50 transition-colors">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-400 flex items-center justify-center mb-6">
+                <Dna className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
+                2. Standardized Bioactive Forms & Bioavailability
+              </h3>
+              <p className="text-sm sm:text-base text-slate-600 dark:text-stone-300 leading-relaxed">
+                Molecular form dictates therapeutic efficacy. We examine whether
+                a brand uses chelated forms (e.g. Magnesium Bisglycinate vs
+                insoluble Oxide), trademarked extracts (e.g. KSM-66® vs raw
+                powder), or enhanced lipid delivery systems (e.g. Curcumin
+                Phytosome).
+              </p>
+            </div>
+
+            {/* Bento Card 3 */}
+            <div className="bg-[#FAFAF8] dark:bg-[#0D1217] rounded-3xl p-7 sm:p-8 border border-stone-200/90 dark:border-stone-800 hover:border-emerald-500/50 transition-colors">
+              <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-400 flex items-center justify-center mb-6">
+                <TrendingUp className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
+                3. Therapeutic Clinical Dose Windows
+              </h3>
+              <p className="text-sm sm:text-base text-slate-600 dark:text-stone-300 leading-relaxed">
+                Supplement manufacturers frequently engage in "fairy dusting" —
+                including an ingredient at 10% of the active dose just to claim
+                it on the label. We define the exact milligram threshold where
+                statistically significant clinical effects occur.
+              </p>
+            </div>
+
+            {/* Bento Card 4 */}
+            <div className="bg-[#FAFAF8] dark:bg-[#0D1217] rounded-3xl p-7 sm:p-8 border border-stone-200/90 dark:border-stone-800 hover:border-emerald-500/50 transition-colors">
+              <div className="w-12 h-12 rounded-2xl bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 flex items-center justify-center mb-6">
+                <ShieldAlert className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">
+                4. Pharmacokinetics & Drug Interaction Warnings
+              </h3>
+              <p className="text-sm sm:text-base text-slate-600 dark:text-stone-300 leading-relaxed">
+                Even natural botanicals can inhibit or induce hepatic Cytochrome
+                P450 enzymes (e.g., CYP3A4, CYP2D6), causing dangerous
+                interactions with prescription medications. We outline clear
+                contraindications, upper safe limits, and tolerability data.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Bioactive Classifications Overview */}
+      <section className="py-16 sm:py-20 px-4 bg-[#FAFAF8] dark:bg-[#070A0E]">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-4">
+              Major Bioactive Ingredient Classifications
+            </h2>
+            <p className="text-slate-600 dark:text-stone-400 text-sm sm:text-base">
+              Supplement ingredients interact with the human body across distinct
+              cellular pathways, ranging from enzymatic cofactors to neurotransmitter
+              receptor modulators.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-white dark:bg-[#0D1217] rounded-2xl p-6 border border-stone-200/90 dark:border-stone-800 shadow-xs">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center">
+                  <Brain className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-slate-900 dark:text-white text-base">
+                  Adaptogens & Botanicals
+                </h3>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-stone-400 leading-relaxed mb-3">
+                Plant-derived polyphenols, withanolides, and alkaloids studied
+                for hypothalamic-pituitary-adrenal (HPA) axis balance and cellular
+                resilience.
+              </p>
+              <div className="text-[11px] font-mono text-emerald-700 dark:text-emerald-400 font-semibold">
+                Ashwagandha, Rhodiola, Curcumin
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-[#0D1217] rounded-2xl p-6 border border-stone-200/90 dark:border-stone-800 shadow-xs">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-400 flex items-center justify-center">
+                  <Zap className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-slate-900 dark:text-white text-base">
+                  Chelated Minerals
+                </h3>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-stone-400 leading-relaxed mb-3">
+                Essential inorganic cofactors bound to organic amino acid ligands
+                for optimized intestinal absorption and minimal gastrointestinal
+                distress.
+              </p>
+              <div className="text-[11px] font-mono text-blue-700 dark:text-blue-400 font-semibold">
+                Magnesium Bisglycinate, Zinc Picolinate
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-[#0D1217] rounded-2xl p-6 border border-stone-200/90 dark:border-stone-800 shadow-xs">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-9 h-9 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-700 dark:text-purple-400 flex items-center justify-center">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-slate-900 dark:text-white text-base">
+                  Amino Acids & Peptides
+                </h3>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-stone-400 leading-relaxed mb-3">
+                Targeted amino molecules that modulate central nervous system
+                receptors, cellular bioenergetics, and phosphocreatine resynthesis.
+              </p>
+              <div className="text-[11px] font-mono text-purple-700 dark:text-purple-400 font-semibold">
+                L-Theanine, Creatine Monohydrate
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-[#0D1217] rounded-2xl p-6 border border-stone-200/90 dark:border-stone-800 shadow-xs">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-9 h-9 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-700 dark:text-rose-400 flex items-center justify-center">
+                  <Heart className="w-5 h-5" />
+                </div>
+                <h3 className="font-bold text-slate-900 dark:text-white text-base">
+                  Lipids & Co-factors
+                </h3>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-stone-400 leading-relaxed mb-3">
+                Long-chain polyunsaturated fatty acids and mitochondrial quinones
+                integral to membrane fluidity and cellular ATP generation.
+              </p>
+              <div className="text-[11px] font-mono text-rose-700 dark:text-rose-400 font-semibold">
+                Omega-3 EPA/DHA, CoQ10 Ubiquinol
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Editorial Standards & Medical Disclaimer */}
+      <section className="py-14 px-4 bg-white dark:bg-[#0A0E13] border-t border-stone-200/90 dark:border-stone-800">
+        <div className="container mx-auto max-w-4xl">
+          <div className="bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-900/40 rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row gap-5 items-start">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 flex items-center justify-center shrink-0">
+              <Shield className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="font-bold text-slate-900 dark:text-white text-base sm:text-lg mb-2">
+                Editorial Independence & Scientific Transparency
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-stone-300 leading-relaxed mb-3">
+                SupplementDecoded does not accept financial compensation, product
+                sponsorships, or affiliate kickbacks from supplement brands in
+                exchange for favorable monograph ratings. All conclusions reflect
+                purely peer-reviewed published clinical evidence.
+              </p>
+              <p className="text-[11px] sm:text-xs text-slate-500 dark:text-stone-400 leading-relaxed">
+                <strong>Medical Notice:</strong> The information provided in our
+                ingredient monographs is for educational and scientific research
+                purposes only and does not constitute medical advice or treatment
+                recommendations. Always consult a qualified healthcare professional
+                before beginning any new supplement regimen, especially if taking
+                prescription medication.
+              </p>
             </div>
           </div>
         </div>
