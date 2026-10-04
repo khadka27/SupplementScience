@@ -1,26 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter, Outfit, Atkinson_Hyperlegible, Newsreader } from "next/font/google";
 import {
   generateOrganizationSchema,
   generateWebsiteSchema,
 } from "@/lib/schema";
 import Script from "next/script";
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
-const atkinson = Atkinson_Hyperlegible({
-  subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-atkinson",
-  display: "swap",
-});
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  variable: "--font-serif",
-  display: "swap",
-  style: ["normal", "italic"],
-});
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID; // Add to .env
 
@@ -137,6 +121,16 @@ export default function RootLayout({
           href="/favicon-16x16.png"
         />
         <link rel="manifest" href="/site.webmanifest" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+          rel="stylesheet"
+        />
         {GA_MEASUREMENT_ID && (
           <>
             <Script
@@ -155,7 +149,7 @@ export default function RootLayout({
         )}
       </head>
       <body
-        className={`${inter.variable} ${outfit.variable} ${atkinson.variable} ${newsreader.variable} font-sans antialiased min-h-screen relative`}
+        className="font-sans antialiased min-h-screen relative"
         suppressHydrationWarning={true}
       >
         {/* Skip to content — first focusable element for keyboard/screen reader users */}

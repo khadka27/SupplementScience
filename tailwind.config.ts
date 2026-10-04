@@ -9,6 +9,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-open-sans)", "'Open Sans'", "sans-serif"],
+        heading: ["var(--font-open-sans)", "'Open Sans'", "sans-serif"],
+        serif: ["var(--font-open-sans)", "'Open Sans'", "sans-serif"],
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":

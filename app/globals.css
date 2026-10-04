@@ -7,9 +7,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-heading: var(--font-outfit), var(--font-inter), ui-sans-serif;
-  --font-serif: var(--font-serif), "Newsreader", Georgia, Cambria, "Times New Roman", serif;
+  --font-sans: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Open Sans", serif;
 
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -336,15 +336,23 @@
   * {
     @apply border-border;
   }
+  html,
   body {
     @apply bg-background text-foreground;
     /* Elderly-audience typography baseline */
     font-size: var(--user-font-size, 1.125rem); /* 18px minimum */
     line-height: 1.75;
-    font-family: var(--font-atkinson), 'Atkinson Hyperlegible', var(--font-sans), sans-serif;
+    font-family: var(--font-open-sans), "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-variation-settings: "wdth" 100;
     /* Prevent text from being too wide — improves readability */
     word-break: break-word;
     overflow-wrap: break-word;
+  }
+  h1, h2, h3, h4, h5, h6, input, textarea, select, button {
+    font-family: var(--font-open-sans), "Open Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-variation-settings: "wdth" 100;
   }
   html {
     scroll-behavior: smooth;
