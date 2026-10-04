@@ -101,42 +101,52 @@ export default async function CategoryPage({ params }: Props) {
   const { category, posts } = data;
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-7xl">
-      <div className="flex flex-col md:flex-row gap-8 items-center mb-16">
-        {category.imageUrl && (
-          <div className="relative w-32 h-32 md:w-48 md:h-48 rounded-2xl overflow-hidden shrink-0 border-4 border-white shadow-xl">
-            <Image
-              src={category.imageUrl}
-              alt={category.name}
-              fill
-              className="object-cover"
-              unoptimized={
-                category.imageUrl.startsWith("http") ||
-                category.imageUrl.startsWith("/images/")
-              }
-            />
-          </div>
-        )}
-        <div className="text-center md:text-left">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-            {category.name}
-          </h1>
-          {category.description && (
-            <p className="text-xl text-muted-foreground max-w-2xl leading-relaxed">
-              {category.description}
-            </p>
+    <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#070A0E] text-slate-900 dark:text-slate-100 pt-20 sm:pt-[84px] pb-20">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="flex flex-col md:flex-row gap-8 items-center mb-16">
+          {category.imageUrl && (
+            <div className="relative w-32 h-32 md:w-48 md:h-48 rounded-2xl overflow-hidden shrink-0 border-4 border-white dark:border-slate-800 shadow-xl">
+              <Image
+                src={category.imageUrl}
+                alt={category.name}
+                fill
+                className="object-cover"
+                unoptimized={
+                  category.imageUrl.startsWith("http") ||
+                  category.imageUrl.startsWith("/images/")
+                }
+              />
+            </div>
           )}
-          <div className="mt-4 text-sm font-medium text-primary">
-            {data.category._count.posts} Professional Guides &amp; Articles
+          <div className="text-center md:text-left">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100/70 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 mb-3">
+              Category Archive
+            </div>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-3 tracking-tight text-slate-900 dark:text-white">
+              {category.name}
+            </h1>
+            {category.description && (
+              <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed mb-3">
+                {category.description}
+              </p>
+            )}
+            <div className="text-sm font-semibold text-emerald-700 dark:text-emerald-400">
+              {data.category._count.posts} Professional Guides &amp; Articles
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="space-y-8">
-        <h2 className="text-2xl font-bold border-b pb-4">
-          Latest in {category.name}
-        </h2>
-        <BlogList posts={posts as any} />
+        <div className="space-y-8">
+          <div className="flex items-center justify-between border-b border-stone-200/90 dark:border-stone-800 pb-4">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+              Latest in {category.name}
+            </h2>
+            <span className="text-sm text-emerald-700 dark:text-emerald-400 font-medium">
+              Evidence-verified content
+            </span>
+          </div>
+          <BlogList posts={posts as any} />
+        </div>
       </div>
     </div>
   );

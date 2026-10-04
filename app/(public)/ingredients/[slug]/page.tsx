@@ -128,9 +128,8 @@ export default async function IngredientPage({ params }: Props) {
           humanRctCount={48}
           primaryProvenOutcome="Serum Cortisol & Anxiety Reduction (-27.9%)"
           standardTherapeuticDose="300 - 600 mg/day (KSM-66 / Sensoril)"
-          reviewerName="Dr. Sarah Lin"
-          reviewerCredentials="PharmD, BCPS • Clinical Pharmacology"
-          lastUpdated="Q4 2026"
+          reviewerName="SupplementDecoded Research Editorial Team"
+          reviewerCredentials=""
         />
       </>
     );
@@ -156,18 +155,11 @@ export default async function IngredientPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
-      <ClinicalIngredientDossier
-        ingredientName={post.title.replace(/:\s*Human\s*Evidence.*$/i, "").trim()}
-        scientificName="Standardized Clinical Monograph"
-        category={post.category?.name || "Dietary Supplement"}
-        evidenceGrade="A"
-        humanRctCount={48}
-        primaryProvenOutcome="Therapeutic Indication Verified"
-        standardTherapeuticDose="Standard Therapeutic Range"
-        reviewerName={post.reviewedBy || post.factCheckedBy || "Dr. Sarah Lin"}
-        reviewerCredentials="PharmD, BCPS • Clinical Pharmacology"
-        lastUpdated="Q4 2026"
-        contentHtml={post.content}
+      <BlogPostContent
+        post={post as any}
+        relatedPosts={[]}
+        prevPost={null}
+        nextPost={null}
       />
     </>
   );

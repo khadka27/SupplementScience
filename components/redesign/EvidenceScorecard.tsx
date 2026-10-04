@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   FileText,
   Download,
@@ -173,10 +172,10 @@ export function EvidenceScorecard({
   humanRctCount = 48,
   primaryProvenOutcome = "Serum Cortisol Reduction (-27.9%)",
   standardTherapeuticDose = "300 - 600 mg/day (KSM-66 / Sensoril)",
-  reviewerName = "Dr. Sarah Lin",
-  reviewerCredentials = "PharmD, BCPS • Clinical Pharmacology",
-  reviewerAvatar = "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200",
-  lastUpdated = "Q4 2026",
+  reviewerName = "SupplementDecoded Research Editorial Team",
+  reviewerCredentials = "",
+  reviewerAvatar = "",
+  lastUpdated = "",
   verdictWhatWorks = "Robust and consistent reduction in serum cortisol and perceived stress scale (PSS). Proven improvements in sleep onset latency.",
   verdictWhatIsOverhyped = "Aggressive fitness marketing asserting 20-30% testosterone increases in healthy young athletic men is clinically unsupported.",
   verdictWhoShouldAvoid = "Individuals taking thyroid hormone replacement (Levothyroxine), sedatives (benzodiazepines/GABAergics), or experiencing acute liver enzyme elevation.",
@@ -272,26 +271,11 @@ export function EvidenceScorecard({
               </span>
             </nav>
 
-            {/* Medical Reviewer Credential Pill */}
+            {/* Editorial review badge (company voice, no persona, no photo) */}
             <div className="flex items-center gap-3 bg-[#F8F9FA] dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-800 px-3.5 py-1.5 rounded-full shadow-2xs">
-              <div className="relative w-7 h-7 rounded-full overflow-hidden shrink-0 border border-slate-300 dark:border-slate-700">
-                <Image
-                  src={reviewerAvatar}
-                  alt={reviewerName}
-                  width={28}
-                  height={28}
-                  className="object-cover"
-                />
-              </div>
               <div className="text-left">
-                <div className="text-xs font-semibold text-[#0F172A] dark:text-slate-200 flex items-center gap-1.5">
-                  Fact-checked by {reviewerName}
-                  <span className="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#E7ECE9] dark:bg-emerald-950/60 text-[#0E3B2F] dark:text-emerald-400">
-                    PharmD Verified
-                  </span>
-                </div>
-                <div className="text-[10px] text-slate-500 dark:text-slate-400">
-                  {reviewerCredentials} • Updated {lastUpdated}
+                <div className="text-xs font-semibold text-[#0F172A] dark:text-slate-200">
+                  Fact-checked by the {reviewerName}
                 </div>
               </div>
             </div>

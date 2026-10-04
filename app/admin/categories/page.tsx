@@ -23,6 +23,8 @@ import {
   PenLine,
   Globe,
   ImageIcon,
+  Search,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { ImageUpload } from "@/components/ImageUpload";
@@ -67,6 +69,7 @@ export default function CategoriesManagementPage() {
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
   const [categoryToDelete, setCategoryToDelete] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -373,9 +376,39 @@ export default function CategoriesManagementPage() {
           </Dialog>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {categories.map((category) => (
-            <Card key={category.id}>
+        {/* Search Bar */}
+        <div className="relative max-w-md">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Input
+            placeholder="Search categories by name, slug, or description..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9 pr-8"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+
+        {categories.filter(c => c.name.toLowerCase().includes(searchQuery.toLowerCase()) || c.slug.toLowerCase().includes(searchQuery.toLowerCase()) || c.description?.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 ? (
+          <div className="text-center py-12 bg-white dark:bg-slate-900/60 rounded-2xl border border-stone-200 dark:border-stone-800">
+            <Tag className="h-8 w-8 mx-auto text-slate-400 mb-2" />
+            <h3 className="font-semibold text-slate-800 dark:text-slate-200">No categories found</h3>
+            <p className="text-xs text-slate-500 mt-1">
+              {searchQuery ? `No categories matching "${searchQuery}"` : "Create your first category using the button above."}
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {categories
+              .filter(c => c.name.toLowerCase().includes(searchQuery.toLowerCase()) || c.slug.toLowerCase().includes(searchQuery.toLowerCase()) || c.description?.toLowerCase().includes(searchQuery.toLowerCase()))
+              .map((category) => (
+                <Card key={category.id}>
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
@@ -439,24 +472,11 @@ export default function CategoriesManagementPage() {
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
-
-        {categories.length === 0 && (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <Tag className="w-12 h-12 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No categories yet</h3>
-              <p className="text-muted-foreground text-center mb-4">
-                Create your first category to organize your blog posts
-              </p>
-              <Button onClick={openCreateDialog}>
-                <Plus className="w-4 h-4 mr-2" />
-                Add Category
-              </Button>
-            </CardContent>
-          </Card>
+            ))}
+          </div>
         )}
+
+
 
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <AlertDialogContent>

@@ -40,9 +40,9 @@ export function ClinicalIngredientDossier({
   humanRctCount = 48,
   primaryProvenOutcome = "Serum Cortisol & Anxiety Reduction (-27.9%)",
   standardTherapeuticDose = "300 - 600 mg/day (Standardized Extract)",
-  reviewerName = "Dr. Sarah Lin",
-  reviewerCredentials = "PharmD, BCPS • Clinical Pharmacology",
-  lastUpdated = "Q4 2026",
+  reviewerName = "SupplementDecoded Research Editorial Team",
+  reviewerCredentials = "",
+  lastUpdated = "",
   contentHtml,
 }: ClinicalIngredientDossierProps) {
   return (

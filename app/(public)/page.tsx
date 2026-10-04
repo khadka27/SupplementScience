@@ -286,7 +286,7 @@ export default async function Home() {
 
   return (
     <div
-      className="min-h-screen bg-white dark:bg-[#0F0E0A] text-slate-900 dark:text-zinc-100 transition-colors duration-300"
+      className="min-h-screen bg-[#FAFAF8] dark:bg-[#070A0E] text-slate-900 dark:text-stone-100 transition-colors duration-300"
       suppressHydrationWarning={true}
     >
       {/* Redesigned Clinical Editorial Hero & Search Engine */}
@@ -577,13 +577,13 @@ export default async function Home() {
       </section>
 
       {/* Latest Guides & Research */}
-      <section className="py-24 px-4 bg-white dark:bg-[#0D0C09] border-t border-[#D9CFC7] dark:border-[#2A221A]">
+      <section className="py-24 px-4 bg-white dark:bg-[#070A0D] border-t border-slate-200 dark:border-slate-800">
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-black dark:text-white tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-slate-900 dark:text-white tracking-tight">
               Latest Research & Guides
             </h2>
-            <p className="text-xl text-gray-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
               Browse recent articles, ingredient explainers, and health topic
               research summaries grounded in evidence rather than promotion.
             </p>
@@ -592,14 +592,14 @@ export default async function Home() {
           {mainFeaturedPost && (
             <Link
               href={getPostHref(mainFeaturedPost)}
-              className="block mb-16 group text-black dark:text-white"
+              className="block mb-16 group text-slate-900 dark:text-white"
             >
               <div className="relative rounded-[2rem] overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0C1117] group-hover:shadow-2xl group-hover:shadow-slate-900/12 dark:group-hover:shadow-black/40 group-hover:border-[#0E3B2F]/30 dark:group-hover:border-emerald-800/50 transition-all duration-500">
                 <div className="grid md:grid-cols-2 gap-0">
                   {/* Image */}
                   {(mainFeaturedPost.cardImageUrl ||
                     mainFeaturedPost.featuredImageUrl) && (
-                    <div className="relative h-72 md:h-96 overflow-hidden bg-[#F9F8F6] dark:bg-[#211A13]">
+                    <div className="relative h-72 md:h-96 overflow-hidden bg-slate-100 dark:bg-slate-900">
                       <Image
                         src={
                           mainFeaturedPost.cardImageUrl ||

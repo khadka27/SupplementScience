@@ -18,8 +18,13 @@ export async function GET() {
       totalTags,
       totalAuthors,
       totalSubscribers,
+      guideCount,
+      blogCount,
+      reviewCount,
+      ingredientCount,
       recentPosts,
       popularPosts,
+      recentSubscribers,
     ] = await Promise.all([
       prisma.post.count(),
       prisma.post.count({ where: { status: "PUBLISHED" } }),
@@ -28,16 +33,24 @@ export async function GET() {
       prisma.tag.count(),
       prisma.author.count(),
       prisma.subscriber.count(),
+      prisma.post.count({ where: { postType: "guide" } }),
+      prisma.post.count({ where: { postType: "blog" } }),
+      prisma.post.count({ where: { postType: "review" } }),
+      prisma.post.count({ where: { postType: "ingredient" } }),
       prisma.post.findMany({
-        take: 5,
+        take: 6,
         orderBy: { createdAt: "desc" },
         include: { author: true, category: true },
       }),
       prisma.post.findMany({
-        take: 5,
+        take: 6,
         where: { status: "PUBLISHED" },
         orderBy: { viewCount: "desc" },
         include: { author: true, category: true },
+      }),
+      prisma.subscriber.findMany({
+        take: 5,
+        orderBy: { subscribedAt: "desc" },
       }),
     ]);
 
@@ -50,9 +63,14 @@ export async function GET() {
         totalTags,
         totalAuthors,
         totalSubscribers,
+        guideCount,
+        blogCount,
+        reviewCount,
+        ingredientCount,
       },
       recentPosts,
       popularPosts,
+      recentSubscribers,
     });
   } catch (error) {
     console.error("Error fetching dashboard stats:", error);

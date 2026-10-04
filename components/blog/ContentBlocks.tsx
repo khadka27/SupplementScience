@@ -22,13 +22,13 @@ export function QuickSummary({ children, className }: ContentBlockProps) {
   return (
     <Card
       className={cn(
-        "bg-[#EFE9E3] border-2 border-[#D9CFC7] transition-all shadow-sm",
+        "bg-emerald-50/50 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-800/50 transition-all shadow-xs rounded-2xl",
         className,
       )}
     >
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-black">
-          <Sparkles className="w-5 h-5 text-primary" />
+        <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
+          <Sparkles className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
           Quick Summary
         </CardTitle>
       </CardHeader>
@@ -44,13 +44,13 @@ export function BenefitsBlock({ children, className }: ContentBlockProps) {
   return (
     <Card
       className={cn(
-        "bg-[#EFE9E3] border-2 border-[#D9CFC7] transition-all shadow-sm",
+        "bg-teal-50/40 dark:bg-teal-950/20 border border-teal-200/80 dark:border-teal-800/50 transition-all shadow-xs rounded-2xl",
         className,
       )}
     >
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-black">
-          <TrendingUp className="w-5 h-5 text-primary" />
+        <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
+          <TrendingUp className="w-5 h-5 text-teal-600 dark:text-teal-400" />
           Key Benefits
         </CardTitle>
       </CardHeader>
@@ -66,13 +66,13 @@ export function DosageBlock({ children, className }: ContentBlockProps) {
   return (
     <Card
       className={cn(
-        "bg-[#EFE9E3] border-2 border-[#D9CFC7] transition-all shadow-sm",
+        "bg-slate-50 dark:bg-[#0D1217] border border-stone-200/90 dark:border-stone-800 transition-all shadow-xs rounded-2xl",
         className,
       )}
     >
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-black">
-          <Pill className="w-5 h-5 text-primary" />
+        <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
+          <Pill className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
           Dosage & Timing
         </CardTitle>
       </CardHeader>
@@ -88,13 +88,13 @@ export function WarningBlock({ children, className }: ContentBlockProps) {
   return (
     <Card
       className={cn(
-        "bg-[#EFE9E3] border-2 border-[#D9CFC7] transition-all shadow-sm",
+        "bg-amber-50/50 dark:bg-amber-950/20 border border-amber-200/80 dark:border-amber-900/50 transition-all shadow-xs rounded-2xl",
         className,
       )}
     >
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-black">
-          <AlertTriangle className="w-5 h-5 text-destructive" />
+        <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
+          <AlertTriangle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
           Warnings & Side Effects
         </CardTitle>
       </CardHeader>
@@ -110,13 +110,13 @@ export function TimelineBlock({ children, className }: ContentBlockProps) {
   return (
     <Card
       className={cn(
-        "bg-[#EFE9E3] border-2 border-[#D9CFC7] transition-all shadow-sm",
+        "bg-slate-50 dark:bg-[#0D1217] border border-stone-200/90 dark:border-stone-800 transition-all shadow-xs rounded-2xl",
         className,
       )}
     >
       <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-black">
-          <Calendar className="w-5 h-5 text-primary" />
+        <CardTitle className="flex items-center gap-2 text-slate-900 dark:text-white">
+          <Calendar className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
           Timing Schedule
         </CardTitle>
       </CardHeader>

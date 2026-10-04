@@ -29,18 +29,17 @@ import {
   Search,
   Pencil,
   Trash2,
-  Eye,
-  BookOpen,
+  Star,
   ExternalLink,
   PlusCircle,
+  Eye,
   RefreshCw,
   CheckCircle2,
   Clock,
-  ShieldCheck,
 } from "lucide-react";
 import Link from "next/link";
 
-interface GuidePost {
+interface ReviewPost {
   id: string;
   title: string;
   slug: string;
@@ -48,82 +47,75 @@ interface GuidePost {
   status: string;
   viewCount: number;
   createdAt: string;
-  author: { name: string; slug: string } | null;
+  author: { name: string } | null;
   category: { name: string; slug: string } | null;
 }
 
-function GuidesContent() {
-  const [posts, setPosts] = useState<GuidePost[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<GuidePost[]>([]);
+function ReviewsContent() {
+  const [reviews, setReviews] = useState<ReviewPost[]>([]);
+  const [filteredReviews, setFilteredReviews] = useState<ReviewPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [postToDelete, setPostToDelete] = useState<GuidePost | null>(null);
+  const [reviewToDelete, setReviewToDelete] = useState<ReviewPost | null>(null);
   const [changingStatus, setChangingStatus] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchGuides();
+    fetchReviews();
   }, []);
 
   useEffect(() => {
-    filterGuides();
-  }, [posts, searchQuery, statusFilter]);
+    filterReviews();
+  }, [reviews, searchQuery, statusFilter]);
 
-  const fetchGuides = async () => {
+  const fetchReviews = async () => {
     try {
       setLoading(true);
-      const res = await fetch("/api/blog/posts?postType=guide");
-      if (!res.ok) throw new Error("Failed to fetch guides");
+      const res = await fetch("/api/blog/posts?postType=review");
+      if (!res.ok) throw new Error("Failed to fetch reviews");
       const data = await res.json();
-      setPosts(data);
+      setReviews(data);
     } catch (error) {
       console.error(error);
-      toast.error("Failed to load safety guides");
+      toast.error("Failed to load product reviews");
     } finally {
       setLoading(false);
     }
   };
 
-  const filterGuides = () => {
-    let result = [...posts];
-
+  const filterReviews = () => {
+    let result = [...reviews];
     if (statusFilter !== "all") {
-      result = result.filter(
-        (post) => post.status.toLowerCase() === statusFilter
-      );
+      result = result.filter((r) => r.status.toLowerCase() === statusFilter);
     }
-
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
       result = result.filter(
-        (post) =>
-          post.title.toLowerCase().includes(q) ||
-          post.excerpt?.toLowerCase().includes(q) ||
-          post.slug.toLowerCase().includes(q) ||
-          post.category?.name?.toLowerCase().includes(q)
+        (r) =>
+          r.title.toLowerCase().includes(q) ||
+          r.excerpt?.toLowerCase().includes(q) ||
+          r.slug.toLowerCase().includes(q)
       );
     }
-
-    setFilteredPosts(result);
+    setFilteredReviews(result);
   };
 
-  const handleStatusChange = async (postId: string, newStatus: string) => {
-    setChangingStatus(postId);
+  const handleStatusChange = async (reviewId: string, newStatus: string) => {
+    setChangingStatus(reviewId);
     try {
-      const res = await fetch(`/api/admin/posts/${postId}/status`, {
+      const res = await fetch(`/api/admin/posts/${reviewId}/status`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
       });
-
       if (!res.ok) throw new Error("Failed to update status");
 
       toast.success(
-        newStatus === "PUBLISHED" ? "Guide published live" : "Guide moved to draft"
+        newStatus === "PUBLISHED" ? "Review published live" : "Review moved to draft"
       );
-      setPosts((prev) =>
-        prev.map((p) => (p.id === postId ? { ...p, status: newStatus } : p))
+      setReviews((prev) =>
+        prev.map((r) => (r.id === reviewId ? { ...r, status: newStatus } : r))
       );
     } catch (error) {
       console.error(error);
@@ -134,45 +126,42 @@ function GuidesContent() {
   };
 
   const handleDelete = async () => {
-    if (!postToDelete) return;
-
+    if (!reviewToDelete) return;
     try {
-      const res = await fetch(`/api/admin/posts/${postToDelete.id}`, {
+      const res = await fetch(`/api/admin/posts/${reviewToDelete.id}`, {
         method: "DELETE",
       });
+      if (!res.ok) throw new Error("Failed to delete review");
 
-      if (!res.ok) throw new Error("Failed to delete guide");
-
-      toast.success("Safety guide deleted successfully");
+      toast.success("Review deleted successfully");
       setDeleteDialogOpen(false);
-      setPostToDelete(null);
-      setPosts((prev) => prev.filter((p) => p.id !== postToDelete.id));
+      setReviewToDelete(null);
+      setReviews((prev) => prev.filter((r) => r.id !== reviewToDelete.id));
     } catch (error) {
       console.error(error);
-      toast.error("Failed to delete guide");
+      toast.error("Failed to delete review");
     }
   };
 
-  const publishedCount = posts.filter((p) => p.status === "PUBLISHED").length;
-  const draftCount = posts.filter((p) => p.status !== "PUBLISHED").length;
-  const totalViews = posts.reduce((sum, p) => sum + (p.viewCount || 0), 0);
+  const publishedCount = reviews.filter((r) => r.status === "PUBLISHED").length;
+  const draftCount = reviews.filter((r) => r.status !== "PUBLISHED").length;
 
   return (
     <AdminLayout>
       <div className="space-y-6">
-        {/* Header */}
+        {/* Header Section */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-2">
-              <span className="p-2 rounded-xl bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400 border border-teal-200/60 dark:border-teal-800/40">
-                <BookOpen className="h-5 w-5" />
+              <span className="p-2 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-rose-200/60 dark:border-rose-800/40">
+                <Star className="h-5 w-5" />
               </span>
               <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
-                Category Safety Guides
+                Product Reviews
               </h1>
             </div>
             <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-              Comprehensive clinical protocols, buying checklists, and safety evaluations.
+              Independent evaluations, clinical grade assessments, and brand breakdowns.
             </p>
           </div>
 
@@ -180,20 +169,20 @@ function GuidesContent() {
             <Button
               variant="outline"
               size="sm"
-              onClick={fetchGuides}
+              onClick={fetchReviews}
               disabled={loading}
               className="border-slate-200 dark:border-slate-800"
             >
               <RefreshCw className={`h-4 w-4 mr-2 ${loading ? "animate-spin" : ""}`} />
               Refresh
             </Button>
-            <Link href="/admin/guides/new">
+            <Link href="/admin/reviews/new">
               <Button
                 size="sm"
                 className="bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 shadow-sm"
               >
-                <PlusCircle className="h-4 w-4 mr-2 text-teal-400 dark:text-teal-600" />
-                New Safety Guide
+                <PlusCircle className="h-4 w-4 mr-2 text-rose-400 dark:text-rose-600" />
+                New Product Review
               </Button>
             </Link>
           </div>
@@ -205,14 +194,14 @@ function GuidesContent() {
             <CardContent className="p-4 flex items-center justify-between">
               <div>
                 <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
-                  Total Protocols
+                  Total Reviews
                 </p>
                 <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-0.5">
-                  {posts.length}
+                  {reviews.length}
                 </h3>
               </div>
-              <div className="p-2.5 rounded-xl bg-teal-50 dark:bg-teal-950/40 text-teal-600 dark:text-teal-400">
-                <BookOpen className="h-5 w-5" />
+              <div className="p-2.5 rounded-xl bg-rose-50 dark:bg-rose-950/40 text-rose-600 dark:text-rose-400">
+                <Star className="h-5 w-5" />
               </div>
             </CardContent>
           </Card>
@@ -237,27 +226,27 @@ function GuidesContent() {
             <CardContent className="p-4 flex items-center justify-between">
               <div>
                 <p className="text-xs font-medium uppercase tracking-wider text-slate-500">
-                  Total Reader Views
+                  Drafts
                 </p>
-                <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-0.5">
-                  {totalViews.toLocaleString()}
+                <h3 className="text-2xl font-bold text-amber-600 dark:text-amber-400 mt-0.5">
+                  {draftCount}
                 </h3>
               </div>
-              <div className="p-2.5 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400">
-                <Eye className="h-5 w-5" />
+              <div className="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400">
+                <Clock className="h-5 w-5" />
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Filters */}
+        {/* Search & Filters */}
         <Card className="border border-slate-200/80 dark:border-slate-800 bg-white/70 dark:bg-slate-900/60 backdrop-blur-sm">
           <CardContent className="p-4">
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <Input
-                  placeholder="Search guides by title, health goal, or keyword..."
+                  placeholder="Search reviews by brand, title, or keyword..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-9 bg-slate-50/50 dark:bg-slate-950/50 border-slate-200 dark:border-slate-800 text-sm"
@@ -270,7 +259,7 @@ function GuidesContent() {
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="all">All Guides</SelectItem>
+                    <SelectItem value="all">All Reviews</SelectItem>
                     <SelectItem value="published">Published</SelectItem>
                     <SelectItem value="draft">Drafts</SelectItem>
                   </SelectContent>
@@ -280,41 +269,43 @@ function GuidesContent() {
           </CardContent>
         </Card>
 
-        {/* Guides List */}
+        {/* Reviews List */}
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900/40 rounded-2xl border border-slate-200/80 dark:border-slate-800">
-            <Loader2 className="h-8 w-8 animate-spin text-teal-600 mb-2" />
-            <p className="text-sm text-slate-500">Loading safety guides...</p>
+            <Loader2 className="h-8 w-8 animate-spin text-rose-600 mb-2" />
+            <p className="text-sm text-slate-500">Loading reviews...</p>
           </div>
-        ) : filteredPosts.length === 0 ? (
+        ) : filteredReviews.length === 0 ? (
           <Card className="border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900/60">
             <CardContent className="flex flex-col items-center justify-center py-16 text-center px-4">
               <div className="p-3.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 mb-3">
-                <BookOpen className="h-8 w-8" />
+                <Star className="h-8 w-8" />
               </div>
               <h3 className="text-base font-semibold text-slate-900 dark:text-white">
-                No safety guides found
+                No product reviews found
               </h3>
               <p className="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-sm">
-                Safety guides provide authoritative clinical buying criteria for each supplement category.
+                Create in-depth reviews covering clinical safety, testing certifications, and dosing accuracy.
               </p>
-              <Link href="/admin/guides/new" className="mt-4">
+              <Link href="/admin/reviews/new" className="mt-4">
                 <Button size="sm" className="bg-slate-900 dark:bg-white text-white dark:text-slate-900">
                   <PlusCircle className="h-4 w-4 mr-1.5" />
-                  Create First Guide
+                  Create First Review
                 </Button>
               </Link>
             </CardContent>
           </Card>
         ) : (
           <div className="space-y-3">
-            {filteredPosts.map((post) => {
-              const isPublished = post.status === "PUBLISHED";
-              const liveUrl = `/guides/${post.slug}`;
+            {filteredReviews.map((review) => {
+              const isPublished = review.status === "PUBLISHED";
+              const liveUrl = review.category?.slug
+                ? `/${review.category.slug}/${review.slug}`
+                : `/${review.slug}`;
 
               return (
                 <div
-                  key={post.id}
+                  key={review.id}
                   className="p-4 sm:p-5 rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900/70 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200"
                 >
                   <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
@@ -335,12 +326,12 @@ function GuidesContent() {
                           />
                           {isPublished ? "Published" : "Draft"}
                         </Badge>
-                        {post.category && (
-                          <span className="text-xs px-2 py-0.5 rounded-md bg-teal-50 text-teal-700 border border-teal-200/60 dark:bg-teal-950/40 dark:text-teal-400 font-medium">
-                            {post.category.name}
+                        {review.category && (
+                          <span className="text-xs px-2 py-0.5 rounded-md bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 font-medium">
+                            {review.category.name}
                           </span>
                         )}
-                        {changingStatus === post.id && (
+                        {changingStatus === review.id && (
                           <span className="text-xs text-slate-400 flex items-center">
                             <Loader2 className="h-3 w-3 animate-spin mr-1" />
                             Updating...
@@ -349,31 +340,31 @@ function GuidesContent() {
                       </div>
 
                       <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
-                        <Link href={`/admin/guides/${post.slug}`} className="hover:text-teal-600 transition-colors">
-                          {post.title}
+                        <Link href={`/admin/reviews/${review.slug}`} className="hover:text-rose-600 transition-colors">
+                          {review.title}
                         </Link>
                       </h3>
 
-                      {post.excerpt && (
+                      {review.excerpt && (
                         <p className="text-xs sm:text-sm text-slate-500 line-clamp-2">
-                          {post.excerpt}
+                          {review.excerpt}
                         </p>
                       )}
 
                       <div className="flex items-center gap-3 text-xs text-slate-400 pt-1">
-                        {post.author?.name && <span>By {post.author.name}</span>}
+                        {review.author?.name && <span>By {review.author.name}</span>}
                         <span>•</span>
                         <span className="flex items-center gap-1">
                           <Eye className="h-3 w-3" />
-                          {post.viewCount || 0} views
+                          {review.viewCount || 0} views
                         </span>
                         <span>•</span>
-                        <span>/guides/{post.slug}</span>
+                        <span>{new Date(review.createdAt).toLocaleDateString()}</span>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2 pt-3 lg:pt-0 border-t lg:border-t-0 border-slate-100 dark:border-slate-800">
-                      <Link href={`/admin/guides/${post.slug}`}>
+                      <Link href={`/admin/reviews/${review.slug}`}>
                         <Button size="sm" variant="outline" className="h-8.5 px-3">
                           <Pencil className="h-3.5 w-3.5 mr-1.5 text-slate-500" />
                           Edit
@@ -381,7 +372,7 @@ function GuidesContent() {
                       </Link>
 
                       <Link href={liveUrl} target="_blank">
-                        <Button size="sm" variant="ghost" className="h-8.5 px-2.5" title="View live guide">
+                        <Button size="sm" variant="ghost" className="h-8.5 px-2.5" title="View live">
                           <ExternalLink className="h-3.5 w-3.5" />
                         </Button>
                       </Link>
@@ -391,7 +382,7 @@ function GuidesContent() {
                         variant="ghost"
                         onClick={() =>
                           handleStatusChange(
-                            post.id,
+                            review.id,
                             isPublished ? "DRAFT" : "PUBLISHED"
                           )
                         }
@@ -406,7 +397,7 @@ function GuidesContent() {
                         size="icon"
                         variant="ghost"
                         onClick={() => {
-                          setPostToDelete(post);
+                          setReviewToDelete(review);
                           setDeleteDialogOpen(true);
                         }}
                         className="h-8.5 w-8.5 text-rose-500 hover:text-rose-600 hover:bg-rose-50"
@@ -425,15 +416,15 @@ function GuidesContent() {
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete safety guide?</AlertDialogTitle>
+            <AlertDialogTitle>Delete product review?</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to permanently delete &quot;{postToDelete?.title}&quot;?
+              Are you sure you want to delete &quot;{reviewToDelete?.title}&quot;?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} className="bg-rose-600 text-white">
-              Delete Guide
+              Delete Review
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -442,18 +433,18 @@ function GuidesContent() {
   );
 }
 
-export default function GuidesManagementPage() {
+export default function ReviewsManagementPage() {
   return (
     <Suspense
       fallback={
         <AdminLayout>
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="h-8 w-8 animate-spin text-teal-600" />
+            <Loader2 className="h-8 w-8 animate-spin text-rose-600" />
           </div>
         </AdminLayout>
       }
     >
-      <GuidesContent />
+      <ReviewsContent />
     </Suspense>
   );
 }

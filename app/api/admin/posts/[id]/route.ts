@@ -111,21 +111,15 @@ export async function PUT(
         )?.name
       : null;
 
-    const selectedRoles = [authorName, factCheckedBy, reviewedBy]
-      .map((value) =>
-        typeof value === "string" ? value.trim().toLowerCase() : "",
-      )
-      .filter(Boolean);
-
-    if (new Set(selectedRoles).size !== selectedRoles.length) {
-      return NextResponse.json(
-        {
-          error:
-            "Author, Fact Checked By, and Reviewed By must be different people.",
-        },
-        { status: 400 },
-      );
-    }
+    const defaultReviewer = "SupplementDecoded Research Editorial Team";
+    const finalFactCheckedBy =
+      factCheckedBy !== undefined
+        ? factCheckedBy || defaultReviewer
+        : currentPost.factCheckedBy || defaultReviewer;
+    const finalReviewedBy =
+      reviewedBy !== undefined
+        ? reviewedBy || defaultReviewer
+        : currentPost.reviewedBy || defaultReviewer;
 
     // Set publishedAt only if it's being published for the first time
     // or keep the existing publishedAt if it's already published
@@ -162,9 +156,9 @@ export async function PUT(
         status: status?.toUpperCase() || "DRAFT",
         publishedAt: publishedAtData,
         readTimeMinutes: readTimeMinutes || 5,
-        postType: postType || "blog",
-        factCheckedBy: factCheckedBy || null,
-        reviewedBy: reviewedBy || null,
+        postType: postType !== undefined ? postType : currentPost.postType,
+        factCheckedBy: finalFactCheckedBy,
+        reviewedBy: finalReviewedBy,
         ...(authorId
           ? {
               author: {

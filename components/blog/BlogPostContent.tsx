@@ -188,37 +188,22 @@ export default function BlogPostContent({
 
   return (
     <div
-      className="min-h-screen bg-[#F5F3F0] dark:bg-[#0D0C09] text-black dark:text-zinc-100 relative pb-24 font-sans selection:bg-primary/20 selection:text-primary"
-      style={
-        {
-          "--text": "#111111",
-          "--foreground": "#111111",
-          "--muted-foreground": "#4b5563",
-          "--border": "#D9CFC7",
-          "--primary": "hsl(var(--primary))",
-          "--accent": "hsl(var(--primary))",
-          "--accent-soft": "rgba(16,185,129,0.06)",
-          "--link": "hsl(var(--primary))",
-          "--link-hover": "hsl(var(--primary))",
-          "--surface": "#ffffff",
-          "--surface-2": "#f5f0eb",
-        } as React.CSSProperties
-      }
+      className="min-h-screen bg-[#FAFAF8] dark:bg-[#070A0E] text-slate-900 dark:text-stone-100 relative pb-24 font-sans selection:bg-primary/20 selection:text-primary transition-colors"
     >
       {/* Scroll Progress Bar & Sticky Header */}
       <div
         className={cn(
-          "fixed top-0 left-0 w-full z-50 bg-[#F9F8F6]/80 backdrop-blur-md border-b border-[#D9CFC7] transition-all duration-300 transform",
+          "fixed top-0 left-0 w-full z-50 bg-white/90 dark:bg-[#070B0F]/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 transition-all duration-300 transform",
           showStickyHeader ? "translate-y-0" : "-translate-y-full",
         )}
       >
         <div className="container mx-auto max-w-7xl px-4 h-16 flex items-center justify-between">
-          <h2 className="font-bold text-lg truncate max-w-2xl text-black">
+          <h2 className="font-bold text-lg truncate max-w-2xl text-slate-900 dark:text-slate-100">
             {post.title}
           </h2>
           <div className="flex items-center gap-4">
             {post.author && (
-              <div className="hidden md:flex items-center gap-2 text-sm text-gray-700">
+              <div className="hidden md:flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
                 <span>{post.author.name}</span>
               </div>
             )}
@@ -230,9 +215,9 @@ export default function BlogPostContent({
             />
           </div>
         </div>
-        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gray-200">
+        <div className="absolute bottom-0 left-0 w-full h-0.5 bg-slate-200 dark:bg-slate-800">
           <div
-            className="h-full bg-primary transition-all duration-150 ease-out"
+            className="h-full bg-emerald-600 dark:bg-emerald-500 transition-all duration-150 ease-out"
             style={{ width: `${scrollProgress}%` }}
           />
         </div>
@@ -245,7 +230,7 @@ export default function BlogPostContent({
         </div>
 
         {/* Hero Section */}
-        <header className="mb-10 lg:mb-16 max-w-7xl mx-auto bg-white dark:bg-[#17120D] rounded-[2rem] shadow-sm overflow-hidden">
+        <header className="mb-10 lg:mb-16 max-w-7xl mx-auto bg-white dark:bg-[#0D1217] border border-slate-200/90 dark:border-slate-800 rounded-[2rem] shadow-sm overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
             {/* Left Content Column */}
             <div className="lg:col-span-7 space-y-5 order-2 lg:order-1 p-8 md:p-10 lg:p-12">
@@ -372,7 +357,7 @@ export default function BlogPostContent({
                     href={summaryLinks.chatgpt}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3 py-1.5 text-sm font-semibold rounded-md border border-[#D9CFC7] hover:border-black/40 dark:border-[#3B2E22] dark:hover:border-zinc-400 bg-white dark:bg-[#17120D] transition-colors"
+                    className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-800 hover:border-emerald-600 dark:hover:border-emerald-500 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 transition-colors shadow-2xs"
                   >
                     ChatGPT
                   </a>
@@ -380,7 +365,7 @@ export default function BlogPostContent({
                     href={summaryLinks.perplexity}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3 py-1.5 text-sm font-semibold rounded-md border border-[#D9CFC7] hover:border-black/40 dark:border-[#3B2E22] dark:hover:border-zinc-400 bg-white dark:bg-[#17120D] transition-colors"
+                    className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-800 hover:border-emerald-600 dark:hover:border-emerald-500 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 transition-colors shadow-2xs"
                   >
                     Perplexity
                   </a>
@@ -388,7 +373,7 @@ export default function BlogPostContent({
                     href={summaryLinks.copilot}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3 py-1.5 text-sm font-semibold rounded-md border border-[#D9CFC7] hover:border-black/40 dark:border-[#3B2E22] dark:hover:border-zinc-400 bg-white dark:bg-[#17120D] transition-colors"
+                    className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-800 hover:border-emerald-600 dark:hover:border-emerald-500 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 transition-colors shadow-2xs"
                   >
                     Copilot
                   </a>
@@ -398,7 +383,7 @@ export default function BlogPostContent({
 
             {/* Right Image Column */}
             <div className="lg:col-span-5 order-1 lg:order-2">
-              <div className="relative h-64 lg:h-full min-h-[320px] overflow-hidden bg-gradient-to-br from-[#EFE9E3] to-[#D9CFC7] dark:from-[#1D150E] dark:to-[#2C2218]">
+              <div className="relative h-64 lg:h-full min-h-[320px] overflow-hidden bg-slate-100 dark:bg-[#121A15]">
                 {post.featuredImageUrl && !imgError ? (
                   <Image
                     src={post.featuredImageUrl}
@@ -442,8 +427,8 @@ export default function BlogPostContent({
           {/* LEFT SIDEBAR: Table of Contents */}
           <aside className="hidden lg:block lg:col-span-3 relative">
             <div className="sticky top-24">
-              <div className="bg-white dark:bg-[#17120D] p-5 rounded-2xl shadow-sm max-h-[calc(100vh-7rem)] flex flex-col">
-                <div className="flex items-center gap-2 font-black text-xs text-black dark:text-zinc-100 mb-4 uppercase tracking-widest shrink-0 border-b border-[#D9CFC7] dark:border-[#3B2E22] pb-3">
+              <div className="bg-white dark:bg-[#0D1217] border border-slate-200/90 dark:border-slate-800 p-5 rounded-2xl shadow-sm max-h-[calc(100vh-7rem)] flex flex-col">
+                <div className="flex items-center gap-2 font-black text-xs text-slate-900 dark:text-slate-100 mb-4 uppercase tracking-widest shrink-0 border-b border-slate-100 dark:border-slate-800 pb-3">
                   <List className="w-3.5 h-3.5 text-primary" />
                   <span>Contents</span>
                 </div>
@@ -456,10 +441,10 @@ export default function BlogPostContent({
 
           {/* MAIN CONTENT Area */}
           <main className="lg:col-span-9 min-w-0">
-            <article className="w-full max-w-4xl mx-auto bg-white dark:bg-[#111111] rounded-[2.5rem] shadow-xl shadow-black/5 overflow-hidden transition-all duration-500">
+            <article className="w-full max-w-4xl mx-auto bg-white dark:bg-[#0D1217] border border-slate-200/90 dark:border-slate-800 rounded-[2.5rem] shadow-xl shadow-black/5 overflow-hidden transition-all duration-500">
               <div className="px-8 md:px-16 lg:px-20 py-10 md:py-20">
                 {/* Mobile TOC */}
-                <div className="lg:hidden mb-12 bg-[#F5F3F0] dark:bg-[#1A1612] p-6 rounded-[1.5rem] animate-in fade-in slide-in-from-top-4 duration-500">
+                <div className="lg:hidden mb-12 bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-6 rounded-[1.5rem] animate-in fade-in slide-in-from-top-4 duration-500">
                   <h3 className="font-black text-lg mb-4 flex items-center gap-3 text-black dark:text-white">
                     <div className="p-2 bg-primary/10 rounded-lg">
                       <List className="w-5 h-5 text-primary" />
@@ -536,16 +521,16 @@ export default function BlogPostContent({
 
                 {/* Citations / Sources */}
                 {post.sources && post.sources.length > 0 && (
-                  <div className="mt-20 pt-16 border-t border-[#D9CFC7] dark:border-[#3B2E22]">
-                    <div className="flex items-center gap-4 mb-10 text-black dark:text-white">
-                      <div className="bg-primary/10 p-4 rounded-2xl shadow-inner">
-                        <Microscope className="w-8 h-8 text-primary" />
+                  <div className="mt-20 pt-16 border-t border-slate-200 dark:border-slate-800">
+                    <div className="flex items-center gap-4 mb-10 text-slate-900 dark:text-white">
+                      <div className="bg-emerald-50 dark:bg-emerald-950/60 p-4 rounded-2xl shadow-inner border border-emerald-100 dark:border-emerald-800/60">
+                        <Microscope className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
                       </div>
                       <div>
                         <h3 className="text-3xl font-black m-0 tracking-tight">
                           Evidence Based
                         </h3>
-                        <p className="text-sm text-gray-500 dark:text-zinc-500 font-bold uppercase tracking-widest mt-1">
+                        <p className="text-sm text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mt-1">
                           Scientific References
                         </p>
                       </div>
@@ -554,9 +539,9 @@ export default function BlogPostContent({
                       {post.sources.map((source: Source, index: number) => (
                         <div
                           key={index}
-                          className="flex gap-5 p-6 rounded-2xl bg-gray-50 dark:bg-white/[0.02] border border-transparent hover:border-primary/20 hover:bg-white dark:hover:bg-white/[0.05] hover:shadow-lg transition-all duration-300 group/source"
+                          className="flex gap-5 p-6 rounded-2xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 hover:border-emerald-500/50 hover:bg-white dark:hover:bg-slate-900 hover:shadow-lg transition-all duration-300 group/source"
                         >
-                          <span className="text-primary font-mono text-lg font-black mt-0.5 shrink-0 w-8">
+                          <span className="text-emerald-600 dark:text-emerald-400 font-mono text-lg font-black mt-0.5 shrink-0 w-8">
                             {String(index + 1).padStart(2, "0")}
                           </span>
                           <div className="flex-1">
@@ -564,13 +549,13 @@ export default function BlogPostContent({
                               href={source.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-black dark:text-zinc-100 hover:text-primary font-bold flex items-center gap-2 transition-colors text-base md:text-lg leading-snug"
+                              className="text-slate-900 dark:text-slate-100 hover:text-emerald-600 dark:hover:text-emerald-400 font-bold flex items-center gap-2 transition-colors text-base md:text-lg leading-snug"
                             >
                               {source.title}
                               <ExternalLink className="w-4 h-4 opacity-0 group-hover/source:opacity-40 transition-opacity" />
                             </a>
                             {source.description && (
-                              <p className="text-sm md:text-base text-gray-600 dark:text-zinc-400 mt-2 leading-relaxed">
+                              <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
                                 {source.description}
                               </p>
                             )}
@@ -586,17 +571,17 @@ export default function BlogPostContent({
             {/* Tags Section - Outside but below the card */}
             {post.tags && post.tags.length > 0 && (
               <div className="mt-12 mb-16 px-6">
-                <h4 className="text-[10px] font-black text-gray-400 dark:text-zinc-600 uppercase tracking-[0.3em] mb-6 flex items-center gap-3">
-                  <div className="h-px bg-gray-200 dark:bg-zinc-800 flex-1" />
+                <h4 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-6 flex items-center gap-3">
+                  <div className="h-px bg-slate-200 dark:bg-slate-800 flex-1" />
                   Explore Related Topics
-                  <div className="h-px bg-gray-200 dark:bg-zinc-800 flex-1" />
+                  <div className="h-px bg-slate-200 dark:bg-slate-800 flex-1" />
                 </h4>
                 <div className="flex flex-wrap gap-2.5">
                   {post.tags.map((tag: any) => (
                     <Link
                       key={tag.id}
                       href={`/tag/${tag.slug}`}
-                      className="px-5 py-2.5 bg-white dark:bg-[#111111] border border-[#D9CFC7] dark:border-[#3B2E22] rounded-xl text-sm font-bold text-gray-700 dark:text-zinc-300 hover:border-primary hover:text-primary hover:shadow-md transition-all"
+                      className="px-5 py-2.5 bg-white dark:bg-[#0D1217] border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 hover:border-emerald-600 hover:text-emerald-600 dark:hover:text-emerald-400 hover:shadow-md transition-all"
                     >
                       # {tag.name}
                     </Link>
@@ -612,16 +597,16 @@ export default function BlogPostContent({
 
             {/* Prev/Next Navigation */}
             {(prevPost || nextPost) && (
-              <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-[#D9CFC7] dark:border-[#3B2E22] pt-12 px-6">
+              <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-slate-200 dark:border-slate-800 pt-12 px-6">
                 {prevPost ? (
                   <Link
                     href={getPostHref(prevPost)}
-                    className="group flex flex-col items-start text-left space-y-3 p-6 rounded-2xl border border-[#D9CFC7] dark:border-[#3B2E22] bg-white/40 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 transition-all hover:border-primary/30"
+                    className="group flex flex-col items-start text-left space-y-3 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1217] hover:border-emerald-600 dark:hover:border-emerald-500 transition-all shadow-xs"
                   >
-                    <div className="flex items-center gap-2 text-gray-600 dark:text-zinc-400 text-sm font-bold group-hover:text-primary">
+                    <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm font-bold group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
                       <ArrowLeft className="w-4 h-4" /> Previous Article
                     </div>
-                    <h4 className="text-lg font-black text-black dark:text-white group-hover:text-primary transition-colors line-clamp-2">
+                    <h4 className="text-lg font-black text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-2">
                       {prevPost.title}
                     </h4>
                   </Link>
@@ -632,12 +617,12 @@ export default function BlogPostContent({
                 {nextPost ? (
                   <Link
                     href={getPostHref(nextPost)}
-                    className="group flex flex-col items-end text-right space-y-3 p-6 rounded-2xl border border-[#D9CFC7] dark:border-[#3B2E22] bg-white/40 dark:bg-white/5 hover:bg-white dark:hover:bg-white/10 transition-all hover:border-primary/30"
+                    className="group flex flex-col items-end text-right space-y-3 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1217] hover:border-emerald-600 dark:hover:border-emerald-500 transition-all shadow-xs"
                   >
-                    <div className="flex items-center gap-2 text-gray-600 dark:text-zinc-400 text-sm font-bold group-hover:text-primary">
+                    <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm font-bold group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
                       Next Article <ArrowRight className="w-4 h-4" />
                     </div>
-                    <h4 className="text-lg font-black text-black dark:text-white group-hover:text-primary transition-colors line-clamp-2">
+                    <h4 className="text-lg font-black text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-2">
                       {nextPost.title}
                     </h4>
                   </Link>
@@ -651,12 +636,12 @@ export default function BlogPostContent({
             {relatedPosts && relatedPosts.length > 0 && (
               <div className="mt-20">
                 <div className="flex items-center justify-between mb-8 px-6">
-                  <h3 className="text-2xl font-black tracking-tight">
+                  <h3 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
                     Recommended Reading
                   </h3>
                   <Link
                     href="/blog"
-                    className="text-primary hover:underline font-bold text-sm tracking-widest uppercase"
+                    className="text-emerald-700 dark:text-emerald-400 hover:underline font-bold text-sm tracking-widest uppercase"
                   >
                     View All
                   </Link>
@@ -669,9 +654,9 @@ export default function BlogPostContent({
 
             {/* Footer Share Block */}
             <div className="mt-24 px-6">
-              <div className="bg-[#EFE9E3] dark:bg-[#1A1612] p-10 rounded-[2.5rem] shadow-lg text-center">
-                <div className="flex items-center justify-center gap-3 text-lg font-black text-black dark:text-white uppercase tracking-widest mb-6">
-                  <Share2 className="w-6 h-6 text-primary" />
+              <div className="bg-slate-100 dark:bg-[#0D1217] border border-slate-200 dark:border-slate-800 p-10 rounded-[2.5rem] shadow-lg text-center">
+                <div className="flex items-center justify-center gap-3 text-lg font-black text-slate-900 dark:text-white uppercase tracking-widest mb-6">
+                  <Share2 className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
                   <span>Share This Scientific Review</span>
                 </div>
                 <div className="flex justify-center">
@@ -682,8 +667,8 @@ export default function BlogPostContent({
                     className="flex-wrap justify-center gap-4"
                   />
                 </div>
-                <p className="text-sm text-gray-700 dark:text-zinc-400 mt-6 font-bold italic">
-                  "Knowledge is meant to be shared."
+                <p className="text-sm text-slate-600 dark:text-slate-400 mt-6 font-bold italic">
+                  &ldquo;Knowledge is meant to be shared.&rdquo;
                 </p>
               </div>
             </div>

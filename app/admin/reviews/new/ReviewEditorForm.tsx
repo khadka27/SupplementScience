@@ -34,6 +34,7 @@ import {
   Link as LinkIcon,
   Globe,
   ImageIcon,
+  Sparkles,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ImageUpload } from "@/components/ImageUpload";
@@ -147,31 +148,52 @@ export default function ReviewEditorForm({
     }
   }, [slug, selectedCategory?.slug]);
 
+  // Shortcut: Ctrl+S / Cmd+S
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+        e.preventDefault();
+        form.handleSubmit(onSubmit)();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [form]);
+
+  const autoGenerateSEO = () => {
+    const title = form.getValues("title");
+    const content = form.getValues("content");
+    const plainText = content.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+
+    if (title && !form.getValues("metaTitle")) {
+      form.setValue("metaTitle", title.slice(0, 60), { shouldValidate: true });
+    }
+
+    if (plainText && !form.getValues("metaDescription")) {
+      const desc = plainText.slice(0, 155) + (plainText.length > 155 ? "..." : "");
+      form.setValue("metaDescription", desc, { shouldValidate: true });
+    }
+
+    if (plainText && !form.getValues("excerpt")) {
+      const excerpt = plainText.slice(0, 200) + (plainText.length > 200 ? "..." : "");
+      form.setValue("excerpt", excerpt, { shouldValidate: true });
+    }
+
+    toast.success("Generated SEO metadata from title & content!");
+  };
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setIsSubmitting(true);
     try {
-      const selectedIds = [
-        values.authorId,
-        values.factCheckedById,
-        values.reviewedById,
-      ].filter(Boolean);
-
-      if (new Set(selectedIds).size !== selectedIds.length) {
-        toast.error(
-          "Author, Fact Checked By, and Reviewed By must be different people.",
-        );
-        setIsSubmitting(false);
-        return;
-      }
-
+      const defaultEditorial = "SupplementDecoded Research Editorial Team";
       const factCheckedBy = values.factCheckedById
         ? authors.find((author) => author.id === values.factCheckedById)
-            ?.name || ""
-        : "";
+            ?.name || defaultEditorial
+        : defaultEditorial;
       const reviewedBy = values.reviewedById
         ? authors.find((author) => author.id === values.reviewedById)?.name ||
-          ""
-        : "";
+          defaultEditorial
+        : defaultEditorial;
       const { factCheckedById, reviewedById, ...payload } = values;
 
       const readTimeMinutes = calculateReadTime(values.content);
@@ -198,6 +220,7 @@ export default function ReviewEditorForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...payload,
+          postType: "review",
           factCheckedBy,
           reviewedBy,
           readTimeMinutes,
@@ -216,7 +239,7 @@ export default function ReviewEditorForm({
           ? "Review updated successfully!"
           : "Review created successfully!",
       );
-      router.push("/admin/blogs");
+      router.push("/admin/reviews");
       router.refresh();
     } catch (error) {
       const errorMessage =
@@ -340,6 +363,20 @@ export default function ReviewEditorForm({
                     </FormItem>
                   )}
                 />
+
+                <div className="flex items-center justify-between pt-2 pb-1">
+                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300">Search Engine Optimization</h4>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={autoGenerateSEO}
+                    className="text-xs h-7 gap-1.5 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
+                  >
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Auto-Fill SEO
+                  </Button>
+                </div>
 
                 <FormField
                   control={form.control}
@@ -484,14 +521,7 @@ export default function ReviewEditorForm({
                         <SelectContent>
                           <SelectItem value="none">No author</SelectItem>
                           {authors.map((author) => (
-                            <SelectItem
-                              key={author.id}
-                              value={author.id}
-                              disabled={
-                                author.id === selectedFactCheckerId ||
-                                author.id === selectedReviewerId
-                              }
-                            >
+                            <SelectItem key={author.id} value={author.id}>
                               {author.name}
                             </SelectItem>
                           ))}
@@ -520,16 +550,9 @@ export default function ReviewEditorForm({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="none">None</SelectItem>
+                          <SelectItem value="none">Editorial Team (Default)</SelectItem>
                           {authors.map((author) => (
-                            <SelectItem
-                              key={author.id}
-                              value={author.id}
-                              disabled={
-                                author.id === selectedAuthorId ||
-                                author.id === selectedReviewerId
-                              }
-                            >
+                            <SelectItem key={author.id} value={author.id}>
                               {author.name}
                             </SelectItem>
                           ))}
@@ -558,16 +581,9 @@ export default function ReviewEditorForm({
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          <SelectItem value="none">None</SelectItem>
+                          <SelectItem value="none">Editorial Team (Default)</SelectItem>
                           {authors.map((author) => (
-                            <SelectItem
-                              key={author.id}
-                              value={author.id}
-                              disabled={
-                                author.id === selectedAuthorId ||
-                                author.id === selectedFactCheckerId
-                              }
-                            >
+                            <SelectItem key={author.id} value={author.id}>
                               {author.name}
                             </SelectItem>
                           ))}

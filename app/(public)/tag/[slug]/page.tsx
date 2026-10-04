@@ -146,28 +146,33 @@ export default async function TagPage({ params }: Props) {
   const posts = await getTagPosts(tag.id);
 
   return (
-    <div className="container mx-auto px-4 py-16 max-w-7xl mt-20">
-      <div className="mb-16">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 tracking-tight drop-shadow-sm text-black">
-          {tag.name}
-        </h1>
-        {tag.description && (
-          <p className="text-xl text-gray-800 max-w-3xl leading-relaxed">
-            {tag.description}
-          </p>
-        )}
-      </div>
-      <div className="space-y-8 mt-12 pt-8 border-t border-[#D9CFC7]">
-        <div className="flex items-center justify-between mb-8 pb-6">
-          <h2 className="text-2xl font-bold tracking-tight text-black flex items-center gap-3">
-            <span className="w-8 h-1 bg-[#D9CFC7] rounded-full" />
-            Latest guides for {tag.name}
-          </h2>
-          <span className="text-sm text-gray-500 italic hidden sm:block">
-            Evidence-verified content
-          </span>
+    <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#070A0E] text-slate-900 dark:text-slate-100 pt-20 sm:pt-[84px] pb-20">
+      <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100/70 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60 mb-3">
+            Ingredient Monograph Archive
+          </div>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold mb-4 tracking-tight text-slate-900 dark:text-white">
+            {tag.name}
+          </h1>
+          {tag.description && (
+            <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-3xl leading-relaxed">
+              {tag.description}
+            </p>
+          )}
         </div>
-        <BlogList posts={posts} />
+        <div className="space-y-8 mt-12 pt-8 border-t border-stone-200/90 dark:border-stone-800">
+          <div className="flex items-center justify-between mb-8 pb-4 border-b border-stone-200/90 dark:border-stone-800">
+            <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-3">
+              <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full" />
+              Latest guides for {tag.name}
+            </h2>
+            <span className="text-sm text-emerald-700 dark:text-emerald-400 font-medium hidden sm:block">
+              Evidence-verified content
+            </span>
+          </div>
+          <BlogList posts={posts} />
+        </div>
       </div>
     </div>
   );

@@ -127,14 +127,14 @@ export function NewsletterForm({
         {message && (
           <div
             className={cn(
-              "mt-3 p-3 rounded-lg flex items-center gap-2",
+              "mt-3 p-3 rounded-xl flex items-center gap-2 text-sm",
               message.type === "success"
-                ? "bg-[#EFE9E3] text-primary border border-[#D9CFC7]"
-                : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400",
+                ? "bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60"
+                : "bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900/50",
             )}
           >
             {message.type === "success" && (
-              <CheckCircle2 className="w-5 h-5 shrink-0" />
+              <CheckCircle2 className="w-5 h-5 shrink-0 text-emerald-600 dark:text-emerald-400" />
             )}
             <p className="text-sm">{message.text}</p>
           </div>
@@ -147,19 +147,19 @@ export function NewsletterForm({
   return (
     <div
       className={cn(
-        "rounded-[2rem] bg-white/40 backdrop-blur-sm p-8 md:p-10 shadow-sm",
+        "rounded-3xl bg-white dark:bg-[#0D1217] border border-stone-200/90 dark:border-stone-800 p-8 md:p-10 shadow-sm",
         className,
       )}
     >
       <div className="flex items-start gap-5 mb-8">
-        <div className="bg-primary text-primary-foreground p-3.5 rounded-[1.25rem] shadow-lg shadow-primary/20">
+        <div className="bg-emerald-700 text-white p-3.5 rounded-2xl shadow-md">
           <Mail className="w-6 h-6" />
         </div>
         <div className="flex-1">
-          <h3 className="text-2xl font-black text-black mb-2">
+          <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
             Subscribe to the Science
           </h3>
-          <p className="text-gray-700 font-medium leading-relaxed">
+          <p className="text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
             Get the latest evidence-based research and supplement guides
             delivered directly to your inbox.
           </p>
@@ -175,13 +175,13 @@ export function NewsletterForm({
             onChange={(e) => setEmail(e.target.value)}
             required
             disabled={isLoading}
-            className="flex-1 h-11 bg-background"
+            className="flex-1 h-11"
           />
           <Button
             type="submit"
             disabled={isLoading}
             size="lg"
-            className="h-11 px-6"
+            className="h-11 px-6 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold"
           >
             {isLoading ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -194,20 +194,20 @@ export function NewsletterForm({
         {message && (
           <div
             className={cn(
-              "p-3 rounded-lg flex items-center gap-2 text-sm",
+              "p-3 rounded-xl flex items-center gap-2 text-sm",
               message.type === "success"
-                ? "bg-[#EFE9E3] text-primary border border-[#D9CFC7]"
-                : "bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400",
+                ? "bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60"
+                : "bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900/50",
             )}
           >
             {message.type === "success" && (
-              <CheckCircle2 className="w-4 h-4 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
             )}
             {message.text}
           </div>
         )}
 
-        <p className="text-xs text-muted-foreground">
+        <p className="text-xs text-slate-500 dark:text-slate-400">
           We respect your privacy. Unsubscribe at any time.
         </p>
       </form>

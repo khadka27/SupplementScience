@@ -22,6 +22,8 @@ import {
   UserCircle,
   Globe,
   ImageIcon,
+  Search,
+  X,
 } from "lucide-react";
 import { ImageUpload } from "@/components/ImageUpload";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -69,6 +71,7 @@ export default function AuthorsManagementPage() {
   const [editingAuthor, setEditingAuthor] = useState<Author | null>(null);
   const [authorToDelete, setAuthorToDelete] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -451,9 +454,39 @@ export default function AuthorsManagementPage() {
           </Dialog>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {authors.map((author) => (
-            <Card key={author.id}>
+        {/* Search Bar */}
+        <div className="relative max-w-md">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Input
+            placeholder="Search authors by name, slug, or email..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9 pr-8"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+
+        {authors.filter(a => a.name.toLowerCase().includes(searchQuery.toLowerCase()) || a.slug.toLowerCase().includes(searchQuery.toLowerCase()) || a.email?.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 ? (
+          <div className="text-center py-12 bg-white dark:bg-slate-900/60 rounded-2xl border border-stone-200 dark:border-stone-800">
+            <UserCircle className="h-8 w-8 mx-auto text-slate-400 mb-2" />
+            <h3 className="font-semibold text-slate-800 dark:text-slate-200">No authors found</h3>
+            <p className="text-xs text-slate-500 mt-1">
+              {searchQuery ? `No authors matching "${searchQuery}"` : "Add your first author using the button above."}
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {authors
+              .filter(a => a.name.toLowerCase().includes(searchQuery.toLowerCase()) || a.slug.toLowerCase().includes(searchQuery.toLowerCase()) || a.email?.toLowerCase().includes(searchQuery.toLowerCase()))
+              .map((author) => (
+                <Card key={author.id}>
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
@@ -524,22 +557,7 @@ export default function AuthorsManagementPage() {
             </Card>
           ))}
         </div>
-
-        {authors.length === 0 && (
-          <Card className="mt-8">
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <UserCircle className="h-16 w-16 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No authors yet</h3>
-              <p className="text-muted-foreground text-center mb-4">
-                Create your first author to get started
-              </p>
-              <Button onClick={() => setDialogOpen(true)}>
-                <Plus className="h-4 w-4 mr-2" />
-                Add First Author
-              </Button>
-            </CardContent>
-          </Card>
-        )}
+      )}
 
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <AlertDialogContent>

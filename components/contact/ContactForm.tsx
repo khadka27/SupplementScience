@@ -314,7 +314,7 @@ export function ContactForm() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               disabled={isAnonymous}
-              placeholder={isAnonymous ? "Anonymous Whistleblower" : "e.g., Dr. Marcus Vance"}
+              placeholder={isAnonymous ? "Anonymous Whistleblower" : "e.g., Jane Smith"}
               className="w-full h-11 px-3.5 rounded-xl border border-stone-200/90 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 text-xs sm:text-sm placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-[#0E3B2F] dark:focus:border-emerald-500 disabled:opacity-50 disabled:bg-stone-100 dark:disabled:bg-stone-800"
               required={!isAnonymous}
             />

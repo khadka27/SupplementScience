@@ -1,0 +1,280 @@
+diff --git a/app/(public)/ingredients/[slug]/page.tsx b/app/(public)/ingredients/[slug]/page.tsx
+index 02ee86a..23684dd 100644
+--- a/app/(public)/ingredients/[slug]/page.tsx
++++ b/app/(public)/ingredients/[slug]/page.tsx
+@@ -128,9 +128,8 @@ export default async function IngredientPage({ params }: Props) {
+           humanRctCount={48}
+           primaryProvenOutcome="Serum Cortisol & Anxiety Reduction (-27.9%)"
+           standardTherapeuticDose="300 - 600 mg/day (KSM-66 / Sensoril)"
+-          reviewerName="Dr. Sarah Lin"
+-          reviewerCredentials="PharmD, BCPS • Clinical Pharmacology"
+-          lastUpdated="Q4 2026"
++          reviewerName="SupplementDecoded Research Editorial Team"
++          reviewerCredentials=""
+         />
+       </>
+     );
+@@ -156,18 +155,11 @@ export default async function IngredientPage({ params }: Props) {
+         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+       />
+ 
+-      <ClinicalIngredientDossier
+-        ingredientName={post.title.replace(/:\s*Human\s*Evidence.*$/i, "").trim()}
+-        scientificName="Standardized Clinical Monograph"
+-        category={post.category?.name || "Dietary Supplement"}
+-        evidenceGrade="A"
+-        humanRctCount={48}
+-        primaryProvenOutcome="Therapeutic Indication Verified"
+-        standardTherapeuticDose="Standard Therapeutic Range"
+-        reviewerName={post.reviewedBy || post.factCheckedBy || "Dr. Sarah Lin"}
+-        reviewerCredentials="PharmD, BCPS • Clinical Pharmacology"
+-        lastUpdated="Q4 2026"
+-        contentHtml={post.content}
++      <BlogPostContent
++        post={post as any}
++        relatedPosts={[]}
++        prevPost={null}
++        nextPost={null}
+       />
+     </>
+   );
+diff --git a/components/contact/ContactForm.tsx b/components/contact/ContactForm.tsx
+index 09219c4..6fcb133 100644
+--- a/components/contact/ContactForm.tsx
++++ b/components/contact/ContactForm.tsx
+@@ -314,7 +314,7 @@ export function ContactForm() {
+               value={name}
+               onChange={(e) => setName(e.target.value)}
+               disabled={isAnonymous}
+-              placeholder={isAnonymous ? "Anonymous Whistleblower" : "e.g., Dr. Marcus Vance"}
++              placeholder={isAnonymous ? "Anonymous Whistleblower" : "e.g., Jane Smith"}
+               className="w-full h-11 px-3.5 rounded-xl border border-stone-200/90 dark:border-stone-800 bg-white dark:bg-stone-900 text-stone-900 dark:text-stone-100 text-xs sm:text-sm placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-[#0E3B2F] dark:focus:border-emerald-500 disabled:opacity-50 disabled:bg-stone-100 dark:disabled:bg-stone-800"
+               required={!isAnonymous}
+             />
+diff --git a/components/redesign/ClinicalIngredientDossier.tsx b/components/redesign/ClinicalIngredientDossier.tsx
+index c8119b1..3d2cac3 100644
+--- a/components/redesign/ClinicalIngredientDossier.tsx
++++ b/components/redesign/ClinicalIngredientDossier.tsx
+@@ -40,9 +40,9 @@ export function ClinicalIngredientDossier({
+   humanRctCount = 48,
+   primaryProvenOutcome = "Serum Cortisol & Anxiety Reduction (-27.9%)",
+   standardTherapeuticDose = "300 - 600 mg/day (Standardized Extract)",
+-  reviewerName = "Dr. Sarah Lin",
+-  reviewerCredentials = "PharmD, BCPS • Clinical Pharmacology",
+-  lastUpdated = "Q4 2026",
++  reviewerName = "SupplementDecoded Research Editorial Team",
++  reviewerCredentials = "",
++  lastUpdated = "",
+   contentHtml,
+ }: ClinicalIngredientDossierProps) {
+   return (
+diff --git a/components/redesign/EvidenceScorecard.tsx b/components/redesign/EvidenceScorecard.tsx
+index 6ee720d..e5cff65 100644
+--- a/components/redesign/EvidenceScorecard.tsx
++++ b/components/redesign/EvidenceScorecard.tsx
+@@ -2,7 +2,6 @@
+ 
+ import React, { useState } from "react";
+ import Link from "next/link";
+-import Image from "next/image";
+ import {
+   FileText,
+   Download,
+@@ -173,10 +172,10 @@ export function EvidenceScorecard({
+   humanRctCount = 48,
+   primaryProvenOutcome = "Serum Cortisol Reduction (-27.9%)",
+   standardTherapeuticDose = "300 - 600 mg/day (KSM-66 / Sensoril)",
+-  reviewerName = "Dr. Sarah Lin",
+-  reviewerCredentials = "PharmD, BCPS • Clinical Pharmacology",
+-  reviewerAvatar = "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200",
+-  lastUpdated = "Q4 2026",
++  reviewerName = "SupplementDecoded Research Editorial Team",
++  reviewerCredentials = "",
++  reviewerAvatar = "",
++  lastUpdated = "",
+   verdictWhatWorks = "Robust and consistent reduction in serum cortisol and perceived stress scale (PSS). Proven improvements in sleep onset latency.",
+   verdictWhatIsOverhyped = "Aggressive fitness marketing asserting 20-30% testosterone increases in healthy young athletic men is clinically unsupported.",
+   verdictWhoShouldAvoid = "Individuals taking thyroid hormone replacement (Levothyroxine), sedatives (benzodiazepines/GABAergics), or experiencing acute liver enzyme elevation.",
+@@ -272,26 +271,11 @@ export function EvidenceScorecard({
+               </span>
+             </nav>
+ 
+-            {/* Medical Reviewer Credential Pill */}
++            {/* Editorial review badge (company voice, no persona, no photo) */}
+             <div className="flex items-center gap-3 bg-[#F8F9FA] dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-800 px-3.5 py-1.5 rounded-full shadow-2xs">
+-              <div className="relative w-7 h-7 rounded-full overflow-hidden shrink-0 border border-slate-300 dark:border-slate-700">
+-                <Image
+-                  src={reviewerAvatar}
+-                  alt={reviewerName}
+-                  width={28}
+-                  height={28}
+-                  className="object-cover"
+-                />
+-              </div>
+               <div className="text-left">
+-                <div className="text-xs font-semibold text-[#0F172A] dark:text-slate-200 flex items-center gap-1.5">
+-                  Fact-checked by {reviewerName}
+-                  <span className="inline-flex items-center px-1.5 py-0.2 rounded text-[10px] font-bold bg-[#E7ECE9] dark:bg-emerald-950/60 text-[#0E3B2F] dark:text-emerald-400">
+-                    PharmD Verified
+-                  </span>
+-                </div>
+-                <div className="text-[10px] text-slate-500 dark:text-slate-400">
+-                  {reviewerCredentials} • Updated {lastUpdated}
++                <div className="text-xs font-semibold text-[#0F172A] dark:text-slate-200">
++                  Fact-checked by the {reviewerName}
+                 </div>
+               </div>
+             </div>
+diff --git a/prisma/seed-ingredients.ts b/prisma/seed-ingredients.ts
+index 8710a2c..0057c11 100644
+--- a/prisma/seed-ingredients.ts
++++ b/prisma/seed-ingredients.ts
+@@ -8,8 +8,8 @@ const REAL_INGREDIENTS = [
+     categorySlug: "stress-cortisol",
+     excerpt: "Double-blind clinical monographs analyzing withanolide bioactives, hypothalamic-pituitary-adrenal (HPA) axis modulation, and serum cortisol reductions in human trials.",
+     content: "Comprehensive clinical monograph reviewing 48 human randomized controlled trials of Withania somnifera. Verified therapeutic dosage range: 300 to 600 mg/day standardized to 5% withanolides (KSM-66 or Sensoril). Shows statistically significant reductions in serum cortisol (-27.9% vs placebo) and perceived stress scales.",
+-    factCheckedBy: "Dr. Sarah Lin, PharmD",
+-    reviewedBy: "Dr. Marcus Vance, MD, Integrative Medicine",
++    factCheckedBy: "SupplementDecoded Research Editorial Team",
++    reviewedBy: "SupplementDecoded Research Editorial Team",
+     evidenceGrade: "A",
+     trialsCount: 48,
+     dosage: "300–600 mg/day (std. 5% withanolides)",
+@@ -22,8 +22,8 @@ const REAL_INGREDIENTS = [
+     categorySlug: "sleep-relaxation",
+     excerpt: "Clinical evaluation of organic bisglycinate chelation kinetics, GABAergic neurotransmission support, and gastrointestinal bioavailability vs inorganic oxide salts.",
+     content: "Detailed evaluation across 72 human trials. Chelated magnesium bisglycinate exhibits up to 80% higher GI tolerability and superior red blood cell bioavailability compared to magnesium oxide. Effective elemental magnesium dosage range: 200–400 mg taken 60 minutes prior to sleep.",
+-    factCheckedBy: "Dr. Sarah Lin, PharmD",
+-    reviewedBy: "Elena Rostova, MS, RD",
++    factCheckedBy: "SupplementDecoded Research Editorial Team",
++    reviewedBy: "SupplementDecoded Research Editorial Team",
+     evidenceGrade: "A",
+     trialsCount: 72,
+     dosage: "200–400 mg elemental magnesium",
+@@ -36,8 +36,8 @@ const REAL_INGREDIENTS = [
+     categorySlug: "sports-performance",
+     excerpt: "Over 500 clinical trials indexing phosphocreatine cellular resynthesis, bioenergetics in skeletal muscle, and emerging working-memory neuroprotection.",
+     content: "The most extensively researched ergogenic compound worldwide. 500+ peer-reviewed human clinical trials substantiate a 5–15% increase in maximal power output, accelerated lean mass accretion, and intracellular hydration. Daily maintenance dose of 3–5 g continuous eliminates need for high-dose loading phases.",
+-    factCheckedBy: "Dr. Sarah Lin, PharmD",
+-    reviewedBy: "Dr. Marcus Vance, MD",
++    factCheckedBy: "SupplementDecoded Research Editorial Team",
++    reviewedBy: "SupplementDecoded Research Editorial Team",
+     evidenceGrade: "A",
+     trialsCount: 500,
+     dosage: "3–5 g/day continuous",
+@@ -50,8 +50,8 @@ const REAL_INGREDIENTS = [
+     categorySlug: "bone-health",
+     excerpt: "Synergistic calcium homeostasis review: active 25-hydroxyvitamin D serum kinetics paired with Menaquinone-7 osteocalcin carboxylation.",
+     content: "140 human RCTs evaluating cholecalciferol supplementation for endocrine, skeletal, and immunological homeostasis. Pairing with Vitamin K2 (Menaquinone-7) directs elemental calcium into bone matrix while preventing vascular soft-tissue calcification. Recommended therapeutic window: 2,000–5,000 IU D3 with 90–120 mcg MK-7.",
+-    factCheckedBy: "Dr. Sarah Lin, PharmD",
+-    reviewedBy: "Dr. Marcus Vance, MD",
++    factCheckedBy: "SupplementDecoded Research Editorial Team",
++    reviewedBy: "SupplementDecoded Research Editorial Team",
+     evidenceGrade: "A",
+     trialsCount: 140,
+     dosage: "2,000–5,000 IU + 100 mcg MK-7",
+@@ -64,8 +64,8 @@ const REAL_INGREDIENTS = [
+     categorySlug: "cognitive-health",
+     excerpt: "EEG evidence verifying occipital alpha-wave (8–12 Hz) induction, glutamate receptor antagonism, and acute cognitive synergy with caffeine.",
+     content: "Extracted naturally from Camellia sinensis. 31 human clinical trials demonstrate significant increases in alpha brainwave activity within 40 minutes of ingestion, promoting alert relaxation without sedative side effects. Synergistic pairing of 200 mg L-theanine with 100 mg caffeine attenuates vasoconstrictive jitter.",
+-    factCheckedBy: "Dr. Sarah Lin, PharmD",
+-    reviewedBy: "Elena Rostova, MS, RD",
++    factCheckedBy: "SupplementDecoded Research Editorial Team",
++    reviewedBy: "SupplementDecoded Research Editorial Team",
+     evidenceGrade: "B",
+     trialsCount: 31,
+     dosage: "100–200 mg co-ingested with caffeine",
+@@ -78,8 +78,8 @@ const REAL_INGREDIENTS = [
+     categorySlug: "metabolic-health",
+     excerpt: "AMPK enzyme activation analysis, fasting glucose modulation, HbA1c reductions, and lipid profile kinetics across 29 controlled human trials.",
+     content: "Potent botanical alkaloid demonstrating clinically proven activation of AMP-activated protein kinase (AMPK). In 29 clinical RCTs, berberine demonstrated glycemic and lipid regulation comparable to pharmaceutical controls in patients with metabolic syndrome. Optimal dosage: 500 mg two to three times daily with meals.",
+-    factCheckedBy: "Dr. Sarah Lin, PharmD",
+-    reviewedBy: "Dr. Marcus Vance, MD",
++    factCheckedBy: "SupplementDecoded Research Editorial Team",
++    reviewedBy: "SupplementDecoded Research Editorial Team",
+     evidenceGrade: "B",
+     trialsCount: 29,
+     dosage: "500 mg tid with carbohydrate meals",
+@@ -92,8 +92,8 @@ const REAL_INGREDIENTS = [
+     categorySlug: "cognitive-health",
+     excerpt: "Adaptogenic review of high-altitude arctic root extracts on burnout syndrome, mental fatigue under acute stress, and neuropeptide Y release.",
+     content: "24 clinical trials evaluating standardized SHR-5 extract (3% rosavins, 1% salidroside). Clinically indicated for reducing fatigue during prolonged cognitive load and night-shift burnout. Fast-acting adaptogenic mechanism operates on monoamine neurotransmitter breakdown inhibition.",
+-    factCheckedBy: "Dr. Sarah Lin, PharmD",
+-    reviewedBy: "Elena Rostova, MS, RD",
++    factCheckedBy: "SupplementDecoded Research Editorial Team",
++    reviewedBy: "SupplementDecoded Research Editorial Team",
+     evidenceGrade: "B",
+     trialsCount: 24,
+     dosage: "200–400 mg/day morning ingestion",
+@@ -106,8 +106,8 @@ const REAL_INGREDIENTS = [
+     categorySlug: "heart-health",
+     excerpt: "350+ RCTs analyzing marine triglyceride incorporation, membrane fluidity, serum triglyceride reduction, and neuroinflammation resolution.",
+     content: "Essential long-chain polyunsaturated fatty acids. High-dose eicosapentaenoic acid (EPA) and docosahexaenoic acid (DHA) reliably lower serum triglycerides by 15–30%. Re-esterified triglyceride (rTG) forms exhibit superior bioavailability over ethyl ester concentrates.",
+-    factCheckedBy: "Dr. Sarah Lin, PharmD",
+-    reviewedBy: "Dr. Marcus Vance, MD",
++    factCheckedBy: "SupplementDecoded Research Editorial Team",
++    reviewedBy: "SupplementDecoded Research Editorial Team",
+     evidenceGrade: "A",
+     trialsCount: 350,
+     dosage: "1,000–2,000 mg combined EPA/DHA",
+@@ -120,8 +120,8 @@ const REAL_INGREDIENTS = [
+     categorySlug: "joint-pain",
+     excerpt: "85 human trials evaluating NF-κB transcription inhibition, COX-2 suppression, and phospholipid bioavailability delivery systems.",
+     content: "Standard curcumin extract has notoriously poor oral bioavailability (<1%). When co-administered with piperine (BioPerine®) or formulated in phytosome lipid delivery (Meriva®), systemic absorption increases by up to 2000%. 85 trials confirm reduced joint discomfort in osteoarthritis.",
+-    factCheckedBy: "Dr. Sarah Lin, PharmD",
+-    reviewedBy: "Elena Rostova, MS, RD",
++    factCheckedBy: "SupplementDecoded Research Editorial Team",
++    reviewedBy: "SupplementDecoded Research Editorial Team",
+     evidenceGrade: "A",
+     trialsCount: 85,
+     dosage: "500 mg standardized extract + 5 mg piperine",
+@@ -134,8 +134,8 @@ const REAL_INGREDIENTS = [
+     categorySlug: "immune-health",
+     excerpt: "Inhibition of viral replication kinetics, carbonic anhydrase cofactor kinetics, and mucosal immune defense across 62 trials.",
+     content: "Critical essential trace mineral involved in over 300 enzymatic reactions. Zinc picolinate demonstrates superior intestinal transport over zinc sulfate and gluconate. Regular intake of 15–30 mg elemental zinc supports cellular immunity and dermal healing without inducing copper depletion.",
+-    factCheckedBy: "Dr. Sarah Lin, PharmD",
+-    reviewedBy: "Dr. Marcus Vance, MD",
++    factCheckedBy: "SupplementDecoded Research Editorial Team",
++    reviewedBy: "SupplementDecoded Research Editorial Team",
+     evidenceGrade: "A",
+     trialsCount: 62,
+     dosage: "15–30 mg elemental zinc",
+@@ -148,8 +148,8 @@ const REAL_INGREDIENTS = [
+     categorySlug: "cognitive-health",
+     excerpt: "Hericenones and erinacines stimulating Nerve Growth Factor (NGF) synthesis, neurogenesis, and mild cognitive impairment trial data.",
+     content: "Medicinal mushroom featuring unique diterpenoid compounds capable of crossing the blood-brain barrier. 18 human pilot and crossover studies indicate modest benefits in cognitive screening scores in mild cognitive impairment cohorts. Dual-water-and-alcohol extracts ensure full spectrum active profile.",
+-    factCheckedBy: "Dr. Sarah Lin, PharmD",
+-    reviewedBy: "Elena Rostova, MS, RD",
++    factCheckedBy: "SupplementDecoded Research Editorial Team",
++    reviewedBy: "SupplementDecoded Research Editorial Team",
+     evidenceGrade: "B",
+     trialsCount: 18,
+     dosage: "1,000–3,000 mg dual-extract daily",
+@@ -162,8 +162,8 @@ const REAL_INGREDIENTS = [
+     categorySlug: "heart-health",
+     excerpt: "Mitochondrial electron transport chain cofactor review, statin-induced myopathy prevention, and cardiac ejection fraction RCTs.",
+     content: "Essential lipid-soluble antioxidant in the inner mitochondrial membrane. 45 human RCTs confirm that CoQ10 preserves myocardial bioenergetics and attenuates statin-associated muscular discomfort. Reduced ubiquinol provides 3-4x superior peak plasma concentrations compared to oxidized ubiquinone.",
+-    factCheckedBy: "Dr. Sarah Lin, PharmD",
+-    reviewedBy: "Dr. Marcus Vance, MD",
++    factCheckedBy: "SupplementDecoded Research Editorial Team",
++    reviewedBy: "SupplementDecoded Research Editorial Team",
+     evidenceGrade: "B",
+     trialsCount: 45,
+     dosage: "100–200 mg ubiquinol with lipid meal",
+@@ -179,11 +179,11 @@ async function seedIngredients() {
+   if (!author) {
+     author = await prisma.author.create({
+       data: {
+-        name: "Dr. Sarah Lin, PharmD",
+-        slug: "dr-sarah-lin",
+-        qualification: "PharmD, Clinical Pharmacologist",
+-        expertise: "Nutraceutical Pharmacology & Toxicology",
+-        bio: "Doctor of Pharmacy with 12+ years evaluating human randomized controlled trials and supplement purity standards.",
++        name: "SupplementDecoded Research Editorial Team",
++        slug: "supplementdecoded-research-editorial-team",
++        qualification: "Independent supplement research organization",
++        expertise: "Evidence-based supplement analysis",
++        bio: "The SupplementDecoded research editorial team independently evaluates human clinical research on dietary supplements. We accept no affiliate commissions or manufacturer compensation.",
+       },
+     });
+   }

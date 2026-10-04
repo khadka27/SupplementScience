@@ -126,21 +126,9 @@ export async function POST(req: Request) {
         )?.name
       : null;
 
-    const selectedRoles = [authorName, factCheckedBy, reviewedBy]
-      .map((value) =>
-        typeof value === "string" ? value.trim().toLowerCase() : "",
-      )
-      .filter(Boolean);
-
-    if (new Set(selectedRoles).size !== selectedRoles.length) {
-      return new NextResponse(
-        JSON.stringify({
-          error:
-            "Author, Fact Checked By, and Reviewed By must be different people.",
-        }),
-        { status: 400, headers: { "Content-Type": "application/json" } },
-      );
-    }
+    const defaultReviewer = "SupplementDecoded Research Editorial Team";
+    const finalFactCheckedBy = factCheckedBy || defaultReviewer;
+    const finalReviewedBy = reviewedBy || defaultReviewer;
 
     const post = await prisma.post.create({
       data: {
@@ -157,8 +145,8 @@ export async function POST(req: Request) {
         publishedAt: status?.toLowerCase() === "published" ? new Date() : null,
         readTimeMinutes: readTimeMinutes || 5,
         postType: postType || "blog",
-        factCheckedBy: factCheckedBy || null,
-        reviewedBy: reviewedBy || null,
+        factCheckedBy: finalFactCheckedBy,
+        reviewedBy: finalReviewedBy,
         ...(authorId && {
           author: {
             connect: { id: authorId },

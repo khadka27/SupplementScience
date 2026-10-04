@@ -36,19 +36,19 @@ export default function AuthorBox({ author, className }: AuthorBoxProps) {
           About the Author
         </div>
         <Link href={`/author/${author.slug}`} className="group inline-block">
-          <h3 className="text-3xl font-extrabold text-gray-800 group-hover:text-primary transition-colors">
+          <h3 className="text-3xl font-extrabold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
             {author.name}
           </h3>
         </Link>
         {author.bio && (
-          <p className="text-gray-700 text-lg leading-relaxed max-w-2xl mx-auto md:mx-0 font-medium">
+          <p className="text-slate-600 dark:text-slate-300 text-lg leading-relaxed max-w-2xl mx-auto md:mx-0 font-medium">
             {author.bio}
           </p>
         )}
         <div className="pt-2">
           <Link
             href={`/author/${author.slug}`}
-            className="text-sm font-semibold text-primary hover:underline underline-offset-4"
+            className="text-sm font-semibold text-emerald-700 dark:text-emerald-400 hover:underline underline-offset-4"
           >
             View full profile →
           </Link>

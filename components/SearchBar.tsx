@@ -78,12 +78,12 @@ export function SearchBar() {
 
   const getMatchColor = (percentage: number) => {
     if (percentage >= 90)
-      return "bg-[#EFE9E3] text-primary border border-[#D9CFC7]";
+      return "bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60";
     if (percentage >= 70)
-      return "bg-[#EFE9E3] text-primary/80 border border-[#D9CFC7]";
+      return "bg-teal-50 dark:bg-teal-950/50 text-teal-800 dark:text-teal-300 border border-teal-200 dark:border-teal-800/60";
     if (percentage >= 60)
-      return "bg-muted text-muted-foreground border border-border";
-    return "bg-muted text-muted-foreground/80";
+      return "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700";
+    return "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400";
   };
 
   return (

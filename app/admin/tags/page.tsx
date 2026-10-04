@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Pencil, Trash2, Plus, Loader2, Hash } from "lucide-react";
+import { Pencil, Trash2, Plus, Loader2, Hash, Search, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -52,6 +52,7 @@ export default function TagsManagementPage() {
   const [editingTag, setEditingTag] = useState<Tag | null>(null);
   const [tagToDelete, setTagToDelete] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -262,9 +263,39 @@ export default function TagsManagementPage() {
           </Dialog>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {tags.map((tag) => (
-            <Card key={tag.id}>
+        {/* Search Bar */}
+        <div className="relative max-w-md">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          <Input
+            placeholder="Search tags by name or slug..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9 pr-8"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </div>
+
+        {tags.filter(t => t.name.toLowerCase().includes(searchQuery.toLowerCase()) || t.slug.toLowerCase().includes(searchQuery.toLowerCase())).length === 0 ? (
+          <div className="text-center py-12 bg-white dark:bg-slate-900/60 rounded-2xl border border-stone-200 dark:border-stone-800">
+            <Hash className="h-8 w-8 mx-auto text-slate-400 mb-2" />
+            <h3 className="font-semibold text-slate-800 dark:text-slate-200">No tags found</h3>
+            <p className="text-xs text-slate-500 mt-1">
+              {searchQuery ? `No tags matching "${searchQuery}"` : "Create your first tag using the button above."}
+            </p>
+          </div>
+        ) : (
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {tags
+              .filter(t => t.name.toLowerCase().includes(searchQuery.toLowerCase()) || t.slug.toLowerCase().includes(searchQuery.toLowerCase()))
+              .map((tag) => (
+                <Card key={tag.id}>
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
@@ -311,24 +342,11 @@ export default function TagsManagementPage() {
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
-
-        {tags.length === 0 && (
-          <Card>
-            <CardContent className="flex flex-col items-center justify-center py-12">
-              <Hash className="w-12 h-12 text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No tags yet</h3>
-              <p className="text-muted-foreground text-center mb-4">
-                Create your first tag to label your blog posts
-              </p>
-              <Button onClick={openCreateDialog}>
-                <Plus className="w-4 h-4 mr-2" />
-                Add Tag
-              </Button>
-            </CardContent>
-          </Card>
+            ))}
+          </div>
         )}
+
+
 
         <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
           <AlertDialogContent>
