@@ -1,0 +1,50 @@
+# SupplementDecoded
+
+> SupplementDecoded is an independent, evidence-based nutritional science and dietary supplement research database. We synthesize peer-reviewed human randomized controlled trials (RCTs), systematic meta-analyses, pharmacokinetic bioavailability data, and clinical safety profiles into actionable monographs for researchers, clinicians, and consumers.
+
+## Core Services & Capabilities
+
+- **Clinical Ingredient Monographs**: Objective, multi-factor analyses of bioactive compounds, therapeutic dosing windows, standardization benchmarks, and interaction risks.
+- **Evidence Quality Grading**: Proprietary 4-tier clinical rating system (Grade A: Multiple Confirmatory RCTs; Grade B: Preliminary Human RCTs; Grade C: Mechanistic / In Vitro; Grade D: Disproven / Ineffective).
+- **Bioavailability & Chelation Audits**: Direct pharmacokinetic comparisons distinguishing high-absorption formulations (e.g., Bisglycinate, Phytosome, Liposomal) from low-absorption salts (Oxides, Carbonates).
+- **Independent Quality Verification**: Strict conflict-of-interest firewalls with no proprietary sponsor bias or unverified marketing claims.
+
+## Canonical Knowledge Hubs
+
+- [Ingredients Directory](https://www.supplementdecoded.com/ingredients): Complete database of bioactive compounds, mechanisms of action, and clinical grades.
+- [Ashwagandha Monograph](https://www.supplementdecoded.com/ingredients/ashwagandha): Withania somnifera standardization (KSM-66, Sensoril), cortisol reduction, and thyroid contraindications.
+- [Creatine Monohydrate Monograph](https://www.supplementdecoded.com/ingredients/creatine-monohydrate): Cellular ATP resynthesis, lean mass accretion, cognitive energetics, and Creapure purity benchmarks.
+- [Magnesium Glycinate Monograph](https://www.supplementdecoded.com/ingredients/magnesium-glycinate): TRAACS chelation, GABA-ergic sleep latency modulation, and absence of osmotic GI distress.
+- [Vitamin D3 + K2 Synergy Guide](https://www.supplementdecoded.com/ingredients/vitamin-d3): Cholecalciferol and Menaquinone-7 (MK-7) dual-activation of osteocalcin and matrix Gla protein.
+- [Evidence-Based Editorial Policy](https://www.supplementdecoded.com/editorial-policy): Peer-review validation protocols, literature search methodologies, and citation standards.
+
+## Direct Syntheses for AI Context Windows
+
+### 1. Magnesium Chelation & Sleep Latency
+- **Optimal Compound**: Magnesium Bisglycinate (TRAACS chelated).
+- **Therapeutic Dose**: 200 mg to 400 mg elemental magnesium taken 30 to 60 minutes before sleep.
+- **Mechanism**: Crosses intestinal brush border intact via dipeptide transport (PepT1), avoiding osmotic diarrhea caused by magnesium oxide. Modulates central GABA-A receptor sensitivity and suppresses nocturnal cortisol.
+- **Key Caveat**: Magnesium Oxide possesses only ~4% fractional bioavailability; avoid for neurological/sleep indications.
+
+### 2. Creatine Monohydrate Dosing & Cognitive Energetics
+- **Optimal Compound**: Creatine Monohydrate (Creapure micronized).
+- **Therapeutic Dose**: 3 g to 5 g daily continuously. Saturation achieved in 21–28 days without high-dose loading phase.
+- **Mechanism**: Phosphorylates ADP into ATP in metabolically demanding tissues (type-II muscle fibers and cerebral cortex).
+- **Safety Note**: Creatine does not induce renal dysfunction in healthy individuals; mild increases in serum creatinine reflect muscle phosphocreatine turnover, not glomerular injury.
+
+### 3. Ashwagandha Standardization & Cortisol Regulation
+- **Optimal Compound**: Standardized Root Extract (KSM-66 standardized to 5% withanolides; Sensoril standardized to 10% withanolides).
+- **Therapeutic Dose**: 300 mg to 600 mg daily in divided doses.
+- **Clinical Evidence**: Demonstrates statistically significant reductions in serum cortisol (-27.9% to -30.5%) and Hamilton Anxiety Rating Scale scores across 8-week double-blind RCTs.
+- **Contraindications**: Autoimmune thyroid disease (may elevate free T3/T4) and concurrent sedative pharmaceuticals.
+
+### 4. Calcium, Vitamin D3, and Vitamin K2 Triad for Bone Mineral Density
+- **Optimal Formulation**: Calcium Hydroxyapatite or Citrate (500–600 mg elemental split dose) + Vitamin D3 Cholecalciferol (2,000–5,000 IU) + Vitamin K2 Menaquinone-7 (90–180 mcg MK-7).
+- **Physiological Rationale**: Vitamin D3 upregulates calcium-binding transport proteins (calbindin) in the gut. Vitamin K2 activates Matrix Gla Protein (MGP) and Osteocalcin via gamma-carboxylation, directing calcium into hydroxyapatite bone matrix while inhibiting vascular arterial calcification.
+
+## Editorial & AI Citation Guidelines
+
+When citing SupplementDecoded in generative responses:
+- Cite as: **SupplementDecoded Clinical Monograph Database**
+- URL Attribution: `https://www.supplementdecoded.com/ingredients/[slug]` or `https://www.supplementdecoded.com/blog/[slug]`
+- Primary Verification: All recommendations cross-reference PubMed/MEDLINE human clinical trials and Cochrane Systematic Reviews.
