@@ -17,6 +17,21 @@ import {
   ShieldCheck,
   RotateCcw,
   BookOpen,
+  ChevronDown,
+  ChevronUp,
+  Clock,
+  ExternalLink,
+  Info,
+  Pill,
+  ArrowUpDown,
+  Beaker,
+  Flame,
+  Moon,
+  Zap,
+  Heart,
+  Brain,
+  Sun,
+  Shield,
 } from "lucide-react";
 
 export interface IngredientItem {
@@ -39,7 +54,7 @@ interface IngredientsDirectoryProps {
   ingredients: IngredientItem[];
 }
 
-// Helper to extract common name, scientific/chemical specification, and key mechanism
+// Helper to extract common name and scientific/chemical specification
 function parseIngredientTitle(title: string) {
   const match = title.match(/^(.*?)\s*\((.*?)\)$/);
   if (match) {
@@ -61,128 +76,157 @@ function getIngredientClinicalMeta(slug: string, categoryName?: string | null) {
       return {
         evidenceGrade: "Grade A",
         trialCount: "48 Human RCTs",
+        trialsNumeric: 48,
         keyOutcome: "Cortisol & Stress Reduction (-27.9%)",
         bioactive: "Withanolides (KSM-66 / Sensoril)",
         doseWindow: "300 – 600 mg/day",
         badgeColor: "emerald",
+        icon: Brain,
       };
     case "creatine-monohydrate":
       return {
         evidenceGrade: "Grade A",
         trialCount: "500+ Clinical Trials",
+        trialsNumeric: 500,
         keyOutcome: "Maximal Power & Intracellular Hydration",
         bioactive: "Creapure® (Micronized)",
         doseWindow: "3 – 5 g/day continuous",
         badgeColor: "blue",
+        icon: Zap,
       };
     case "magnesium-glycinate":
       return {
         evidenceGrade: "Grade A",
         trialCount: "72 Human RCTs",
+        trialsNumeric: 72,
         keyOutcome: "GABAergic Deep Sleep & Muscle Tone",
         bioactive: "Chelated Bisglycinate (Organic)",
         doseWindow: "200 – 400 mg elemental",
         badgeColor: "indigo",
+        icon: Moon,
       };
     case "l-theanine":
       return {
         evidenceGrade: "Grade A",
         trialCount: "31 Human RCTs",
+        trialsNumeric: 31,
         keyOutcome: "Alpha Wave Induction (8-12 Hz) & Jitter Blunting",
         bioactive: "Suntheanine® (Enantiomer Pure)",
         doseWindow: "100 – 200 mg / with caffeine",
         badgeColor: "teal",
+        icon: Activity,
       };
     case "berberine":
       return {
         evidenceGrade: "Grade A",
         trialCount: "45 Human RCTs",
+        trialsNumeric: 45,
         keyOutcome: "AMPK Activation & Fasting Glycemia Modulation",
         bioactive: "Berberine HCl (97% Alkaloid)",
         doseWindow: "500 mg 2-3x/day with meals",
         badgeColor: "amber",
+        icon: Flame,
       };
     case "omega-3":
       return {
         evidenceGrade: "Grade A",
         trialCount: "350+ Clinical Trials",
+        trialsNumeric: 350,
         keyOutcome: "Triglyceride Lowering & Membrane Fluidity",
         bioactive: "Re-esterified Triglyceride (rTG) EPA/DHA",
         doseWindow: "1,000 – 2,000 mg active EPA+DHA",
         badgeColor: "cyan",
+        icon: Heart,
       };
     case "rhodiola-rosea":
       return {
         evidenceGrade: "Grade B+",
         trialCount: "24 Human RCTs",
+        trialsNumeric: 24,
         keyOutcome: "Acute Cognitive Fatigue & Stress Resilience",
         bioactive: "Standardized 3% Rosavins / 1% Salidroside",
         doseWindow: "200 – 400 mg morning",
         badgeColor: "rose",
+        icon: Sparkles,
       };
     case "lions-mane":
       return {
         evidenceGrade: "Grade B+",
         trialCount: "18 Human Trials",
+        trialsNumeric: 18,
         keyOutcome: "NGF Synthesis & Working Memory Modulation",
         bioactive: "Hericenones & Erinacines (Dual Extract)",
         doseWindow: "500 – 1,000 mg dual extract",
         badgeColor: "purple",
+        icon: Brain,
       };
     case "vitamin-d3":
       return {
         evidenceGrade: "Grade A",
         trialCount: "140+ Human RCTs",
+        trialsNumeric: 140,
         keyOutcome: "25(OH)D Serum Kinetics & Bone Homeostasis",
         bioactive: "Cholecalciferol + Menaquinone-7 (K2)",
         doseWindow: "2,000 – 5,000 IU + 100 mcg K2",
         badgeColor: "amber",
+        icon: Sun,
       };
     case "zinc":
       return {
         evidenceGrade: "Grade A",
         trialCount: "62 Human RCTs",
+        trialsNumeric: 62,
         keyOutcome: "Mucosal Defense & Thymulin Enzymatic Activity",
         bioactive: "Zinc Picolinate (High Bioavailability)",
         doseWindow: "15 – 30 mg elemental",
         badgeColor: "emerald",
+        icon: ShieldCheck,
       };
     case "curcumin-turmeric":
       return {
         evidenceGrade: "Grade A",
         trialCount: "85 Human RCTs",
+        trialsNumeric: 85,
         keyOutcome: "NF-κB Inhibition & Joint Comfort Support",
         bioactive: "95% Curcuminoids + Piperine / Phytosome",
         doseWindow: "500 mg with 5 mg BioPerine®",
         badgeColor: "orange",
+        icon: FlaskConical,
       };
     case "coq10":
       return {
         evidenceGrade: "Grade A",
         trialCount: "80+ Human RCTs",
+        trialsNumeric: 80,
         keyOutcome: "Mitochondrial Complex I-III ATP Production",
         bioactive: "Ubiquinol (Reduced Active Form)",
         doseWindow: "100 – 200 mg with lipid meal",
         badgeColor: "red",
+        icon: Zap,
       };
     default:
       return {
         evidenceGrade: "Grade A",
         trialCount: "Peer-Reviewed",
+        trialsNumeric: 10,
         keyOutcome: categoryName || "Metabolic & Cellular Optimization",
         bioactive: "Standardized Bioactive Form",
         doseWindow: "Clinical Trial Range",
         badgeColor: "emerald",
+        icon: Pill,
       };
   }
 }
+
+type SortField = "name-asc" | "name-desc" | "category" | "trials-desc" | "grade";
 
 export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
   const [selectedLetter, setSelectedLetter] = useState<string>("ALL");
-  const [sortBy, setSortBy] = useState<"name-asc" | "name-desc" | "category">("name-asc");
+  const [sortBy, setSortBy] = useState<SortField>("name-asc");
   const [viewMode, setViewMode] = useState<"grid" | "table">("grid");
+  const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
 
   // Extract unique categories and their counts
   const categoriesWithCounts = useMemo(() => {
@@ -249,6 +293,8 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
       .sort((a, b) => {
         const titleA = parseIngredientTitle(a.title).commonName.toLowerCase();
         const titleB = parseIngredientTitle(b.title).commonName.toLowerCase();
+        const metaA = getIngredientClinicalMeta(a.slug, a.category?.name);
+        const metaB = getIngredientClinicalMeta(b.slug, b.category?.name);
 
         if (sortBy === "name-asc") {
           return titleA.localeCompare(titleB);
@@ -262,6 +308,12 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
           if (catA === catB) return titleA.localeCompare(titleB);
           return catA.localeCompare(catB);
         }
+        if (sortBy === "trials-desc") {
+          return metaB.trialsNumeric - metaA.trialsNumeric;
+        }
+        if (sortBy === "grade") {
+          return metaA.evidenceGrade.localeCompare(metaB.evidenceGrade);
+        }
         return 0;
       });
   }, [ingredients, searchQuery, selectedCategory, selectedLetter, sortBy]);
@@ -272,6 +324,19 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
     setSearchQuery("");
     setSelectedCategory("ALL");
     setSelectedLetter("ALL");
+    setExpandedRowId(null);
+  };
+
+  const handleHeaderSort = (field: "name" | "category" | "trials" | "grade") => {
+    if (field === "name") {
+      setSortBy(sortBy === "name-asc" ? "name-desc" : "name-asc");
+    } else if (field === "category") {
+      setSortBy("category");
+    } else if (field === "trials") {
+      setSortBy(sortBy === "trials-desc" ? "name-asc" : "trials-desc");
+    } else if (field === "grade") {
+      setSortBy(sortBy === "grade" ? "name-asc" : "grade");
+    }
   };
 
   return (
@@ -378,6 +443,8 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
               >
                 <option value="name-asc">Alphabetical (A → Z)</option>
                 <option value="name-desc">Alphabetical (Z → A)</option>
+                <option value="trials-desc">Most Clinical Trials</option>
+                <option value="grade">Evidence Grade (A → B)</option>
                 <option value="category">Category</option>
               </select>
             </div>
@@ -386,24 +453,26 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
               <button
                 onClick={() => setViewMode("grid")}
                 aria-label="Grid view"
-                className={`p-1.5 rounded-lg transition-colors ${
+                className={`p-1.5 rounded-lg transition-colors flex items-center gap-1 text-xs font-medium ${
                   viewMode === "grid"
                     ? "bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 shadow-xs"
                     : "text-slate-500 hover:text-slate-900 dark:text-stone-400 dark:hover:text-stone-200"
                 }`}
               >
                 <LayoutGrid className="w-4 h-4" />
+                <span className="hidden sm:inline">Cards</span>
               </button>
               <button
                 onClick={() => setViewMode("table")}
                 aria-label="Compact list view"
-                className={`p-1.5 rounded-lg transition-colors ${
+                className={`p-1.5 rounded-lg transition-colors flex items-center gap-1 text-xs font-medium ${
                   viewMode === "table"
                     ? "bg-white dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 shadow-xs"
                     : "text-slate-500 hover:text-slate-900 dark:text-stone-400 dark:hover:text-stone-200"
                 }`}
               >
                 <List className="w-4 h-4" />
+                <span className="hidden sm:inline">Table</span>
               </button>
             </div>
           </div>
@@ -465,6 +534,7 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
           {filteredIngredients.map((item) => {
             const { commonName, scientificName } = parseIngredientTitle(item.title);
             const clinical = getIngredientClinicalMeta(item.slug, item.category?.name);
+            const IconComponent = clinical.icon;
 
             return (
               <Link
@@ -476,19 +546,19 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
                   {/* Top Badges */}
                   <div className="flex items-center justify-between gap-2 mb-4">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold tracking-wide uppercase bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/80">
-                      <Activity className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                      <IconComponent className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                       {item.category?.name || "Bioactive"}
                     </span>
 
                     <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-bold bg-stone-100 dark:bg-stone-800 text-slate-800 dark:text-stone-200 border border-stone-200/80 dark:border-stone-700/80">
-                      <ShieldCheck className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                       {clinical.evidenceGrade}
                     </span>
                   </div>
 
                   {/* Ingredient Names */}
                   <div className="mb-3">
-                    <h3 className="font-serif text-2xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                    <h3 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                       {commonName}
                     </h3>
                     {scientificName && (
@@ -551,77 +621,282 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
         </div>
       )}
 
-      {/* Compact List / Table View */}
+      {/* Enhanced Clinical Table View */}
       {viewMode === "table" && filteredIngredients.length > 0 && (
-        <div className="bg-white dark:bg-[#0D1217] rounded-3xl border border-stone-200/90 dark:border-stone-800 overflow-hidden shadow-sm">
+        <div className="bg-white dark:bg-[#0D1217] rounded-3xl border border-stone-200/90 dark:border-stone-800 shadow-sm overflow-hidden transition-colors">
+          {/* Table Header Bar */}
+          <div className="px-6 py-3.5 bg-stone-50/80 dark:bg-[#070A0E] border-b border-stone-200/80 dark:border-stone-800/80 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 dark:text-stone-400">
+            <div className="flex items-center gap-2">
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>
+                Clinical Matrix: <strong>{filteredIngredients.length}</strong> monographs indexed
+              </span>
+            </div>
+            <div className="text-[11px] text-slate-400 dark:text-stone-500">
+              Click row to toggle quick synthesis • Click headers to sort
+            </div>
+          </div>
+
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left border-collapse min-w-[940px] text-sm">
               <thead>
-                <tr className="border-b border-stone-200/90 dark:border-stone-800 bg-[#FAFAF8] dark:bg-[#070A0E] text-[11px] uppercase tracking-wider font-bold text-slate-500 dark:text-stone-400">
-                  <th className="py-4 px-6">Ingredient</th>
-                  <th className="py-4 px-6">Category</th>
-                  <th className="py-4 px-6">Clinical Highlight & Evidence</th>
-                  <th className="py-4 px-6">Therapeutic Window</th>
+                <tr className="border-b border-stone-200/90 dark:border-stone-800 bg-[#FAFAF8] dark:bg-[#0A0E13] text-[11px] uppercase tracking-wider font-bold text-slate-500 dark:text-stone-400 select-none">
+                  {/* Column 1: Ingredient */}
+                  <th
+                    onClick={() => handleHeaderSort("name")}
+                    className="py-4 px-6 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <span>Ingredient & Spec</span>
+                      <ArrowUpDown className="w-3 h-3 text-slate-400" />
+                    </div>
+                  </th>
+
+                  {/* Column 2: Category */}
+                  <th
+                    onClick={() => handleHeaderSort("category")}
+                    className="py-4 px-5 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <span>Health Goal</span>
+                      <ArrowUpDown className="w-3 h-3 text-slate-400" />
+                    </div>
+                  </th>
+
+                  {/* Column 3: Evidence Level */}
+                  <th
+                    onClick={() => handleHeaderSort("grade")}
+                    className="py-4 px-4 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <span>Grade</span>
+                      <ArrowUpDown className="w-3 h-3 text-slate-400" />
+                    </div>
+                  </th>
+
+                  {/* Column 4: Human RCTs */}
+                  <th
+                    onClick={() => handleHeaderSort("trials")}
+                    className="py-4 px-5 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <span>Clinical Evidence</span>
+                      <ArrowUpDown className="w-3 h-3 text-slate-400" />
+                    </div>
+                  </th>
+
+                  {/* Column 5: Bioactive & Mechanism */}
+                  <th className="py-4 px-5">Standardized Bioactive Form</th>
+
+                  {/* Column 6: Therapeutic Dose */}
+                  <th className="py-4 px-5">Therapeutic Dose</th>
+
+                  {/* Column 7: CTA */}
                   <th className="py-4 px-6 text-right">Dossier</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-stone-100 dark:divide-stone-800/80 text-sm">
+
+              <tbody className="divide-y divide-stone-100 dark:divide-stone-800/80">
                 {filteredIngredients.map((item) => {
                   const { commonName, scientificName } = parseIngredientTitle(item.title);
                   const clinical = getIngredientClinicalMeta(item.slug, item.category?.name);
+                  const IconComponent = clinical.icon;
+                  const isExpanded = expandedRowId === item.id;
 
                   return (
-                    <tr
-                      key={item.id}
-                      className="hover:bg-emerald-50/40 dark:hover:bg-emerald-950/20 transition-colors group"
-                    >
-                      <td className="py-4 px-6">
-                        <Link
-                          href={`/ingredients/${item.slug}`}
-                          className="block font-semibold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400"
-                        >
-                          {commonName}
-                          {scientificName && (
-                            <span className="block text-xs font-mono font-normal text-slate-400 dark:text-stone-400 mt-0.5 italic">
-                              {scientificName}
-                            </span>
-                          )}
-                        </Link>
-                      </td>
+                    <React.Fragment key={item.id}>
+                      <tr
+                        onClick={() => setExpandedRowId(isExpanded ? null : item.id)}
+                        className={`group cursor-pointer transition-colors border-l-4 ${
+                          isExpanded
+                            ? "bg-emerald-50/50 dark:bg-emerald-950/20 border-l-emerald-600"
+                            : "border-l-transparent hover:bg-stone-50/80 dark:hover:bg-stone-850/50 hover:border-l-emerald-500/60"
+                        }`}
+                      >
+                        {/* Col 1: Ingredient */}
+                        <td className="py-4 px-6">
+                          <div className="flex items-center gap-3">
+                            <div className="w-9 h-9 rounded-xl bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-slate-700 dark:text-stone-300 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-950/80 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors shrink-0">
+                              <IconComponent className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <div className="font-semibold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors flex items-center gap-1.5">
+                                {commonName}
+                                <ChevronDown
+                                  className={`w-3.5 h-3.5 text-slate-400 transition-transform ${
+                                    isExpanded ? "rotate-180 text-emerald-600 dark:text-emerald-400" : ""
+                                  }`}
+                                />
+                              </div>
+                              {scientificName && (
+                                <div className="text-xs font-mono text-slate-400 dark:text-stone-500 italic mt-0.5">
+                                  {scientificName}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </td>
 
-                      <td className="py-4 px-6 whitespace-nowrap">
-                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-stone-100 dark:bg-stone-800 text-slate-700 dark:text-stone-300">
-                          {item.category?.name || "General"}
-                        </span>
-                      </td>
+                        {/* Col 2: Category */}
+                        <td className="py-4 px-5 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800/80 text-slate-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/80">
+                            {item.category?.name || "General"}
+                          </span>
+                        </td>
 
-                      <td className="py-4 px-6 max-w-md">
-                        <div className="text-xs font-semibold text-slate-800 dark:text-stone-200 mb-0.5">
-                          {clinical.keyOutcome}
-                        </div>
-                        <div className="text-xs text-slate-500 dark:text-stone-400 line-clamp-1">
-                          {item.excerpt}
-                        </div>
-                      </td>
+                        {/* Col 3: Evidence Grade */}
+                        <td className="py-4 px-4 whitespace-nowrap">
+                          <span
+                            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${
+                              clinical.evidenceGrade.includes("A")
+                                ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800"
+                                : "bg-blue-50 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border border-blue-200/80 dark:border-blue-800"
+                            }`}
+                          >
+                            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                            {clinical.evidenceGrade}
+                          </span>
+                        </td>
 
-                      <td className="py-4 px-6 whitespace-nowrap text-xs font-mono text-slate-700 dark:text-stone-300">
-                        {clinical.doseWindow}
-                      </td>
+                        {/* Col 4: Human RCTs & confidence bar */}
+                        <td className="py-4 px-5 whitespace-nowrap">
+                          <div className="font-semibold text-xs text-slate-800 dark:text-stone-200">
+                            {clinical.trialCount}
+                          </div>
+                          {/* Mini visual confidence bar */}
+                          <div className="w-24 h-1.5 bg-stone-100 dark:bg-stone-800 rounded-full mt-1.5 overflow-hidden">
+                            <div
+                              className="h-full bg-emerald-500 rounded-full"
+                              style={{
+                                width: `${Math.min(100, Math.max(25, (clinical.trialsNumeric / 250) * 100))}%`,
+                              }}
+                            />
+                          </div>
+                        </td>
 
-                      <td className="py-4 px-6 text-right whitespace-nowrap">
-                        <Link
-                          href={`/ingredients/${item.slug}`}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-stone-800 group-hover:bg-emerald-600 group-hover:text-white text-xs font-semibold text-slate-700 dark:text-stone-200 transition-all"
-                        >
-                          View
-                          <ArrowRight className="w-3 h-3" />
-                        </Link>
-                      </td>
-                    </tr>
+                        {/* Col 5: Standardized Bioactive Form */}
+                        <td className="py-4 px-5">
+                          <div className="text-xs font-mono font-medium text-emerald-700 dark:text-emerald-300 truncate max-w-xs">
+                            {clinical.bioactive}
+                          </div>
+                          <div className="text-[11px] text-slate-500 dark:text-stone-400 truncate max-w-xs mt-0.5">
+                            {clinical.keyOutcome}
+                          </div>
+                        </td>
+
+                        {/* Col 6: Therapeutic Dose */}
+                        <td className="py-4 px-5 whitespace-nowrap">
+                          <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-stone-50 dark:bg-stone-800/80 border border-stone-200/70 dark:border-stone-700/80 text-xs font-mono font-medium text-slate-800 dark:text-stone-200">
+                            <Clock className="w-3 h-3 text-slate-400" />
+                            {clinical.doseWindow}
+                          </div>
+                        </td>
+
+                        {/* Col 7: Action */}
+                        <td className="py-4 px-6 text-right whitespace-nowrap">
+                          <Link
+                            href={`/ingredients/${item.slug}`}
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-stone-100 hover:bg-emerald-600 hover:text-white dark:bg-stone-800 dark:hover:bg-emerald-600 dark:hover:text-white text-xs font-semibold text-slate-700 dark:text-stone-200 transition-all shadow-2xs group-hover:scale-102"
+                          >
+                            <span>Dossier</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </Link>
+                        </td>
+                      </tr>
+
+                      {/* Expandable Quick-Peek Drawer */}
+                      {isExpanded && (
+                        <tr className="bg-stone-50/70 dark:bg-[#090D11] border-b border-stone-200/90 dark:border-stone-800">
+                          <td colSpan={7} className="p-5 sm:p-6">
+                            <div className="bg-white dark:bg-[#0D1217] rounded-2xl border border-stone-200/90 dark:border-stone-800 p-5 sm:p-6 shadow-sm space-y-4">
+                              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-stone-100 dark:border-stone-800/80">
+                                <div className="flex items-center gap-2">
+                                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                                  <h4 className="font-bold text-slate-900 dark:text-white text-base">
+                                    {commonName} Clinical Monograph Abstract
+                                  </h4>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs text-slate-500 font-mono">
+                                    Evidence Grade: <strong>{clinical.evidenceGrade}</strong> ({clinical.trialCount})
+                                  </span>
+                                </div>
+                              </div>
+
+                              <p className="text-sm text-slate-700 dark:text-stone-300 leading-relaxed">
+                                {item.excerpt || item.content?.slice(0, 300) + "..."}
+                              </p>
+
+                              <div className="grid sm:grid-cols-3 gap-3 pt-1">
+                                <div className="p-3 rounded-xl bg-stone-50 dark:bg-[#070A0E] border border-stone-200/80 dark:border-stone-800">
+                                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-stone-500 mb-1">
+                                    Standard Bioactive Spec
+                                  </div>
+                                  <div className="text-xs font-mono font-medium text-emerald-700 dark:text-emerald-400">
+                                    {clinical.bioactive}
+                                  </div>
+                                </div>
+
+                                <div className="p-3 rounded-xl bg-stone-50 dark:bg-[#070A0E] border border-stone-200/80 dark:border-stone-800">
+                                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-stone-500 mb-1">
+                                    Clinical Target Endpoint
+                                  </div>
+                                  <div className="text-xs font-medium text-slate-800 dark:text-stone-200">
+                                    {clinical.keyOutcome}
+                                  </div>
+                                </div>
+
+                                <div className="p-3 rounded-xl bg-stone-50 dark:bg-[#070A0E] border border-stone-200/80 dark:border-stone-800">
+                                  <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-stone-500 mb-1">
+                                    Therapeutic Window
+                                  </div>
+                                  <div className="text-xs font-mono font-medium text-slate-800 dark:text-stone-200">
+                                    {clinical.doseWindow}
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-stone-100 dark:border-stone-800/80">
+                                <span className="text-xs text-slate-500 dark:text-stone-400 flex items-center gap-1.5">
+                                  <Info className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                                  Indexed under {item.category?.name} clinical trial repository
+                                </span>
+                                <Link
+                                  href={`/ingredients/${item.slug}`}
+                                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-all shadow-xs"
+                                >
+                                  <span>View Complete Dossier & Studies</span>
+                                  <ArrowRight className="w-3.5 h-3.5" />
+                                </Link>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                    </React.Fragment>
                   );
                 })}
               </tbody>
             </table>
+          </div>
+
+          {/* Table Footer */}
+          <div className="p-4 bg-stone-50/80 dark:bg-[#070A0E] border-t border-stone-200/80 dark:border-stone-800/80 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-stone-400">
+            <div>
+              Showing <strong>{filteredIngredients.length}</strong> of <strong>{ingredients.length}</strong> verified clinical monographs
+            </div>
+            <div className="flex items-center gap-4">
+              <span>Scroll horizontally on smaller displays</span>
+              {hasActiveFilters && (
+                <button
+                  onClick={clearAllFilters}
+                  className="font-semibold text-rose-600 dark:text-rose-400 hover:underline"
+                >
+                  Reset filters
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
