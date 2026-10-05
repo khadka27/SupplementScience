@@ -164,14 +164,14 @@ export function AdminNavbar({ onMobileMenuToggle }: AdminNavbarProps) {
   const currentMeta = getPageMeta(pathname || "");
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-stone-200/90 dark:border-stone-800 bg-white/90 dark:bg-[#070A0E]/90 backdrop-blur-md px-4 sm:px-6 transition-colors">
+    <header className="relative shrink-0 z-20 flex h-16 w-full items-center justify-between border-b border-stone-200/90 dark:border-stone-800 bg-white/95 dark:bg-[#070A0E]/95 backdrop-blur-md px-4 sm:px-6 transition-colors select-none">
       
       {/* ── Left: Breadcrumb & Title ────────────────────────── */}
-      <div className="flex items-center gap-3 min-w-0">
+      <div className="flex items-center gap-3 min-w-0 flex-1 mr-3">
         {onMobileMenuToggle && (
           <button
             onClick={onMobileMenuToggle}
-            className="lg:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-stone-100 dark:hover:bg-stone-800 border border-stone-200/80 dark:border-stone-700"
+            className="lg:hidden p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-stone-100 dark:hover:bg-stone-800 border border-stone-200/80 dark:border-stone-700 shrink-0 cursor-pointer"
             aria-label="Open sidebar"
           >
             <Menu className="w-5 h-5" />
@@ -179,34 +179,34 @@ export function AdminNavbar({ onMobileMenuToggle }: AdminNavbarProps) {
         )}
 
         <div className="flex flex-col min-w-0">
-          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 dark:text-slate-400">
+          <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-400 dark:text-slate-400 truncate">
             <span>Admin</span>
-            <ChevronRight className="w-3 h-3 text-slate-300 dark:text-slate-600" />
-            <span className="text-emerald-700 dark:text-emerald-400 font-bold">
+            <ChevronRight className="w-3 h-3 text-slate-300 dark:text-slate-600 shrink-0" />
+            <span className="text-emerald-700 dark:text-emerald-400 font-bold truncate">
               {currentMeta.category}
             </span>
           </div>
-          <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white truncate tracking-tight">
+          <h1 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white truncate tracking-tight">
             {currentMeta.title}
           </h1>
         </div>
       </div>
 
       {/* ── Right Controls ───────────────────────────────────── */}
-      <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+      <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
         
         {/* Quick Create Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               size="sm"
-              className="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs rounded-xl shadow-xs gap-1.5 h-9 px-3.5"
+              className="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold text-xs rounded-xl shadow-xs gap-1.5 h-9 px-3 sm:px-3.5 shrink-0 cursor-pointer"
             >
               <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
               <span className="hidden sm:inline">Create Content</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-52 rounded-2xl p-1.5 shadow-xl border border-stone-200 dark:border-stone-800">
+          <DropdownMenuContent align="end" className="w-52 rounded-2xl p-1.5 shadow-xl border border-stone-200 dark:border-stone-800 z-50">
             <DropdownMenuLabel className="text-[10px] uppercase font-bold text-slate-400 px-2 py-1">
               New Content Type
             </DropdownMenuLabel>
@@ -243,19 +243,21 @@ export function AdminNavbar({ onMobileMenuToggle }: AdminNavbarProps) {
           target="_blank"
           rel="noopener noreferrer"
           title="Open live site in new tab"
-          className="hidden md:flex items-center gap-1.5 h-9 px-3 rounded-xl bg-stone-100 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 hover:border-emerald-300 dark:hover:border-emerald-800/60 transition-colors"
+          className="hidden md:flex items-center gap-1.5 h-9 px-3 rounded-xl bg-stone-100 dark:bg-stone-900 border border-stone-200/80 dark:border-stone-800 text-xs font-semibold text-slate-700 dark:text-slate-300 hover:text-emerald-700 dark:hover:text-emerald-400 hover:border-emerald-300 dark:hover:border-emerald-800/60 transition-colors shrink-0"
         >
           <ExternalLink className="w-3.5 h-3.5" />
           <span>Live Site</span>
         </a>
 
         {/* Theme Toggle */}
-        <ModeToggle />
+        <div className="shrink-0">
+          <ModeToggle />
+        </div>
 
         {/* User Profile Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-2 p-1 rounded-xl hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors cursor-pointer outline-none">
+            <button className="flex items-center gap-2 p-1 rounded-xl hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors cursor-pointer outline-none shrink-0">
               <Avatar className="h-8 w-8 rounded-lg border border-emerald-500/20">
                 <AvatarFallback className="bg-emerald-700 text-white text-xs font-bold rounded-lg">
                   {session?.user?.name?.charAt(0) || "A"}

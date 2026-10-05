@@ -41,7 +41,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex bg-[#FAFAF8] dark:bg-[#070A0E] overflow-hidden text-slate-900 dark:text-slate-100">
+    <div className="fixed inset-0 z-40 flex h-full w-full bg-[#FAFAF8] dark:bg-[#070A0E] overflow-hidden text-slate-900 dark:text-slate-100 select-auto">
       
       {/* ── Desktop Static Sidebar ────────────────────────── */}
       <div className="hidden lg:block shrink-0 h-full">
@@ -50,7 +50,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
       {/* ── Mobile Sidebar Drawer ─────────────────────────── */}
       <Sheet open={mobileSidebarOpen} onOpenChange={setMobileSidebarOpen}>
-        <SheetContent side="left" className="p-0 w-72 border-r border-stone-200 dark:border-stone-800">
+        <SheetContent side="left" className="p-0 w-72 border-r border-stone-200 dark:border-stone-800 z-50">
           <SheetTitle className="sr-only">Admin Navigation Menu</SheetTitle>
           <AdminSidebar onItemClick={() => setMobileSidebarOpen(false)} />
         </SheetContent>
@@ -59,7 +59,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       {/* ── Main Content Area ─────────────────────────────── */}
       <div className="flex flex-1 flex-col min-w-0 h-full overflow-hidden">
         <AdminNavbar onMobileMenuToggle={() => setMobileSidebarOpen(true)} />
-        <main className="flex-1 overflow-y-auto bg-stone-50/50 dark:bg-[#0A0D12] p-4 sm:p-6 lg:p-8">
+        <main id="admin-main" className="flex-1 overflow-y-auto bg-stone-50/60 dark:bg-[#0A0D12] p-4 sm:p-6 lg:p-8 scroll-smooth">
           <div className="max-w-7xl mx-auto">{children}</div>
         </main>
       </div>

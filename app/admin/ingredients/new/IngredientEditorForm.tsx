@@ -311,7 +311,7 @@ export default function IngredientEditorForm({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         {/* ── Sticky Top Action Bar ────────────────────────── */}
-        <div className="sticky top-16 z-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 bg-white/95 dark:bg-[#070A0E]/95 backdrop-blur-md border-b border-stone-200/90 dark:border-stone-800 flex flex-wrap items-center justify-between gap-3 transition-colors shadow-2xs">
+        <div className="sticky top-0 z-10 -mt-4 sm:-mt-6 lg:-mt-8 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 bg-white/95 dark:bg-[#070A0E]/95 backdrop-blur-md border-b border-stone-200/90 dark:border-stone-800 flex flex-wrap items-center justify-between gap-3 transition-colors shadow-xs mb-6">
           <div className="flex items-center gap-3">
             <Button
               type="button"
