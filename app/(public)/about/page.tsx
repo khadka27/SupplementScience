@@ -44,7 +44,7 @@ export const metadata: Metadata = {
 const STATS = [
   { value: "1,420+", label: "Human RCTs Indexed", sub: "Double-blind, placebo-controlled" },
   { value: "0%", label: "Sponsor or Affiliate Bias", sub: "Strict anti-commercial charter" },
-  { value: "100%", label: "PharmD Fact-Checked", sub: "Clinical toxicology oversight" },
+  { value: "100%", label: "Editorial Fact-Checked", sub: "Clinical evidence oversight" },
   { value: "USP / WHO", label: "Purity Standards", sub: "Heavy metal screening limits" },
 ];
 
@@ -348,10 +348,10 @@ export default function AboutPage() {
                 100%
               </div>
               <h3 className="font-bold text-sm text-stone-900 dark:text-stone-100 mb-2">
-                PharmD Reviewed
+                Editorial Team Reviewed
               </h3>
               <p className="text-xs text-stone-500 dark:text-stone-400 leading-relaxed">
-                Our monographs are fact-checked by clinical specialists with backgrounds in pharmacology, pharmacognosy, and clinical biochemistry.
+                Our monographs are fact-checked by our research editorial team with backgrounds in pharmacology, pharmacognosy, and clinical biochemistry.
               </p>
             </div>
 

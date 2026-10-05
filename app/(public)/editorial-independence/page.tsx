@@ -40,7 +40,7 @@ export default function EditorialIndependencePage() {
             How we maintain independence, evaluate evidence, and manage potential conflicts of interest.
           </p>
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0D1217] border border-stone-200/90 dark:border-stone-800 text-xs font-medium text-slate-600 dark:text-slate-400 shadow-xs">
-            <span>Last Updated: March 2026</span>
+            <span>Last Updated: October 4, 2026</span>
           </div>
         </div>
       </section>

@@ -72,4 +72,5 @@ export type Post = {
   factCheckedBy?: string | null;
   reviewedBy?: string | null;
   reviewedAt?: Date | null;
+  postType?: string | null;
 };

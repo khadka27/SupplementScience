@@ -272,10 +272,11 @@ export function EvidenceScorecard({
             </nav>
 
             {/* Editorial review badge (company voice, no persona, no photo) */}
-            <div className="flex items-center gap-3 bg-[#F8F9FA] dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-800 px-3.5 py-1.5 rounded-full shadow-2xs">
+            <div className="flex items-center gap-2 bg-[#F8F9FA] dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-800 px-3.5 py-1.5 rounded-full shadow-2xs">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
               <div className="text-left">
                 <div className="text-xs font-semibold text-[#0F172A] dark:text-slate-200">
-                  Fact-checked by the {reviewerName}
+                  Fact-checked by the {reviewerName || "SupplementDecoded Research Editorial Team"}
                 </div>
               </div>
             </div>

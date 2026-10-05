@@ -26,7 +26,7 @@ const TOPIC_OPTIONS: { id: TopicType; label: string; badge: string; desc: string
   {
     id: "research",
     label: "Clinical Correction",
-    badge: "PharmD Review",
+    badge: "Editorial Review",
     desc: "Submit human RCT citations, dosage revisions, or pharmacokinetic corrections.",
   },
   {
@@ -134,7 +134,7 @@ export function ContactForm() {
         </h3>
 
         <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed mb-6 font-sans">
-          Your inquiry has been safely routed to our independent PharmD research and toxicology board.
+          Your inquiry has been safely routed to our independent research and editorial board.
           All whistleblower submissions are strictly compartmentalized and stripped of IP identifiers.
         </p>
 

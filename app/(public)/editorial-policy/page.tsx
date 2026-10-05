@@ -40,7 +40,7 @@ export default function EditorialPolicyPage() {
             Our mission is to provide clear, accurate, and unbiased health information.
           </p>
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0D1217] border border-stone-200/90 dark:border-stone-800 text-xs font-medium text-slate-600 dark:text-slate-400 shadow-xs">
-            <span>Last Updated: February 25, 2026</span>
+            <span>Last Updated: October 4, 2026</span>
           </div>
         </div>
       </section>
@@ -143,18 +143,24 @@ export default function EditorialPolicyPage() {
 
               <h2>Use of Evidence and Sources</h2>
               <p>
-                We prioritize credible and authoritative sources, including:
+                We prioritize primary, verifiable scientific evidence over secondary summaries. Our strict sourcing protocol requires:
               </p>
               <ul>
-                <li>Peer-reviewed scientific journals</li>
-                <li>Systematic reviews and meta-analyses</li>
-                <li>Government and academic research databases</li>
-                <li>Established public health and medical organizations</li>
+                <li>
+                  <strong>PubMed/MEDLINE-Indexed Literature:</strong> Primary randomized, double-blind, placebo-controlled human clinical trials (RCTs).
+                </li>
+                <li>
+                  <strong>Systematic Reviews & Meta-Analyses:</strong> High-certainty Cochrane reviews and PRISMA-compliant systematic evaluations.
+                </li>
+                <li>
+                  <strong>Pharmacokinetic & Bioavailability Data:</strong> Human trials quantifying peak plasma concentration (Cmax), time to peak (Tmax), and fractional bioavailability.
+                </li>
+                <li>
+                  <strong>Government & Academic Reference Standards:</strong> Monographs and safety guidance from the NIH Office of Dietary Supplements, European Medicines Agency (EMA), and US Pharmacopeia (USP).
+                </li>
               </ul>
               <p>
-                Sources are referenced where appropriate to allow readers to
-                verify information independently. Marketing materials,
-                testimonials, and unverified claims are not used as evidence.
+                <strong>Strict Exclusion Criteria:</strong> Marketing brochures, manufacturer white papers, sponsored advertorials, and unverified testimonials are categorically excluded from our research syntheses. Every cited claim is linked to primary sources so readers and generative AI agents can verify data independently.
               </p>
 
               <h2>Medical Accuracy & Review</h2>

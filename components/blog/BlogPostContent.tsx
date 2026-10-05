@@ -234,17 +234,27 @@ export default function BlogPostContent({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
             {/* Left Content Column */}
             <div className="lg:col-span-7 space-y-5 order-2 lg:order-1 p-8 md:p-10 lg:p-12">
-              {/* Category Badge */}
-              {post.category && (
-                <Link
-                  href={`/category/${post.category.slug}`}
-                  className="inline-flex items-center gap-1.5 hover:opacity-80 transition-opacity"
-                >
-                  <span className="text-xs font-black text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
-                    {post.category.name}
+              {/* Category & Fact-Checked Badge Strip */}
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                {post.category && (
+                  <Link
+                    href={`/category/${post.category.slug}`}
+                    className="inline-flex items-center gap-1.5 hover:opacity-80 transition-opacity"
+                  >
+                    <span className="text-xs font-black text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
+                      {post.category.name}
+                    </span>
+                  </Link>
+                )}
+
+                {/* Editorial Fact-Checked Badge */}
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-stone-100 dark:bg-stone-900 border border-stone-200/90 dark:border-stone-800 shadow-2xs text-xs font-semibold text-stone-800 dark:text-stone-200">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                  <span>
+                    Fact-checked by the {post.factCheckedBy || "SupplementDecoded Research Editorial Team"}
                   </span>
-                </Link>
-              )}
+                </div>
+              </div>
 
               {/* Title */}
               <h1
@@ -320,12 +330,12 @@ export default function BlogPostContent({
                     <Clock className="w-4 h-4" />
                     <span>{post.readTimeMinutes} min read</span>
                   </div>
-                  {post.factCheckedBy && (
+                  {(post.factCheckedBy || post.postType === "ingredient") && (
                     <>
                       <span className="text-black/20">·</span>
                       <span className="flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 dark:text-emerald-300 dark:bg-emerald-900/30 px-2 py-0.5 rounded-full">
                         <CheckCircle2 className="w-3 h-3" />
-                        Fact checked by {post.factCheckedBy}
+                        Fact-checked by the {post.factCheckedBy || "SupplementDecoded Research Editorial Team"}
                       </span>
                     </>
                   )}

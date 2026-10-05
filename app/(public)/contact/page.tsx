@@ -25,14 +25,14 @@ const baseUrl = (
 export const metadata: Metadata = {
   title: "Contact & Research Triage Desk | SupplementDecoded",
   description:
-    "Direct editorial intake for clinical researchers, whistleblowers reporting tainted supplements, journalists, and readers. Confidential, independent PharmD review.",
+    "Direct editorial intake for clinical researchers, whistleblowers reporting tainted supplements, journalists, and readers. Confidential, independent editorial review.",
   alternates: {
     canonical: `${baseUrl}/contact`,
   },
   openGraph: {
     title: "Contact & Research Triage Desk | SupplementDecoded",
     description:
-      "Direct editorial intake for clinical researchers, whistleblowers reporting tainted supplements, journalists, and readers. Confidential, independent PharmD review.",
+      "Direct editorial intake for clinical researchers, whistleblowers reporting tainted supplements, journalists, and readers. Confidential, independent editorial review.",
     url: `${baseUrl}/contact`,
     type: "website",
   },
@@ -43,7 +43,7 @@ const DIRECT_DESKS = [
     title: "Clinical Research & Corrections",
     email: "editorial@supplementdecoded.com",
     sla: "24–48 hours",
-    badge: "PharmD Review",
+    badge: "Editorial Review",
     desc: "Submit newly published human RCTs, bioavailability kinetics, or dosage threshold corrections.",
     icon: FlaskConical,
   },
@@ -115,7 +115,7 @@ export default function ContactPage() {
             {/* Subtitle */}
             <p className="text-base sm:text-lg text-stone-600 dark:text-stone-300 leading-relaxed font-sans font-normal mb-8">
               Submit newly published human trial citations, report deceptive marketing or adulterated
-              formulations, or request monograph corrections directly from our PharmD review board.
+              formulations, or request monograph corrections directly from our editorial review board.
             </p>
 
             {/* Quick Guarantees Strip */}
@@ -126,7 +126,7 @@ export default function ContactPage() {
               </div>
               <div className="flex items-center gap-1.5">
                 <Clock className="w-4 h-4 text-[#0E3B2F] dark:text-emerald-400 shrink-0" />
-                <span>24–48h PharmD SLA</span>
+                <span>24–48h Editorial SLA</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />

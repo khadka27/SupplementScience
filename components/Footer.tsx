@@ -32,7 +32,7 @@ const TRUST_PILLARS = [
   },
   {
     icon: Microscope,
-    title: "PharmD Toxicology Review",
+    title: "Independent Scientific Review",
     desc: "Rigorous pharmacology, bioavailability, and interaction audits.",
   },
   {
@@ -251,7 +251,7 @@ export function Footer() {
                   href="/medical-expert-review"
                   className="text-stone-400 hover:text-emerald-300 transition-colors block py-0.5"
                 >
-                  PharmD Review Board
+                  Editorial Review Board
                 </Link>
               </li>
               <li>

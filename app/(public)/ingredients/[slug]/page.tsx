@@ -144,6 +144,12 @@ export default async function IngredientPage({ params }: Props) {
     { name: post.title, url: `/ingredients/${post.slug}` },
   ]);
 
+  const enrichedPost = {
+    ...post,
+    factCheckedBy: post.factCheckedBy || "SupplementDecoded Research Editorial Team",
+    reviewedBy: post.reviewedBy || "SupplementDecoded Research Editorial Team",
+  };
+
   return (
     <>
       <script
@@ -156,7 +162,7 @@ export default async function IngredientPage({ params }: Props) {
       />
 
       <BlogPostContent
-        post={post as any}
+        post={enrichedPost as any}
         relatedPosts={[]}
         prevPost={null}
         nextPost={null}

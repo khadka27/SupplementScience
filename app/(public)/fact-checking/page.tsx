@@ -40,7 +40,7 @@ export default function FactCheckingPage() {
             The purpose of our fact-checking process is to ensure that information published on this site is accurate, balanced, and responsibly presented.
           </p>
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0D1217] border border-stone-200/90 dark:border-stone-800 text-xs font-medium text-slate-600 dark:text-slate-400 shadow-xs">
-            <span>Last Updated: February 25, 2026</span>
+            <span>Last Updated: October 4, 2026</span>
           </div>
         </div>
       </section>
@@ -91,19 +91,24 @@ export default function FactCheckingPage() {
 
               <h2>Sources Used for Verification</h2>
               <p>
-                We prioritize verification using credible and authoritative
-                sources, including:
+                Every factual claim, clinical outcome, and therapeutic dosage published on this site is verified against primary literature. We enforce rigorous sourcing rules:
               </p>
               <ul>
-                <li>Peer-reviewed scientific journals</li>
-                <li>Systematic reviews and meta-analyses</li>
-                <li>Government and academic research databases</li>
-                <li>Reputable public health and medical organizations</li>
+                <li>
+                  <strong>Primary PubMed/MEDLINE Identifiers:</strong> Factual assertions must map to validated PMIDs or DOIs in indexed peer-reviewed journals.
+                </li>
+                <li>
+                  <strong>Systematic Reviews & Meta-Analyses:</strong> High-certainty reviews from Cochrane, PRISMA, and leading medical societies.
+                </li>
+                <li>
+                  <strong>Pharmacokinetic Verification:</strong> Bioavailability claims are cross-examined against human absorption trials comparing molecular forms.
+                </li>
+                <li>
+                  <strong>Funding & Conflict Audits:</strong> Studies are screened for manufacturer sponsorship, small sample bounds (&lt;30 participants), or surrogate endpoint inflation.
+                </li>
               </ul>
               <p>
-                Marketing materials, testimonials, anecdotal reports, and
-                unverified online sources are not used as evidence during
-                fact-checking.
+                Marketing materials, manufacturer white papers, sponsored press releases, and unverified testimonials are strictly rejected as evidentiary sources.
               </p>
 
               <h2>Fact-Checking Workflow</h2>
