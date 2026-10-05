@@ -38,7 +38,7 @@ export function slugify(text: string): string {
 
 export function getPostHref(post: {
   slug: string;
-  postType?: string;
+  postType?: string | null;
   category?: { slug: string; name: string; isHub?: boolean } | null;
 }) {
   if (post.postType === "ingredient") {
