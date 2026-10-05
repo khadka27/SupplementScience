@@ -7,7 +7,6 @@ import {
   FlaskConical,
   ShieldCheck,
   Scale,
-  Microscope,
   Send,
   Loader2,
   CheckCircle2,
@@ -29,11 +28,6 @@ const TRUST_PILLARS = [
     icon: ShieldCheck,
     title: "Zero Sponsor Funding",
     desc: "No affiliate links, no brand sponsorships, no kickbacks.",
-  },
-  {
-    icon: Microscope,
-    title: "Independent Scientific Review",
-    desc: "Rigorous pharmacology, bioavailability, and interaction audits.",
   },
   {
     icon: Lock,
@@ -87,7 +81,7 @@ export function Footer() {
       {/* ── TOP CREDIBILITY MARQUEE / TRUST RIBBON ────────────────── */}
       <div className="border-b border-white/5 bg-black/25">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 lg:gap-8 text-left">
             {TRUST_PILLARS.map((pillar, i) => {
               const Icon = pillar.icon;
               return (

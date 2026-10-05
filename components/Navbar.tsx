@@ -44,7 +44,6 @@ const navItems = [
 const trustBadges = [
   "1,420+ RCTs Analyzed",
   "Zero Sponsor Bias",
-  "Editorial Team Reviewed",
 ];
 
 export function Navbar() {

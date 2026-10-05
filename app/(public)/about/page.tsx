@@ -95,7 +95,7 @@ const GOVERNANCE_LINKS = [
   },
   {
     title: "Fact-Checking Process",
-    desc: "How each monograph undergoes multi-stage toxicology review and human RCT verification.",
+    desc: "How each monograph undergoes multi-stage editorial review and human RCT verification.",
     href: "/fact-checking",
     icon: CheckCircle2,
   },
