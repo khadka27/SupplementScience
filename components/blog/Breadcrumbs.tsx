@@ -14,12 +14,12 @@ interface BreadcrumbsProps {
 
 export default function Breadcrumbs({ items, className }: BreadcrumbsProps) {
   return (
-    <nav aria-label="Breadcrumb" className={cn("mb-6", className)}>
-      <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">
+    <nav aria-label="Breadcrumb" className={cn("mb-3 sm:mb-6", className)}>
+      <ol className="flex flex-wrap items-center gap-1 sm:gap-1.5 text-xs sm:text-sm text-muted-foreground">
         {items.map((item, index) => (
-          <li key={item.url} className="flex items-center gap-1.5">
+          <li key={item.url} className="flex items-center gap-1 sm:gap-1.5">
             {index > 0 && (
-              <ChevronRight className="w-3.5 h-3.5 text-muted-foreground/60" />
+              <ChevronRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-muted-foreground/60 shrink-0" />
             )}
             {index === 0 ? (
               <Link
@@ -27,11 +27,11 @@ export default function Breadcrumbs({ items, className }: BreadcrumbsProps) {
                 className="hover:text-primary transition-colors flex items-center gap-1"
                 title="Home"
               >
-                <Home className="w-4 h-4" />
+                <Home className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
               </Link>
             ) : index === items.length - 1 ? (
               <span
-                className="font-semibold text-foreground truncate max-w-[200px] md:max-w-xs block"
+                className="font-semibold text-foreground truncate max-w-[120px] sm:max-w-[220px] md:max-w-xs block"
                 title={item.name}
               >
                 {item.name}

@@ -293,44 +293,44 @@ export default async function Home() {
       <ClinicalHeroSearch />
 
       {/* ══ Who This Is For ════════════════════════════════════════════ */}
-      <section className="relative py-24 px-4 bg-white dark:bg-[#07090B] overflow-hidden">
+      <section className="relative py-12 sm:py-20 md:py-24 px-4 bg-white dark:bg-[#07090B] overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-800 to-transparent" />
         <div className="container mx-auto max-w-6xl">
-          <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 mb-5">
+          <div className="text-center mb-8 sm:mb-14">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 mb-3 sm:mb-5">
               <Search className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
               <span className="text-[11px] font-black uppercase tracking-widest text-slate-500 dark:text-slate-400">Audience</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-5 text-[#0A0F14] dark:text-white tracking-tight">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-5 text-[#0A0F14] dark:text-white tracking-tight">
               Who This Resource Is For
             </h2>
-            <p className="text-lg text-gray-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-zinc-400 max-w-2xl mx-auto leading-relaxed px-2">
               This site is designed for readers who value clarity over hype and
               want careful explanations grounded in research.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+          <div className="grid md:grid-cols-2 gap-5 sm:gap-6 lg:gap-8">
             {/* For — Clinical Green Accent */}
-            <div className="relative bg-white dark:bg-[#0D1217] border border-stone-200 dark:border-stone-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div className="relative bg-white dark:bg-[#0D1217] border border-stone-200 dark:border-stone-800 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow">
               <div className="h-1.5 w-full bg-emerald-600 dark:bg-emerald-500" />
-              <div className="p-8 md:p-10 flex flex-col h-full">
-                <div className="flex items-center gap-3.5 mb-6">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/80 flex items-center justify-center text-emerald-700 dark:text-emerald-400">
+              <div className="p-5 sm:p-8 md:p-10 flex flex-col h-full">
+                <div className="flex items-center gap-3.5 mb-5 sm:mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800/80 flex items-center justify-center text-emerald-700 dark:text-emerald-400 shrink-0">
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
                   <div>
                     <span className="text-[10px] font-mono uppercase font-bold text-emerald-700 dark:text-emerald-400 tracking-wider">
                       Optimal Match
                     </span>
-                    <h3 className="text-xl font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+                    <h3 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 tracking-tight">
                       Who This Is For
                     </h3>
                   </div>
                 </div>
-                <ul className="space-y-3.5 grow">
+                <ul className="space-y-3 sm:space-y-3.5 grow">
                   {whoThisIsFor.map((item, i) => (
-                    <li key={i} className="flex gap-3 text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
+                    <li key={i} className="flex gap-2.5 sm:gap-3 text-stone-600 dark:text-stone-300 text-xs sm:text-sm leading-relaxed">
                       <div className="mt-0.5 w-4 h-4 rounded-full bg-emerald-100/80 dark:bg-emerald-950 flex items-center justify-center shrink-0 text-emerald-700 dark:text-emerald-400">
                         <CheckCircle2 className="w-3.5 h-3.5" />
                       </div>
@@ -338,7 +338,7 @@ export default async function Home() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-8 pt-5 border-t border-stone-100 dark:border-stone-800">
+                <div className="mt-6 sm:mt-8 pt-4 sm:pt-5 border-t border-stone-100 dark:border-stone-800">
                   <p className="text-xs font-semibold text-emerald-800 dark:text-emerald-300">
                     If you prefer careful explanations grounded in research, you&rsquo;re in the right place.
                   </p>
@@ -347,25 +347,25 @@ export default async function Home() {
             </div>
 
             {/* Not For — Clear Boundary Accent */}
-            <div className="relative bg-white dark:bg-[#0D1217] border border-stone-200 dark:border-stone-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+            <div className="relative bg-white dark:bg-[#0D1217] border border-stone-200 dark:border-stone-800 rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-shadow">
               <div className="h-1.5 w-full bg-rose-600 dark:bg-rose-500" />
-              <div className="p-8 md:p-10 flex flex-col h-full">
-                <div className="flex items-center gap-3.5 mb-6">
-                  <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/80 flex items-center justify-center text-rose-700 dark:text-rose-400">
+              <div className="p-5 sm:p-8 md:p-10 flex flex-col h-full">
+                <div className="flex items-center gap-3.5 mb-5 sm:mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950/50 border border-rose-200 dark:border-rose-800/80 flex items-center justify-center text-rose-700 dark:text-rose-400 shrink-0">
                     <XCircle className="w-5 h-5" />
                   </div>
                   <div>
                     <span className="text-[10px] font-mono uppercase font-bold text-rose-700 dark:text-rose-400 tracking-wider">
                       Not Recommended
                     </span>
-                    <h3 className="text-xl font-bold text-stone-900 dark:text-stone-100 tracking-tight">
+                    <h3 className="text-lg sm:text-xl font-bold text-stone-900 dark:text-stone-100 tracking-tight">
                       Who This Is Not For
                     </h3>
                   </div>
                 </div>
-                <ul className="space-y-3.5 grow">
+                <ul className="space-y-3 sm:space-y-3.5 grow">
                   {whoThisIsNotFor.map((item, i) => (
-                    <li key={i} className="flex gap-3 text-stone-600 dark:text-stone-300 text-sm leading-relaxed">
+                    <li key={i} className="flex gap-2.5 sm:gap-3 text-stone-600 dark:text-stone-300 text-xs sm:text-sm leading-relaxed">
                       <div className="mt-0.5 w-4 h-4 rounded-full bg-rose-100/80 dark:bg-rose-950 flex items-center justify-center shrink-0 text-rose-700 dark:text-rose-400">
                         <XCircle className="w-3.5 h-3.5" />
                       </div>
@@ -373,7 +373,7 @@ export default async function Home() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-8 pt-5 border-t border-stone-100 dark:border-stone-800">
+                <div className="mt-6 sm:mt-8 pt-4 sm:pt-5 border-t border-stone-100 dark:border-stone-800">
                   <p className="text-xs font-semibold text-rose-800 dark:text-rose-300">
                     This site is not intended for quick fixes, guarantees, or promotional recommendations.
                   </p>
@@ -389,7 +389,7 @@ export default async function Home() {
       <MultiFormComparisonMatrix />
 
       {/* ══ Mission & Evaluation ════════════════════════════════════ */}
-      <section className="relative py-24 px-4 overflow-hidden bg-stone-50/80 dark:bg-[#080C0E] border-t border-b border-stone-200/80 dark:border-stone-800">
+      <section className="relative py-12 sm:py-20 md:py-24 px-4 overflow-hidden bg-stone-50/80 dark:bg-[#080C0E] border-t border-b border-stone-200/80 dark:border-stone-800">
         <div className="absolute inset-0 pointer-events-none opacity-[0.025] dark:opacity-[0.04]"
           style={{
             backgroundImage: `linear-gradient(#0E3B2F 1px, transparent 1px), linear-gradient(90deg, #0E3B2F 1px, transparent 1px)`,
@@ -399,37 +399,37 @@ export default async function Home() {
         />
 
         <div className="container mx-auto max-w-7xl relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-24 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#0E3B2F]/20 dark:border-emerald-800/40 bg-[#0E3B2F]/6 dark:bg-emerald-950/40 mb-8">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#0E3B2F]/20 dark:border-emerald-800/40 bg-[#0E3B2F]/6 dark:bg-emerald-950/40 mb-4 sm:mb-8">
                 <Shield className="w-3.5 h-3.5 text-[#0E3B2F] dark:text-emerald-400" />
                 <span className="text-[11px] font-black text-[#0E3B2F] dark:text-emerald-300 uppercase tracking-widest">
                   Editorial Independence
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-8 leading-tight tracking-tight text-black dark:text-white">
-                Our Mission & Editorial Approach
+              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 sm:mb-8 leading-tight tracking-tight text-black dark:text-white">
+                Our Mission &amp; Editorial Approach
               </h2>
-              <p className="text-xl text-slate-700 dark:text-zinc-300 mb-10 leading-relaxed font-medium">
+              <p className="text-sm sm:text-lg md:text-xl text-slate-700 dark:text-zinc-300 mb-6 sm:mb-10 leading-relaxed font-normal sm:font-medium">
                 Our mission is to build a trustworthy library of health and
                 supplement content that explains context clearly, analyzes
                 ingredients neutrally, and helps readers understand both
                 potential benefits and real limitations.
               </p>
 
-              <div className="space-y-6">
-                <div className="bg-white/80 dark:bg-[#0D1510]/80 backdrop-blur-sm border border-emerald-100 dark:border-emerald-900/40 rounded-3xl p-7 shadow-sm">
-                  <h3 className="text-lg font-bold text-[#0A1A13] dark:text-white mb-5 flex items-center gap-2.5">
+              <div className="space-y-5 sm:space-y-6">
+                <div className="bg-white/80 dark:bg-[#0D1510]/80 backdrop-blur-sm border border-emerald-100 dark:border-emerald-900/40 rounded-2xl sm:rounded-3xl p-5 sm:p-7 shadow-xs">
+                  <h3 className="text-base sm:text-lg font-bold text-[#0A1A13] dark:text-white mb-4 sm:mb-5 flex items-center gap-2.5">
                     <span className="w-1.5 h-5 rounded-full bg-gradient-to-b from-[#0E3B2F] to-emerald-500 inline-block" />
                     Our mission includes:
                   </h3>
-                  <ul className="space-y-3.5">
+                  <ul className="space-y-3 sm:space-y-3.5">
                     {missionPoints.map((item, index) => (
-                      <li key={index} className="flex gap-3 text-slate-700 dark:text-zinc-300 leading-relaxed">
-                        <div className="mt-1 w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center shrink-0 border border-emerald-200 dark:border-emerald-800">
+                      <li key={index} className="flex gap-2.5 sm:gap-3 text-slate-700 dark:text-zinc-300 leading-relaxed text-xs sm:text-sm">
+                        <div className="mt-0.5 sm:mt-1 w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center shrink-0 border border-emerald-200 dark:border-emerald-800">
                           <CheckCircle2 className="w-3 h-3 text-[#0E3B2F] dark:text-emerald-400" />
                         </div>
-                        <span className="text-sm">{item}</span>
+                        <span>{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -440,13 +440,13 @@ export default async function Home() {
                   { icon: AlertTriangle, title: "Strict Safety Standards", body: "When research is mixed, limited, or inconclusive, we say so directly. We do not overstate effectiveness or certainty, and we disclose side effects, risks, and important limitations." },
                   { icon: HeartPulse, title: "The Foundation: Lifestyle Comes First", body: "Consistent evidence shows that balanced nutrition, regular physical activity, adequate sleep, and professional healthcare have the greatest impact on long-term health. Supplements do not replace these fundamentals." },
                 ].map((feat, i) => (
-                  <div key={i} className="flex gap-4 group">
-                    <div className="w-11 h-11 rounded-xl bg-white dark:bg-[#0D1510] border border-emerald-100 dark:border-emerald-900/40 flex items-center justify-center shrink-0 group-hover:bg-[#0E3B2F] group-hover:border-transparent transition-all duration-300 shadow-sm mt-0.5">
-                      <feat.icon className="w-5 h-5 text-[#0E3B2F] dark:text-emerald-400 group-hover:text-white transition-colors" />
+                  <div key={i} className="flex gap-3.5 sm:gap-4 group">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-white dark:bg-[#0D1510] border border-emerald-100 dark:border-emerald-900/40 flex items-center justify-center shrink-0 group-hover:bg-[#0E3B2F] group-hover:border-transparent transition-all duration-300 shadow-2xs mt-0.5">
+                      <feat.icon className="w-4 h-4 sm:w-5 sm:h-5 text-[#0E3B2F] dark:text-emerald-400 group-hover:text-white transition-colors" />
                     </div>
                     <div>
-                      <h4 className="text-base font-bold mb-1.5 text-[#0A1A13] dark:text-zinc-100">{feat.title}</h4>
-                      <p className="text-slate-600 dark:text-zinc-400 leading-relaxed text-sm">{feat.body}</p>
+                      <h4 className="text-sm sm:text-base font-bold mb-1 text-[#0A1A13] dark:text-zinc-100">{feat.title}</h4>
+                      <p className="text-slate-600 dark:text-zinc-400 leading-relaxed text-xs sm:text-sm">{feat.body}</p>
                     </div>
                   </div>
                 ))}
@@ -454,22 +454,22 @@ export default async function Home() {
             </div>
 
             <div className="lg:sticky lg:top-28">
-              <div className="bg-white dark:bg-[#0D1217] border border-stone-200 dark:border-stone-800 rounded-2xl p-8 md:p-10 shadow-lg shadow-stone-900/5 relative overflow-hidden">
-                <h3 className="text-xl font-bold mb-7 flex items-center gap-3 text-[#0A1A13] dark:text-white relative z-10">
-                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#0E3B2F] to-emerald-600 flex items-center justify-center shadow-md">
+              <div className="bg-white dark:bg-[#0D1217] border border-stone-200 dark:border-stone-800 rounded-2xl p-5 sm:p-8 md:p-10 shadow-lg shadow-stone-900/5 relative overflow-hidden">
+                <h3 className="text-lg sm:text-xl font-bold mb-5 sm:mb-7 flex items-center gap-2.5 sm:gap-3 text-[#0A1A13] dark:text-white relative z-10">
+                  <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-gradient-to-br from-[#0E3B2F] to-emerald-600 flex items-center justify-center shadow-md">
                     <ListChecks className="text-white w-4 h-4" />
                   </div>
                   How We Evaluate Supplements
                 </h3>
-                <div className="space-y-3.5 relative">
-                  <div className="absolute left-[17px] top-5 bottom-5 w-px bg-gradient-to-b from-[#0E3B2F]/30 via-emerald-300/20 dark:via-emerald-700/20 to-transparent" />
+                <div className="space-y-3 sm:space-y-3.5 relative">
+                  <div className="absolute left-[15px] sm:left-[17px] top-4 bottom-4 w-px bg-gradient-to-b from-[#0E3B2F]/30 via-emerald-300/20 dark:via-emerald-700/20 to-transparent" />
                   {evaluationSteps.map((step, i) => (
-                    <div key={i} className="relative flex items-start gap-4 group">
-                      <div className="flex items-center justify-center w-9 h-9 rounded-full border-2 border-white dark:border-[#0A1410] bg-slate-100 dark:bg-[#172218] text-slate-700 dark:text-emerald-300 font-black z-10 shrink-0 group-hover:bg-gradient-to-br group-hover:from-[#0E3B2F] group-hover:to-emerald-600 group-hover:text-white group-hover:border-[#0E3B2F]/20 transition-all duration-300 shadow-sm text-xs">
+                    <div key={i} className="relative flex items-start gap-3 sm:gap-4 group">
+                      <div className="flex items-center justify-center w-8 h-8 sm:w-9 sm:h-9 rounded-full border-2 border-white dark:border-[#0A1410] bg-slate-100 dark:bg-[#172218] text-slate-700 dark:text-emerald-300 font-black z-10 shrink-0 group-hover:bg-gradient-to-br group-hover:from-[#0E3B2F] group-hover:to-emerald-600 group-hover:text-white group-hover:border-[#0E3B2F]/20 transition-all duration-300 shadow-2xs text-xs">
                         {i + 1}
                       </div>
-                      <div className="bg-slate-50/80 dark:bg-[#0F1A12]/60 hover:bg-white dark:hover:bg-[#172218]/80 border border-slate-100 dark:border-emerald-900/25 hover:border-emerald-200 dark:hover:border-emerald-800/50 p-4 rounded-2xl transition-all w-full group-hover:shadow-sm">
-                        <h4 className="font-bold text-sm mb-1 text-[#0A1A13] dark:text-zinc-100">{step.title}</h4>
+                      <div className="bg-slate-50/80 dark:bg-[#0F1A12]/60 hover:bg-white dark:hover:bg-[#172218]/80 border border-slate-100 dark:border-emerald-900/25 hover:border-emerald-200 dark:hover:border-emerald-800/50 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl transition-all w-full group-hover:shadow-2xs">
+                        <h4 className="font-bold text-xs sm:text-sm mb-0.5 sm:mb-1 text-[#0A1A13] dark:text-zinc-100">{step.title}</h4>
                         <p className="text-slate-500 dark:text-zinc-400 text-xs leading-relaxed">{step.desc}</p>
                       </div>
                     </div>
@@ -482,40 +482,40 @@ export default async function Home() {
       </section>
 
       {/* ══ Guides & Categories ═════════════════════════════════════ */}
-      <section className="relative py-24 px-4 bg-[#F8FAFB] dark:bg-[#06080A] overflow-hidden">
+      <section className="relative py-12 sm:py-20 md:py-24 px-4 bg-[#F8FAFB] dark:bg-[#06080A] overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-300/50 dark:via-slate-700/50 to-transparent" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(14,59,47,0.04)_0%,_transparent_70%)] dark:bg-[radial-gradient(ellipse_at_center,_rgba(14,59,47,0.08)_0%,_transparent_70%)] pointer-events-none" />
         <div className="container mx-auto max-w-7xl relative z-10">
-          <div className="mb-24">
-            <div className="text-center mb-14">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/50 mb-5">
+          <div className="mb-12 sm:mb-20 md:mb-24">
+            <div className="text-center mb-8 sm:mb-14">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800/50 mb-3 sm:mb-5">
                 <BookOpen className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                 <span className="text-[11px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-300">Start Here</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-extrabold mb-5 text-[#0A0F14] dark:text-white tracking-tight">
+              <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold mb-3 sm:mb-5 text-[#0A0F14] dark:text-white tracking-tight">
                 New Here? Start With These Guides
               </h2>
-              <p className="text-xl text-gray-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-sm sm:text-lg md:text-xl text-gray-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed px-2">
                 These pages provide essential context before reading any product
                 analysis so you can navigate the site without overwhelm.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
               {recommendedGuides.map((guide, i) => (
                 <Link key={i} href={guide.href} className="group">
-                  <div className="h-full bg-white dark:bg-[#0C1117] border border-slate-200 dark:border-slate-800 hover:border-[#0E3B2F]/60 dark:hover:border-emerald-700/60 hover:shadow-xl hover:shadow-emerald-900/8 dark:hover:shadow-emerald-950/25 hover:-translate-y-2 transition-all duration-300 rounded-3xl overflow-hidden p-7 flex flex-col relative">
+                  <div className="h-full bg-white dark:bg-[#0C1117] border border-slate-200 dark:border-slate-800 hover:border-[#0E3B2F]/60 dark:hover:border-emerald-700/60 hover:shadow-xl hover:shadow-emerald-900/8 dark:hover:shadow-emerald-950/25 hover:-translate-y-1 sm:hover:-translate-y-2 transition-all duration-300 rounded-2xl sm:rounded-3xl overflow-hidden p-5 sm:p-7 flex flex-col relative">
                     <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#0E3B2F] to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                    <div className="w-12 h-12 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl flex items-center justify-center mb-5 group-hover:bg-gradient-to-br group-hover:from-[#0E3B2F] group-hover:to-emerald-600 group-hover:border-transparent transition-all duration-300 shadow-sm">
-                      <guide.icon className="w-5 h-5 text-slate-600 dark:text-slate-300 group-hover:text-white transition-colors duration-300" />
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-5 group-hover:bg-gradient-to-br group-hover:from-[#0E3B2F] group-hover:to-emerald-600 group-hover:border-transparent transition-all duration-300 shadow-2xs">
+                      <guide.icon className="w-4 h-4 sm:w-5 sm:h-5 text-slate-600 dark:text-slate-300 group-hover:text-white transition-colors duration-300" />
                     </div>
-                    <h3 className="text-lg font-bold mb-2 text-[#0A0F14] dark:text-zinc-100 group-hover:text-[#0E3B2F] dark:group-hover:text-emerald-400 transition-colors leading-snug">
+                    <h3 className="text-base sm:text-lg font-bold mb-1.5 sm:mb-2 text-[#0A0F14] dark:text-zinc-100 group-hover:text-[#0E3B2F] dark:group-hover:text-emerald-400 transition-colors leading-snug">
                       {guide.title}
                     </h3>
-                    <p className="text-sm text-gray-500 dark:text-zinc-400 leading-relaxed flex-1">
+                    <p className="text-xs sm:text-sm text-gray-500 dark:text-zinc-400 leading-relaxed flex-1">
                       {guide.desc}
                     </p>
-                    <div className="flex items-center gap-1 mt-5 text-xs font-bold text-[#0E3B2F] dark:text-emerald-400 opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0">
+                    <div className="flex items-center gap-1 mt-4 sm:mt-5 text-xs font-bold text-[#0E3B2F] dark:text-emerald-400 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all sm:-translate-x-1 sm:group-hover:translate-x-0">
                       Read guide <ArrowRight className="w-3.5 h-3.5" />
                     </div>
                   </div>
@@ -527,43 +527,43 @@ export default async function Home() {
           {/* Categories */}
           {categories.length > 0 && (
             <div>
-              <div className="text-center mb-14">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-violet-50 dark:bg-violet-950/40 border border-violet-200 dark:border-violet-800/50 mb-5">
+              <div className="text-center mb-8 sm:mb-14">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-violet-50 dark:bg-violet-950/40 border border-violet-200 dark:border-violet-800/50 mb-3 sm:mb-5">
                   <Leaf className="w-3.5 h-3.5 text-violet-600 dark:text-violet-400" />
                   <span className="text-[11px] font-black uppercase tracking-widest text-violet-600 dark:text-violet-300">Research Areas</span>
                 </div>
-                <h2 className="text-4xl md:text-5xl font-extrabold mb-5 text-[#0A0F14] dark:text-white tracking-tight">
+                <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold mb-3 sm:mb-5 text-[#0A0F14] dark:text-white tracking-tight">
                   Health Categories We Cover
                 </h2>
-                <p className="text-xl text-gray-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed">
+                <p className="text-sm sm:text-lg md:text-xl text-gray-600 dark:text-zinc-400 max-w-3xl mx-auto leading-relaxed px-2">
                   Our research is organized into clear health topics including
                   Joint Pain, Weight Loss, Men&rsquo;s Health, Women&rsquo;s
                   Health, Gut Health, Mental Health, Sleep Cycle, and Skin Care.
                 </p>
               </div>
 
-              <div className="flex flex-wrap justify-center gap-2.5 mb-12">
+              <div className="flex flex-wrap justify-center gap-2 sm:gap-2.5 mb-8 sm:mb-12 px-1">
                 {healthTopics.map((topic) => (
                   <div
                     key={topic}
-                    className="px-4 py-2 rounded-full bg-white dark:bg-[#0C1117] border border-slate-200 dark:border-slate-800 text-sm font-semibold text-slate-700 dark:text-zinc-300 shadow-sm hover:border-[#0E3B2F]/50 dark:hover:border-emerald-700/50 hover:text-[#0E3B2F] dark:hover:text-emerald-400 transition-all cursor-default"
+                    className="px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full bg-white dark:bg-[#0C1117] border border-slate-200 dark:border-slate-800 text-xs sm:text-sm font-semibold text-slate-700 dark:text-zinc-300 shadow-2xs hover:border-[#0E3B2F]/50 dark:hover:border-emerald-700/50 hover:text-[#0E3B2F] dark:hover:text-emerald-400 transition-all cursor-default whitespace-nowrap"
                   >
                     {topic}
                   </div>
                 ))}
               </div>
 
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-5">
                 {categories.map((category) => {
                   const Icon = categoryIcons[category.name] || Leaf;
                   return (
                     <Link key={category.id} href={`/category/${category.slug}`} className="group">
-                      <div className="relative h-full bg-white dark:bg-[#0C1117] border border-slate-200 dark:border-slate-800 rounded-3xl overflow-hidden hover:border-[#0E3B2F]/50 dark:hover:border-emerald-700/60 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-6 flex flex-col items-center text-center">
+                      <div className="relative h-full bg-white dark:bg-[#0C1117] border border-slate-200 dark:border-slate-800 rounded-2xl sm:rounded-3xl overflow-hidden hover:border-[#0E3B2F]/50 dark:hover:border-emerald-700/60 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 p-4 sm:p-6 flex flex-col items-center text-center">
                         <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#0E3B2F] to-emerald-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                        <div className="relative z-10 w-14 h-14 mb-4 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-[#0E3B2F] group-hover:to-emerald-600 transition-all duration-300 border border-slate-200 dark:border-slate-700 group-hover:border-transparent group-hover:shadow-lg group-hover:shadow-emerald-900/20">
-                          <Icon className="w-6 h-6 text-slate-600 dark:text-slate-300 group-hover:text-white transition-colors duration-300" />
+                        <div className="relative z-10 w-12 h-12 sm:w-14 sm:h-14 mb-3 sm:mb-4 rounded-xl sm:rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center group-hover:bg-gradient-to-br group-hover:from-[#0E3B2F] group-hover:to-emerald-600 transition-all duration-300 border border-slate-200 dark:border-slate-700 group-hover:border-transparent group-hover:shadow-lg group-hover:shadow-emerald-900/20">
+                          <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-slate-600 dark:text-slate-300 group-hover:text-white transition-colors duration-300" />
                         </div>
-                        <h3 className="relative z-10 font-bold text-sm mb-0.5 text-[#0A0F14] dark:text-zinc-100 group-hover:text-[#0E3B2F] dark:group-hover:text-emerald-400 transition-colors leading-snug">
+                        <h3 className="relative z-10 font-bold text-xs sm:text-sm mb-0.5 text-[#0A0F14] dark:text-zinc-100 group-hover:text-[#0E3B2F] dark:group-hover:text-emerald-400 transition-colors leading-snug">
                           {category.name}
                         </h3>
                       </div>
@@ -577,13 +577,13 @@ export default async function Home() {
       </section>
 
       {/* Latest Guides & Research */}
-      <section className="py-24 px-4 bg-white dark:bg-[#070A0D] border-t border-slate-200 dark:border-slate-800">
+      <section className="py-12 sm:py-20 md:py-24 px-4 bg-white dark:bg-[#070A0D] border-t border-slate-200 dark:border-slate-800">
         <div className="container mx-auto max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-slate-900 dark:text-white tracking-tight">
+          <div className="text-center mb-8 sm:mb-16">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-extrabold mb-3 sm:mb-6 text-slate-900 dark:text-white tracking-tight">
               Latest Research & Guides
             </h2>
-            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed px-2">
               Browse recent articles, ingredient explainers, and health topic
               research summaries grounded in evidence rather than promotion.
             </p>
@@ -592,14 +592,14 @@ export default async function Home() {
           {mainFeaturedPost && (
             <Link
               href={getPostHref(mainFeaturedPost)}
-              className="block mb-16 group text-slate-900 dark:text-white"
+              className="block mb-10 sm:mb-16 group text-slate-900 dark:text-white"
             >
-              <div className="relative rounded-[2rem] overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0C1117] group-hover:shadow-2xl group-hover:shadow-slate-900/12 dark:group-hover:shadow-black/40 group-hover:border-[#0E3B2F]/30 dark:group-hover:border-emerald-800/50 transition-all duration-500">
+              <div className="relative rounded-2xl sm:rounded-[2rem] overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0C1117] group-hover:shadow-2xl group-hover:shadow-slate-900/12 dark:group-hover:shadow-black/40 group-hover:border-[#0E3B2F]/30 dark:group-hover:border-emerald-800/50 transition-all duration-500">
                 <div className="grid md:grid-cols-2 gap-0">
                   {/* Image */}
                   {(mainFeaturedPost.cardImageUrl ||
                     mainFeaturedPost.featuredImageUrl) && (
-                    <div className="relative h-72 md:h-96 overflow-hidden bg-slate-100 dark:bg-slate-900">
+                    <div className="relative h-56 sm:h-72 md:h-96 overflow-hidden bg-slate-100 dark:bg-slate-900">
                       <Image
                         src={
                           mainFeaturedPost.cardImageUrl ||
@@ -632,36 +632,36 @@ export default async function Home() {
                   )}
 
                   {/* Content */}
-                  <div className="p-10 md:p-14 flex flex-col justify-center bg-gradient-to-br from-white to-slate-50/80 dark:from-[#0C1117] dark:to-[#0F1720]">
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 border border-amber-200 dark:border-amber-800/50 shadow-sm">
-                        <Sparkles className="w-3.5 h-3.5" /> Research Spotlight
+                  <div className="p-5 sm:p-8 md:p-14 flex flex-col justify-center bg-gradient-to-br from-white to-slate-50/80 dark:from-[#0C1117] dark:to-[#0F1720]">
+                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+                      <div className="bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5 border border-amber-200 dark:border-amber-800/50 shadow-2xs whitespace-nowrap shrink-0">
+                        <Sparkles className="w-3.5 h-3.5 shrink-0" /> Research Spotlight
                       </div>
                       {mainFeaturedPost.category && (
-                        <div className="bg-[#0E3B2F]/10 text-[#0E3B2F] dark:text-emerald-300 dark:bg-emerald-950/50 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-[#0E3B2F]/20 dark:border-emerald-800/50">
+                        <div className="bg-[#0E3B2F]/10 text-[#0E3B2F] dark:text-emerald-300 dark:bg-emerald-950/50 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border border-[#0E3B2F]/20 dark:border-emerald-800/50 whitespace-nowrap shrink-0">
                           {mainFeaturedPost.category.name}
                         </div>
                       )}
                     </div>
 
-                    <h3 className="text-3xl md:text-4xl font-bold mb-5 text-[#0A0F14] dark:text-white group-hover:text-[#0E3B2F] dark:group-hover:text-emerald-400 transition-colors leading-[1.15] tracking-tight">
+                    <h3 className="text-xl sm:text-2xl md:text-4xl font-bold mb-3 sm:mb-5 text-[#0A0F14] dark:text-white group-hover:text-[#0E3B2F] dark:group-hover:text-emerald-400 transition-colors leading-snug sm:leading-[1.15] tracking-tight">
                       {mainFeaturedPost.title}
                     </h3>
 
                     {mainFeaturedPost.excerpt && (
-                      <p className="text-xl text-gray-600 dark:text-zinc-400 mb-8 leading-relaxed font-medium line-clamp-3">
+                      <p className="text-sm sm:text-base md:text-xl text-gray-600 dark:text-zinc-400 mb-5 sm:mb-8 leading-relaxed font-normal sm:font-medium line-clamp-3">
                         {mainFeaturedPost.excerpt}
                       </p>
                     )}
 
-                    <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-zinc-400 font-medium">
-                      <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700">
-                        <Clock className="w-3.5 h-3.5 text-[#0E3B2F] dark:text-emerald-400" />
+                    <div className="flex flex-wrap items-center gap-2.5 sm:gap-4 text-xs sm:text-sm text-gray-500 dark:text-zinc-400 font-medium">
+                      <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full border border-slate-200 dark:border-slate-700 whitespace-nowrap">
+                        <Clock className="w-3.5 h-3.5 text-[#0E3B2F] dark:text-emerald-400 shrink-0" />
                         {mainFeaturedPost.readTimeMinutes} min read
                       </div>
                       {mainFeaturedPost.publishedAt && (
-                        <span className="flex items-center gap-2">
-                          <FileText className="w-4 h-4" />
+                        <span className="flex items-center gap-1.5 whitespace-nowrap">
+                          <FileText className="w-3.5 h-3.5 shrink-0" />
                           {new Date(
                             mainFeaturedPost.publishedAt,
                           ).toLocaleDateString("en-US", {
@@ -698,77 +698,77 @@ export default async function Home() {
       </section>
 
       {/* ══ Trust & Transparency ════════════════════════════════════ */}
-      <section className="relative py-24 px-4 overflow-hidden bg-stone-50/70 dark:bg-[#080B0E] border-t border-stone-200/80 dark:border-stone-800">
+      <section className="relative py-12 sm:py-20 md:py-24 px-4 overflow-hidden bg-stone-50/70 dark:bg-[#080B0E] border-t border-stone-200/80 dark:border-stone-800">
         <div className="container mx-auto max-w-6xl relative z-10">
-          <div className="grid md:grid-cols-2 gap-16 lg:gap-20 items-center">
+          <div className="grid md:grid-cols-2 gap-10 lg:gap-20 items-center">
             <div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded border border-emerald-200/80 dark:border-emerald-900/60 bg-emerald-50/70 dark:bg-emerald-950/40 mb-6">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded border border-emerald-200/80 dark:border-emerald-900/60 bg-emerald-50/70 dark:bg-emerald-950/40 mb-4 sm:mb-6">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#0E3B2F] dark:text-emerald-400" />
                 <span className="text-[10px] font-mono font-bold text-[#0E3B2F] dark:text-emerald-300 uppercase tracking-widest">
                   Transparency Protocol
                 </span>
               </div>
-              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-6 text-stone-900 dark:text-white tracking-tight leading-[1.12]">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold mb-4 sm:mb-6 text-stone-900 dark:text-white tracking-tight leading-[1.15]">
                 Strong Trust Signals{" "}
                 <span className="italic font-normal text-[#0E3B2F] dark:text-emerald-400">
                   You Should Know
                 </span>
               </h2>
-              <p className="text-base text-stone-600 dark:text-stone-300 mb-8 leading-relaxed">
+              <p className="text-sm sm:text-base text-stone-600 dark:text-stone-300 mb-6 sm:mb-8 leading-relaxed">
                 We are committed to complete editorial independence. We accept
                 zero affiliate partnerships, publish no sponsored content, and
                 receive no compensation from supplement manufacturers or
                 retailers. Our evaluations are free from any commercial
                 influence.
               </p>
-              <ul className="space-y-3">
+              <ul className="space-y-2.5 sm:space-y-3">
                 {trustSignals.map((item, i) => (
                   <li
                     key={i}
-                    className="flex gap-3 text-stone-700 dark:text-stone-300 bg-white dark:bg-[#0D1217] p-4 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-sm hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
+                    className="flex gap-2.5 sm:gap-3 text-stone-700 dark:text-stone-300 bg-white dark:bg-[#0D1217] p-3.5 sm:p-4 rounded-xl border border-stone-200/80 dark:border-stone-800 shadow-2xs hover:border-emerald-300 dark:hover:border-emerald-700 transition-colors"
                   >
                     <div className="mt-0.5 w-4 h-4 rounded-full bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center shrink-0 text-emerald-700 dark:text-emerald-400">
                       <CheckCircle2 className="w-3.5 h-3.5" />
                     </div>
-                    <span className="text-sm leading-relaxed">{item}</span>
+                    <span className="text-xs sm:text-sm leading-relaxed">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="bg-white dark:bg-[#0D1217] border border-stone-200 dark:border-stone-800 rounded-2xl p-8 md:p-10 shadow-lg shadow-stone-900/5 relative overflow-hidden">
+            <div className="bg-white dark:bg-[#0D1217] border border-stone-200 dark:border-stone-800 rounded-2xl p-5 sm:p-8 md:p-10 shadow-lg shadow-stone-900/5 relative overflow-hidden">
               <div className="relative z-10 text-center">
-                <div className="mx-auto w-12 h-12 bg-[#0E3B2F] dark:bg-emerald-600 flex items-center justify-center rounded-xl mb-6 shadow-md shadow-[#0E3B2F]/20 text-white">
-                  <ArrowRight className="w-5 h-5" />
+                <div className="mx-auto w-10 h-10 sm:w-12 sm:h-12 bg-[#0E3B2F] dark:bg-emerald-600 flex items-center justify-center rounded-xl mb-4 sm:mb-6 shadow-md shadow-[#0E3B2F]/20 text-white">
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <h3 className="text-2xl font-extrabold mb-3 text-[#0A1A13] dark:text-white tracking-tight">
+                <h3 className="text-xl sm:text-2xl font-extrabold mb-2 sm:mb-3 text-[#0A1A13] dark:text-white tracking-tight">
                   Where to Go Next
                 </h3>
-                <p className="text-base text-slate-500 dark:text-zinc-400 mb-8 leading-relaxed max-w-sm mx-auto">
+                <p className="text-xs sm:text-sm md:text-base text-slate-500 dark:text-zinc-400 mb-6 sm:mb-8 leading-relaxed max-w-sm mx-auto">
                   Our goal is to empower you with knowledge, not persuade you to
                   buy. Continue exploring the site through ingredients, category
                   overviews, and our editorial standards.
                 </p>
-                <div className="space-y-3 w-full text-left">
+                <div className="space-y-2.5 sm:space-y-3 w-full text-left">
                   {nextSteps.map((step) => (
                     <Link
                       key={step.title}
                       href={step.href}
-                      className="flex items-start justify-between gap-4 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-[#111A14]/60 hover:border-[#0E3B2F]/50 dark:hover:border-emerald-700/60 hover:bg-white dark:hover:bg-[#172818]/70 hover:-translate-y-0.5 hover:shadow-md transition-all group"
+                      className="flex items-start justify-between gap-3 sm:gap-4 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-[#111A14]/60 hover:border-[#0E3B2F]/50 dark:hover:border-emerald-700/60 hover:bg-white dark:hover:bg-[#172818]/70 hover:-translate-y-0.5 hover:shadow-md transition-all group"
                     >
                       <div>
-                        <h4 className="text-sm font-bold text-[#0A1A13] dark:text-zinc-100 mb-0.5 group-hover:text-[#0E3B2F] dark:group-hover:text-emerald-400 transition-colors">
+                        <h4 className="text-xs sm:text-sm font-bold text-[#0A1A13] dark:text-zinc-100 mb-0.5 group-hover:text-[#0E3B2F] dark:group-hover:text-emerald-400 transition-colors">
                           {step.title}
                         </h4>
-                        <p className="text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
+                        <p className="text-[11px] sm:text-xs text-slate-500 dark:text-zinc-400 leading-relaxed">
                           {step.desc}
                         </p>
                       </div>
-                      <ArrowRight className="w-4 h-4 text-[#0E3B2F] dark:text-emerald-400 shrink-0 mt-0.5 group-hover:translate-x-0.5 transition-transform" />
+                      <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0E3B2F] dark:text-emerald-400 shrink-0 mt-0.5 group-hover:translate-x-0.5 transition-transform" />
                     </Link>
                   ))}
                 </div>
-                <p className="text-xs text-center mt-7 text-slate-400 dark:text-zinc-500 leading-relaxed">
+                <p className="text-[11px] sm:text-xs text-center mt-5 sm:mt-7 text-slate-400 dark:text-zinc-500 leading-relaxed">
                   Thank you for visiting. We invite you to explore, learn, and
                   approach health decisions with clarity and evidence.
                 </p>

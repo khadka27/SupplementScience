@@ -147,19 +147,19 @@ export function NewsletterForm({
   return (
     <div
       className={cn(
-        "rounded-3xl bg-white dark:bg-[#0D1217] border border-stone-200/90 dark:border-stone-800 p-8 md:p-10 shadow-sm",
+        "rounded-2xl sm:rounded-3xl bg-white dark:bg-[#0D1217] border border-stone-200/90 dark:border-stone-800 p-4 sm:p-8 md:p-10 shadow-xs sm:shadow-sm",
         className,
       )}
     >
-      <div className="flex items-start gap-5 mb-8">
-        <div className="bg-emerald-700 text-white p-3.5 rounded-2xl shadow-md">
-          <Mail className="w-6 h-6" />
+      <div className="flex items-start gap-3.5 sm:gap-5 mb-5 sm:mb-8">
+        <div className="bg-emerald-700 text-white p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl shadow-sm sm:shadow-md shrink-0">
+          <Mail className="w-5 h-5 sm:w-6 sm:h-6" />
         </div>
-        <div className="flex-1">
-          <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+        <div className="flex-1 min-w-0">
+          <h3 className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white mb-1.5 sm:mb-2">
             Subscribe to the Science
           </h3>
-          <p className="text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
+          <p className="text-xs sm:text-base text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
             Get the latest evidence-based research and supplement guides
             delivered directly to your inbox.
           </p>

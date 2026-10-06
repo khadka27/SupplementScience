@@ -27,7 +27,7 @@ export function BackToTop() {
       aria-label="Back to top"
       className={`back-to-top ${visible ? "visible" : ""}`}
     >
-      <ArrowUp className="w-5 h-5" aria-hidden="true" />
+      <ArrowUp className="w-4 h-4 sm:w-5 sm:h-5" aria-hidden="true" />
     </button>
   );
 }

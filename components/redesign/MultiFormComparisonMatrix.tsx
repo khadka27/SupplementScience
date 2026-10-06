@@ -2,19 +2,21 @@
 
 import React, { useState } from "react";
 import {
-  Table,
+  Table as TableIcon,
+  LayoutGrid,
   CheckCircle2,
   AlertTriangle,
   XCircle,
-  HelpCircle,
   ExternalLink,
-  ChevronRight,
   ChevronDown,
   Info,
   Sparkles,
   Award,
-  Layers,
   FlaskConical,
+  Target,
+  ArrowRight,
+  ShieldAlert,
+  SlidersHorizontal,
 } from "lucide-react";
 
 export interface SupplementChemicalForm {
@@ -186,6 +188,8 @@ const DEFAULT_MAGNESIUM_FORMS: SupplementChemicalForm[] = [
   },
 ];
 
+type FilterType = "all" | "high-absorption" | "gentle-gi" | "top-picks";
+
 export function MultiFormComparisonMatrix({
   title = "Chemical Form & Bioavailability Comparison Matrix",
   subtitle = "Why the compound bound to your mineral matters more than the label milligram number.",
@@ -193,39 +197,54 @@ export function MultiFormComparisonMatrix({
   forms = DEFAULT_MAGNESIUM_FORMS,
 }: MultiFormComparisonMatrixProps) {
   const [expandedFormId, setExpandedFormId] = useState<string | null>("glycinate");
+  const [viewMode, setViewMode] = useState<"auto" | "cards" | "table">("auto");
+  const [activeFilter, setActiveFilter] = useState<FilterType>("all");
+
+  const filteredForms = forms.filter((form) => {
+    if (activeFilter === "high-absorption") return form.bioavailabilityScore >= 4;
+    if (activeFilter === "gentle-gi") return form.giTolerance === "High";
+    if (activeFilter === "top-picks")
+      return (
+        form.verdictBadge === "Editor's Choice" ||
+        form.verdictBadge === "Clinical Gold Standard"
+      );
+    return true;
+  });
 
   const getVerdictBadge = (badge: SupplementChemicalForm["verdictBadge"]) => {
     switch (badge) {
       case "Editor's Choice":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#E7ECE9] dark:bg-emerald-950/60 text-[#0E3B2F] dark:text-emerald-300 border border-[#0E3B2F]/20 dark:border-emerald-800">
-            <Sparkles className="w-3 h-3 text-[#0E3B2F] dark:text-emerald-400" /> Editor&apos;s Choice
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-[#E7ECE9] dark:bg-emerald-950/70 text-[#0E3B2F] dark:text-emerald-300 border border-[#0E3B2F]/20 dark:border-emerald-700/60 shadow-xs whitespace-nowrap">
+            <Sparkles className="w-3 h-3 text-[#0E3B2F] dark:text-emerald-400 shrink-0" /> Editor&apos;s Choice
           </span>
         );
       case "Clinical Gold Standard":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-50 dark:bg-teal-950/60 text-teal-800 dark:text-teal-300 border border-teal-200 dark:border-teal-800">
-            <Award className="w-3 h-3" /> Gold Standard
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-teal-50 dark:bg-teal-950/70 text-teal-800 dark:text-teal-300 border border-teal-200 dark:border-teal-700/60 shadow-xs whitespace-nowrap">
+            <Award className="w-3 h-3 shrink-0" /> Gold Standard
           </span>
         );
       case "Budget Pick":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-50 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 dark:bg-blue-950/70 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-700/60 shadow-xs whitespace-nowrap">
             Budget Pick
           </span>
         );
       case "Specialized Use":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-50 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-purple-50 dark:bg-purple-950/70 text-purple-800 dark:text-purple-300 border border-purple-200 dark:border-purple-700/60 shadow-xs whitespace-nowrap">
             Specialized Target
           </span>
         );
       case "Avoid / Poor Absorption":
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-rose-50 dark:bg-rose-950/60 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-800">
-            <XCircle className="w-3 h-3 text-rose-600" /> Avoid / &lt;4% Absorbed
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-rose-50 dark:bg-rose-950/70 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-700/60 shadow-xs whitespace-nowrap">
+            <XCircle className="w-3 h-3 text-rose-600 dark:text-rose-400 shrink-0" /> Avoid / &lt;4% Absorbed
           </span>
         );
+      default:
+        return null;
     }
   };
 
@@ -233,24 +252,24 @@ export function MultiFormComparisonMatrix({
     switch (tol) {
       case "High":
         return (
-          <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
-            <CheckCircle2 className="w-3.5 h-3.5" /> High Tolerance
+          <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400 inline-flex items-center gap-1 whitespace-nowrap">
+            <CheckCircle2 className="w-3.5 h-3.5 shrink-0" /> High Tolerance
           </span>
         );
       case "Moderate":
         return (
-          <span className="text-xs font-semibold text-amber-700 dark:text-amber-400 flex items-center gap-1">
-            <AlertTriangle className="w-3.5 h-3.5" /> Moderate
+          <span className="text-xs font-semibold text-amber-700 dark:text-amber-400 inline-flex items-center gap-1 whitespace-nowrap">
+            <AlertTriangle className="w-3.5 h-3.5 shrink-0" /> Moderate
           </span>
         );
       case "Laxative Risk":
         return (
-          <span className="text-xs font-semibold text-rose-700 dark:text-rose-400 flex items-center gap-1">
-            <XCircle className="w-3.5 h-3.5" /> Laxative Risk
+          <span className="text-xs font-semibold text-rose-700 dark:text-rose-400 inline-flex items-center gap-1 whitespace-nowrap">
+            <XCircle className="w-3.5 h-3.5 shrink-0 text-rose-600 dark:text-rose-400" /> Laxative Risk
           </span>
         );
       default:
-        return <span className="text-xs text-slate-500">{tol}</span>;
+        return <span className="text-xs text-slate-500 whitespace-nowrap">{tol}</span>;
     }
   };
 
@@ -275,56 +294,390 @@ export function MultiFormComparisonMatrix({
     );
   };
 
+  const toggleExpand = (id: string) => {
+    setExpandedFormId((prev) => (prev === id ? null : id));
+  };
+
+  // Determine whether to show cards or table based on viewMode
+  const showCards = viewMode === "cards" || viewMode === "auto";
+  const showTable = viewMode === "table" || viewMode === "auto";
+
   return (
-    <section id="form-matrix" className="bg-white dark:bg-[#0c0f12] py-12 transition-colors">
+    <section id="form-matrix" className="bg-white dark:bg-[#0c0f12] py-8 sm:py-12 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-left mb-8 max-w-3xl">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E7ECE9] dark:bg-emerald-950/60 text-[#0E3B2F] dark:text-emerald-300 text-xs font-bold uppercase tracking-wider mb-3 border border-[#0E3B2F]/20 dark:border-emerald-800">
-            <FlaskConical className="w-3.5 h-3.5" /> Molecular Speciation
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-6">
+          <div className="text-left max-w-3xl">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E7ECE9] dark:bg-emerald-950/60 text-[#0E3B2F] dark:text-emerald-300 text-xs font-bold uppercase tracking-wider mb-3 border border-[#0E3B2F]/20 dark:border-emerald-800">
+              <FlaskConical className="w-3.5 h-3.5" /> Molecular Speciation
+            </div>
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F172A] dark:text-slate-100 tracking-tight">
+              {title}
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+              {subtitle} Comparing 6 commercial forms across fractional absorption, osmotic laxative thresholds, and target clinical indications.
+            </p>
           </div>
-          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0F172A] dark:text-slate-100">
-            {title}
-          </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">
-            {subtitle} Comparing 6 commercial forms across fractional absorption, osmotic laxative thresholds, and target clinical indications.
-          </p>
+
+          {/* View Mode Toggle Controls */}
+          <div className="flex items-center gap-2 self-start md:self-auto shrink-0 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200/80 dark:border-slate-700/80">
+            <button
+              type="button"
+              onClick={() => setViewMode("cards")}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                viewMode === "cards" || (viewMode === "auto")
+                  ? "bg-white dark:bg-slate-900 text-[#0E3B2F] dark:text-emerald-400 shadow-xs md:bg-transparent md:text-slate-600 md:dark:text-slate-300 md:shadow-none"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+              } ${viewMode === "cards" ? "!bg-white dark:!bg-slate-900 !text-[#0E3B2F] dark:!text-emerald-400 !shadow-xs" : ""}`}
+              title="Card View (Mobile Optimized)"
+            >
+              <LayoutGrid className="w-3.5 h-3.5" />
+              <span>Cards</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode("table")}
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+                viewMode === "table" || (viewMode === "auto")
+                  ? "bg-transparent text-slate-600 dark:text-slate-400 md:bg-white md:dark:bg-slate-900 md:text-[#0E3B2F] md:dark:text-emerald-400 md:shadow-xs"
+                  : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200"
+              } ${viewMode === "table" ? "!bg-white dark:!bg-slate-900 !text-[#0E3B2F] dark:!text-emerald-400 !shadow-xs" : ""}`}
+              title="Full Comparison Matrix Table"
+            >
+              <TableIcon className="w-3.5 h-3.5" />
+              <span>Table</span>
+            </button>
+          </div>
         </div>
 
-        {/* Matrix Container */}
-        <div className="border border-[#E2E8F0] dark:border-slate-800 rounded-2xl overflow-hidden bg-white dark:bg-slate-900 shadow-xs">
-          
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[760px] text-sm">
+        {/* Filter Chips Bar */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-3 mb-6 scrollbar-none text-xs">
+          <span className="text-slate-400 dark:text-slate-500 font-medium flex items-center gap-1 shrink-0 mr-1">
+            <SlidersHorizontal className="w-3 h-3" /> Filter:
+          </span>
+          <button
+            type="button"
+            onClick={() => setActiveFilter("all")}
+            className={`px-3 py-1.5 rounded-full font-medium whitespace-nowrap transition-colors shrink-0 ${
+              activeFilter === "all"
+                ? "bg-[#0E3B2F] text-white dark:bg-emerald-600"
+                : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
+            }`}
+          >
+            All Forms ({forms.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveFilter("top-picks")}
+            className={`px-3 py-1.5 rounded-full font-medium whitespace-nowrap transition-colors shrink-0 ${
+              activeFilter === "top-picks"
+                ? "bg-[#0E3B2F] text-white dark:bg-emerald-600"
+                : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
+            }`}
+          >
+            Top Recommendations
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveFilter("high-absorption")}
+            className={`px-3 py-1.5 rounded-full font-medium whitespace-nowrap transition-colors shrink-0 ${
+              activeFilter === "high-absorption"
+                ? "bg-[#0E3B2F] text-white dark:bg-emerald-600"
+                : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
+            }`}
+          >
+            High Bioavailability (≥ 4/5)
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveFilter("gentle-gi")}
+            className={`px-3 py-1.5 rounded-full font-medium whitespace-nowrap transition-colors shrink-0 ${
+              activeFilter === "gentle-gi"
+                ? "bg-[#0E3B2F] text-white dark:bg-emerald-600"
+                : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
+            }`}
+          >
+            Gentle on Stomach (High Tolerance)
+          </button>
+        </div>
+
+        {/* ============================================================ */}
+        {/* MOBILE CARDS VIEW (Clean, Native, Zero Squished Columns)     */}
+        {/* Rendered on mobile screens (<md) or when explicitly toggled  */}
+        {/* ============================================================ */}
+        <div
+          className={`space-y-4 ${
+            viewMode === "table"
+              ? "hidden"
+              : viewMode === "cards"
+              ? "block"
+              : "block md:hidden"
+          }`}
+        >
+          {filteredForms.map((form) => {
+            const isExpanded = expandedFormId === form.id;
+            return (
+              <div
+                key={form.id}
+                className={`rounded-2xl border transition-all overflow-hidden ${
+                  isExpanded
+                    ? "bg-white dark:bg-slate-900 border-[#0E3B2F]/40 dark:border-emerald-500/40 shadow-md ring-1 ring-[#0E3B2F]/15 dark:ring-emerald-500/20"
+                    : "bg-white dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 shadow-2xs hover:border-slate-300 dark:hover:border-slate-700"
+                }`}
+              >
+                {/* Card Top: Title, Chemistry Formula & Verdict Badge */}
+                <div className="p-4 sm:p-5">
+                  <div className="flex items-start justify-between gap-3 mb-2.5">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-base sm:text-lg text-[#0F172A] dark:text-slate-100 leading-snug">
+                        {form.name}
+                      </h3>
+                      <div className="flex flex-wrap items-center gap-1.5 mt-1 text-[11px] text-slate-500 dark:text-slate-400">
+                        <span className="font-mono font-medium px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700/60">
+                          {form.chemicalFormula}
+                        </span>
+                        <span>•</span>
+                        <span className="truncate">{form.ionicState}</span>
+                      </div>
+                    </div>
+
+                    <div className="shrink-0">
+                      {getVerdictBadge(form.verdictBadge)}
+                    </div>
+                  </div>
+
+                  {/* Clinical Target Highlight */}
+                  <div className="mt-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80">
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-400 mb-0.5 flex items-center gap-1">
+                      <Target className="w-3 h-3 text-[#0E3B2F] dark:text-emerald-400" />
+                      Primary Clinical Indication
+                    </div>
+                    <div className="text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-200">
+                      {form.primaryIndication}
+                    </div>
+                  </div>
+
+                  {/* 3-Column Metrics Grid */}
+                  <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-slate-100 dark:border-slate-800/80 text-left">
+                    {/* Bioavailability Metric */}
+                    <div className="p-2.5 rounded-xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60 flex flex-col justify-between">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-1">
+                        Absorption
+                      </span>
+                      <div>
+                        {renderBioavailabilityBars(form.bioavailabilityScore)}
+                        <span className="text-[10px] font-semibold text-slate-700 dark:text-slate-300 mt-1 block truncate">
+                          {form.bioavailabilityScore}/5 Score
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Elemental Yield Metric */}
+                    <div className="p-2.5 rounded-xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60 flex flex-col justify-between">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-1">
+                        Yield
+                      </span>
+                      <div>
+                        <div className="font-mono text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 leading-none">
+                          {form.elementalYieldPercent}%
+                        </div>
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 block">
+                          elemental
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* GI Tolerance Metric */}
+                    <div className="p-2.5 rounded-xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-100 dark:border-slate-800/60 flex flex-col justify-between">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-1">
+                        Tolerance
+                      </span>
+                      <div>
+                        {getToleranceBadge(form.giTolerance)}
+                        <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 block">
+                          GI safety
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Expand/Collapse Accordion Trigger Button */}
+                  <button
+                    type="button"
+                    onClick={() => toggleExpand(form.id)}
+                    className="w-full mt-3.5 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-semibold text-[#0E3B2F] dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
+                  >
+                    <span className="flex items-center gap-1.5">
+                      <Info className="w-3.5 h-3.5" />
+                      {isExpanded ? "Collapse Pharmacokinetics" : "Inspect Clinical Trials & Dossier"}
+                    </span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform duration-200 ${
+                        isExpanded ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                </div>
+
+                {/* Expanded Drawer: Pharmacokinetics, Pros/Cons & Benchmark Citation */}
+                {isExpanded && (
+                  <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-1 bg-slate-50/80 dark:bg-slate-950/60 border-t border-slate-200/80 dark:border-slate-800 space-y-3.5">
+                    
+                    {/* Clinical Synthesis */}
+                    <div className="pt-2">
+                      <div className="text-[11px] font-bold uppercase tracking-wider text-[#0E3B2F] dark:text-emerald-400 mb-1.5 flex items-center gap-1.5">
+                        <Info className="w-3 h-3" /> Pharmacokinetics &amp; Cellular Uptake
+                      </div>
+                      <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+                        {form.clinicalSummary}
+                      </p>
+                    </div>
+
+                    {/* Merits & Limitations Cards */}
+                    <div className="grid grid-cols-1 gap-2.5 pt-1">
+                      <div className="p-3 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/40 border border-emerald-200/80 dark:border-emerald-900/60">
+                        <div className="text-[11px] font-bold text-emerald-900 dark:text-emerald-300 uppercase tracking-wider mb-1 flex items-center gap-1">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                          Primary Merits
+                        </div>
+                        <ul className="text-xs text-emerald-900/90 dark:text-emerald-200/90 space-y-1 list-disc pl-4">
+                          {form.pros.map((pro, idx) => (
+                            <li key={idx}>{pro}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="p-3 rounded-xl bg-rose-50/70 dark:bg-rose-950/40 border border-rose-200/80 dark:border-rose-900/60">
+                        <div className="text-[11px] font-bold text-rose-900 dark:text-rose-300 uppercase tracking-wider mb-1 flex items-center gap-1">
+                          <ShieldAlert className="w-3 h-3 text-rose-600 dark:text-rose-400" />
+                          Clinical Limitations
+                        </div>
+                        <ul className="text-xs text-rose-900/90 dark:text-rose-200/90 space-y-1 list-disc pl-4">
+                          {form.cons.map((con, idx) => (
+                            <li key={idx}>{con}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Benchmark Study & PubMed Citation Link */}
+                    <div className="pt-3 border-t border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                      <div className="text-slate-600 dark:text-slate-400">
+                        Benchmark Study:{" "}
+                        <strong className="text-slate-800 dark:text-slate-200 font-semibold">
+                          {form.keyStudyCitation}
+                        </strong>
+                      </div>
+                      <a
+                        href={form.pubmedUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 font-semibold text-[#0E3B2F] dark:text-emerald-400 hover:underline self-start sm:self-auto"
+                      >
+                        Inspect Study on PubMed
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </div>
+
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* ============================================================ */}
+        {/* DESKTOP & FULL TABLE VIEW (Fixed Width, Zero Squished Columns)*/}
+        {/* Rendered on md+ screens or when explicitly toggled to Table   */}
+        {/* ============================================================ */}
+        <div
+          className={`border border-[#E2E8F0] dark:border-slate-800 rounded-2xl overflow-hidden bg-white dark:bg-slate-900 shadow-xs ${
+            viewMode === "cards"
+              ? "hidden"
+              : viewMode === "table"
+              ? "block"
+              : "hidden md:block"
+          }`}
+        >
+          {/* Mobile swipe hint banner (only visible if forced to table mode on mobile) */}
+          <div className="md:hidden bg-slate-50 dark:bg-slate-800/80 px-4 py-2 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500">
+            <span>👈 Swipe horizontally to view full matrix 👉</span>
+            <button
+              onClick={() => setViewMode("cards")}
+              className="text-[#0E3B2F] dark:text-emerald-400 font-semibold underline underline-offset-2"
+            >
+              Switch to Cards
+            </button>
+          </div>
+
+          <div
+            className="overflow-x-auto w-full scrollbar-thin"
+            style={{ WebkitOverflowScrolling: "touch" }}
+          >
+            <table
+              className="w-full text-left border-collapse text-sm table-auto"
+              style={{ minWidth: "860px" }}
+            >
               <thead>
                 <tr className="border-b border-[#E2E8F0] dark:border-slate-800 bg-[#F8F9FA] dark:bg-slate-900/80 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                  {/* Sticky First Column on Mobile */}
-                  <th className="py-3.5 px-4 sticky left-0 z-20 bg-[#F8F9FA] dark:bg-slate-900 shadow-[1px_0_0_0_#E2E8F0] dark:shadow-[1px_0_0_0_#1e293b]">
+                  {/* Sticky First Column */}
+                  <th
+                    className="py-3.5 px-4 sticky left-0 z-20 bg-[#F8F9FA] dark:bg-slate-900 shadow-[2px_0_4px_-1px_rgba(0,0,0,0.06)] dark:shadow-[2px_0_4px_-1px_rgba(0,0,0,0.5)] whitespace-nowrap"
+                    style={{ minWidth: "220px", width: "230px" }}
+                  >
                     Supplement Form &amp; Chemistry
                   </th>
-                  <th className="py-3.5 px-4">Primary Clinical Indication</th>
-                  <th className="py-3.5 px-4">Bioavailability</th>
-                  <th className="py-3.5 px-4">Elemental Yield</th>
-                  <th className="py-3.5 px-4">GI Tolerance</th>
-                  <th className="py-3.5 px-4 text-right">Decoded Verdict</th>
+                  <th
+                    className="py-3.5 px-4 whitespace-nowrap"
+                    style={{ minWidth: "220px" }}
+                  >
+                    Primary Clinical Indication
+                  </th>
+                  <th
+                    className="py-3.5 px-4 whitespace-nowrap"
+                    style={{ minWidth: "160px" }}
+                  >
+                    Bioavailability
+                  </th>
+                  <th
+                    className="py-3.5 px-4 whitespace-nowrap"
+                    style={{ minWidth: "130px" }}
+                  >
+                    Elemental Yield
+                  </th>
+                  <th
+                    className="py-3.5 px-4 whitespace-nowrap"
+                    style={{ minWidth: "140px" }}
+                  >
+                    GI Tolerance
+                  </th>
+                  <th
+                    className="py-3.5 px-4 text-right whitespace-nowrap"
+                    style={{ minWidth: "160px" }}
+                  >
+                    Decoded Verdict
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#E2E8F0] dark:divide-slate-800">
-                {forms.map((form) => {
+                {filteredForms.map((form) => {
                   const isExpanded = expandedFormId === form.id;
                   return (
                     <React.Fragment key={form.id}>
                       <tr
-                        onClick={() => setExpandedFormId(isExpanded ? null : form.id)}
+                        onClick={() => toggleExpand(form.id)}
                         className={`cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-slate-800/60 ${
                           isExpanded ? "bg-[#F8F9FA]/80 dark:bg-slate-800/60" : ""
                         }`}
                       >
                         {/* Sticky First Column */}
-                        <td className="py-4 px-4 sticky left-0 z-10 bg-white dark:bg-slate-900 group-hover:bg-slate-50 dark:group-hover:bg-slate-800 shadow-[1px_0_0_0_#E2E8F0] dark:shadow-[1px_0_0_0_#1e293b]">
+                        <td
+                          className="py-4 px-4 sticky left-0 z-10 bg-white dark:bg-slate-900 group-hover:bg-slate-50 dark:group-hover:bg-slate-800 shadow-[2px_0_4px_-1px_rgba(0,0,0,0.06)] dark:shadow-[2px_0_4px_-1px_rgba(0,0,0,0.5)]"
+                          style={{ minWidth: "220px", width: "230px" }}
+                        >
                           <div className="flex items-center gap-2">
-                            <span className="font-bold text-[#0F172A] dark:text-slate-100">
+                            <span className="font-bold text-[#0F172A] dark:text-slate-100 whitespace-nowrap">
                               {form.name}
                             </span>
                             <ChevronDown
@@ -333,34 +686,49 @@ export function MultiFormComparisonMatrix({
                               }`}
                             />
                           </div>
-                          <div className="text-[11px] font-mono text-slate-400 mt-0.5">
-                            {form.chemicalFormula} • {form.ionicState}
+                          <div className="text-[11px] font-mono text-slate-400 mt-0.5 whitespace-nowrap">
+                            {form.chemicalFormula} • {form.ionicState.split(" ")[0]}
                           </div>
                         </td>
 
-                        <td className="py-4 px-4 font-medium text-slate-800 dark:text-slate-200">
+                        <td
+                          className="py-4 px-4 font-medium text-slate-800 dark:text-slate-200"
+                          style={{ minWidth: "220px" }}
+                        >
                           {form.primaryIndication}
                         </td>
 
-                        <td className="py-4 px-4 whitespace-nowrap">
+                        <td
+                          className="py-4 px-4 whitespace-nowrap"
+                          style={{ minWidth: "160px" }}
+                        >
                           {renderBioavailabilityBars(form.bioavailabilityScore)}
-                          <div className="text-[11px] text-slate-500 mt-1">
+                          <div className="text-[11px] text-slate-500 mt-1 whitespace-nowrap">
                             {form.bioavailabilityLabel}
                           </div>
                         </td>
 
-                        <td className="py-4 px-4 whitespace-nowrap font-mono font-bold text-slate-900 dark:text-slate-100">
+                        <td
+                          className="py-4 px-4 whitespace-nowrap font-mono font-bold text-slate-900 dark:text-slate-100"
+                          style={{ minWidth: "130px" }}
+                        >
                           {form.elementalYieldPercent}%
                           <span className="text-[11px] text-slate-400 font-sans block font-normal">
                             elemental active
                           </span>
                         </td>
 
-                        <td className="py-4 px-4 whitespace-nowrap">
+                        <td
+                          className="py-4 px-4 whitespace-nowrap"
+                          style={{ minWidth: "140px" }}
+                        >
                           {getToleranceBadge(form.giTolerance)}
                         </td>
 
-                        <td className="py-4 px-4 text-right whitespace-nowrap">
+                        <td
+                          className="py-4 px-4 text-right whitespace-nowrap"
+                          style={{ minWidth: "160px" }}
+                        >
                           {getVerdictBadge(form.verdictBadge)}
                         </td>
                       </tr>
@@ -382,7 +750,8 @@ export function MultiFormComparisonMatrix({
 
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                                 <div className="p-3 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/30 border border-emerald-200/80 dark:border-emerald-900/60">
-                                  <div className="text-xs font-bold text-emerald-900 dark:text-emerald-300 uppercase tracking-wider mb-1">
+                                  <div className="text-xs font-bold text-emerald-900 dark:text-emerald-300 uppercase tracking-wider mb-1 flex items-center gap-1">
+                                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
                                     Primary Merits
                                   </div>
                                   <ul className="text-xs text-emerald-800 dark:text-emerald-300/90 space-y-1 list-disc pl-4">
@@ -393,7 +762,8 @@ export function MultiFormComparisonMatrix({
                                 </div>
 
                                 <div className="p-3 rounded-xl bg-rose-50/60 dark:bg-rose-950/30 border border-rose-200/80 dark:border-rose-900/60">
-                                  <div className="text-xs font-bold text-rose-900 dark:text-rose-300 uppercase tracking-wider mb-1">
+                                  <div className="text-xs font-bold text-rose-900 dark:text-rose-300 uppercase tracking-wider mb-1 flex items-center gap-1">
+                                    <ShieldAlert className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
                                     Clinical Limitations
                                   </div>
                                   <ul className="text-xs text-rose-800 dark:text-rose-300/90 space-y-1 list-disc pl-4">
@@ -430,7 +800,7 @@ export function MultiFormComparisonMatrix({
             </table>
           </div>
 
-          <div className="p-3 bg-slate-50/70 dark:bg-slate-900/80 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 flex items-center justify-between">
+          <div className="p-3 bg-slate-50/70 dark:bg-slate-900/80 border-t border-slate-200 dark:border-slate-800 text-[11px] text-slate-500 flex flex-col sm:flex-row sm:items-center justify-between gap-1">
             <span>Scroll horizontally on smaller screens. Click any chemical form row to inspect bioavailability trials.</span>
             <span className="font-mono">Database ref: SD-CHEM-2026</span>
           </div>

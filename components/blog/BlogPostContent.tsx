@@ -223,35 +223,40 @@ export default function BlogPostContent({
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-[1400px]">
+      <div className="w-full max-w-[1400px] mx-auto px-0 sm:px-4 lg:px-6 py-2 sm:py-8">
         {/* Top Navigation */}
-        <div className="flex items-center justify-between mb-8 animate-in fade-in slide-in-from-top-4 duration-700 max-w-7xl mx-auto px-4">
+        <div className="flex items-center justify-between mb-3 sm:mb-8 animate-in fade-in slide-in-from-top-4 duration-700 max-w-7xl mx-auto px-3 sm:px-4">
           <Breadcrumbs items={breadcrumbItems} />
         </div>
 
         {/* Hero Section */}
-        <header className="mb-10 lg:mb-16 max-w-7xl mx-auto bg-white dark:bg-[#0D1217] border border-slate-200/90 dark:border-slate-800 rounded-[2rem] shadow-sm overflow-hidden">
+        <header className="mb-4 sm:mb-10 lg:mb-16 max-w-7xl mx-auto bg-white dark:bg-[#0D1217] border-y sm:border border-slate-200/90 dark:border-slate-800 rounded-none sm:rounded-[2rem] shadow-none sm:shadow-xs overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
             {/* Left Content Column */}
-            <div className="lg:col-span-7 space-y-5 order-2 lg:order-1 p-8 md:p-10 lg:p-12">
+            <div
+              className={cn(
+                "space-y-3.5 sm:space-y-5 order-2 lg:order-1 p-3.5 sm:p-7 md:p-10 lg:p-12",
+                post.featuredImageUrl && !imgError ? "lg:col-span-7" : "lg:col-span-7",
+              )}
+            >
               {/* Category & Fact-Checked Badge Strip */}
-              <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                 {post.category && (
                   <Link
                     href={`/category/${post.category.slug}`}
                     className="inline-flex items-center gap-1.5 hover:opacity-80 transition-opacity"
                   >
-                    <span className="text-xs font-black text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full uppercase tracking-widest hover:bg-primary hover:text-white transition-all">
+                    <span className="text-[11px] sm:text-xs font-black text-primary bg-primary/10 border border-primary/20 px-2.5 sm:px-3 py-1 rounded-full uppercase tracking-wider hover:bg-primary hover:text-white transition-all whitespace-nowrap shrink-0">
                       {post.category.name}
                     </span>
                   </Link>
                 )}
 
                 {/* Editorial Fact-Checked Badge */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-stone-100 dark:bg-stone-900 border border-stone-200/90 dark:border-stone-800 shadow-2xs text-xs font-semibold text-stone-800 dark:text-stone-200">
+                <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-stone-100 dark:bg-stone-900 border border-stone-200/90 dark:border-stone-800 shadow-2xs text-[10px] sm:text-xs font-semibold text-stone-800 dark:text-stone-200 whitespace-nowrap shrink-0">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
                   <span>
-                    Fact-checked by the {post.factCheckedBy || "SupplementDecoded Research Editorial Team"}
+                    Fact-checked by {post.factCheckedBy || "Research Editorial Team"}
                   </span>
                 </div>
               </div>
@@ -259,17 +264,17 @@ export default function BlogPostContent({
               {/* Title */}
               <h1
                 ref={titleRef}
-                className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-black dark:text-white leading-[1.15] tracking-tight"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-black dark:text-white leading-tight sm:leading-[1.15] tracking-tight break-words"
               >
                 {post.title}
               </h1>
 
               {/* Author & Meta Info Block */}
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-5 py-4 border-y border-black/10 dark:border-white/10">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-5 py-3 sm:py-4 border-y border-black/10 dark:border-white/10">
                 {post.author && (
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2.5 sm:gap-3">
                     {post.author.avatarUrl ? (
-                      <div className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
+                      <div className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-primary/20 shrink-0">
                         <Image
                           src={post.author.avatarUrl}
                           alt={post.author.name}
@@ -282,17 +287,17 @@ export default function BlogPostContent({
                         />
                       </div>
                     ) : (
-                      <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center text-base font-black border-2 border-primary/20">
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs sm:text-base font-black border-2 border-primary/20 shrink-0">
                         {post.author.name.charAt(0)}
                       </div>
                     )}
                     <div>
-                      <div className="text-[10px] text-gray-500 dark:text-zinc-500 font-bold uppercase tracking-widest mb-0.5">
+                      <div className="text-[9px] sm:text-[10px] text-gray-500 dark:text-zinc-500 font-bold uppercase tracking-widest mb-0.5">
                         Written by
                       </div>
                       <Link
                         href={`/author/${post.author.slug}`}
-                        className="font-bold text-black dark:text-zinc-100 hover:text-primary transition-colors block leading-none text-sm"
+                        className="font-bold text-black dark:text-zinc-100 hover:text-primary transition-colors block leading-none text-xs sm:text-sm"
                       >
                         {post.author.name}
                       </Link>
@@ -302,9 +307,9 @@ export default function BlogPostContent({
 
                 <div className="hidden sm:block w-px h-8 bg-black/10 dark:bg-white/10" />
 
-                <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-zinc-400 flex-wrap">
-                  <div className="flex items-center gap-1.5 font-medium">
-                    <Calendar className="w-4 h-4 text-primary" />
+                <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm text-gray-600 dark:text-zinc-400 flex-wrap">
+                  <div className="flex items-center gap-1.5 font-medium whitespace-nowrap">
+                    <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary shrink-0" />
                     <span>Last reviewed:</span>
                     <time
                       dateTime={
@@ -321,29 +326,20 @@ export default function BlogPostContent({
                             post.publishedAt ||
                             new Date(),
                         ),
-                        "MMMM d, yyyy",
+                        "MMM d, yyyy",
                       )}
                     </time>
                   </div>
                   <span className="text-black/20">·</span>
-                  <div className="flex items-center gap-1.5">
-                    <Clock className="w-4 h-4" />
+                  <div className="flex items-center gap-1.5 whitespace-nowrap">
+                    <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                     <span>{post.readTimeMinutes} min read</span>
                   </div>
-                  {(post.factCheckedBy || post.postType === "ingredient") && (
-                    <>
-                      <span className="text-black/20">·</span>
-                      <span className="flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 dark:text-emerald-300 dark:bg-emerald-900/30 px-2 py-0.5 rounded-full">
-                        <CheckCircle2 className="w-3 h-3" />
-                        Fact-checked by the {post.factCheckedBy || "SupplementDecoded Research Editorial Team"}
-                      </span>
-                    </>
-                  )}
                   {post.reviewedBy && (
                     <>
                       <span className="text-black/20">·</span>
-                      <span className="flex items-center gap-1 text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                        <CheckCircle2 className="w-3 h-3" />
+                      <span className="flex items-center gap-1 text-[11px] sm:text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full whitespace-nowrap">
+                        <CheckCircle2 className="w-3 h-3 shrink-0" />
                         Reviewed by {post.reviewedBy}
                       </span>
                     </>
@@ -353,21 +349,22 @@ export default function BlogPostContent({
 
               {/* Excerpt */}
               {post.excerpt && (
-                <p className="text-base md:text-lg text-gray-600 dark:text-zinc-400 leading-relaxed">
+                <p className="text-xs sm:text-base md:text-lg text-gray-600 dark:text-zinc-400 leading-relaxed">
                   {post.excerpt}
                 </p>
               )}
 
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                <span className="text-sm font-semibold text-gray-600 dark:text-zinc-400">
+              {/* AI Summarize Block */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 pt-1">
+                <span className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-zinc-400">
                   Summarize:
                 </span>
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                   <a
                     href={summaryLinks.chatgpt}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-800 hover:border-emerald-600 dark:hover:border-emerald-500 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 transition-colors shadow-2xs"
+                    className="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-800 hover:border-emerald-600 dark:hover:border-emerald-500 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 transition-colors shadow-2xs"
                   >
                     ChatGPT
                   </a>
@@ -375,7 +372,7 @@ export default function BlogPostContent({
                     href={summaryLinks.perplexity}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-800 hover:border-emerald-600 dark:hover:border-emerald-500 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 transition-colors shadow-2xs"
+                    className="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-800 hover:border-emerald-600 dark:hover:border-emerald-500 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 transition-colors shadow-2xs"
                   >
                     Perplexity
                   </a>
@@ -383,7 +380,7 @@ export default function BlogPostContent({
                     href={summaryLinks.copilot}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-3 py-1.5 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-800 hover:border-emerald-600 dark:hover:border-emerald-500 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 transition-colors shadow-2xs"
+                    className="px-2.5 sm:px-3 py-1 sm:py-1.5 text-xs font-semibold rounded-lg border border-slate-200 dark:border-slate-800 hover:border-emerald-600 dark:hover:border-emerald-500 bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 transition-colors shadow-2xs"
                   >
                     Copilot
                   </a>
@@ -392,9 +389,9 @@ export default function BlogPostContent({
             </div>
 
             {/* Right Image Column */}
-            <div className="lg:col-span-5 order-1 lg:order-2">
-              <div className="relative h-64 lg:h-full min-h-[320px] overflow-hidden bg-slate-100 dark:bg-[#121A15]">
-                {post.featuredImageUrl && !imgError ? (
+            {post.featuredImageUrl && !imgError ? (
+              <div className="lg:col-span-5 order-1 lg:order-2">
+                <div className="relative w-full aspect-[16/9] sm:aspect-[16/10] lg:aspect-auto lg:h-full min-h-[180px] sm:min-h-[260px] overflow-hidden bg-slate-100 dark:bg-[#121A15]">
                   <Image
                     src={post.featuredImageUrl}
                     alt={post.featuredImageAlt || post.title}
@@ -412,28 +409,26 @@ export default function BlogPostContent({
                       setImgError(true);
                     }}
                   />
-                ) : null}
-
-                {/* Fallback pattern and icon if image is missing or broken */}
-                {(imgError || !post.featuredImageUrl) && (
-                  <div className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center">
-                    <div className="w-24 h-24 bg-primary/20 rounded-full flex items-center justify-center mb-4 ring-8 ring-primary/5">
-                      <Microscope className="w-12 h-12 text-primary" />
-                    </div>
-                    <span className="text-primary/40 font-black uppercase tracking-[0.2em] text-[10px]">
-                      Scientific Resource
-                    </span>
-                  </div>
-                )}
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="hidden lg:flex lg:col-span-5 order-1 lg:order-2">
+                <div className="relative w-full h-full min-h-[260px] overflow-hidden bg-gradient-to-br from-emerald-950/20 via-slate-900/40 to-slate-950 flex flex-col items-center justify-center p-6 text-center">
+                  <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mb-3 ring-8 ring-primary/5">
+                    <Microscope className="w-10 h-10 text-primary" />
+                  </div>
+                  <span className="text-primary/60 font-black uppercase tracking-[0.2em] text-xs">
+                    Scientific Resource
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         </header>
 
         {/* Main Grid Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 max-w-7xl mx-auto px-4 lg:px-6 mt-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 max-w-7xl mx-auto px-0 sm:px-4 lg:px-6 mt-2 sm:mt-10">
           {/* LEFT SIDEBAR: Table of Contents */}
           <aside className="hidden lg:block lg:col-span-3 relative">
             <div className="sticky top-24">
@@ -450,20 +445,31 @@ export default function BlogPostContent({
           </aside>
 
           {/* MAIN CONTENT Area */}
-          <main className="lg:col-span-9 min-w-0">
-            <article className="w-full max-w-4xl mx-auto bg-white dark:bg-[#0D1217] border border-slate-200/90 dark:border-slate-800 rounded-[2.5rem] shadow-xl shadow-black/5 overflow-hidden transition-all duration-500">
-              <div className="px-8 md:px-16 lg:px-20 py-10 md:py-20">
-                {/* Mobile TOC */}
-                <div className="lg:hidden mb-12 bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-6 rounded-[1.5rem] animate-in fade-in slide-in-from-top-4 duration-500">
-                  <h3 className="font-black text-lg mb-4 flex items-center gap-3 text-black dark:text-white">
-                    <div className="p-2 bg-primary/10 rounded-lg">
-                      <List className="w-5 h-5 text-primary" />
+          <main className="lg:col-span-9 min-w-0 w-full">
+            <article className="w-full max-w-4xl mx-auto bg-white dark:bg-[#0D1217] border-y sm:border border-slate-200/90 dark:border-slate-800 rounded-none sm:rounded-[2.5rem] shadow-none sm:shadow-lg shadow-black/5 overflow-hidden transition-all duration-500">
+              <div className="px-3.5 sm:px-8 md:px-14 lg:px-18 py-5 sm:py-10 md:py-16">
+                {/* Mobile Collapsible TOC */}
+                <div className="lg:hidden mb-6 sm:mb-10 bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-3 sm:p-5 rounded-xl sm:rounded-2xl">
+                  <details className="group [&_summary::-webkit-details-marker]:hidden">
+                    <summary className="flex items-center justify-between cursor-pointer list-none select-none py-0.5">
+                      <div className="flex items-center gap-2">
+                        <div className="p-1.5 bg-primary/10 rounded-lg text-primary">
+                          <List className="w-4 h-4" />
+                        </div>
+                        <span className="font-bold text-sm text-slate-900 dark:text-white">
+                          Table of Contents
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1 text-xs font-semibold text-primary px-2.5 py-1 rounded-full bg-primary/10 hover:bg-primary/20 transition-colors">
+                        <span className="group-open:hidden">Show Chapters</span>
+                        <span className="hidden group-open:inline">Hide Chapters</span>
+                        <ChevronRight className="w-3.5 h-3.5 transition-transform duration-200 group-open:rotate-90" />
+                      </div>
+                    </summary>
+                    <div className="mt-3 pt-3 border-t border-slate-200/80 dark:border-slate-800 max-h-[50vh] overflow-y-auto pr-1 scrollbar-thin">
+                      <TableOfContents />
                     </div>
-                    <span>Table of Contents</span>
-                  </h3>
-                  <div className="max-h-[50vh] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-primary/30">
-                    <TableOfContents />
-                  </div>
+                  </details>
                 </div>
 
                 {/* Key Takeaways Box — 3-5 quick bullets readable in 30 seconds */}
@@ -487,19 +493,19 @@ export default function BlogPostContent({
                 <DoctorCallout />
 
                 {/* Medical Disclaimer */}
-                <div className="mb-12 bg-amber-50/50 dark:bg-amber-950/10 border-l-4 border-amber-500 rounded-r-2xl p-6 shadow-sm flex gap-4">
-                  <AlertTriangle className="w-6 h-6 text-amber-600 shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="text-sm font-black text-amber-800 dark:text-amber-400 uppercase tracking-widest mb-2">
+                <div className="mb-6 sm:mb-12 bg-amber-50/60 dark:bg-amber-950/20 border-l-4 border-amber-500 rounded-r-xl sm:rounded-r-2xl p-3.5 sm:p-5 shadow-2xs flex gap-3 sm:gap-4 items-start">
+                  <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                  <div className="min-w-0 flex-1">
+                    <h4 className="text-xs sm:text-sm font-black text-amber-800 dark:text-amber-400 uppercase tracking-wider mb-1.5 whitespace-nowrap">
                       Medical Disclaimer
                     </h4>
-                    <p className="text-[13px] md:text-sm text-amber-900/80 dark:text-amber-200/60 leading-relaxed italic">
+                    <p className="text-xs sm:text-sm text-amber-900/80 dark:text-amber-200/70 leading-relaxed italic">
                       This article is for informational purposes only and does
                       not constitute medical advice. Always consult with a
                       qualified healthcare professional before starting any new
                       supplement regimen.
                     </p>
-                    <p className="text-[13px] md:text-sm text-amber-900/90 dark:text-amber-200/70 leading-relaxed mt-3">
+                    <p className="text-xs sm:text-sm text-amber-900/90 dark:text-amber-200/70 leading-relaxed mt-2 sm:mt-2.5">
                       Read our{" "}
                       <Link
                         href="/medical-expert-review"
@@ -522,7 +528,7 @@ export default function BlogPostContent({
                 {/* Main Article Content */}
                 <div
                   ref={articleContentRef}
-                  className="prose prose-lg dark:prose-invert max-w-none blog-content-enhanced
+                  className="prose prose-base sm:prose-lg dark:prose-invert max-w-none blog-content-enhanced break-words
                   /* Headings and Spacing handled by global css */"
                   dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(prepareContent(post.content)),
@@ -531,41 +537,41 @@ export default function BlogPostContent({
 
                 {/* Citations / Sources */}
                 {post.sources && post.sources.length > 0 && (
-                  <div className="mt-20 pt-16 border-t border-slate-200 dark:border-slate-800">
-                    <div className="flex items-center gap-4 mb-10 text-slate-900 dark:text-white">
-                      <div className="bg-emerald-50 dark:bg-emerald-950/60 p-4 rounded-2xl shadow-inner border border-emerald-100 dark:border-emerald-800/60">
-                        <Microscope className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
+                  <div className="mt-12 sm:mt-20 pt-8 sm:pt-16 border-t border-slate-200 dark:border-slate-800">
+                    <div className="flex items-center gap-3 sm:gap-4 mb-5 sm:mb-10 text-slate-900 dark:text-white">
+                      <div className="bg-emerald-50 dark:bg-emerald-950/60 p-2.5 sm:p-4 rounded-xl sm:rounded-2xl shadow-inner border border-emerald-100 dark:border-emerald-800/60">
+                        <Microscope className="w-5 h-5 sm:w-8 sm:h-8 text-emerald-600 dark:text-emerald-400" />
                       </div>
                       <div>
-                        <h3 className="text-3xl font-black m-0 tracking-tight">
+                        <h3 className="text-lg sm:text-3xl font-black m-0 tracking-tight">
                           Evidence Based
                         </h3>
-                        <p className="text-sm text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mt-1">
+                        <p className="text-[11px] sm:text-sm text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider mt-0.5 sm:mt-1">
                           Scientific References
                         </p>
                       </div>
                     </div>
-                    <div className="grid gap-5">
+                    <div className="grid gap-3 sm:gap-5">
                       {post.sources.map((source: Source, index: number) => (
                         <div
                           key={index}
-                          className="flex gap-5 p-6 rounded-2xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 hover:border-emerald-500/50 hover:bg-white dark:hover:bg-slate-900 hover:shadow-lg transition-all duration-300 group/source"
+                          className="flex gap-2.5 sm:gap-5 p-3.5 sm:p-6 rounded-xl sm:rounded-2xl bg-slate-50/80 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 hover:border-emerald-500/50 hover:bg-white dark:hover:bg-slate-900 hover:shadow-lg transition-all duration-300 group/source"
                         >
-                          <span className="text-emerald-600 dark:text-emerald-400 font-mono text-lg font-black mt-0.5 shrink-0 w-8">
+                          <span className="text-emerald-600 dark:text-emerald-400 font-mono text-sm sm:text-lg font-black mt-0.5 shrink-0 w-6 sm:w-8">
                             {String(index + 1).padStart(2, "0")}
                           </span>
-                          <div className="flex-1">
+                          <div className="flex-1 min-w-0">
                             <a
                               href={source.url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-slate-900 dark:text-slate-100 hover:text-emerald-600 dark:hover:text-emerald-400 font-bold flex items-center gap-2 transition-colors text-base md:text-lg leading-snug"
+                              className="text-slate-900 dark:text-slate-100 hover:text-emerald-600 dark:hover:text-emerald-400 font-bold flex items-center gap-1.5 sm:gap-2 transition-colors text-xs sm:text-base md:text-lg leading-snug"
                             >
-                              {source.title}
-                              <ExternalLink className="w-4 h-4 opacity-0 group-hover/source:opacity-40 transition-opacity" />
+                              <span className="break-words">{source.title}</span>
+                              <ExternalLink className="w-3.5 h-3.5 shrink-0 opacity-60 group-hover/source:opacity-100 transition-opacity" />
                             </a>
                             {source.description && (
-                              <p className="text-sm md:text-base text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+                              <p className="text-xs sm:text-sm md:text-base text-slate-600 dark:text-slate-400 mt-1 sm:mt-2 leading-relaxed break-words">
                                 {source.description}
                               </p>
                             )}
@@ -580,18 +586,18 @@ export default function BlogPostContent({
 
             {/* Tags Section - Outside but below the card */}
             {post.tags && post.tags.length > 0 && (
-              <div className="mt-12 mb-16 px-6">
-                <h4 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.3em] mb-6 flex items-center gap-3">
+              <div className="mt-6 sm:mt-12 mb-8 sm:mb-16 px-3.5 sm:px-6">
+                <h4 className="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] mb-3 sm:mb-6 flex items-center gap-3">
                   <div className="h-px bg-slate-200 dark:bg-slate-800 flex-1" />
                   Explore Related Topics
                   <div className="h-px bg-slate-200 dark:bg-slate-800 flex-1" />
                 </h4>
-                <div className="flex flex-wrap gap-2.5">
+                <div className="flex flex-wrap gap-2 sm:gap-2.5">
                   {post.tags.map((tag: any) => (
                     <Link
                       key={tag.id}
                       href={`/tag/${tag.slug}`}
-                      className="px-5 py-2.5 bg-white dark:bg-[#0D1217] border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-bold text-slate-700 dark:text-slate-300 hover:border-emerald-600 hover:text-emerald-600 dark:hover:text-emerald-400 hover:shadow-md transition-all"
+                      className="px-3 py-1.5 sm:px-5 sm:py-2.5 bg-white dark:bg-[#0D1217] border border-slate-200 dark:border-slate-800 rounded-xl text-xs sm:text-sm font-bold text-slate-700 dark:text-slate-300 hover:border-emerald-600 hover:text-emerald-600 dark:hover:text-emerald-400 hover:shadow-xs transition-all"
                     >
                       # {tag.name}
                     </Link>
@@ -601,22 +607,22 @@ export default function BlogPostContent({
             )}
 
             {/* Newsletter Subscription */}
-            <div className="mt-8 mb-16 px-6">
+            <div className="mt-6 sm:mt-8 mb-8 sm:mb-16 px-1 sm:px-6">
               <NewsletterForm />
             </div>
 
             {/* Prev/Next Navigation */}
             {(prevPost || nextPost) && (
-              <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-slate-200 dark:border-slate-800 pt-12 px-6">
+              <div className="mt-6 sm:mt-12 grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-6 border-t border-slate-200 dark:border-slate-800 pt-6 sm:pt-12 px-1 sm:px-6">
                 {prevPost ? (
                   <Link
                     href={getPostHref(prevPost)}
-                    className="group flex flex-col items-start text-left space-y-3 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1217] hover:border-emerald-600 dark:hover:border-emerald-500 transition-all shadow-xs"
+                    className="group flex flex-col items-start text-left space-y-2 sm:space-y-3 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1217] hover:border-emerald-600 dark:hover:border-emerald-500 transition-all shadow-2xs"
                   >
-                    <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm font-bold group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
-                      <ArrowLeft className="w-4 h-4" /> Previous Article
+                    <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-bold group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
+                      <ArrowLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Previous Article
                     </div>
-                    <h4 className="text-lg font-black text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-2">
+                    <h4 className="text-sm sm:text-lg font-black text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-2">
                       {prevPost.title}
                     </h4>
                   </Link>
@@ -627,12 +633,12 @@ export default function BlogPostContent({
                 {nextPost ? (
                   <Link
                     href={getPostHref(nextPost)}
-                    className="group flex flex-col items-end text-right space-y-3 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1217] hover:border-emerald-600 dark:hover:border-emerald-500 transition-all shadow-xs"
+                    className="group flex flex-col items-end text-right space-y-2 sm:space-y-3 p-4 sm:p-6 rounded-xl sm:rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#0D1217] hover:border-emerald-600 dark:hover:border-emerald-500 transition-all shadow-2xs"
                   >
-                    <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-sm font-bold group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
-                      Next Article <ArrowRight className="w-4 h-4" />
+                    <div className="flex items-center gap-2 text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-bold group-hover:text-emerald-600 dark:group-hover:text-emerald-400">
+                      Next Article <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </div>
-                    <h4 className="text-lg font-black text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-2">
+                    <h4 className="text-sm sm:text-lg font-black text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors line-clamp-2">
                       {nextPost.title}
                     </h4>
                   </Link>
@@ -644,29 +650,29 @@ export default function BlogPostContent({
 
             {/* Related Posts */}
             {relatedPosts && relatedPosts.length > 0 && (
-              <div className="mt-20">
-                <div className="flex items-center justify-between mb-8 px-6">
-                  <h3 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white">
+              <div className="mt-10 sm:mt-20">
+                <div className="flex items-center justify-between mb-4 sm:mb-8 px-2 sm:px-6">
+                  <h3 className="text-lg sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">
                     Recommended Reading
                   </h3>
                   <Link
                     href="/blog"
-                    className="text-emerald-700 dark:text-emerald-400 hover:underline font-bold text-sm tracking-widest uppercase"
+                    className="text-emerald-700 dark:text-emerald-400 hover:underline font-bold text-xs sm:text-sm tracking-wider uppercase"
                   >
                     View All
                   </Link>
                 </div>
-                <div className="px-6">
+                <div className="px-1 sm:px-6">
                   <RelatedPosts posts={relatedPosts} currentPostId={post.id} />
                 </div>
               </div>
             )}
 
             {/* Footer Share Block */}
-            <div className="mt-24 px-6">
-              <div className="bg-slate-100 dark:bg-[#0D1217] border border-slate-200 dark:border-slate-800 p-10 rounded-[2.5rem] shadow-lg text-center">
-                <div className="flex items-center justify-center gap-3 text-lg font-black text-slate-900 dark:text-white uppercase tracking-widest mb-6">
-                  <Share2 className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
+            <div className="mt-10 sm:mt-24 px-1 sm:px-6">
+              <div className="bg-slate-100 dark:bg-[#0D1217] border border-slate-200 dark:border-slate-800 p-5 sm:p-10 rounded-2xl sm:rounded-[2.5rem] shadow-xs sm:shadow-md text-center">
+                <div className="flex items-center justify-center gap-2 sm:gap-3 text-sm sm:text-lg font-black text-slate-900 dark:text-white uppercase tracking-wider mb-3 sm:mb-6">
+                  <Share2 className="w-4 h-4 sm:w-6 sm:h-6 text-emerald-600 dark:text-emerald-400" />
                   <span>Share This Scientific Review</span>
                 </div>
                 <div className="flex justify-center">
@@ -674,10 +680,10 @@ export default function BlogPostContent({
                     title={post.title}
                     slug={post.slug}
                     orientation="horizontal"
-                    className="flex-wrap justify-center gap-4"
+                    className="flex-wrap justify-center gap-2.5 sm:gap-4"
                   />
                 </div>
-                <p className="text-sm text-slate-600 dark:text-slate-400 mt-6 font-bold italic">
+                <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-3 sm:mt-6 font-bold italic">
                   &ldquo;Knowledge is meant to be shared.&rdquo;
                 </p>
               </div>

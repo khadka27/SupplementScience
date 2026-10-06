@@ -395,15 +395,93 @@ export function EvidenceScorecard({
                 </div>
               </div>
 
-              {/* Responsive Table */}
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse text-sm">
+              {/* Mobile Cards View (< sm) */}
+              <div className="block sm:hidden divide-y divide-[#E2E8F0] dark:divide-slate-800">
+                {outcomes.map((item) => {
+                  const isExpanded = selectedOutcomeId === item.id;
+                  return (
+                    <div
+                      key={item.id}
+                      className={`p-4 transition-colors ${
+                        isExpanded ? "bg-[#F8F9FA]/80 dark:bg-slate-800/60" : "bg-white dark:bg-slate-900"
+                      }`}
+                    >
+                      <div
+                        onClick={() => setSelectedOutcomeId(isExpanded ? null : item.id)}
+                        className="cursor-pointer"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div>
+                            <div className="font-semibold text-sm text-[#0F172A] dark:text-slate-100 flex items-center gap-1.5">
+                              <span>{item.claim}</span>
+                              <ChevronRight className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isExpanded ? "rotate-90 text-[#0E3B2F] dark:text-emerald-400" : ""}`} />
+                            </div>
+                            <div className="text-[11px] text-slate-500 font-normal mt-0.5">
+                              {item.studyCount} Trials • n={item.sampleSize} subjects
+                            </div>
+                          </div>
+                          <div>
+                            {getConsensusBadge(item.consensus)}
+                          </div>
+                        </div>
+
+                        <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            {renderEffectPillMeter(item.effectMagnitude)}
+                            <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                              {item.effectLabel}
+                            </span>
+                          </div>
+                          <a
+                            href={item.doiUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-[#0E3B2F] hover:text-white dark:hover:bg-emerald-600 transition-colors border border-slate-200 dark:border-slate-700"
+                          >
+                            PMID: {item.primaryPmid}
+                            <ExternalLink className="w-2.5 h-2.5" />
+                          </a>
+                        </div>
+                      </div>
+
+                      {/* Expandable study details drawer on mobile */}
+                      {isExpanded && (
+                        <div className="mt-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-2">
+                          <div className="text-xs font-bold uppercase tracking-wider text-[#0E3B2F] dark:text-emerald-400 flex items-center gap-1.5">
+                            <Info className="w-3.5 h-3.5" /> Clinical Synthesis &amp; Study Notes
+                          </div>
+                          <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
+                            {item.evidenceNotes}
+                          </p>
+                          <div className="pt-2 flex flex-col gap-1 text-xs text-slate-500 border-t border-slate-200/60 dark:border-slate-800">
+                            <span>Sample Size: <strong className="text-slate-800 dark:text-slate-200">{item.sampleSize}</strong></span>
+                            <span>Methodology: <strong className="text-slate-800 dark:text-slate-200">Double-blind RCT</strong></span>
+                            <a
+                              href={item.doiUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#0E3B2F] dark:text-emerald-400 font-semibold underline underline-offset-2 flex items-center gap-1 mt-1"
+                            >
+                              View Full RCT on PubMed Database →
+                            </a>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Responsive Table (sm+) */}
+              <div className="hidden sm:block overflow-x-auto w-full scrollbar-thin">
+                <table className="w-full text-left border-collapse text-sm" style={{ minWidth: "580px" }}>
                   <thead>
                     <tr className="border-b border-[#E2E8F0] dark:border-slate-800 bg-slate-50/70 dark:bg-slate-800/40 text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                      <th className="py-3 px-4">Claimed Outcome</th>
-                      <th className="py-3 px-4">Consensus</th>
-                      <th className="py-3 px-4">Effect Size</th>
-                      <th className="py-3 px-4 text-right">PubMed Source</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Claimed Outcome</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Consensus</th>
+                      <th className="py-3 px-4 whitespace-nowrap">Effect Size</th>
+                      <th className="py-3 px-4 text-right whitespace-nowrap">PubMed Source</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#E2E8F0] dark:divide-slate-800">
