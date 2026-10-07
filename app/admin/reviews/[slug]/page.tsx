@@ -44,21 +44,12 @@ export default async function EditReviewPage({
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">Edit Product Review</h2>
-          <p className="text-muted-foreground">
-            Update third-party lab evaluation and brand compliance.
-          </p>
-        </div>
-
-        <ReviewEditorForm
-          authors={authors}
-          categories={categories}
-          tags={tags}
-          initialData={post}
-        />
-      </div>
+      <ReviewEditorForm
+        authors={authors}
+        categories={categories}
+        tags={tags}
+        initialData={post}
+      />
     </AdminLayout>
   );
 }

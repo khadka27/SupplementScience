@@ -17,22 +17,11 @@ export default async function NewIngredientPage() {
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">
-            Create New Ingredient Page
-          </h2>
-          <p className="text-muted-foreground">
-            Create a global ingredient information page (condition-agnostic).
-          </p>
-        </div>
-
-        <IngredientEditorForm
-          authors={authors}
-          categories={categories}
-          tags={tags}
-        />
-      </div>
+      <IngredientEditorForm
+        authors={authors}
+        categories={categories}
+        tags={tags}
+      />
     </AdminLayout>
   );
 }

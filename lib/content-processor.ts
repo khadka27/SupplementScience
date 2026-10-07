@@ -11,12 +11,67 @@
 export function processContent(html: string): string {
   let processed = html;
 
-  // 1. Wrap tables in responsive containers
-  processed = processed.replaceAll(
-    "<table>",
-    '<div class="overflow-x-auto rounded-lg border border-border my-8"><table class="w-full">',
+  // 1. Normalize and clean tables
+  processed = processed.replace(
+    /<table\b([^>]*)>([\s\S]*?)<\/table>/gi,
+    (match, attrs, inner) => {
+      // Remove tiny min-width inline styles that crush columns
+      const cleanAttrs = attrs
+        .replace(/style=["'][^"']*min-width:\s*\d+px;?[^"']*["']/gi, "")
+        .trim();
+
+      let cleanInner = inner;
+
+      // Remove crushing colgroups with tiny min-width
+      cleanInner = cleanInner.replace(/<colgroup>[\s\S]*?<\/colgroup>/gi, "");
+
+      // If no thead exists, check if first row is a header row
+      if (!cleanInner.includes("<thead") && cleanInner.includes("<tr")) {
+        cleanInner = cleanInner.replace(
+          /<tbody\b([^>]*)>([\s\S]*?)<\/tbody>/gi,
+          (tbMatch, tbAttrs, tbInner) => {
+            let theadExtracted = "";
+            const remainingTbInner = tbInner.replace(
+              /<tr\b([^>]*)>([\s\S]*?)<\/tr>/i,
+              (trMatch, trAttrs, rowContent) => {
+                const isHeader =
+                  rowContent.includes("<strong>") ||
+                  rowContent.includes("<b>") ||
+                  rowContent.includes("<th");
+                if (isHeader) {
+                  const headerCells = rowContent.replace(
+                    /<td\b([^>]*)>([\s\S]*?)<\/td>/gi,
+                    (tdMatch, tdAttrs, cellContent) => {
+                      return `<th${tdAttrs}>${cellContent}</th>`;
+                    },
+                  );
+                  theadExtracted = `<thead><tr${trAttrs}>${headerCells}</tr></thead>`;
+                  return ""; // Remove first row from tbody
+                }
+                return trMatch;
+              },
+            );
+
+            if (theadExtracted) {
+              return `${theadExtracted}<tbody${tbAttrs}>${remainingTbInner.trim()}</tbody>`;
+            }
+            return tbMatch;
+          },
+        );
+      }
+
+      return `<table${cleanAttrs ? " " + cleanAttrs : ""}>${cleanInner}</table>`;
+    },
   );
-  processed = processed.replaceAll("</table>", "</table></div>");
+
+  // 2. Wrap tables in responsive .tableWrapper containers if not already wrapped
+  processed = processed.replace(
+    /(<div[^>]*class=["'][^"']*(?:tableWrapper|table-wrapper)[^"']*["'][^>]*>[\s\S]*?<\/div>)|(<table\b[^>]*>[\s\S]*?<\/table>)/gi,
+    (match, alreadyWrapped, unwrappedTable) => {
+      if (alreadyWrapped) return alreadyWrapped;
+      return `<div class="tableWrapper">${unwrappedTable}</div>`;
+    },
+  );
 
   // 2. Enhance HR tags
   processed = processed.replaceAll(

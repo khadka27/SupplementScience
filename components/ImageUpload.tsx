@@ -19,9 +19,19 @@ interface ImageUploadProps {
   value: string;
   onChange: (url: string) => void;
   disabled?: boolean;
+  compact?: boolean;
+  recommendedSize?: string;
+  hideStorageNotice?: boolean;
 }
 
-export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
+export function ImageUpload({
+  value,
+  onChange,
+  disabled,
+  compact = false,
+  recommendedSize,
+  hideStorageNotice = false,
+}: ImageUploadProps) {
   const inputId = useId();
   const [isUploading, setIsUploading] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -120,75 +130,65 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
   };
 
   return (
-    <div className="space-y-4 w-full">
-      <div className="rounded-lg border bg-card/60 p-3 text-xs text-muted-foreground">
-        <p className="font-medium text-foreground">CMS Image Storage</p>
-        <p>
-          Local uploads are saved to{" "}
-          <span className="font-mono">public/images</span> and served as{" "}
-          <span className="font-mono">/images/&lt;file&gt;</span>.
-        </p>
-      </div>
-
+    <div className="space-y-3 w-full">
       {value ? (
-        <div className="space-y-3">
-          <div className="relative w-full aspect-video rounded-md overflow-hidden border">
+        <div className="space-y-2">
+          <div className="group relative w-full aspect-video rounded-lg overflow-hidden border border-border bg-muted/20 shadow-xs">
             <Image
               fill
-              className="object-cover"
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
               alt="Upload"
               src={value}
               unoptimized={value.startsWith("http")}
             />
-            <div className="absolute inset-0 bg-linear-to-t from-black/50 via-transparent to-transparent" />
-            <div className="absolute top-2 right-2 flex gap-2">
+            <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end justify-between p-2.5" />
+            <div className="absolute top-2 right-2 flex gap-1.5 opacity-90 group-hover:opacity-100 transition-opacity">
               <Button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
                 variant="secondary"
                 size="sm"
-                className="h-8"
+                className="h-7 px-2.5 text-xs shadow-xs bg-background/90 hover:bg-background backdrop-blur-xs"
                 disabled={disabled || isUploading}
               >
-                <Upload className="h-4 w-4 mr-1.5" /> Replace
+                <Upload className="h-3.5 w-3.5 mr-1" /> Replace
               </Button>
               <Button
                 type="button"
                 onClick={() => onChange("")}
                 variant="destructive"
                 size="icon"
-                className="h-8 w-8"
+                className="h-7 w-7 shadow-xs"
                 disabled={disabled || isUploading}
+                title="Remove image"
               >
-                <X className="h-4 w-4" />
+                <X className="h-3.5 w-3.5" />
               </Button>
             </div>
           </div>
 
-          <div className="rounded-md border bg-muted/30 p-3 space-y-2">
-            <p className="text-xs text-muted-foreground">Image URL</p>
-            <div className="flex items-center gap-2">
-              <code className="flex-1 truncate rounded bg-background px-2 py-1.5 text-xs">
-                {value}
-              </code>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={copyImageUrl}
-                disabled={disabled || isUploading}
-              >
-                {copied ? (
-                  <>
-                    <Check className="h-4 w-4 mr-1.5" /> Copied
-                  </>
-                ) : (
-                  <>
-                    <Copy className="h-4 w-4 mr-1.5" /> Copy
-                  </>
-                )}
-              </Button>
-            </div>
+          <div className="flex items-center gap-2 rounded-md border border-border/80 bg-muted/30 px-2.5 py-1.5">
+            <code className="flex-1 truncate font-mono text-[11px] text-muted-foreground">
+              {value}
+            </code>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-6 px-2 text-[11px] text-muted-foreground hover:text-foreground"
+              onClick={copyImageUrl}
+              disabled={disabled || isUploading}
+            >
+              {copied ? (
+                <>
+                  <Check className="h-3 w-3 mr-1 text-emerald-500" /> Copied
+                </>
+              ) : (
+                <>
+                  <Copy className="h-3 w-3 mr-1" /> Copy
+                </>
+              )}
+            </Button>
           </div>
 
           <input
@@ -214,50 +214,54 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
           }}
           onDrop={handleDrop}
           className={cn(
-            "w-full rounded-xl border-2 border-dashed p-8 transition-all",
-            "bg-linear-to-b from-muted/20 to-background",
+            "group relative flex flex-col items-center justify-center cursor-pointer rounded-lg border-2 border-dashed transition-all",
+            compact ? "p-4 gap-2" : "p-6 gap-3",
+            "bg-muted/15 hover:bg-muted/30 hover:border-primary/50",
             isDragging
-              ? "border-primary bg-primary/5 shadow-[0_0_0_4px_hsl(var(--primary)/0.12)]"
-              : "border-input",
+              ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+              : "border-border",
             (disabled || isUploading) && "pointer-events-none opacity-60",
           )}
         >
-          <div className="flex flex-col items-center text-center gap-3">
-            <div className="flex items-center justify-center h-14 w-14 rounded-full bg-primary/10 text-primary">
-              {isUploading ? (
-                <Loader2 className="h-7 w-7 animate-spin" />
-              ) : (
-                <ImageIcon className="h-7 w-7" />
-              )}
-            </div>
+          <div
+            className={cn(
+              "flex items-center justify-center rounded-full bg-primary/10 text-primary transition-transform group-hover:scale-110",
+              compact ? "h-9 w-9" : "h-11 w-11",
+            )}
+          >
+            {isUploading ? (
+              <Loader2 className={cn("animate-spin", compact ? "h-4 w-4" : "h-5 w-5")} />
+            ) : (
+              <ImageIcon className={compact ? "h-4 w-4" : "h-5 w-5"} />
+            )}
+          </div>
 
-            <div>
-              <p className="text-sm font-semibold text-foreground">
-                {isUploading ? "Uploading image..." : "Drop image to upload"}
-              </p>
-              <p className="text-xs text-muted-foreground mt-1">
-                JPG, PNG, WEBP, SVG, GIF up to 5MB
-              </p>
-            </div>
-
-            <Button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                fileInputRef.current?.click();
-              }}
-              variant="default"
-              size="sm"
-              className="min-w-36"
-              disabled={disabled || isUploading}
-            >
-              <FolderOpen className="h-4 w-4 mr-1.5" /> Choose From Device
-            </Button>
-
-            <p className="text-xs text-muted-foreground">
-              Ideal size: 1200 x 628 px
+          <div className="text-center">
+            <p className="text-xs font-semibold text-foreground">
+              {isUploading
+                ? "Uploading image..."
+                : isDragging
+                  ? "Drop image here"
+                  : "Click to upload or drag & drop"}
+            </p>
+            <p className="text-[11px] text-muted-foreground mt-0.5">
+              JPG, PNG, WEBP, SVG up to 5MB
             </p>
           </div>
+
+          <Button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              fileInputRef.current?.click();
+            }}
+            variant="outline"
+            size="sm"
+            className={cn("text-xs font-medium", compact ? "h-7 px-3" : "h-8 px-4")}
+            disabled={disabled || isUploading}
+          >
+            <FolderOpen className="h-3.5 w-3.5 mr-1.5" /> Browse Files
+          </Button>
 
           <input
             id={inputId}
@@ -269,6 +273,15 @@ export function ImageUpload({ value, onChange, disabled }: ImageUploadProps) {
             disabled={disabled || isUploading}
           />
         </label>
+      )}
+
+      {!hideStorageNotice && (
+        <div className="flex items-center justify-between text-[11px] text-muted-foreground px-0.5">
+          <span>{recommendedSize || "Ideal size: 1200 × 628 px"}</span>
+          <span className="flex items-center gap-1 font-mono text-[10px] text-muted-foreground/75">
+            <FolderOpen className="h-3 w-3" /> public/images
+          </span>
+        </div>
       )}
     </div>
   );

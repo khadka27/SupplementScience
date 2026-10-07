@@ -1,7 +1,7 @@
 "use client";
 
 import DOMPurify from "isomorphic-dompurify";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { format } from "date-fns";
@@ -64,11 +64,15 @@ export default function BlogPostContent({
 }: BlogPostContentProps) {
   const [activeId, setActiveId] = useState<string>("");
   const [showStickyHeader, setShowStickyHeader] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [imgError, setImgError] = useState(false);
   const [currentArticleUrl, setCurrentArticleUrl] = useState("");
   const titleRef = useRef<HTMLHeadingElement>(null);
   const articleContentRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+
+  const sanitizedContent = useMemo(() => {
+    return DOMPurify.sanitize(prepareContent(post.content));
+  }, [post.content]);
 
   const getSummaryLinks = (articleUrl: string) => {
     const promptText = `Summarize this article and key takeaways: ${articleUrl}`;
@@ -82,19 +86,35 @@ export default function BlogPostContent({
   };
 
   useEffect(() => {
-    const handleScroll = () => {
-      const totalHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      const progress = (window.scrollY / totalHeight) * 100;
-      setScrollProgress(progress);
+    let ticking = false;
 
-      if (titleRef.current) {
-        const titleBottom = titleRef.current.getBoundingClientRect().bottom;
-        setShowStickyHeader(titleBottom < 0);
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const totalHeight =
+            document.documentElement.scrollHeight - window.innerHeight;
+          const progress =
+            totalHeight > 0 ? (window.scrollY / totalHeight) * 100 : 0;
+
+          if (progressBarRef.current) {
+            progressBarRef.current.style.width = `${progress}%`;
+          }
+
+          if (titleRef.current) {
+            const titleBottom =
+              titleRef.current.getBoundingClientRect().bottom;
+            const isSticky = titleBottom < 0;
+            setShowStickyHeader((prev) =>
+              prev !== isSticky ? isSticky : prev,
+            );
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -217,8 +237,9 @@ export default function BlogPostContent({
         </div>
         <div className="absolute bottom-0 left-0 w-full h-0.5 bg-slate-200 dark:bg-slate-800">
           <div
-            className="h-full bg-emerald-600 dark:bg-emerald-500 transition-all duration-150 ease-out"
-            style={{ width: `${scrollProgress}%` }}
+            ref={progressBarRef}
+            className="h-full bg-emerald-600 dark:bg-emerald-500 transition-[width] duration-75 ease-out"
+            style={{ width: "0%" }}
           />
         </div>
       </div>
@@ -446,7 +467,7 @@ export default function BlogPostContent({
 
           {/* MAIN CONTENT Area */}
           <main className="lg:col-span-9 min-w-0 w-full">
-            <article className="w-full max-w-4xl mx-auto bg-white dark:bg-[#0D1217] border-y sm:border border-slate-200/90 dark:border-slate-800 rounded-none sm:rounded-[2.5rem] shadow-none sm:shadow-lg shadow-black/5 overflow-hidden transition-all duration-500">
+            <article className="w-full max-w-4xl mx-auto bg-white dark:bg-[#0D1217] border-y sm:border border-slate-200/90 dark:border-slate-800 rounded-none sm:rounded-[2.5rem] shadow-none sm:shadow-lg shadow-black/5 overflow-hidden transition-colors duration-200">
               <div className="px-3.5 sm:px-8 md:px-14 lg:px-18 py-5 sm:py-10 md:py-16">
                 {/* Mobile Collapsible TOC */}
                 <div className="lg:hidden mb-6 sm:mb-10 bg-slate-50 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-3 sm:p-5 rounded-xl sm:rounded-2xl">
@@ -531,7 +552,7 @@ export default function BlogPostContent({
                   className="prose prose-base sm:prose-lg dark:prose-invert max-w-none blog-content-enhanced break-words
                   /* Headings and Spacing handled by global css */"
                   dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(prepareContent(post.content)),
+                    __html: sanitizedContent,
                   }}
                 />
 

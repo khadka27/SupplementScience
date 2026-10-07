@@ -17,22 +17,11 @@ export default async function NewReviewPage() {
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">
-            Create New Product Review
-          </h2>
-          <p className="text-muted-foreground">
-            Create a supplement product review within a category.
-          </p>
-        </div>
-
-        <ReviewEditorForm
-          authors={authors}
-          categories={categories}
-          tags={tags}
-        />
-      </div>
+      <ReviewEditorForm
+        authors={authors}
+        categories={categories}
+        tags={tags}
+      />
     </AdminLayout>
   );
 }

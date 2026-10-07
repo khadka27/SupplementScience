@@ -44,21 +44,12 @@ export default async function EditIngredientPage({
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">Edit Ingredient Monograph</h2>
-          <p className="text-muted-foreground">
-            Update evidence-based clinical ingredient profile.
-          </p>
-        </div>
-
-        <IngredientEditorForm
-          authors={authors}
-          categories={categories}
-          tags={tags}
-          initialData={post}
-        />
-      </div>
+      <IngredientEditorForm
+        authors={authors}
+        categories={categories}
+        tags={tags}
+        initialData={post}
+      />
     </AdminLayout>
   );
 }

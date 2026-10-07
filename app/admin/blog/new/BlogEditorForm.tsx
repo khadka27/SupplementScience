@@ -41,7 +41,7 @@ import {
   Clock,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ImageUpload } from "@/components/ImageUpload";
+import { EditorSidebar } from "@/components/admin/EditorSidebar";
 import { isValidFeaturedImageSource } from "@/lib/admin-utils";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -290,20 +290,20 @@ export default function BlogEditorForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        {/* ── Sticky Top Action Bar ────────────────────────── */}
-        <div className="sticky top-0 z-10 -mt-4 sm:-mt-6 lg:-mt-8 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 bg-white/95 dark:bg-[#070A0E]/95 backdrop-blur-md border-b border-stone-200/90 dark:border-stone-800 flex flex-wrap items-center justify-between gap-3 transition-colors shadow-xs mb-6">
+        {/* ── Top Action Header ────────────────────────── */}
+        <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 sm:p-4 rounded-2xl bg-card text-card-foreground border border-border shadow-xs mb-6">
           <div className="flex items-center gap-3">
             <Button
               type="button"
               variant="ghost"
               size="sm"
               onClick={() => router.push("/admin/blogs")}
-              className="text-xs text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white h-8 px-2.5"
+              className="text-xs text-muted-foreground hover:text-foreground h-8 px-2.5"
             >
               <ArrowLeft className="w-3.5 h-3.5 mr-1" />
               All Content
             </Button>
-            <div className="h-4 w-px bg-stone-300 dark:bg-stone-700 hidden sm:block" />
+            <div className="h-4 w-px bg-border hidden sm:block" />
             <Badge
               variant="outline"
               className="bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800/40 text-xs font-semibold gap-1 py-0.5"
@@ -311,14 +311,14 @@ export default function BlogEditorForm({
               <FileText className="w-3 h-3" />
               Article
             </Badge>
-            <span className="text-xs text-slate-500 dark:text-slate-400 font-medium hidden md:inline">
+            <span className="text-xs text-muted-foreground font-medium hidden md:inline">
               {wordCount} words · {readTime} min read
             </span>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-2.5">
             {/* Quick Status Toggle */}
-            <div className="flex items-center rounded-xl bg-stone-100 dark:bg-stone-900 p-1 border border-stone-200/80 dark:border-stone-800">
+            <div className="flex items-center rounded-xl bg-muted/60 p-1 border border-border">
               <button
                 type="button"
                 onClick={() =>
@@ -327,8 +327,8 @@ export default function BlogEditorForm({
                 className={cn(
                   "px-2.5 py-1 text-xs font-semibold rounded-lg transition-all",
                   watchedStatus === "draft"
-                    ? "bg-white dark:bg-stone-800 text-slate-900 dark:text-white shadow-2xs font-bold"
-                    : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                    ? "bg-card text-foreground shadow-2xs font-bold"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 Draft
@@ -342,7 +342,7 @@ export default function BlogEditorForm({
                   "px-2.5 py-1 text-xs font-semibold rounded-lg transition-all",
                   watchedStatus === "published"
                     ? "bg-emerald-600 text-white shadow-2xs font-bold"
-                    : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                    : "text-muted-foreground hover:text-foreground"
                 )}
               >
                 Published
@@ -571,336 +571,17 @@ export default function BlogEditorForm({
             </Card>
           </div>
 
-          <div className="space-y-6">
-            <Card>
-              <CardContent className="pt-6 space-y-4">
-                <FormField
-                  control={form.control}
-                  name="status"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Status *</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select status" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="draft">Draft</SelectItem>
-                          <SelectItem value="published">Published</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="categoryId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Category</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select category" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {categories.map((category) => (
-                            <SelectItem key={category.id} value={category.id}>
-                              {category.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="authorId"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Author</FormLabel>
-                      <Select
-                        onValueChange={(value) =>
-                          field.onChange(value === "none" ? "" : value)
-                        }
-                        value={field.value || "none"}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select author" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="none">No author</SelectItem>
-                          {authors.map((author) => (
-                            <SelectItem key={author.id} value={author.id}>
-                              {author.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="factCheckedById"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Fact Checked By</FormLabel>
-                      <Select
-                        onValueChange={(value) =>
-                          field.onChange(value === "none" ? "" : value)
-                        }
-                        value={field.value || "none"}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select fact checker" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="none">Editorial Team (Default)</SelectItem>
-                          {authors.map((author) => (
-                            <SelectItem key={author.id} value={author.id}>
-                              {author.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="reviewedById"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Reviewed By</FormLabel>
-                      <Select
-                        onValueChange={(value) =>
-                          field.onChange(value === "none" ? "" : value)
-                        }
-                        value={field.value || "none"}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select reviewer" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="none">Editorial Team (Default)</SelectItem>
-                          {authors.map((author) => (
-                            <SelectItem key={author.id} value={author.id}>
-                              {author.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="featuredImageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Featured Image</FormLabel>
-                      <Tabs defaultValue="upload" className="w-full">
-                        <TabsList className="mb-4">
-                          <TabsTrigger value="upload" className="gap-2">
-                            <ImageIcon className="h-4 w-4" /> Upload
-                          </TabsTrigger>
-                          <TabsTrigger value="url" className="gap-2">
-                            <Globe className="h-4 w-4" /> Link URL
-                          </TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="upload">
-                          <ImageUpload
-                            value={field.value || ""}
-                            onChange={field.onChange}
-                          />
-                        </TabsContent>
-                        <TabsContent value="url">
-                          <FormControl>
-                            <Input placeholder="https://..." {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            URL for the main post image (Ideal size: 1200x628)
-                          </FormDescription>
-                        </TabsContent>
-                      </Tabs>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="featuredImageAlt"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Featured Image Alt Text</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Describe the image for accessibility"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        Used by screen readers and search engines.
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="cardImageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Featured Card Image</FormLabel>
-                      <Tabs defaultValue="upload" className="w-full">
-                        <TabsList className="mb-4">
-                          <TabsTrigger value="upload" className="gap-2">
-                            <ImageIcon className="h-4 w-4" /> Upload
-                          </TabsTrigger>
-                          <TabsTrigger value="url" className="gap-2">
-                            <Globe className="h-4 w-4" /> Link URL
-                          </TabsTrigger>
-                        </TabsList>
-                        <TabsContent value="upload">
-                          <ImageUpload
-                            value={field.value || ""}
-                            onChange={field.onChange}
-                          />
-                        </TabsContent>
-                        <TabsContent value="url">
-                          <FormControl>
-                            <Input placeholder="https://..." {...field} />
-                          </FormControl>
-                          <FormDescription>
-                            Used in article cards, related posts, and listing
-                            cards. If blank, the hero image will be used.
-                          </FormDescription>
-                        </TabsContent>
-                      </Tabs>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="pt-6">
-                <FormField
-                  control={form.control}
-                  name="tagIds"
-                  render={() => (
-                    <FormItem>
-                      <div className="mb-3">
-                        <FormLabel>Tags</FormLabel>
-                        <FormDescription className="text-xs">
-                          Optional. Leave unselected if not needed.
-                        </FormDescription>
-                      </div>
-                      <div className="space-y-2 max-h-64 overflow-y-auto border rounded-md p-3 bg-muted/30">
-                        {tags.length === 0 ? (
-                          <p className="text-sm text-muted-foreground text-center py-4">
-                            No tags available. Create tags first.
-                          </p>
-                        ) : (
-                          tags.map((tag) => (
-                            <FormField
-                              key={tag.id}
-                              control={form.control}
-                              name="tagIds"
-                              render={({ field }) => {
-                                return (
-                                  <FormItem
-                                    key={tag.id}
-                                    className="flex flex-row items-center space-x-3 space-y-0 rounded-md border p-2 hover:bg-accent transition-colors"
-                                  >
-                                    <FormControl>
-                                      <Checkbox
-                                        checked={field.value?.includes(tag.id)}
-                                        onCheckedChange={(checked) => {
-                                          return checked
-                                            ? field.onChange([
-                                                ...field.value,
-                                                tag.id,
-                                              ])
-                                            : field.onChange(
-                                                field.value?.filter(
-                                                  (value) => value !== tag.id,
-                                                ),
-                                              );
-                                        }}
-                                      />
-                                    </FormControl>
-                                    <FormLabel className="font-normal cursor-pointer flex-1">
-                                      {tag.name}
-                                    </FormLabel>
-                                  </FormItem>
-                                );
-                              }}
-                            />
-                          ))
-                        )}
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="pt-6 space-y-2">
-                <Button
-                  type="submit"
-                  className="w-full"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? (
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  ) : (
-                    <Save className="mr-2 h-4 w-4" />
-                  )}
-                  {isEditing ? "Update Post" : "Save Post"}
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => router.push("/admin/blogs")}
-                >
-                  Cancel
-                </Button>
-              </CardContent>
-            </Card>
+          <div>
+            <EditorSidebar
+              form={form}
+              authors={authors}
+              categories={categories}
+              tags={tags}
+              isSubmitting={isSubmitting}
+              isEditing={isEditing}
+              entityLabel="Post"
+              cancelUrl="/admin/blogs"
+            />
           </div>
         </div>
       </form>

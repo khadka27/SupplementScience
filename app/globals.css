@@ -604,116 +604,267 @@
   @apply rounded-lg my-6 max-w-full h-auto;
 }
 
-.tiptap table {
-  @apply border-collapse table-auto w-full my-6 text-xs;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  perspective: 1000px;
-  -webkit-font-smoothing: antialiased;
-}
+/* ==========================================================================
+   TABLES - ROCK-SOLID, ANTI-FLICKER & RESPONSIVE DESIGN SYSTEM
+   ========================================================================== */
 
-.tiptap th {
-  @apply border border-border bg-muted font-bold px-2 py-1.5 text-left text-[10px];
-  white-space: nowrap;
-  line-height: 1.2;
-}
-
-.tiptap td {
-  @apply border border-border px-2 py-1.5 text-[11px];
-  line-height: 1.4;
-}
-
-.tiptap tr:hover {
-  @apply bg-muted/20;
-  transition: none;
-}
-
-/* Table cell selection */
-.tiptap .selectedCell {
-  @apply bg-primary/20;
-}
-
-/* Blog Post Table Styles - Optimized for readability */
-.prose table {
-  @apply w-full border-collapse my-6 text-xs;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  perspective: 1000px;
-  -webkit-font-smoothing: antialiased;
-  will-change: auto;
-  contain: layout style paint;
-}
-
-.prose thead {
-  @apply bg-muted border-b-2 border-border;
-}
-
-.prose th {
-  @apply border border-border bg-muted font-bold px-2 py-1.5 text-left text-[10px] uppercase tracking-wide;
-  white-space: nowrap;
-  line-height: 1.2;
-}
-
-.prose td {
-  @apply border border-border px-2 py-1.5 text-[11px];
-  vertical-align: top;
-  line-height: 1.4;
-}
-
-.prose tbody tr {
-  @apply border-b border-border;
-  transition: none;
-}
-
-.prose tbody tr:hover {
-  @apply bg-muted/20;
-}
-
-.prose tbody tr:last-child {
-  @apply border-b-0;
-}
-
-/* Responsive table wrapper */
-.prose table {
-  display: block;
-  max-height: 80vh;
-  overflow: auto;
+/* 1. Wrapper Architecture (Horizontal scroll ONLY, NEVER vertical scroll) */
+.tableWrapper,
+.table-wrapper,
+article .table-wrapper,
+article div:has(> table) {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  margin: 2rem 0;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  max-height: none !important;
+  height: auto !important;
   -webkit-overflow-scrolling: touch;
+  border-radius: 0.875rem;
+  border: 1px solid hsl(var(--border) / 0.9);
+  background-color: hsl(var(--card));
+  box-shadow: 0 4px 16px -4px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
   scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
 }
 
-.prose table::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Horizontal scrollbar styling only — completely suppress vertical scrollbar */
+.tableWrapper::-webkit-scrollbar,
+.table-wrapper::-webkit-scrollbar,
+article .table-wrapper::-webkit-scrollbar,
+article div:has(> table)::-webkit-scrollbar,
+table::-webkit-scrollbar {
+  height: 6px !important;
+  width: 0 !important;
 }
 
-.prose table::-webkit-scrollbar-track {
-  background: hsl(var(--muted));
-  border-radius: 4px;
+.tableWrapper::-webkit-scrollbar:vertical,
+.table-wrapper::-webkit-scrollbar:vertical,
+article .table-wrapper::-webkit-scrollbar:vertical,
+article div:has(> table)::-webkit-scrollbar:vertical,
+table::-webkit-scrollbar:vertical {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
-.prose table::-webkit-scrollbar-thumb {
+.tableWrapper::-webkit-scrollbar:horizontal,
+.table-wrapper::-webkit-scrollbar:horizontal,
+article .table-wrapper::-webkit-scrollbar:horizontal,
+article div:has(> table)::-webkit-scrollbar:horizontal,
+table::-webkit-scrollbar:horizontal {
+  display: block !important;
+  height: 6px !important;
+}
+
+.tableWrapper::-webkit-scrollbar-track,
+.table-wrapper::-webkit-scrollbar-track,
+article .table-wrapper::-webkit-scrollbar-track,
+article div:has(> table)::-webkit-scrollbar-track {
+  background: hsl(var(--muted) / 0.2);
+  border-radius: 9999px;
+}
+
+.tableWrapper::-webkit-scrollbar-thumb,
+.table-wrapper::-webkit-scrollbar-thumb,
+article .table-wrapper::-webkit-scrollbar-thumb,
+article div:has(> table)::-webkit-scrollbar-thumb {
   background: hsl(var(--muted-foreground) / 0.3);
-  border-radius: 4px;
+  border-radius: 9999px;
 }
 
-.prose table::-webkit-scrollbar-thumb:hover {
+.tableWrapper::-webkit-scrollbar-thumb:hover,
+.table-wrapper::-webkit-scrollbar-thumb:hover,
+article .table-wrapper::-webkit-scrollbar-thumb:hover,
+article div:has(> table)::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--muted-foreground) / 0.5);
 }
 
-@media (max-width: 768px) {
-  .prose table {
-    @apply text-[10px];
-    max-height: 70vh;
-  }
+/* 2. Core Table Element - Displays all rows vertically, never vertically scrolled */
+.tiptap table,
+.prose table,
+article table,
+table {
+  display: table !important;
+  width: 100% !important;
+  min-width: 620px !important; /* Guarantees columns have breathing room and scroll smoothly on mobile */
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  margin: 0 !important;
+  font-size: 0.9375rem !important; /* 15px — clear, readable, senior-friendly */
+  line-height: 1.6 !important;
+  background-color: hsl(var(--card)) !important;
+  color: hsl(var(--card-foreground)) !important;
+  table-layout: auto !important;
 
-  .prose th,
-  .prose td {
-    @apply px-1.5 py-1;
-    font-size: 9px;
-  }
+  /* ELIMINATE SCROLL BLINKING / FLICKER BUGS COMPLETELY */
+  transform: none !important;
+  animation: none !important;
+  contain: none !important;
+  perspective: none !important;
+  backface-visibility: visible !important;
+  -webkit-backface-visibility: visible !important;
+  will-change: auto !important;
+}
+
+/* 3. Table Headers */
+.tiptap thead,
+.prose thead,
+article table thead {
+  background-color: hsl(var(--muted) / 0.85) !important;
+  position: static !important; /* Static avoids sticky/transform scroll collisions */
+}
+
+.tiptap th,
+.prose th,
+article table th {
+  padding: 0.9375rem 1.25rem !important;
+  text-align: left !important;
+  font-weight: 700 !important;
+  font-size: 0.8125rem !important; /* 13px */
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase !important;
+  color: hsl(var(--foreground)) !important;
+  background-color: hsl(var(--muted) / 0.85) !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-bottom: 2px solid hsl(var(--border)) !important;
+  border-right: 1px solid hsl(var(--border) / 0.6) !important;
+  vertical-align: middle !important;
+
+  /* PREVENT WEIRD WORD WRAPPING (e.g. "Atmospher" "e") */
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  hyphens: none !important;
+  white-space: normal !important;
+}
+
+.tiptap th:last-child,
+.prose th:last-child,
+article table th:last-child {
+  border-right: none !important;
+}
+
+/* 4. Table Body, Rows & Cells */
+.tiptap tbody tr,
+.prose tbody tr,
+article table tbody tr {
+  border: none !important;
+  transform: none !important;
+  transition: background-color 0.15s ease !important;
+}
+
+/* Subtle Zebra Striping for readability */
+.tiptap tbody tr:nth-child(even),
+.prose tbody tr:nth-child(even),
+article table tbody tr:nth-child(even) {
+  background-color: hsl(var(--muted) / 0.22) !important;
+}
+
+.tiptap tbody tr:nth-child(odd),
+.prose tbody tr:nth-child(odd),
+article table tbody tr:nth-child(odd) {
+  background-color: hsl(var(--card)) !important;
+}
+
+/* Smooth row hover without layout jumps */
+.tiptap tbody tr:hover,
+.prose tbody tr:hover,
+article table tbody tr:hover {
+  background-color: hsl(var(--muted) / 0.5) !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.tiptap td,
+.prose td,
+article table td {
+  padding: 0.9375rem 1.25rem !important;
+  font-size: 0.9375rem !important;
+  line-height: 1.6 !important;
+  color: hsl(var(--card-foreground)) !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-bottom: 1px solid hsl(var(--border) / 0.6) !important;
+  border-right: 1px solid hsl(var(--border) / 0.4) !important;
+  vertical-align: top !important;
+
+  /* PREVENT WEIRD WORD WRAPPING */
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  hyphens: none !important;
+}
+
+.tiptap td:last-child,
+.prose td:last-child,
+article table td:last-child {
+  border-right: none !important;
+}
+
+.tiptap tbody tr:last-child td,
+.prose tbody tr:last-child td,
+article table tbody tr:last-child td {
+  border-bottom: none !important;
+}
+
+/* 5. First column (Category / Feature name) emphasis */
+.tiptap tbody td:first-child,
+.prose tbody td:first-child,
+article table tbody td:first-child {
+  font-weight: 600 !important;
+  color: hsl(var(--foreground)) !important;
+  background-color: hsl(var(--muted) / 0.14) !important;
+  min-width: 155px !important; /* Guarantees "Vibe & Atmosphere" has ample room */
+  width: 24% !important;
+}
+
+/* 6. Clean paragraphs inside cells */
+.tiptap table p,
+.prose table p,
+article table p {
+  margin: 0 !important;
+  line-height: inherit !important;
+  word-break: normal !important;
+  overflow-wrap: break-word !important;
+  hyphens: none !important;
+}
+
+.tiptap table p + p,
+.prose table p + p,
+article table p + p {
+  margin-top: 0.375rem !important;
+}
+
+/* 7. Tiptap Interactive Editor Helpers */
+.tiptap .selectedCell {
+  position: relative;
+}
+
+.tiptap .selectedCell:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: hsl(var(--primary) / 0.15) !important;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.tiptap .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: hsl(var(--primary));
+  pointer-events: none;
+  z-index: 20;
 }
 
 /* ========================================
@@ -753,44 +904,6 @@
   }
 }
 
-/* Enhanced Tables - Vibrant & Interactive */
-article table {
-  @apply w-full border-collapse my-12 rounded-2xl overflow-hidden shadow-2xl;
-  animation: slideInUp 0.6s ease-out;
-  background: linear-gradient(
-    135deg,
-    rgba(34, 197, 94, 0.05),
-    rgba(59, 130, 246, 0.05)
-  );
-}
-
-article table thead {
-  background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-  @apply text-white;
-}
-
-article table th {
-  @apply px-6 py-5 text-left font-extrabold uppercase tracking-wider text-sm;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-article table td {
-  @apply px-6 py-4 border-b border-border/20 text-foreground transition-all duration-300;
-}
-
-article table tbody tr {
-  @apply hover:bg-gradient-to-r hover:from-green-50 hover:to-blue-50 dark:hover:from-green-950/20 dark:hover:to-blue-950/20 transition-all duration-300 cursor-pointer;
-  transform: scale(1);
-}
-
-article table tbody tr:hover {
-  transform: scale(1.01);
-  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);
-}
-
-article table tbody tr:last-child td {
-  @apply border-b-0;
-}
 
 /* 🎨 Vibrant Info Boxes with Gradients & Icons */
 article .info-box,
@@ -896,15 +1009,16 @@ article [data-infobox="tip"]::before {
     opacity: 0.12 !important;
   }
 
-  article table {
-    margin: 1.25rem 0 !important;
-    border-radius: 0.875rem !important;
+  article .tableWrapper,
+  article .table-wrapper,
+  article div:has(> table) {
+    margin: 1rem 0 !important;
   }
 
   article table th,
   article table td {
-    padding: 0.5rem 0.625rem !important;
-    font-size: 0.75rem !important;
+    padding: 0.625rem 0.875rem !important;
+    font-size: 0.8125rem !important;
   }
 
   article ul.features,
@@ -1511,11 +1625,6 @@ article ol ol {
   @apply mt-3 mb-0;
 }
 
-/* Sticky elements smooth behavior */
-.sticky {
-  position: sticky;
-  top: 7rem;
-}
 
 /* Print styles for blog posts */
 @media print {
@@ -1572,13 +1681,6 @@ article blockquote p:last-of-type::after {
   @apply text-5xl text-primary/30;
 }
 
-/* Better table responsiveness */
-@media (max-width: 768px) {
-  article table {
-    @apply block overflow-x-auto whitespace-nowrap;
-    -webkit-overflow-scrolling: touch;
-  }
-}
 
 /* Floating action improvements */
 .floating-element {

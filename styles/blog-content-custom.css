@@ -193,195 +193,25 @@ article pre code {
 }
 
 /* ========================================
-   TABLES - INTERACTIVE & POLISHED
+   TABLES - HORIZONTAL SCROLL ONLY, DISPLAY ALL ROWS
    ======================================== */
-
-/* Scroll wrapper — prevents layout overflow on mobile */
+article .tableWrapper,
 article .table-wrapper,
 article div:has(> table) {
-  position: relative;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  border-radius: 1rem;
-  box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.08),
-    0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  margin: 2rem 0;
-  border: 1px solid var(--border);
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  max-height: none !important;
+  height: auto !important;
 }
 
-/* When table is not inside a wrapper div, give it its own scroll */
 article table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin: 0;
-  font-size: 0.9375rem;
-  background: #ffffff;
-  border-radius: 1rem;
-  overflow: hidden;
+  display: table !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  overflow-y: visible !important;
 }
 
-/* ─── Header ─────────────────────────────── */
-article table thead {
-  background: #f8fafc;
-  position: sticky;
-  top: 0;
-  z-index: 2;
-}
-
-article table th {
-  padding: 0.875rem 1.125rem;
-  text-align: left;
-  font-weight: 700;
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #334155;
-  border-bottom: 2px solid #e2e8f0;
-  white-space: nowrap;
-  cursor: default;
-  user-select: none;
-  transition: background 0.15s ease;
-}
-
-/* Column dividers inside header */
-article table th:not(:last-child) {
-  border-right: 1px solid rgba(226, 232, 240, 0.8);
-}
-
-/* Header hover hint */
-article table th:hover {
-  background: rgba(226, 232, 240, 0.5);
-}
-
-/* ─── Body rows ──────────────────────────── */
-article table tbody tr {
-  transition:
-    background 0.15s ease,
-    transform 0.1s ease;
-  cursor: default;
-}
-
-/* Zebra stripes */
-article table tbody tr:nth-child(even) {
-  background: #f8fafc80;
-}
-
-article table tbody tr:nth-child(odd) {
-  background: #ffffff;
-}
-
-/* Row hover — clean highlight */
-article table tbody tr:hover {
-  background: rgba(16, 185, 129, 0.08) !important;
-  transform: scale(1.002);
-  position: relative;
-  z-index: 1;
-}
-
-/* Active row click feedback */
-article table tbody tr:active {
-  background: rgba(16, 185, 129, 0.15) !important;
-}
-
-/* ─── Cells ──────────────────────────────── */
-article table td {
-  padding: 0.875rem 1.125rem;
-  vertical-align: top;
-  font-size: 0.9375rem;
-  color: #1e293b;
-  line-height: 1.6;
-  border-bottom: 1px solid #e2e8f0;
-  transition: background 0.15s ease;
-}
-
-/* Subtle column dividers in body */
-article table td:not(:last-child) {
-  border-right: 1px solid rgba(226, 232, 240, 0.5);
-}
-
-/* No border on last row */
-article table tbody tr:last-child td {
-  border-bottom: none;
-}
-
-/* ─── Scroll fade indicator on right ────── */
-article div:has(> table)::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 3rem;
-  height: 100%;
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.8));
-  pointer-events: none;
-  border-radius: 0 1rem 1rem 0;
-}
-
-/* ─── Number/value cells (right-align) ──── */
-article table td:is([data-type="number"], .num),
-article table th:is([data-type="number"], .num) {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-}
-
-/* ─── First column emphasis ──────────────── */
-article table td:first-child {
-  font-weight: 600;
-  color: #0f172a;
-}
-
-/* ─── DARK MODE ──────────────────────────── */
-.dark article table {
-  background: #0d1217;
-}
-
-.dark article table thead {
-  background: #070a0e;
-}
-
-.dark article table th {
-  color: #cbd5e1;
-  border-bottom-color: #1e293b;
-  border-right-color: rgba(30, 41, 59, 0.7);
-}
-
-.dark article table th:hover {
-  background: rgba(30, 41, 59, 0.6);
-}
-
-.dark article table tbody tr:nth-child(even) {
-  background: rgba(15, 23, 42, 0.35);
-}
-
-.dark article table tbody tr:nth-child(odd) {
-  background: #0d1217;
-}
-
-.dark article table tbody tr:hover {
-  background: rgba(16, 185, 129, 0.12) !important;
-}
-
-.dark article table td {
-  color: #e2e8f0;
-  border-bottom-color: rgba(30, 41, 59, 0.6);
-  border-right-color: rgba(30, 41, 59, 0.3);
-}
-
-.dark article table td:first-child {
-  color: #f8fafc;
-}
-
-.dark article div:has(> table) {
-  border-color: #1e293b;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-}
-
-.dark article div:has(> table)::after {
-  background: linear-gradient(to right, transparent, rgba(13, 18, 23, 0.8));
-}
 
 /* ========================================
    IMAGES - CLEAN STYLING

@@ -42,21 +42,12 @@ export default async function EditGuidePage({ params }: EditGuidePageProps) {
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
-        <div>
-          <h2 className="text-3xl font-bold tracking-tight">Edit Guide</h2>
-          <p className="text-muted-foreground">
-            Update your category guide content.
-          </p>
-        </div>
-
-        <GuideEditorForm
-          authors={authors}
-          categories={categories}
-          tags={tags}
-          initialData={post}
-        />
-      </div>
+      <GuideEditorForm
+        authors={authors}
+        categories={categories}
+        tags={tags}
+        initialData={post}
+      />
     </AdminLayout>
   );
 }

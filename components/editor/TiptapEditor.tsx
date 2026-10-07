@@ -337,21 +337,11 @@ const TiptapEditor = ({
       }),
       Table.configure({
         resizable: true,
-        HTMLAttributes: {
-          class: "border-collapse table-auto w-full",
-        },
+        renderWrapper: true,
       }),
       TableRow,
-      TableHeader.configure({
-        HTMLAttributes: {
-          class: "border border-border bg-muted font-bold p-2",
-        },
-      }),
-      TableCell.configure({
-        HTMLAttributes: {
-          class: "border border-border p-2",
-        },
-      }),
+      TableHeader,
+      TableCell,
       Mention.configure({
         HTMLAttributes: {
           class: "mention",
@@ -622,6 +612,104 @@ const TiptapEditor = ({
           <Redo className="h-4 w-4" />
         </Button>
       </div>
+
+      {/* Contextual Table Controls */}
+      {editor && editor.isActive("table") && (
+        <div className="flex flex-wrap items-center gap-1.5 px-3 py-2 bg-muted/70 backdrop-blur-sm border border-border rounded-lg text-xs animate-in fade-in slide-in-from-top-1 duration-150">
+          <div className="flex items-center gap-1.5 font-semibold text-foreground/80 mr-1">
+            <TableIcon className="h-3.5 w-3.5 text-primary" />
+            <span>Table Tools:</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="h-7 px-2.5 text-xs bg-background hover:bg-muted font-normal"
+              onClick={() => editor.chain().focus().addColumnBefore().run()}
+              title="Add column to the left"
+            >
+              + Col Left
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="h-7 px-2.5 text-xs bg-background hover:bg-muted font-normal"
+              onClick={() => editor.chain().focus().addColumnAfter().run()}
+              title="Add column to the right"
+            >
+              + Col Right
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-7 px-2 text-xs text-destructive hover:bg-destructive/10 font-normal"
+              onClick={() => editor.chain().focus().deleteColumn().run()}
+              title="Delete current column"
+            >
+              Delete Col
+            </Button>
+          </div>
+          <Separator orientation="vertical" className="h-4 mx-0.5" />
+          <div className="flex items-center gap-1">
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="h-7 px-2.5 text-xs bg-background hover:bg-muted font-normal"
+              onClick={() => editor.chain().focus().addRowBefore().run()}
+              title="Add row above"
+            >
+              + Row Above
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="h-7 px-2.5 text-xs bg-background hover:bg-muted font-normal"
+              onClick={() => editor.chain().focus().addRowAfter().run()}
+              title="Add row below"
+            >
+              + Row Below
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-7 px-2 text-xs text-destructive hover:bg-destructive/10 font-normal"
+              onClick={() => editor.chain().focus().deleteRow().run()}
+              title="Delete current row"
+            >
+              Delete Row
+            </Button>
+          </div>
+          <Separator orientation="vertical" className="h-4 mx-0.5" />
+          <div className="flex items-center gap-1">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-7 px-2 text-xs hover:bg-muted font-normal"
+              onClick={() => editor.chain().focus().toggleHeaderRow().run()}
+              title="Toggle Header Row"
+            >
+              Header Row
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-7 px-2 text-xs text-destructive hover:bg-destructive/10 font-medium ml-auto"
+              onClick={() => editor.chain().focus().deleteTable().run()}
+              title="Remove entire table"
+            >
+              Remove Table
+            </Button>
+          </div>
+        </div>
+      )}
 
       {/* Bubble Menu */}
       {editor && (
