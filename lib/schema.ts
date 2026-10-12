@@ -18,6 +18,21 @@ export function generateOrganizationSchema(
     logo: `${cleanBaseUrl}/logo.png`,
     description:
       "Independent, evidence-based supplement information. No affiliate links, no sponsored content, no manufacturer compensation.",
+    publishingPrinciples: `${cleanBaseUrl}/editorial-policy`,
+    correctionsPolicy: `${cleanBaseUrl}/editorial-policy`,
+    ethicsPolicy: `${cleanBaseUrl}/editorial-independence`,
+    knowsAbout: [
+      "Dietary Supplements",
+      "Clinical Trial Evidence",
+      "Supplement Safety & Bioavailability",
+      "Pharmacology & Nutrient Interactions",
+      "Evidence-Based Nutritional Science",
+    ],
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "editorial research inquiries",
+      url: `${cleanBaseUrl}/contact`,
+    },
   };
 }
 
@@ -34,11 +49,19 @@ export function generateEditorialTeamSchema(
     "@type": "Organization",
     "@id": `${cleanBaseUrl}/#editorial-team`,
     name: "SupplementDecoded Research Editorial Team",
+    url: `${cleanBaseUrl}/about`,
     parentOrganization: {
       "@id": `${cleanBaseUrl}/#organization`,
     },
     description:
       "Editorial team that checks supplement marketing claims against published research and regulator guidance from the FDA, NIH, NCCIH, CDC, and peer-reviewed journals.",
+    publishingPrinciples: `${cleanBaseUrl}/editorial-policy`,
+    knowsAbout: [
+      "Systematic Reviews & Meta-Analyses",
+      "Randomized Controlled Trial (RCT) Evaluation",
+      "Supplement Claim Verification",
+      "Regulatory Guidance (FDA, FTC, EFSA)",
+    ],
   };
 }
 
@@ -106,6 +129,10 @@ export function generateBlogPostSchema(
     publisher: {
       "@id": `${cleanBaseUrl}/#organization`,
     },
+    isPartOf: {
+      "@id": `${cleanBaseUrl}/#website`,
+    },
+    inLanguage: "en-US",
     mainEntityOfPage: articleUrl,
     ...(post.category?.name && {
       articleSection: post.category.name,

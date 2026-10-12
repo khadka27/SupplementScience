@@ -16,13 +16,29 @@ Entities link together with `@id` references. Do not invent authors, reviewers, 
   "name": "SupplementDecoded",
   "url": "https://www.supplementdecoded.com/",
   "logo": "https://www.supplementdecoded.com/logo.png",
-  "description": "Independent, evidence-based supplement information. No affiliate links, no sponsored content, no manufacturer compensation."
+  "description": "Independent, evidence-based supplement information. No affiliate links, no sponsored content, no manufacturer compensation.",
+  "publishingPrinciples": "https://www.supplementdecoded.com/editorial-policy",
+  "correctionsPolicy": "https://www.supplementdecoded.com/editorial-policy",
+  "ethicsPolicy": "https://www.supplementdecoded.com/editorial-independence",
+  "knowsAbout": [
+    "Dietary Supplements",
+    "Clinical Trial Evidence",
+    "Supplement Safety & Bioavailability",
+    "Pharmacology & Nutrient Interactions",
+    "Evidence-Based Nutritional Science"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "editorial research inquiries",
+    "url": "https://www.supplementdecoded.com/contact"
+  }
 }
 ```
 
 Notes:
 - Omit `sameAs` entirely until the site has real social profiles. Never ship placeholder URLs.
 - `logo.png` must return HTTP 200 (verified 2026-10-12).
+- Links directly to `publishingPrinciples` and `ethicsPolicy` for maximum E-E-A-T trust signals.
 
 ## 2. Editorial team entity (every article page)
 
@@ -32,8 +48,16 @@ Notes:
   "@type": "Organization",
   "@id": "https://www.supplementdecoded.com/#editorial-team",
   "name": "SupplementDecoded Research Editorial Team",
+  "url": "https://www.supplementdecoded.com/about",
   "parentOrganization": { "@id": "https://www.supplementdecoded.com/#organization" },
-  "description": "Editorial team that checks supplement marketing claims against published research and regulator guidance from the FDA, NIH, NCCIH, CDC, and peer-reviewed journals."
+  "description": "Editorial team that checks supplement marketing claims against published research and regulator guidance from the FDA, NIH, NCCIH, CDC, and peer-reviewed journals.",
+  "publishingPrinciples": "https://www.supplementdecoded.com/editorial-policy",
+  "knowsAbout": [
+    "Systematic Reviews & Meta-Analyses",
+    "Randomized Controlled Trial (RCT) Evaluation",
+    "Supplement Claim Verification",
+    "Regulatory Guidance (FDA, FTC, EFSA)"
+  ]
 }
 ```
 
@@ -69,6 +93,8 @@ Notes:
   "dateModified": "2026-10-12T00:00:00Z",
   "author": { "@id": "https://www.supplementdecoded.com/#editorial-team" },
   "publisher": { "@id": "https://www.supplementdecoded.com/#organization" },
+  "isPartOf": { "@id": "https://www.supplementdecoded.com/#website" },
+  "inLanguage": "en-US",
   "mainEntityOfPage": "https://www.supplementdecoded.com/ARTICLE-SLUG",
   "articleSection": "CATEGORY NAME"
 }
