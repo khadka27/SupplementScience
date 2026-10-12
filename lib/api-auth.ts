@@ -55,6 +55,34 @@ export function extractServiceToken(req: Request | NextRequest): string | null {
 }
 
 /**
+ * Ensures the service_tokens table exists in PostgreSQL.
+ * Automatically runs if Prisma throws P2021 (table does not exist in production database).
+ */
+export async function ensureServiceTokensTable(): Promise<boolean> {
+  try {
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "service_tokens" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "name" TEXT NOT NULL,
+        "token" TEXT NOT NULL UNIQUE,
+        "token_hint" TEXT NOT NULL,
+        "description" TEXT,
+        "expires_at" TIMESTAMP(3),
+        "last_used_at" TIMESTAMP(3),
+        "is_active" BOOLEAN NOT NULL DEFAULT true,
+        "created_by" TEXT,
+        "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+      );
+    `);
+    return true;
+  } catch (err) {
+    console.error("Failed to auto-create service_tokens table:", err);
+    return false;
+  }
+}
+
+/**
  * Validates a raw service token against the database.
  */
 export async function validateServiceToken(
@@ -68,36 +96,47 @@ export async function validateServiceToken(
     return { valid: false, error: "No token provided" };
   }
 
-  const tokenRecord = await prisma.serviceToken.findUnique({
-    where: { token: rawToken },
-  });
-
-  if (!tokenRecord) {
-    return { valid: false, error: "Invalid service token" };
-  }
-
-  if (!tokenRecord.isActive) {
-    return { valid: false, error: "Service token has been deactivated or revoked" };
-  }
-
-  if (tokenRecord.expiresAt && new Date(tokenRecord.expiresAt) < new Date()) {
-    return {
-      valid: false,
-      error: `Service token expired on ${new Date(tokenRecord.expiresAt).toLocaleDateString()}`,
-    };
-  }
-
-  // Update lastUsedAt in the background without blocking execution
-  prisma.serviceToken
-    .update({
-      where: { id: tokenRecord.id },
-      data: { lastUsedAt: new Date() },
-    })
-    .catch((err) => {
-      console.error("Failed to update service token lastUsedAt timestamp:", err);
+  try {
+    const tokenRecord = await prisma.serviceToken.findUnique({
+      where: { token: rawToken },
     });
 
-  return { valid: true, serviceToken: tokenRecord };
+    if (!tokenRecord) {
+      return { valid: false, error: "Invalid service token" };
+    }
+
+    if (!tokenRecord.isActive) {
+      return { valid: false, error: "Service token has been deactivated or revoked" };
+    }
+
+    if (tokenRecord.expiresAt && new Date(tokenRecord.expiresAt) < new Date()) {
+      return {
+        valid: false,
+        error: `Service token expired on ${new Date(tokenRecord.expiresAt).toLocaleDateString()}`,
+      };
+    }
+
+    // Update lastUsedAt in the background without blocking execution
+    prisma.serviceToken
+      .update({
+        where: { id: tokenRecord.id },
+        data: { lastUsedAt: new Date() },
+      })
+      .catch((err) => {
+        console.error("Failed to update service token lastUsedAt timestamp:", err);
+      });
+
+    return { valid: true, serviceToken: tokenRecord };
+  } catch (error: any) {
+    if (error?.code === "P2021" || error?.message?.includes("service_tokens")) {
+      await ensureServiceTokensTable();
+      return {
+        valid: false,
+        error: "Service tokens table was just initialized. Please re-try.",
+      };
+    }
+    return { valid: false, error: "Database error validating service token" };
+  }
 }
 
 /**

@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authenticateApiRequest, unauthorizedResponse } from "@/lib/api-auth";
+import {
+  authenticateApiRequest,
+  unauthorizedResponse,
+  ensureServiceTokensTable,
+} from "@/lib/api-auth";
 import prisma from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -20,9 +24,21 @@ export async function DELETE(req: NextRequest, { params }: Props) {
     }
 
     const { id } = await params;
-    const token = await prisma.serviceToken.findUnique({
-      where: { id },
-    });
+    let token;
+    try {
+      token = await prisma.serviceToken.findUnique({
+        where: { id },
+      });
+    } catch (err: any) {
+      if (err?.code === "P2021" || err?.message?.includes("service_tokens")) {
+        await ensureServiceTokensTable();
+        return NextResponse.json(
+          { error: "Service token not found" },
+          { status: 404 },
+        );
+      }
+      throw err;
+    }
 
     if (!token) {
       return NextResponse.json(
@@ -62,9 +78,21 @@ export async function PATCH(req: NextRequest, { params }: Props) {
     const { id } = await params;
     const body = await req.json();
 
-    const existing = await prisma.serviceToken.findUnique({
-      where: { id },
-    });
+    let existing;
+    try {
+      existing = await prisma.serviceToken.findUnique({
+        where: { id },
+      });
+    } catch (err: any) {
+      if (err?.code === "P2021" || err?.message?.includes("service_tokens")) {
+        await ensureServiceTokensTable();
+        return NextResponse.json(
+          { error: "Service token not found" },
+          { status: 404 },
+        );
+      }
+      throw err;
+    }
 
     if (!existing) {
       return NextResponse.json(

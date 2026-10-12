@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authenticateApiRequest, unauthorizedResponse } from "@/lib/api-auth";
+import {
+  authenticateApiRequest,
+  unauthorizedResponse,
+  ensureServiceTokensTable,
+} from "@/lib/api-auth";
 import prisma from "@/lib/prisma";
 import crypto from "crypto";
 
@@ -16,21 +20,34 @@ export async function GET(req: NextRequest) {
       return unauthorizedResponse(authResult.error);
     }
 
-    const tokens = await prisma.serviceToken.findMany({
-      orderBy: { createdAt: "desc" },
-      select: {
-        id: true,
-        name: true,
-        tokenHint: true,
-        description: true,
-        expiresAt: true,
-        lastUsedAt: true,
-        isActive: true,
-        createdBy: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
+    let tokens: any[] = [];
+    try {
+      tokens = await prisma.serviceToken.findMany({
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          name: true,
+          tokenHint: true,
+          description: true,
+          expiresAt: true,
+          lastUsedAt: true,
+          isActive: true,
+          createdBy: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      });
+    } catch (dbErr: any) {
+      if (
+        dbErr?.code === "P2021" ||
+        dbErr?.message?.includes("service_tokens")
+      ) {
+        await ensureServiceTokensTable();
+        tokens = [];
+      } else {
+        throw dbErr;
+      }
+    }
 
     const now = new Date();
     const enrichedTokens = tokens.map((token: typeof tokens[number]) => {
@@ -118,16 +135,38 @@ export async function POST(req: NextRequest) {
       authResult.serviceToken?.name ||
       "admin";
 
-    const createdToken = await prisma.serviceToken.create({
-      data: {
-        name: name.trim(),
-        description: description?.trim() || null,
-        token: rawToken,
-        tokenHint,
-        expiresAt,
-        createdBy: creatorName,
-      },
-    });
+    let createdToken;
+    try {
+      createdToken = await prisma.serviceToken.create({
+        data: {
+          name: name.trim(),
+          description: description?.trim() || null,
+          token: rawToken,
+          tokenHint,
+          expiresAt,
+          createdBy: creatorName,
+        },
+      });
+    } catch (createErr: any) {
+      if (
+        createErr?.code === "P2021" ||
+        createErr?.message?.includes("service_tokens")
+      ) {
+        await ensureServiceTokensTable();
+        createdToken = await prisma.serviceToken.create({
+          data: {
+            name: name.trim(),
+            description: description?.trim() || null,
+            token: rawToken,
+            tokenHint,
+            expiresAt,
+            createdBy: creatorName,
+          },
+        });
+      } else {
+        throw createErr;
+      }
+    }
 
     return NextResponse.json(
       {
