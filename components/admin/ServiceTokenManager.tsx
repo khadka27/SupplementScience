@@ -214,8 +214,16 @@ export function ServiceTokenManager() {
       if (res.ok) {
         fetchTokens();
       } else {
-        const err = await res.json();
-        setMessage({ type: "error", text: err.error || "Failed to update token" });
+        const err = await res.json().catch(() => ({}));
+        if (res.status === 404) {
+          fetchTokens();
+          setMessage({
+            type: "error",
+            text: "This token was already deleted from the database. Refreshing list...",
+          });
+        } else {
+          setMessage({ type: "error", text: err.error || "Failed to update token" });
+        }
       }
     } catch {
       setMessage({ type: "error", text: "Error updating token status" });
@@ -244,8 +252,16 @@ export function ServiceTokenManager() {
         });
         fetchTokens();
       } else {
-        const err = await res.json();
-        setMessage({ type: "error", text: err.error || "Failed to delete token" });
+        const err = await res.json().catch(() => ({}));
+        if (res.status === 404) {
+          fetchTokens();
+          setMessage({
+            type: "error",
+            text: "This token was already removed from the database. Refreshing list...",
+          });
+        } else {
+          setMessage({ type: "error", text: err.error || "Failed to delete token" });
+        }
       }
     } catch {
       setMessage({ type: "error", text: "Error deleting token" });
