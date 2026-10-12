@@ -9,6 +9,7 @@ import {
   Save,
   Key,
   User,
+  Shield,
   Mail,
   AlertCircle,
   CheckCircle2,
@@ -25,6 +26,8 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ServiceTokenManager } from "@/components/admin/ServiceTokenManager";
 
 export default function AdminSettingsPage() {
   const { data: session, status } = useSession();
@@ -155,13 +158,11 @@ export default function AdminSettingsPage() {
 
   return (
     <AdminLayout>
-      <div className="space-y-6">
+      <div className="space-y-6 max-w-6xl">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">
-            Account Settings
-          </h2>
+          <h2 className="text-3xl font-bold tracking-tight">Settings &amp; Access</h2>
           <p className="text-muted-foreground">
-            Manage your account and credentials
+            Manage your administrator credentials, security, and API service tokens
           </p>
         </div>
 
@@ -176,163 +177,183 @@ export default function AdminSettingsPage() {
           </Alert>
         )}
 
-        {/* Profile Information */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <User className="w-5 h-5" />
-              Profile Information
-            </CardTitle>
-            <CardDescription>
-              Update your name and email address
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleUpdateProfile} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="Your name"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  disabled={isLoading}
-                />
-              </div>
+        <Tabs defaultValue="tokens" className="space-y-6">
+          <TabsList className="bg-stone-100 dark:bg-stone-900 border border-stone-200 dark:border-stone-800 p-1">
+            <TabsTrigger value="tokens" className="gap-2">
+              <Key className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              API Service Tokens
+            </TabsTrigger>
+            <TabsTrigger value="account" className="gap-2">
+              <User className="w-4 h-4" />
+              Account &amp; Credentials
+            </TabsTrigger>
+          </TabsList>
 
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="your@email.com"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  disabled={isLoading}
-                />
-              </div>
+          {/* ── API Service Tokens Tab ─────────────────────── */}
+          <TabsContent value="tokens" className="space-y-6">
+            <ServiceTokenManager />
+          </TabsContent>
 
-              <Button type="submit" disabled={isLoading}>
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Updating...
-                  </>
-                ) : (
-                  <>
-                    <Save className="mr-2 h-4 w-4" />
-                    Update Profile
-                  </>
-                )}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+          {/* ── Account Credentials Tab ────────────────────── */}
+          <TabsContent value="account" className="space-y-6">
+            {/* Profile Information */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <User className="w-5 h-5" />
+                  Profile Information
+                </CardTitle>
+                <CardDescription>
+                  Update your name and email address
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleUpdateProfile} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Name</Label>
+                    <Input
+                      id="name"
+                      type="text"
+                      placeholder="Your name"
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
+                      disabled={isLoading}
+                    />
+                  </div>
 
-        {/* Change Credentials */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Key className="w-5 h-5" />
-              Change Login Credentials
-            </CardTitle>
-            <CardDescription>
-              Update your username and password. You'll need to login again
-              after this.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleChangeCredentials} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="currentPassword">Current Password *</Label>
-                <Input
-                  id="currentPassword"
-                  type="password"
-                  placeholder="Enter current password"
-                  value={formData.currentPassword}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      currentPassword: e.target.value,
-                    })
-                  }
-                  disabled={isLoading}
-                  required
-                />
-              </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="your@email.com"
+                      value={formData.email}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
+                      disabled={isLoading}
+                    />
+                  </div>
 
-              <Separator />
+                  <Button type="submit" disabled={isLoading}>
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Updating...
+                      </>
+                    ) : (
+                      <>
+                        <Save className="mr-2 h-4 w-4" />
+                        Update Profile
+                      </>
+                    )}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
 
-              <div className="space-y-2">
-                <Label htmlFor="newUsername">New Username (optional)</Label>
-                <Input
-                  id="newUsername"
-                  type="text"
-                  placeholder="Leave empty to keep current"
-                  value={formData.newUsername}
-                  onChange={(e) =>
-                    setFormData({ ...formData, newUsername: e.target.value })
-                  }
-                  disabled={isLoading}
-                />
-              </div>
+            {/* Change Credentials */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Shield className="w-5 h-5" />
+                  Change Login Credentials
+                </CardTitle>
+                <CardDescription>
+                  Update your username and password. You will need to login again after changing credentials.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleChangeCredentials} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="currentPassword">Current Password *</Label>
+                    <Input
+                      id="currentPassword"
+                      type="password"
+                      placeholder="Enter current password"
+                      value={formData.currentPassword}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          currentPassword: e.target.value,
+                        })
+                      }
+                      disabled={isLoading}
+                      required
+                    />
+                  </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="newPassword">New Password (optional)</Label>
-                <Input
-                  id="newPassword"
-                  type="password"
-                  placeholder="Leave empty to keep current"
-                  value={formData.newPassword}
-                  onChange={(e) =>
-                    setFormData({ ...formData, newPassword: e.target.value })
-                  }
-                  disabled={isLoading}
-                />
-              </div>
+                  <Separator />
 
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm New Password</Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  placeholder="Confirm new password"
-                  value={formData.confirmPassword}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      confirmPassword: e.target.value,
-                    })
-                  }
-                  disabled={isLoading}
-                />
-              </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="newUsername">New Username (optional)</Label>
+                    <Input
+                      id="newUsername"
+                      type="text"
+                      placeholder="Leave empty to keep current"
+                      value={formData.newUsername}
+                      onChange={(e) =>
+                        setFormData({ ...formData, newUsername: e.target.value })
+                      }
+                      disabled={isLoading}
+                    />
+                  </div>
 
-              <Button type="submit" disabled={isLoading} variant="destructive">
-                {isLoading ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Updating...
-                  </>
-                ) : (
-                  <>
-                    <Key className="mr-2 h-4 w-4" />
-                    Update Credentials
-                  </>
-                )}
-              </Button>
+                  <div className="space-y-2">
+                    <Label htmlFor="newPassword">New Password (optional)</Label>
+                    <Input
+                      id="newPassword"
+                      type="password"
+                      placeholder="Leave empty to keep current"
+                      value={formData.newPassword}
+                      onChange={(e) =>
+                        setFormData({ ...formData, newPassword: e.target.value })
+                      }
+                      disabled={isLoading}
+                    />
+                  </div>
 
-              <p className="text-sm text-muted-foreground">
-                ⚠️ You will be logged out after changing credentials
-              </p>
-            </form>
-          </CardContent>
-        </Card>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                    <Input
+                      id="confirmPassword"
+                      type="password"
+                      placeholder="Confirm new password"
+                      value={formData.confirmPassword}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          confirmPassword: e.target.value,
+                        })
+                      }
+                      disabled={isLoading}
+                    />
+                  </div>
+
+                  <Button type="submit" disabled={isLoading} variant="destructive">
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Updating...
+                      </>
+                    ) : (
+                      <>
+                        <Key className="mr-2 h-4 w-4" />
+                        Update Credentials
+                      </>
+                    )}
+                  </Button>
+
+                  <p className="text-sm text-muted-foreground">
+                    ⚠️ You will be logged out after changing credentials
+                  </p>
+                </form>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </AdminLayout>
   );

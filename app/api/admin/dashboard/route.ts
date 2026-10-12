@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { authenticateApiRequest, unauthorizedResponse } from "@/lib/api-auth";
 import prisma from "@/lib/prisma";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const authResult = await authenticateApiRequest(req);
+    if (!authResult.authenticated) {
+      return unauthorizedResponse(authResult.error);
     }
 
     // Run all database queries concurrently for maximum speed

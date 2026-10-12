@@ -1,24 +1,25 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { auth } from "@/lib/auth";
+import { authenticateApiRequest } from "@/lib/api-auth";
 
 export async function GET(req: Request) {
   try {
-    const session = await auth();
+    const authResult = await authenticateApiRequest(req);
+    const isAuthenticated = authResult.authenticated;
     const { searchParams } = new URL(req.url);
     const status = searchParams.get("status");
     const search = searchParams.get("search");
     const postType = searchParams.get("postType");
 
     // Unauthenticated callers cannot query drafts or request all statuses.
-    if (!session && status && status.toUpperCase() !== "PUBLISHED") {
+    if (!isAuthenticated && status && status.toUpperCase() !== "PUBLISHED") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     const where: any = {};
 
-    if (!session) {
+    if (!isAuthenticated) {
       where.status = "PUBLISHED";
     } else if (status && status !== "all") {
       where.status = status.toUpperCase();
@@ -68,9 +69,12 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const authResult = await authenticateApiRequest(req);
+    if (!authResult.authenticated) {
+      return NextResponse.json(
+        { error: authResult.error || "Unauthorized" },
+        { status: 401 },
+      );
     }
 
     const body = await req.json();

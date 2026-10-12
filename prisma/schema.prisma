@@ -134,3 +134,19 @@ model Admin {
 
   @@map("admins")
 }
+
+model ServiceToken {
+  id          String    @id @default(uuid())
+  name        String
+  token       String    @unique
+  tokenHint   String    @map("token_hint")
+  description String?
+  expiresAt   DateTime? @map("expires_at")
+  lastUsedAt  DateTime? @map("last_used_at")
+  isActive    Boolean   @default(true) @map("is_active")
+  createdBy   String?   @map("created_by")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@map("service_tokens")
+}
