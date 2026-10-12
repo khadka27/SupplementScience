@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authenticateApiRequest, extractServiceToken } from "@/lib/api-auth";
+import {
+  authenticateApiRequest,
+  extractServiceToken,
+  validateServiceToken,
+} from "@/lib/api-auth";
+import { auth } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -8,14 +13,60 @@ export const dynamic = "force-dynamic";
  * Verification & ping endpoint for testing Service Tokens.
  * Usage:
  *   curl -H "Authorization: Bearer sd_live_..." https://www.supplementdecoded.com/api/service/verify
+ *   Browser: https://www.supplementdecoded.com/api/service/verify?token=sd_live_...
  */
 export async function GET(req: NextRequest) {
   const token = extractServiceToken(req);
 
-  if (!token) {
-    // If an administrator is currently logged in via browser cookie, return helpful diagnostics
-    const authResult = await authenticateApiRequest(req);
-    if (authResult.authenticated && authResult.type === "session") {
+  // 1. If a Service Token is provided, validate it directly
+  if (token) {
+    const result = await validateServiceToken(token);
+
+    if (!result.valid || !result.serviceToken) {
+      return NextResponse.json(
+        {
+          valid: false,
+          error: result.error || "Invalid, revoked, or expired service token.",
+        },
+        { status: 401 },
+      );
+    }
+
+    const tokenRecord = result.serviceToken;
+    const now = new Date();
+    const expiresAt = tokenRecord.expiresAt ? new Date(tokenRecord.expiresAt) : null;
+    const daysRemaining = expiresAt
+      ? Math.max(0, Math.ceil((expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
+      : null;
+
+    return NextResponse.json({
+      valid: true,
+      message: "Service token successfully authenticated.",
+      serviceToken: {
+        id: tokenRecord.id,
+        name: tokenRecord.name,
+        tokenHint: tokenRecord.tokenHint,
+        description: tokenRecord.description,
+        expiresAt: tokenRecord.expiresAt ? tokenRecord.expiresAt.toISOString() : null,
+        expiresStatus: expiresAt ? `${daysRemaining} days remaining` : "Never expires",
+        isActive: tokenRecord.isActive,
+        lastUsedAt: tokenRecord.lastUsedAt ? tokenRecord.lastUsedAt.toISOString() : "Just now",
+        createdAt: tokenRecord.createdAt.toISOString(),
+      },
+      capabilities: [
+        "read_content",
+        "publish_articles",
+        "upload_media",
+        "view_metrics",
+        "automated_sync",
+      ],
+    });
+  }
+
+  // 2. If NO service token was provided, check if administrator is logged in via browser cookie
+  try {
+    const session = await auth();
+    if (session?.user) {
       return NextResponse.json({
         valid: true,
         authType: "admin_session",
@@ -23,68 +74,27 @@ export async function GET(req: NextRequest) {
         instructions:
           "To test a specific Service Token, append ?token=sd_live_... to the URL, or use the header 'Authorization: Bearer sd_live_...'.",
         adminUser: {
-          name: authResult.user?.name,
-          email: authResult.user?.email,
-          role: authResult.user?.role,
+          name: session.user?.name,
+          email: session.user?.email,
+          role: (session.user as any)?.role,
         },
       });
     }
+  } catch {}
 
-    return NextResponse.json(
-      {
-        valid: false,
-        error:
-          "Missing service token. Provide it via header 'Authorization: Bearer <token>', header 'X-Service-Token: <token>', or query parameter '?token=<token>'.",
-        usageTip:
-          "CLI: curl -H 'Authorization: Bearer sd_live_xxx' http://localhost:3000/api/service/verify",
-        browserTip:
-          "Browser URL: http://localhost:3000/api/service/verify?token=sd_live_xxx",
-      },
-      { status: 401 },
-    );
-  }
-
-  const authResult = await authenticateApiRequest(req);
-
-  if (!authResult.authenticated || !authResult.serviceToken) {
-    return NextResponse.json(
-      {
-        valid: false,
-        error: authResult.error || "Invalid, revoked, or expired service token.",
-      },
-      { status: 401 },
-    );
-  }
-
-  const tokenRecord = authResult.serviceToken;
-  const now = new Date();
-  const expiresAt = tokenRecord.expiresAt ? new Date(tokenRecord.expiresAt) : null;
-  const daysRemaining = expiresAt
-    ? Math.max(0, Math.ceil((expiresAt.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)))
-    : null;
-
-  return NextResponse.json({
-    valid: true,
-    message: "Service token successfully authenticated.",
-    serviceToken: {
-      id: tokenRecord.id,
-      name: tokenRecord.name,
-      tokenHint: tokenRecord.tokenHint,
-      description: tokenRecord.description,
-      expiresAt: tokenRecord.expiresAt ? tokenRecord.expiresAt.toISOString() : null,
-      expiresStatus: expiresAt ? `${daysRemaining} days remaining` : "Never expires",
-      isActive: tokenRecord.isActive,
-      lastUsedAt: tokenRecord.lastUsedAt ? tokenRecord.lastUsedAt.toISOString() : "Just now",
-      createdAt: tokenRecord.createdAt.toISOString(),
+  // 3. Neither token nor session
+  return NextResponse.json(
+    {
+      valid: false,
+      error:
+        "Missing service token. Provide it via header 'Authorization: Bearer <token>', header 'X-Service-Token: <token>', or query parameter '?token=<token>'.",
+      usageTip:
+        "CLI: curl -H 'Authorization: Bearer sd_live_xxx' https://www.supplementdecoded.com/api/service/verify",
+      browserTip:
+        "Browser URL: https://www.supplementdecoded.com/api/service/verify?token=sd_live_xxx",
     },
-    capabilities: [
-      "read_content",
-      "publish_articles",
-      "upload_media",
-      "view_metrics",
-      "automated_sync",
-    ],
-  });
+    { status: 401 },
+  );
 }
 
 /**

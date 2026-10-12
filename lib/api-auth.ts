@@ -129,7 +129,28 @@ export async function validateServiceToken(
     return { valid: true, serviceToken: tokenRecord };
   } catch (error: any) {
     if (error?.code === "P2021" || error?.message?.includes("service_tokens")) {
-      await ensureServiceTokensTable();
+      const created = await ensureServiceTokensTable();
+      if (created) {
+        try {
+          const retriedRecord = await prisma.serviceToken.findUnique({
+            where: { token: rawToken },
+          });
+          if (retriedRecord) {
+            if (!retriedRecord.isActive) {
+              return { valid: false, error: "Service token has been deactivated or revoked" };
+            }
+            if (retriedRecord.expiresAt && new Date(retriedRecord.expiresAt) < new Date()) {
+              return {
+                valid: false,
+                error: `Service token expired on ${new Date(retriedRecord.expiresAt).toLocaleDateString()}`,
+              };
+            }
+            return { valid: true, serviceToken: retriedRecord };
+          }
+        } catch {
+          // Fall through to error response below
+        }
+      }
       return {
         valid: false,
         error: "Service tokens table was just initialized. Please re-try.",
@@ -141,27 +162,13 @@ export async function validateServiceToken(
 
 /**
  * Authenticates an incoming API request via either:
- * 1. Browser NextAuth session cookie
- * 2. Service Token (Bearer or X-Service-Token / X-API-Key)
+ * 1. Service Token (Bearer or X-Service-Token / X-API-Key / ?token=) - prioritized
+ * 2. Browser NextAuth session cookie (fallback for admin users)
  */
 export async function authenticateApiRequest(
   req: Request | NextRequest,
 ): Promise<AuthenticatedResult> {
-  // 1. Check for active NextAuth session
-  try {
-    const session = await auth();
-    if (session?.user) {
-      return {
-        authenticated: true,
-        type: "session",
-        user: session.user,
-      };
-    }
-  } catch (err) {
-    // Session check failed or running in headless context, proceed to check token
-  }
-
-  // 2. Check for service token
+  // 1. Prioritize explicit service token if provided in headers or query params
   const token = extractServiceToken(req);
   if (token) {
     const result = await validateServiceToken(token);
@@ -186,6 +193,20 @@ export async function authenticateApiRequest(
       error: result.error || "Invalid service token",
       status: 401,
     };
+  }
+
+  // 2. Fall back to active NextAuth session cookie for browser admins
+  try {
+    const session = await auth();
+    if (session?.user) {
+      return {
+        authenticated: true,
+        type: "session",
+        user: session.user,
+      };
+    }
+  } catch (err) {
+    // Session check failed or running in headless context
   }
 
   return {

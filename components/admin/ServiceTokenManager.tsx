@@ -270,8 +270,10 @@ export function ServiceTokenManager() {
 
   // Quick live test in modal for newly created token
   const handleTestLiveToken = async (rawToken: string) => {
+    setTestingTokenId("modal");
+    setTestResult(null);
     try {
-      const res = await fetch("/api/service/verify", {
+      const res = await fetch(`/api/service/verify?token=${encodeURIComponent(rawToken)}`, {
         headers: {
           Authorization: `Bearer ${rawToken}`,
         },
@@ -280,13 +282,15 @@ export function ServiceTokenManager() {
       setTestResult({
         success: res.ok,
         data: res.ok ? data : undefined,
-        error: !res.ok ? data.error : undefined,
+        error: !res.ok ? (data.error || "Verification failed") : undefined,
       });
     } catch (err: any) {
       setTestResult({
         success: false,
         error: err.message || "Failed to connect to verification endpoint",
       });
+    } finally {
+      setTestingTokenId(null);
     }
   };
 
@@ -775,11 +779,15 @@ print(response.json())`}</pre>
                   </Label>
                   <button
                     type="button"
-                    onClick={() =>
+                    onClick={() => {
+                      const origin =
+                        typeof window !== "undefined"
+                          ? window.location.origin
+                          : "https://www.supplementdecoded.com";
                       handleCopyCurl(
-                        `curl -H "Authorization: Bearer ${newlyCreatedToken.token}" https://www.supplementdecoded.com/api/service/verify`,
-                      )
-                    }
+                        `curl -H "Authorization: Bearer ${newlyCreatedToken.token}" ${origin}/api/service/verify`,
+                      );
+                    }}
                     className="text-xs text-emerald-600 hover:underline flex items-center gap-1 font-medium"
                   >
                     {isCurlCopied ? (
@@ -794,7 +802,7 @@ print(response.json())`}</pre>
                   </button>
                 </div>
                 <div className="p-2.5 rounded-lg bg-stone-900 text-stone-100 font-mono text-[11px] overflow-x-auto">
-                  <code>{`curl -H "Authorization: Bearer ${newlyCreatedToken.token}" https://www.supplementdecoded.com/api/service/verify`}</code>
+                  <code>{`curl -H "Authorization: Bearer ${newlyCreatedToken.token}" ${typeof window !== "undefined" ? window.location.origin : "https://www.supplementdecoded.com"}/api/service/verify`}</code>
                 </div>
               </div>
 
@@ -803,19 +811,34 @@ print(response.json())`}</pre>
                 <Button
                   variant="outline"
                   size="sm"
+                  disabled={testingTokenId === "modal"}
                   onClick={() => handleTestLiveToken(newlyCreatedToken.token)}
                   className="w-full text-xs gap-1.5 border-dashed"
                 >
-                  <Activity className="w-3.5 h-3.5 text-emerald-600" />
-                  Live Ping Verification Endpoint
+                  <Activity
+                    className={`w-3.5 h-3.5 text-emerald-600 ${
+                      testingTokenId === "modal" ? "animate-spin" : ""
+                    }`}
+                  />
+                  {testingTokenId === "modal"
+                    ? "Pinging Verification Endpoint..."
+                    : "Live Ping Verification Endpoint"}
                 </Button>
 
                 {testResult && (
                   <div className="mt-2 p-2.5 rounded-lg bg-stone-50 dark:bg-stone-900 border text-xs">
                     {testResult.success ? (
-                      <div className="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-medium">
-                        <CheckCircle2 className="w-4 h-4 shrink-0" />
-                        Verification OK: Token is valid and ready for API requests!
+                      <div className="space-y-1 text-emerald-700 dark:text-emerald-400">
+                        <div className="flex items-center gap-2 font-medium">
+                          <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+                          Verification OK: Token is valid and ready for API requests!
+                        </div>
+                        {testResult.data?.serviceToken && (
+                          <div className="text-[11px] text-muted-foreground pl-6">
+                            Status: Active • Expiration:{" "}
+                            {testResult.data.serviceToken.expiresStatus}
+                          </div>
+                        )}
                       </div>
                     ) : (
                       <div className="flex items-center gap-2 text-rose-600 font-medium">
