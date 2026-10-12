@@ -18,11 +18,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         try {
-          const admin = await prisma.admin.findUnique({
-            where: { username: credentials.username as string },
+          const rawUsername = (credentials.username as string).trim();
+          const admin = await prisma.admin.findFirst({
+            where: {
+              username: {
+                equals: rawUsername,
+                mode: "insensitive",
+              },
+            },
           });
 
-          if (!admin || !admin.isActive) {
+          if (!admin) {
+            console.warn(
+              `[auth] Sign-in failed: No admin account found matching "${rawUsername}". If this is a fresh setup, visit /admin/setup or call POST /api/admin/init`,
+            );
+            return null;
+          }
+
+          if (!admin.isActive) {
+            console.warn(
+              `[auth] Sign-in failed: Admin account "${rawUsername}" is deactivated.`,
+            );
             return null;
           }
 
@@ -32,6 +48,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           );
 
           if (!isPasswordValid) {
+            console.warn(
+              `[auth] Sign-in failed: Password mismatch for admin "${rawUsername}".`,
+            );
             return null;
           }
 
@@ -48,7 +67,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             role: admin.role,
           };
         } catch (error) {
-          console.error("Auth error:", error);
+          console.error("[auth] Error during admin authorization:", error);
           return null;
         }
       },
