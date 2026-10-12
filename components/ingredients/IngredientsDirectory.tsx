@@ -638,16 +638,16 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[940px] text-sm">
+            <table className="w-full text-left border-collapse min-w-[1100px] text-sm">
               <thead>
                 <tr className="border-b border-stone-200/90 dark:border-stone-800 bg-[#FAFAF8] dark:bg-[#0A0E13] text-[11px] uppercase tracking-wider font-bold text-slate-500 dark:text-stone-400 select-none">
                   {/* Column 1: Ingredient */}
                   <th
                     onClick={() => handleHeaderSort("name")}
-                    className="py-4 px-6 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                    className="py-4 px-6 min-w-[280px] w-[300px] cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
                   >
                     <div className="flex items-center gap-1.5">
-                      <span>Ingredient & Spec</span>
+                      <span>Ingredient &amp; Spec</span>
                       <ArrowUpDown className="w-3 h-3 text-slate-400" />
                     </div>
                   </th>
@@ -655,7 +655,7 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
                   {/* Column 2: Category */}
                   <th
                     onClick={() => handleHeaderSort("category")}
-                    className="py-4 px-5 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                    className="py-4 px-5 min-w-[170px] w-[180px] cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
                   >
                     <div className="flex items-center gap-1.5">
                       <span>Health Goal</span>
@@ -666,7 +666,7 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
                   {/* Column 3: Evidence Level */}
                   <th
                     onClick={() => handleHeaderSort("grade")}
-                    className="py-4 px-4 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                    className="py-4 px-4 min-w-[120px] w-[130px] cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
                   >
                     <div className="flex items-center gap-1.5">
                       <span>Grade</span>
@@ -677,7 +677,7 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
                   {/* Column 4: Human RCTs */}
                   <th
                     onClick={() => handleHeaderSort("trials")}
-                    className="py-4 px-5 cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                    className="py-4 px-5 min-w-[170px] w-[180px] cursor-pointer hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
                   >
                     <div className="flex items-center gap-1.5">
                       <span>Clinical Evidence</span>
@@ -686,13 +686,13 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
                   </th>
 
                   {/* Column 5: Bioactive & Mechanism */}
-                  <th className="py-4 px-5">Standardized Bioactive Form</th>
+                  <th className="py-4 px-5 min-w-[260px] w-[280px]">Standardized Bioactive Form</th>
 
                   {/* Column 6: Therapeutic Dose */}
-                  <th className="py-4 px-5">Therapeutic Dose</th>
+                  <th className="py-4 px-5 min-w-[200px] w-[220px]">Therapeutic Dose</th>
 
                   {/* Column 7: CTA */}
-                  <th className="py-4 px-6 text-right">Dossier</th>
+                  <th className="py-4 px-6 min-w-[110px] w-[120px] text-right">Dossier</th>
                 </tr>
               </thead>
 
@@ -709,27 +709,30 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
                         onClick={() => setExpandedRowId(isExpanded ? null : item.id)}
                         className={`group cursor-pointer transition-colors border-l-4 ${
                           isExpanded
-                            ? "bg-emerald-50/50 dark:bg-emerald-950/20 border-l-emerald-600"
-                            : "border-l-transparent hover:bg-stone-50/80 dark:hover:bg-stone-850/50 hover:border-l-emerald-500/60"
+                            ? "bg-emerald-50/70 dark:bg-[#0E1A17] border-l-emerald-600 dark:border-l-emerald-500"
+                            : "border-l-transparent hover:bg-stone-50/80 dark:hover:bg-[#121921] hover:border-l-emerald-500/60 dark:hover:border-l-emerald-400"
                         }`}
                       >
                         {/* Col 1: Ingredient */}
-                        <td className="py-4 px-6">
+                        <td className="py-4.5 px-6 min-w-[280px]">
                           <div className="flex items-center gap-3">
-                            <div className="w-9 h-9 rounded-xl bg-stone-100 dark:bg-stone-800 flex items-center justify-center text-slate-700 dark:text-stone-300 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-950/80 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors shrink-0">
+                            <div className="w-10 h-10 rounded-xl bg-stone-100 dark:bg-[#131A20] border border-stone-200/80 dark:border-stone-800/80 flex items-center justify-center text-slate-700 dark:text-stone-300 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-950/60 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 group-hover:border-emerald-500/30 transition-colors shrink-0">
                               <IconComponent className="w-4 h-4" />
                             </div>
-                            <div>
-                              <div className="font-semibold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors flex items-center gap-1.5">
-                                {commonName}
+                            <div className="min-w-0">
+                              <div className="font-bold text-sm sm:text-base text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors flex items-center gap-1.5 whitespace-nowrap">
+                                <span>{commonName}</span>
                                 <ChevronDown
-                                  className={`w-3.5 h-3.5 text-slate-400 transition-transform ${
+                                  className={`w-3.5 h-3.5 text-slate-400 transition-transform shrink-0 ${
                                     isExpanded ? "rotate-180 text-emerald-600 dark:text-emerald-400" : ""
                                   }`}
                                 />
                               </div>
                               {scientificName && (
-                                <div className="text-xs font-mono text-slate-400 dark:text-stone-500 italic mt-0.5">
+                                <div
+                                  className="text-xs font-mono text-slate-400 dark:text-stone-400 italic mt-0.5 truncate max-w-[220px]"
+                                  title={scientificName}
+                                >
                                   {scientificName}
                                 </div>
                               )}
@@ -738,16 +741,16 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
                         </td>
 
                         {/* Col 2: Category */}
-                        <td className="py-4 px-5 whitespace-nowrap">
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-stone-800/80 text-slate-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-700/80">
+                        <td className="py-4.5 px-5 whitespace-nowrap min-w-[170px]">
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-stone-100 dark:bg-[#131B22] text-slate-700 dark:text-stone-300 border border-stone-200/80 dark:border-stone-800">
                             {item.category?.name || "General"}
                           </span>
                         </td>
 
                         {/* Col 3: Evidence Grade */}
-                        <td className="py-4 px-4 whitespace-nowrap">
+                        <td className="py-4.5 px-4 whitespace-nowrap min-w-[120px]">
                           <span
-                            className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${
+                            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold ${
                               clinical.evidenceGrade.includes("A")
                                 ? "bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800"
                                 : "bg-blue-50 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300 border border-blue-200/80 dark:border-blue-800"
@@ -759,12 +762,12 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
                         </td>
 
                         {/* Col 4: Human RCTs & confidence bar */}
-                        <td className="py-4 px-5 whitespace-nowrap">
+                        <td className="py-4.5 px-5 whitespace-nowrap min-w-[170px]">
                           <div className="font-semibold text-xs text-slate-800 dark:text-stone-200">
                             {clinical.trialCount}
                           </div>
                           {/* Mini visual confidence bar */}
-                          <div className="w-24 h-1.5 bg-stone-100 dark:bg-stone-800 rounded-full mt-1.5 overflow-hidden">
+                          <div className="w-24 h-1.5 bg-stone-200 dark:bg-stone-800 rounded-full mt-1.5 overflow-hidden">
                             <div
                               className="h-full bg-emerald-500 rounded-full"
                               style={{
@@ -775,29 +778,29 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
                         </td>
 
                         {/* Col 5: Standardized Bioactive Form */}
-                        <td className="py-4 px-5">
-                          <div className="text-xs font-mono font-medium text-emerald-700 dark:text-emerald-300 truncate max-w-xs">
+                        <td className="py-4.5 px-5 min-w-[260px]">
+                          <div className="text-xs font-mono font-medium text-emerald-700 dark:text-emerald-400">
                             {clinical.bioactive}
                           </div>
-                          <div className="text-[11px] text-slate-500 dark:text-stone-400 truncate max-w-xs mt-0.5">
+                          <div className="text-[11px] text-slate-500 dark:text-stone-400 mt-0.5">
                             {clinical.keyOutcome}
                           </div>
                         </td>
 
                         {/* Col 6: Therapeutic Dose */}
-                        <td className="py-4 px-5 whitespace-nowrap">
-                          <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-stone-50 dark:bg-stone-800/80 border border-stone-200/70 dark:border-stone-700/80 text-xs font-mono font-medium text-slate-800 dark:text-stone-200">
-                            <Clock className="w-3 h-3 text-slate-400" />
-                            {clinical.doseWindow}
+                        <td className="py-4.5 px-5 whitespace-nowrap min-w-[200px]">
+                          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-100 dark:bg-[#131B22] border border-stone-200/80 dark:border-stone-800 text-xs font-mono font-medium text-slate-800 dark:text-stone-200">
+                            <Clock className="w-3 h-3 text-slate-400 dark:text-stone-500 shrink-0" />
+                            <span>{clinical.doseWindow}</span>
                           </div>
                         </td>
 
                         {/* Col 7: Action */}
-                        <td className="py-4 px-6 text-right whitespace-nowrap">
+                        <td className="py-4.5 px-6 text-right whitespace-nowrap min-w-[110px]">
                           <Link
                             href={`/ingredients/${item.slug}`}
                             onClick={(e) => e.stopPropagation()}
-                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-stone-100 hover:bg-emerald-600 hover:text-white dark:bg-stone-800 dark:hover:bg-emerald-600 dark:hover:text-white text-xs font-semibold text-slate-700 dark:text-stone-200 transition-all shadow-2xs group-hover:scale-102"
+                            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-stone-100 hover:bg-emerald-600 hover:text-white dark:bg-stone-800/90 dark:hover:bg-emerald-600 dark:hover:text-white text-xs font-semibold text-slate-700 dark:text-stone-200 transition-all shadow-2xs group-hover:scale-105"
                           >
                             <span>Dossier</span>
                             <ArrowRight className="w-3.5 h-3.5" />
