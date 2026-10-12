@@ -159,10 +159,80 @@ async function getCategories(): Promise<any[]> {
   }
 }
 
+async function getIngredientMonographs(): Promise<any[]> {
+  try {
+    const data = await prisma.post.findMany({
+      where: {
+        status: "PUBLISHED",
+        postType: "ingredient",
+      },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        excerpt: true,
+        cardImageUrl: true,
+        featuredImageUrl: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            slug: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "asc",
+      },
+    });
+    return data || [];
+  } catch (error) {
+    console.error("Database connection notice (getIngredientMonographs):", error);
+    return [];
+  }
+}
+
+async function getIngredientCategories(): Promise<any[]> {
+  try {
+    const data = await prisma.category.findMany({
+      where: {
+        posts: {
+          some: {
+            postType: "ingredient",
+            status: "PUBLISHED",
+          },
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+      },
+      orderBy: {
+        name: "asc",
+      },
+    });
+    return data || [];
+  } catch (error) {
+    console.error("Database connection notice (getIngredientCategories):", error);
+    return [];
+  }
+}
+
 export default async function Home() {
-  const featuredPosts = await getFeaturedPosts();
-  const recentPosts = await getRecentPosts();
-  const categories = await getCategories();
+  const [
+    featuredPosts,
+    recentPosts,
+    categories,
+    ingredientMonographs,
+    ingredientCategories,
+  ] = await Promise.all([
+    getFeaturedPosts(),
+    getRecentPosts(),
+    getCategories(),
+    getIngredientMonographs(),
+    getIngredientCategories(),
+  ]);
 
   const mainFeaturedPost = featuredPosts[0] || recentPosts[0];
   const postsToShow = recentPosts.slice(0, 6);
@@ -313,8 +383,11 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
-      {/* Redesigned Clinical Editorial Hero & Search Engine */}
-      <ClinicalHeroSearch />
+      {/* Redesigned Clinical Editorial Hero & Search Engine (Database Driven) */}
+      <ClinicalHeroSearch
+        initialIngredients={ingredientMonographs}
+        categories={ingredientCategories}
+      />
 
       {/* ══ Who This Is For ════════════════════════════════════════════ */}
       <section className="relative py-12 sm:py-20 md:py-24 px-4 bg-white dark:bg-[#07090B] overflow-hidden">

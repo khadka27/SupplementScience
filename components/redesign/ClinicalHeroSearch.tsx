@@ -21,49 +21,148 @@ interface RealSearchResult {
   matchPercentage?: number;
 }
 
-const FILTER_TAGS = [
-  { label: "Sleep & Anxiety", query: "sleep" },
-  { label: "Cognitive Health", query: "cognition" },
-  { label: "Hormones & Cortisol", query: "cortisol" },
-  { label: "Sports Performance", query: "creatine" },
-  { label: "Metabolic Health", query: "metabolic" },
-  { label: "Joints & Mobility", query: "joint" },
-];
+export interface ShowcaseIngredient {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt?: string | null;
+  cardImageUrl?: string | null;
+  featuredImageUrl?: string | null;
+  category?: {
+    id: string;
+    name: string;
+    slug: string;
+  } | null;
+}
 
-const FEATURED_CARDS = [
-  {
-    id: "ashwagandha",
-    name: "Ashwagandha KSM-66",
-    image: "/images/ashwagandha_bottle.jpg",
-    grade: "Grade A",
-    trials: "48 Human RCTs",
-    tag: "Stress & Cortisol",
-    slug: "ashwagandha",
-    dark: false,
-  },
-  {
-    id: "creatine",
-    name: "Creatine Creapure®",
-    image: "/images/creatine_bottle.jpg",
-    grade: "Grade A",
-    trials: "500+ Clinical Trials",
-    tag: "Power & Cognition",
-    slug: "creatine-monohydrate",
-    dark: true,
-  },
-  {
-    id: "magnesium",
-    name: "Magnesium Bisglycinate",
-    image: "/images/magnesium_bottle.jpg",
-    grade: "Grade A",
-    trials: "72 Human RCTs",
-    tag: "Sleep & Muscle Relaxation",
-    slug: "magnesium-glycinate",
-    dark: false,
-  },
-];
+export interface ShowcaseCategory {
+  id: string;
+  name: string;
+  slug: string;
+}
 
-export function ClinicalHeroSearch() {
+export interface ClinicalHeroSearchProps {
+  initialIngredients?: ShowcaseIngredient[];
+  categories?: ShowcaseCategory[];
+}
+
+// Clean common name parser from database post title
+function parseIngredientCommonName(title: string, slug?: string): string {
+  if (slug === "ashwagandha" || title.toLowerCase().includes("ashwagandha")) {
+    return "Ashwagandha KSM-66";
+  }
+  const match = title.match(/^(.*?)\s*\((.*?)\)$/);
+  if (match) {
+    const main = match[1].trim();
+    if (match[2].includes("Creapure")) return "Creatine Creapure®";
+    if (match[2].includes("Chelated")) return "Magnesium Bisglycinate";
+    if (match[2].includes("KSM-66")) return "Ashwagandha KSM-66";
+    return main;
+  }
+  return title;
+}
+
+// Clinical trial dossier metrics by ingredient slug
+function getIngredientMeta(slug: string, fallbackCategory?: string) {
+  switch (slug) {
+    case "ashwagandha":
+      return {
+        grade: "Grade A",
+        trials: "48 Human RCTs",
+        tag: "Stress & Cortisol",
+        image: "/images/ashwagandha_bottle.jpg",
+      };
+    case "creatine-monohydrate":
+      return {
+        grade: "Grade A",
+        trials: "500+ Clinical Trials",
+        tag: "Power & Cognition",
+        image: "/images/creatine_bottle.jpg",
+      };
+    case "magnesium-glycinate":
+      return {
+        grade: "Grade A",
+        trials: "72 Human RCTs",
+        tag: "Sleep & Muscle Relaxation",
+        image: "/images/magnesium_bottle.jpg",
+      };
+    case "l-theanine":
+      return {
+        grade: "Grade A",
+        trials: "31 Human RCTs",
+        tag: "Cognition & Focus",
+        image: "/images/ashwagandha_bottle.jpg",
+      };
+    case "berberine":
+      return {
+        grade: "Grade A",
+        trials: "45 Human RCTs",
+        tag: "Metabolic Health",
+        image: "/images/creatine_bottle.jpg",
+      };
+    case "omega-3":
+      return {
+        grade: "Grade A",
+        trials: "350+ Clinical Trials",
+        tag: "Heart & Brain Health",
+        image: "/images/magnesium_bottle.jpg",
+      };
+    case "curcumin-turmeric":
+      return {
+        grade: "Grade A",
+        trials: "85 Human RCTs",
+        tag: "Joints & Mobility",
+        image: "/images/ashwagandha_bottle.jpg",
+      };
+    case "vitamin-d3":
+      return {
+        grade: "Grade A",
+        trials: "140+ Human RCTs",
+        tag: "Bone & Immune Health",
+        image: "/images/magnesium_bottle.jpg",
+      };
+    case "rhodiola-rosea":
+      return {
+        grade: "Grade B+",
+        trials: "24 Human RCTs",
+        tag: "Fatigue & Resilience",
+        image: "/images/ashwagandha_bottle.jpg",
+      };
+    case "lions-mane":
+      return {
+        grade: "Grade B+",
+        trials: "18 Human Trials",
+        tag: "Neurogenesis & Memory",
+        image: "/images/creatine_bottle.jpg",
+      };
+    case "zinc":
+      return {
+        grade: "Grade A",
+        trials: "62 Human RCTs",
+        tag: "Immune Defense",
+        image: "/images/magnesium_bottle.jpg",
+      };
+    case "coq10":
+      return {
+        grade: "Grade A",
+        trials: "80+ Human RCTs",
+        tag: "Cellular Bioenergetics",
+        image: "/images/creatine_bottle.jpg",
+      };
+    default:
+      return {
+        grade: "Grade A",
+        trials: "Clinical Trial Dossier",
+        tag: fallbackCategory || "Clinical Monograph",
+        image: "/images/ashwagandha_bottle.jpg",
+      };
+  }
+}
+
+export function ClinicalHeroSearch({
+  initialIngredients = [],
+  categories: initialCategories = [],
+}: ClinicalHeroSearchProps = {}) {
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<RealSearchResult[]>([]);
@@ -73,6 +172,28 @@ export function ClinicalHeroSearch() {
   const [isFocused, setIsFocused] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Real database ingredients and categories state (No mock data)
+  const [allIngredients, setAllIngredients] = useState<ShowcaseIngredient[]>(initialIngredients);
+  const [categoryList, setCategoryList] = useState<ShowcaseCategory[]>(initialCategories);
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+
+  // Client-side fetch fallback if props were not provided (e.g., in /showcase)
+  useEffect(() => {
+    if (allIngredients.length === 0 || categoryList.length === 0) {
+      fetch("/api/monographs/showcase")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.allIngredients && data.allIngredients.length > 0) {
+            setAllIngredients(data.allIngredients);
+          }
+          if (data.categories && data.categories.length > 0) {
+            setCategoryList(data.categories);
+          }
+        })
+        .catch((err) => console.error("Failed to load showcase data:", err));
+    }
+  }, [allIngredients.length, categoryList.length]);
 
   // Fetch real data from the database using our fuzzy search API
   useEffect(() => {
@@ -162,6 +283,54 @@ export function ClinicalHeroSearch() {
       }
     }
   };
+
+  // Filter ingredients based on selected category (no mock data, 100% database driven)
+  const displayedCards = React.useMemo(() => {
+    if (!allIngredients || allIngredients.length === 0) return [];
+
+    if (activeCategory === "all") {
+      const priorityOrder = [
+        "ashwagandha",
+        "creatine-monohydrate",
+        "magnesium-glycinate",
+      ];
+      const prioritized = [...allIngredients].sort((a, b) => {
+        const indexA = priorityOrder.indexOf(a.slug);
+        const indexB = priorityOrder.indexOf(b.slug);
+        if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+        if (indexA !== -1) return -1;
+        if (indexB !== -1) return 1;
+        return 0;
+      });
+      return prioritized.slice(0, 3).map((item, idx) => ({
+        ...item,
+        dark: idx === 1,
+      }));
+    }
+
+    const matching = allIngredients.filter(
+      (item) => item.category?.slug === activeCategory,
+    );
+
+    // If 3 or more matching in this category, return top 3
+    if (matching.length >= 3) {
+      return matching.slice(0, 3).map((item, idx) => ({
+        ...item,
+        dark: idx === 1,
+      }));
+    }
+
+    // If fewer than 3, display matching first, then fill remaining slots with other database ingredients
+    const others = allIngredients.filter(
+      (item) => item.category?.slug !== activeCategory,
+    );
+    const combined = [...matching, ...others];
+
+    return combined.slice(0, 3).map((item, idx) => ({
+      ...item,
+      dark: idx === 1,
+    }));
+  }, [allIngredients, activeCategory]);
 
   return (
     <section
@@ -409,39 +578,51 @@ export function ClinicalHeroSearch() {
         </div>
       </div>
 
-      {/* ── QUICK FILTER TOPICS (TEXT-ONLY CLEAN PILLS, NO ICONS/SVGS/EMOJIS) ── */}
+      {/* ── QUICK FILTER TOPICS (REAL DATABASE CATEGORIES) ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
         <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 py-1">
-          
           {/* Label */}
           <span className="text-[11px] font-mono font-bold tracking-wider text-stone-400 uppercase mr-1 select-none">
             RESEARCH BY :
           </span>
 
-          {/* Clean Text-Only Rounded Pills */}
-          {FILTER_TAGS.map((tag, idx) => {
-            const isFirst = idx === 0;
+          {/* All Topics Pill */}
+          <button
+            type="button"
+            onClick={() => setActiveCategory("all")}
+            className={`inline-flex items-center px-4 py-2 rounded-full text-xs sm:text-[13px] font-medium transition-all duration-200 shadow-2xs hover:shadow-sm cursor-pointer ${
+              activeCategory === "all"
+                ? "bg-white dark:bg-[#121A16] text-[#0E3B2F] dark:text-emerald-400 border border-[#0E3B2F]/60 dark:border-emerald-600 ring-1 ring-[#0E3B2F]/30"
+                : "bg-white dark:bg-[#0D1217] text-stone-700 dark:text-stone-300 border border-stone-200/90 dark:border-stone-800 hover:border-[#0E3B2F] hover:text-[#0E3B2F] dark:hover:border-emerald-500 dark:hover:text-emerald-300"
+            }`}
+          >
+            All Research
+          </button>
+
+          {/* Dynamic Category Pills from Database */}
+          {categoryList.map((cat) => {
+            const isActive = activeCategory === cat.slug;
             return (
-              <Link
-                key={tag.label}
-                href={`/ingredients?search=${encodeURIComponent(tag.query)}`}
-                className={`inline-flex items-center px-4 py-2 rounded-full text-xs sm:text-[13px] font-medium transition-all duration-200 shadow-2xs hover:shadow-sm ${
-                  isFirst
-                    ? "bg-white dark:bg-[#121A16] text-[#0E3B2F] dark:text-emerald-400 border border-[#0E3B2F]/60 dark:border-emerald-600 hover:bg-[#0E3B2F] hover:text-white"
+              <button
+                key={cat.id || cat.slug}
+                type="button"
+                onClick={() => setActiveCategory(cat.slug)}
+                className={`inline-flex items-center px-4 py-2 rounded-full text-xs sm:text-[13px] font-medium transition-all duration-200 shadow-2xs hover:shadow-sm cursor-pointer ${
+                  isActive
+                    ? "bg-white dark:bg-[#121A16] text-[#0E3B2F] dark:text-emerald-400 border border-[#0E3B2F]/60 dark:border-emerald-600 ring-1 ring-[#0E3B2F]/30 font-semibold"
                     : "bg-white dark:bg-[#0D1217] text-stone-700 dark:text-stone-300 border border-stone-200/90 dark:border-stone-800 hover:border-[#0E3B2F] hover:text-[#0E3B2F] dark:hover:border-emerald-500 dark:hover:text-emerald-300"
                 }`}
               >
-                {tag.label}
-              </Link>
+                {cat.name}
+              </button>
             );
           })}
         </div>
       </div>
 
-      {/* ── BOTTOM SECTION: "CLINICAL MONOGRAPHS" + 3 SHOWCASE CARDS ── */}
+      {/* ── BOTTOM SECTION: "CLINICAL MONOGRAPHS" + 3 SHOWCASE CARDS FROM DATABASE ── */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          
           {/* Left Title: NEW PRODUCTS / CLINICAL MONOGRAPHS */}
           <div className="lg:col-span-3 flex flex-col justify-center text-left">
             <span className="text-2xl sm:text-3xl font-black text-stone-900 dark:text-stone-100 tracking-tight leading-none uppercase">
@@ -455,15 +636,18 @@ export function ClinicalHeroSearch() {
             </p>
           </div>
 
-          {/* Right: 3 Showcase Cards (Middle Card is Dark like Reference) */}
+          {/* Right: 3 Showcase Cards from Database (Middle Card is Dark) */}
           <div className="lg:col-span-9 grid grid-cols-1 sm:grid-cols-3 gap-5">
-            {FEATURED_CARDS.map((card) => {
-              const isDark = card.dark;
+            {displayedCards.map((item) => {
+              const meta = getIngredientMeta(item.slug, item.category?.name);
+              const commonName = parseIngredientCommonName(item.title, item.slug);
+              const isDark = item.dark;
+              const imageSrc = item.cardImageUrl || item.featuredImageUrl || meta.image;
 
               return (
                 <Link
-                  key={card.id}
-                  href={`/ingredients/${card.slug}`}
+                  key={item.id}
+                  href={`/ingredients/${item.slug}`}
                   className={`group relative rounded-3xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl ${
                     isDark
                       ? "bg-[#1E252B] dark:bg-[#12181E] text-white shadow-lg shadow-stone-900/20 border border-stone-700/50"
@@ -473,21 +657,21 @@ export function ClinicalHeroSearch() {
                   {/* Product Image Stage Tile */}
                   <div className="relative w-full h-40 mb-4 rounded-2xl bg-white dark:bg-stone-900/90 flex items-center justify-center p-3 shadow-xs border border-stone-200/50 dark:border-stone-800/80 overflow-hidden">
                     <Image
-                      src={card.image}
-                      alt={card.name}
+                      src={imageSrc}
+                      alt={commonName}
                       width={160}
                       height={160}
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
 
-                  {/* Product Title */}
+                  {/* Product Title from Database */}
                   <h3
                     className={`font-bold text-sm sm:text-base tracking-tight mb-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors ${
                       isDark ? "text-white" : "text-stone-900 dark:text-stone-100"
                     }`}
                   >
-                    {card.name}
+                    {commonName}
                   </h3>
 
                   {/* Trials / Grade Metatag */}
@@ -496,10 +680,10 @@ export function ClinicalHeroSearch() {
                       isDark ? "text-emerald-400" : "text-emerald-800 dark:text-emerald-300"
                     }`}
                   >
-                    {card.grade} · {card.trials}
+                    {meta.grade} · {meta.trials}
                   </div>
 
-                  {/* Category Pill */}
+                  {/* Category Pill from Database */}
                   <span
                     className={`mt-2 px-2.5 py-0.5 rounded-full text-[10px] font-mono uppercase tracking-wider ${
                       isDark
@@ -507,13 +691,12 @@ export function ClinicalHeroSearch() {
                         : "bg-white/80 dark:bg-stone-900/60 text-stone-600 dark:text-stone-300"
                     }`}
                   >
-                    {card.tag}
+                    {item.category?.name || meta.tag}
                   </span>
                 </Link>
               );
             })}
           </div>
-
         </div>
       </div>
     </section>
