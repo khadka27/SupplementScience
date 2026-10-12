@@ -34,6 +34,7 @@ import {
   DosageEvaluator,
   MultiFormComparisonMatrix,
 } from "@/components/redesign";
+import { generateWebsiteSchema } from "@/lib/schema";
 
 import { Metadata } from "next";
 
@@ -45,17 +46,34 @@ const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
   "https://www.supplementdecoded.com") as string;
 
 export const metadata: Metadata = {
-  title: "SupplementDecoded | Independent Supplement Research & Scam Analysis",
+  title: {
+    absolute: "Independent Supplement Research & Scam Analysis | SupplementDecoded",
+  },
   description:
-    "We analyze supplements others just sell. No affiliate links, no sponsor influence — just transparent ingredient research, safety evaluations, and scam exposure based on public evidence.",
+    "Transparent ingredient research, clinical evaluations, and scam exposure based on published evidence. Independent, evidence-first health monographs.",
   alternates: {
     canonical: baseUrl,
   },
   openGraph: {
-    title: "SupplementDecoded | Independent Supplement Research & Scam Analysis",
+    title: "Independent Supplement Research & Scam Analysis | SupplementDecoded",
     description:
-      "No affiliate links. No sponsored content. Transparent ingredient research, safety reviews, and scam exposure for anyone who refuses to be misled.",
+      "Transparent ingredient research, clinical evaluations, and scam exposure based on published evidence. Independent, evidence-first health monographs.",
     url: baseUrl,
+    images: [
+      {
+        url: `${baseUrl}/og-default.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "SupplementDecoded",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Independent Supplement Research & Scam Analysis | SupplementDecoded",
+    description:
+      "Transparent ingredient research, clinical evaluations, and scam exposure based on published evidence.",
+    images: [`${baseUrl}/og-default.jpg`],
   },
 };
 
@@ -284,11 +302,17 @@ export default async function Home() {
     "Skin Care": Sparkles,
   };
 
+  const websiteSchema = generateWebsiteSchema(baseUrl);
+
   return (
     <div
       className="min-h-screen bg-[#FAFAF8] dark:bg-[#070A0E] text-slate-900 dark:text-stone-100 transition-colors duration-300"
       suppressHydrationWarning={true}
     >
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
       {/* Redesigned Clinical Editorial Hero & Search Engine */}
       <ClinicalHeroSearch />
 

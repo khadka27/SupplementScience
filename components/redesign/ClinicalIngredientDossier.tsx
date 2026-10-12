@@ -38,7 +38,7 @@ export function ClinicalIngredientDossier({
   category = "Neuroendocrine & Stress Adaptation",
   evidenceGrade = "A",
   humanRctCount = 48,
-  primaryProvenOutcome = "Serum Cortisol & Anxiety Reduction (-27.9%)",
+  primaryProvenOutcome = "Serum Cortisol & Anxiety Reduction",
   standardTherapeuticDose = "300 - 600 mg/day (Standardized Extract)",
   reviewerName = "SupplementDecoded Research Editorial Team",
   reviewerCredentials = "",

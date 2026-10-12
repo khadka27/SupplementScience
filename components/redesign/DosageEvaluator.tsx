@@ -227,7 +227,7 @@ export function DosageEvaluator() {
                       Clinically Validated Dose ({selectedForm.minEffectiveMg} - {selectedForm.maxOptimalMg} mg)
                     </div>
                     <p className="text-xs text-[#0E3B2F]/80 dark:text-emerald-300/80 mt-1 leading-relaxed">
-                      Matches 82% of peer-reviewed human RCTs. This window yields maximal serum cortisol reduction (-27.9%) with zero documented adverse events or next-day lethargy.
+                      Aligns with clinical dosing ranges evaluated in peer-reviewed trials for healthy cortisol and stress response, with a favorable tolerability profile when taken as directed.
                     </p>
                   </div>
                 </div>
@@ -280,7 +280,7 @@ export function DosageEvaluator() {
                   Take With Dietary Fats
                 </div>
                 <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-snug">
-                  Withanolides are fat-soluble steroidal lactones. Absorption increases up to 34% when ingested alongside lipids (eggs, avocado, or full-fat yogurt).
+                  Withanolides are fat-soluble botanical compounds. Bioavailability and absorption improve when ingested alongside healthy dietary lipids (e.g., eggs, avocado, or yogurt).
                 </p>
               </div>
 

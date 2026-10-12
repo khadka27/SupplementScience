@@ -5,7 +5,7 @@ const baseUrl =
   (((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || "https://www.supplementdecoded.com") as string);
 
 export const metadata: Metadata = {
-  title: "Safety Measures for Supplement Use | SupplementDecoded",
+  title: "Safety Measures for Supplement Use",
   description:
     "An evidence-based guide to responsible supplement decisions. Learn how to approach supplement use responsibly, with safety, context, and evidence in mind.",
   alternates: {

@@ -1,17 +1,26 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/lib/auth";
 
 export async function GET(req: Request) {
   try {
+    const session = await auth();
     const { searchParams } = new URL(req.url);
     const status = searchParams.get("status");
     const search = searchParams.get("search");
     const postType = searchParams.get("postType");
 
+    // Unauthenticated callers cannot query drafts or request all statuses.
+    if (!session && status && status.toUpperCase() !== "PUBLISHED") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const where: any = {};
 
-    if (status && status !== "all") {
+    if (!session) {
+      where.status = "PUBLISHED";
+    } else if (status && status !== "all") {
       where.status = status.toUpperCase();
     }
 
@@ -59,6 +68,11 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    const session = await auth();
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await req.json();
     const {
       title,

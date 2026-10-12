@@ -10,7 +10,7 @@ const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
   "https://www.supplementdecoded.com") as string;
 
 export const metadata: Metadata = {
-  title: "Fact-Checking Process | SupplementDecoded",
+  title: "Fact-Checking Process",
   description:
     "Learn about our fact-checking process. Discover how we verify scientific statements, review sources, and ensure content accuracy for our readers.",
   alternates: {

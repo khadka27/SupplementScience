@@ -10,11 +10,23 @@ const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
   "https://www.supplementdecoded.com") as string;
 
 export const metadata: Metadata = {
-  title: "Editorial Policy | SupplementDecoded",
+  title: "Editorial Policy",
   description:
     "Read our Editorial Policy to learn how we provide clear, accurate, and unbiased health information to help you understand supplements and nutrition in context.",
   alternates: {
     canonical: `${baseUrl}/editorial-policy`,
+  },
+  openGraph: {
+    title: "Editorial Policy | SupplementDecoded",
+    description: "Read our Editorial Policy to learn how we provide clear, accurate, and unbiased health information.",
+    url: `${baseUrl}/editorial-policy`,
+    images: [{ url: `${baseUrl}/og-default.jpg`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Editorial Policy | SupplementDecoded",
+    description: "Read our Editorial Policy to learn how we provide clear, accurate, and unbiased health information.",
+    images: [`${baseUrl}/og-default.jpg`],
   },
   robots: {
     index: true,
@@ -72,27 +84,27 @@ export default function EditorialPolicyPage() {
 
               <h2>Complete Editorial Independence</h2>
               <p>
-                This website operates with full editorial independence and no
-                monetization.
+                This website operates with strict editorial independence. While contextual
+                third-party network advertising (such as Google AdSense) may appear to support
+                hosting, technological infrastructure, and ongoing research, commercial partnerships
+                never influence our editorial analysis, review scores, or recommendations.
               </p>
               <ul>
-                <li>We do not use affiliate links</li>
+                <li>We do not use affiliate links or product referral commissions</li>
                 <li>
-                  We do not accept sponsorships, commissions, or referral
-                  payments
+                  We do not accept paid brand sponsorships, sponsored articles, or commercial placements
                 </li>
                 <li>
-                  We do not receive compensation from supplement manufacturers
-                  or brands
+                  We do not receive compensation or free products from supplement manufacturers or brands
                 </li>
                 <li>
-                  No financial relationships influence topic selection,
-                  analysis, or conclusions
+                  No advertiser, network, or external partner has any influence over topic selection,
+                  research methodology, or clinical conclusions
                 </li>
               </ul>
               <p>
-                Our content is created solely for public education and
-                understanding, without commercial intent.
+                Our research monographs are created solely for evidence-based public education
+                and consumer safety, free of commercial brand bias.
               </p>
 
               <h2>How Topics Are Selected</h2>

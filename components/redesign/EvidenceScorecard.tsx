@@ -67,7 +67,7 @@ const DEFAULT_OUTCOMES: EvidenceOutcome[] = [
     claim: "Serum Cortisol & Perceived Stress (PSS)",
     consensus: "Strong",
     effectMagnitude: 4,
-    effectLabel: "Moderate-Large (-27.9%)",
+    effectLabel: "Statistically Significant",
     studyCount: 16,
     sampleSize: 1140,
     primaryPmid: "23439798",
@@ -170,7 +170,7 @@ export function EvidenceScorecard({
   evidenceGrade = "A",
   evidenceGradeDescription = "Strong, replicated double-blind human RCTs establish therapeutic efficacy for primary indications.",
   humanRctCount = 48,
-  primaryProvenOutcome = "Serum Cortisol Reduction (-27.9%)",
+  primaryProvenOutcome = "Serum Cortisol Reduction",
   standardTherapeuticDose = "300 - 600 mg/day (KSM-66 / Sensoril)",
   reviewerName = "SupplementDecoded Research Editorial Team",
   reviewerCredentials = "",
@@ -293,7 +293,7 @@ export function EvidenceScorecard({
                 {ingredientName}: Human Clinical Evidence &amp; Safety Audit
               </h1>
               <p className="text-base text-slate-600 dark:text-slate-400 mt-2 italic">
-                Botanical taxon: <span className="font-medium text-[#0F172A] dark:text-slate-300">{scientificName}</span> • Solanaceae family
+                Botanical taxon: <span className="font-medium text-[#0F172A] dark:text-slate-300">{scientificName}</span>{scientificName === "Withania somnifera" ? " • Solanaceae family" : ""}
               </p>
             </div>
 

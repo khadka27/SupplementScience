@@ -6,11 +6,23 @@ const baseUrl =
   (((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || "https://www.supplementdecoded.com") as string);
 
 export const metadata: Metadata = {
-  title: "Medical Disclaimer | SupplementDecoded",
+  title: "Medical Disclaimer",
   description:
     "Please read our medical disclaimer. All content on this website is provided for educational and informational purposes only.",
   alternates: {
     canonical: `${baseUrl}/medical-disclaimer`,
+  },
+  openGraph: {
+    title: "Medical Disclaimer | SupplementDecoded",
+    description: "Important health information, evidence limitations, and usage guidelines.",
+    url: `${baseUrl}/medical-disclaimer`,
+    images: [{ url: `${baseUrl}/og-default.jpg`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Medical Disclaimer | SupplementDecoded",
+    description: "Important health information, evidence limitations, and usage guidelines.",
+    images: [`${baseUrl}/og-default.jpg`],
   },
   robots: {
     index: true,
@@ -146,15 +158,16 @@ export default function MedicalDisclaimerPage() {
                 policies.
               </p>
 
-              <h2>Monetization and Affiliate Policy</h2>
+              <h2>Monetization and Advertising Policy</h2>
               <p>
-                This website does not use affiliate links, sponsored placements,
-                referral programs, or advertising partnerships.
+                This website does not participate in affiliate commission programs, sponsored
+                product placements, paid brand partnerships, or manufacturer referral schemes.
               </p>
               <p>
-                We do not receive compensation from supplement manufacturers,
-                retailers, or third-party services for linking to external
-                resources.
+                To support site infrastructure and editorial maintenance, this website may display
+                automated, non-personalized third-party network advertisements (such as Google AdSense).
+                Advertisements are clearly demarcated from editorial content, and advertisers have
+                zero input into or influence on our clinical evaluations, ratings, or research findings.
               </p>
               <p>
                 Any external links are provided solely for educational context

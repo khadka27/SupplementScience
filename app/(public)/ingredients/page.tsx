@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     canonical: `${baseUrl}/ingredients`,
   },
   openGraph: {
-    title: "Clinical Supplement Ingredients Library | SupplementDecoded",
+    title: "Clinical Supplement Ingredients Library",
     description:
       "Explore independent, peer-reviewed monographs of supplement ingredients analyzed for human RCT efficacy, standardized forms, and safety.",
     url: `${baseUrl}/ingredients`,

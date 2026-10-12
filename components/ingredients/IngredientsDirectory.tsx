@@ -77,7 +77,7 @@ function getIngredientClinicalMeta(slug: string, categoryName?: string | null) {
         evidenceGrade: "Grade A",
         trialCount: "48 Human RCTs",
         trialsNumeric: 48,
-        keyOutcome: "Cortisol & Stress Reduction (-27.9%)",
+        keyOutcome: "Cortisol & Stress Reduction",
         bioactive: "Withanolides (KSM-66 / Sensoril)",
         doseWindow: "300 – 600 mg/day",
         badgeColor: "emerald",

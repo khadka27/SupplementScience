@@ -21,7 +21,7 @@ import {
 const TRUST_PILLARS = [
   {
     icon: FlaskConical,
-    title: "1,420+ Human Clinical RCTs",
+    title: "Peer-Reviewed Clinical Trials",
     desc: "Double-blind, placebo-controlled human trial evidence only.",
   },
   {
@@ -164,7 +164,7 @@ export function Footer() {
             <div className="pt-2">
               <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-800/40 text-[10px] font-mono text-emerald-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>1,420+ RCTs Live-Synced · 2026 Standards</span>
+                <span>Clinical Evidence-Based · 2026 Standards</span>
               </span>
             </div>
           </div>

@@ -376,7 +376,7 @@ export function ClinicalHeroSearch() {
 
                       {/* Dropdown Footer */}
                       <div className="px-4 py-2.5 bg-stone-50 dark:bg-stone-900/80 border-t border-stone-100 dark:border-stone-800 flex items-center justify-between text-[10px] text-stone-500 shrink-0">
-                        <span className="shrink-0">Database: 1,420+ RCTs indexed</span>
+                        <span className="shrink-0">Database: Peer-reviewed clinical evidence</span>
                         <Link
                           href="/ingredients"
                           className="font-bold text-[#0E3B2F] dark:text-emerald-400 hover:underline shrink-0"

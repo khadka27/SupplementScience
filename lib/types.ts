@@ -20,6 +20,7 @@ export type Category = {
   metaTitle?: string | null;
   metaDescription?: string | null;
   imageUrl?: string | null;
+  isHub?: boolean;
   postCount: number;
   createdAt: Date;
   updatedAt: Date;

@@ -2,7 +2,11 @@ import { notFound, redirect } from "next/navigation";
 import { Metadata } from "next";
 import prisma from "@/lib/prisma";
 import BlogPostContent from "@/components/blog/BlogPostContent";
-import { generateBlogPostSchema, generateBreadcrumbSchema } from "@/lib/schema";
+import {
+  generateBlogPostSchema,
+  generateBreadcrumbSchema,
+  generateEditorialTeamSchema,
+} from "@/lib/schema";
 import { normalizeSlug } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -78,7 +82,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { post } = data;
 
   return {
-    title: post.metaTitle || post.title,
+    title: (post.metaTitle || post.title).replace(/\s*\|\s*SupplementDecoded$/i, ""),
     description: post.metaDescription || post.excerpt || "",
     keywords: post.tags?.map((t: any) => t.name) || [],
     alternates: { canonical: `${baseUrl}/${slug}/${post.slug}` },
@@ -152,15 +156,30 @@ export default async function CategorizedPostPage({ params }: Props) {
     "https://www.supplementdecoded.com") as string;
   const { category, post } = data;
 
+  const editorialTeamSchema = generateEditorialTeamSchema(baseUrl);
   const blogPostSchema = generateBlogPostSchema(post as any, baseUrl);
-  const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: "Home", url: baseUrl },
-    { name: category.name, url: `/${slug}` },
-    { name: post.title, url: `/${slug}/${postSlug}` },
-  ]);
+  const categoryUrl = category.isHub
+    ? `${baseUrl}/${category.slug}`
+    : `${baseUrl}/category/${category.slug}`;
+  const postUrl = `${baseUrl}/${slug}/${postSlug}`;
+
+  const breadcrumbSchema = generateBreadcrumbSchema(
+    [
+      { name: "Home", url: `${baseUrl}/` },
+      { name: category.name, url: categoryUrl },
+      { name: post.title, url: postUrl },
+    ],
+    baseUrl,
+  );
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(editorialTeamSchema),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostSchema) }}

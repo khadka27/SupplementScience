@@ -4,6 +4,7 @@ import prisma from "@/lib/prisma";
 import BlogList from "@/components/blog/BlogList";
 import Image from "next/image";
 import { normalizeSlug } from "@/lib/utils";
+import { generateBreadcrumbSchema } from "@/lib/schema";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 10;
@@ -63,7 +64,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     "https://www.supplementdecoded.com") as string;
 
   return {
-    title: `${data.category.metaTitle || data.category.name} | SupplementDecoded`,
+    title: (data.category.metaTitle || data.category.name).replace(/\s*\|\s*SupplementDecoded$/i, ""),
     description:
       data.category.metaDescription || data.category.description || "",
     alternates: {
@@ -99,9 +100,27 @@ export default async function CategoryPage({ params }: Props) {
   if (!data) notFound();
 
   const { category, posts } = data;
+  const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
+    process.env.NEXT_PUBLIC_BASE_URL.replace(
+      /^https?:\/\/supplementdecoded\.com/i,
+      "https://www.supplementdecoded.com",
+    )) ||
+    "https://www.supplementdecoded.com") as string;
+
+  const breadcrumbSchema = generateBreadcrumbSchema(
+    [
+      { name: "Home", url: `${baseUrl}/` },
+      { name: category.name, url: `${baseUrl}/category/${category.slug}` },
+    ],
+    baseUrl,
+  );
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#070A0E] text-slate-900 dark:text-slate-100 pt-20 sm:pt-[84px] pb-20">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="flex flex-col md:flex-row gap-8 items-center mb-16">
           {category.imageUrl && (

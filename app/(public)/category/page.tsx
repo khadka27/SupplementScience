@@ -13,7 +13,7 @@ const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
   "https://www.supplementdecoded.com") as string;
 
 export const metadata: Metadata = {
-  title: "Supplement Categories | SupplementDecoded",
+  title: "Supplement Categories",
   description:
     "Browse all supplement research categories — independent evidence-based analysis of ingredients, safety, and product claims organized by health topic.",
   alternates: {

@@ -35,7 +35,7 @@
 ### 3. Ashwagandha Standardization & Cortisol Regulation
 - **Optimal Compound**: Standardized Root Extract (KSM-66 standardized to 5% withanolides; Sensoril standardized to 10% withanolides).
 - **Therapeutic Dose**: 300 mg to 600 mg daily in divided doses.
-- **Clinical Evidence**: Demonstrates statistically significant reductions in serum cortisol (-27.9% to -30.5%) and Hamilton Anxiety Rating Scale scores across 8-week double-blind RCTs.
+- **Clinical Evidence**: Demonstrates statistically significant reductions in serum cortisol and Hamilton Anxiety Rating Scale scores across 8-week double-blind RCTs.
 - **Contraindications**: Autoimmune thyroid disease (may elevate free T3/T4) and concurrent sedative pharmaceuticals.
 
 ### 4. Calcium, Vitamin D3, and Vitamin K2 Triad for Bone Mineral Density

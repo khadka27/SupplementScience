@@ -10,7 +10,7 @@ import Image from "next/image";
 import {
   generateBlogPostSchema,
   generateBreadcrumbSchema,
-  generateFAQSchema,
+  generateEditorialTeamSchema,
 } from "@/lib/schema";
 import { normalizeSlug } from "@/lib/utils";
 
@@ -132,7 +132,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (data.type === "category") {
     const { category } = data;
     return {
-      title: category.metaTitle || `${category.name} | SupplementDecoded`,
+      title: (category.metaTitle || category.name).replace(/\s*\|\s*SupplementDecoded$/i, ""),
       description:
         category.metaDescription ||
         category.description ||
@@ -142,7 +142,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   } else {
     const { post } = data;
     return {
-      title: post.metaTitle || post.title,
+      title: (post.metaTitle || post.title).replace(/\s*\|\s*SupplementDecoded$/i, ""),
       description: post.metaDescription || post.excerpt || "",
       keywords: post.tags?.map((t: any) => t.name) || [],
       alternates: { canonical: `${baseUrl}/${post.slug}` },
@@ -193,17 +193,32 @@ export default async function GenericSlugPage({ params }: Props) {
 
   if (data.type === "post") {
     const { post } = data;
+    const editorialTeamSchema = generateEditorialTeamSchema(baseUrl);
     const blogPostSchema = generateBlogPostSchema(post as any, baseUrl);
-    const breadcrumbSchema = generateBreadcrumbSchema([
-      { name: "Home", url: baseUrl },
-      ...(post.category
-        ? [{ name: post.category.name, url: `/${post.category.slug}` }]
-        : []),
-      { name: post.title, url: `/${post.slug}` },
-    ]);
+    const categoryUrl = post.category
+      ? (post.category.isHub
+          ? `${baseUrl}/${post.category.slug}`
+          : `${baseUrl}/category/${post.category.slug}`)
+      : undefined;
+    const breadcrumbSchema = generateBreadcrumbSchema(
+      [
+        { name: "Home", url: `${baseUrl}/` },
+        ...(post.category && categoryUrl
+          ? [{ name: post.category.name, url: categoryUrl }]
+          : []),
+        { name: post.title, url: `${baseUrl}/${post.slug}` },
+      ],
+      baseUrl,
+    );
 
     return (
       <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(editorialTeamSchema),
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostSchema) }}
@@ -224,12 +239,22 @@ export default async function GenericSlugPage({ params }: Props) {
 
   // Handle Category
   const { category, mainArticle, posts } = data;
+  const editorialTeamSchema = generateEditorialTeamSchema(baseUrl);
+  const mainArticleCategoryUrl = category.isHub
+    ? `${baseUrl}/${category.slug}`
+    : `${baseUrl}/category/${category.slug}`;
 
   return (
     <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#070A0E] text-slate-900 dark:text-slate-100">
       {/* If we have a main article, we render it using BlogPostContent but inside the category context */}
       {mainArticle ? (
         <>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(editorialTeamSchema),
+            }}
+          />
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
@@ -242,10 +267,17 @@ export default async function GenericSlugPage({ params }: Props) {
             type="application/ld+json"
             dangerouslySetInnerHTML={{
               __html: JSON.stringify(
-                generateBreadcrumbSchema([
-                  { name: "Home", url: baseUrl },
-                  { name: category.name, url: `/${category.slug}` },
-                ]),
+                generateBreadcrumbSchema(
+                  [
+                    { name: "Home", url: `${baseUrl}/` },
+                    { name: category.name, url: mainArticleCategoryUrl },
+                    {
+                      name: mainArticle.title,
+                      url: `${baseUrl}/${category.slug}/${mainArticle.slug}`,
+                    },
+                  ],
+                  baseUrl,
+                ),
               ),
             }}
           />

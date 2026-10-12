@@ -26,7 +26,7 @@ const baseUrl = (
 ) as string;
 
 export const metadata: Metadata = {
-  title: "About Our Research & Editorial Charter | SupplementDecoded",
+  title: "About Our Research & Editorial Charter",
   description:
     "SupplementDecoded is an independent educational monograph database. We evaluate dietary supplement ingredients using double-blind human RCTs, bioavailability kinetics, and zero commercial sponsor influence.",
   alternates: {
@@ -35,15 +35,30 @@ export const metadata: Metadata = {
   openGraph: {
     title: "About Our Research & Editorial Charter | SupplementDecoded",
     description:
-      "Independent clinical supplement monographs. Human trials only, elemental dosage verification, and zero affiliate kickbacks.",
+      "Independent clinical supplement monographs. Human trials only, elemental dosage verification, and zero commercial sponsor influence.",
     url: `${baseUrl}/about`,
     type: "website",
+    images: [
+      {
+        url: `${baseUrl}/og-default.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "SupplementDecoded About Us",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Our Research & Editorial Charter | SupplementDecoded",
+    description:
+      "Independent clinical supplement monographs backed by peer-reviewed human trials.",
+    images: [`${baseUrl}/og-default.jpg`],
   },
 };
 
 const STATS = [
-  { value: "1,420+", label: "Human RCTs Indexed", sub: "Double-blind, placebo-controlled" },
-  { value: "0%", label: "Sponsor or Affiliate Bias", sub: "Strict anti-commercial charter" },
+  { value: "100%", label: "Peer-Reviewed Evidence", sub: "Double-blind, placebo-controlled trials" },
+  { value: "0%", label: "Sponsor Influence", sub: "Independent research charter" },
   { value: "100%", label: "Editorial Fact-Checked", sub: "Clinical evidence oversight" },
   { value: "USP / WHO", label: "Purity Standards", sub: "Heavy metal screening limits" },
 ];
@@ -89,7 +104,7 @@ const EVIDENCE_LEVELS = [
 const GOVERNANCE_LINKS = [
   {
     title: "Editorial Policy",
-    desc: "Our non-commercial charter, conflict-of-interest guidelines, and source verification hierarchy.",
+    desc: "Our independent charter, conflict-of-interest guidelines, and source verification hierarchy.",
     href: "/editorial-policy",
     icon: FileText,
   },
@@ -145,7 +160,7 @@ export default function AboutPage() {
             <div className="flex flex-wrap items-center gap-4 sm:gap-6 text-xs font-mono text-stone-500 dark:text-stone-400">
               <div className="flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-[#0E3B2F] dark:text-emerald-400 shrink-0" />
-                <span>100% Non-Commercial</span>
+                <span>100% Sponsor-Independent</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <FlaskConical className="w-4 h-4 text-[#0E3B2F] dark:text-emerald-400 shrink-0" />
@@ -153,7 +168,7 @@ export default function AboutPage() {
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                <span>Updated Continually (2026 Standards)</span>
+                <span>Last Updated: October 4, 2026</span>
               </div>
             </div>
 
@@ -311,7 +326,7 @@ export default function AboutPage() {
               <span>THE ZERO-CONFLICT COVENANT</span>
             </div>
             <h2 className="font-serif text-3xl sm:text-4xl font-black text-stone-900 dark:text-stone-100 tracking-tight mb-3">
-              Our Non-Commercial Independence Charter
+              Our Editorial Independence Charter
             </h2>
             <p className="text-xs sm:text-sm text-stone-600 dark:text-stone-400 leading-relaxed font-sans">
               Financial independence is the only guarantee of scientific integrity in dietary supplement research.
@@ -501,8 +516,8 @@ export default function AboutPage() {
                 Explore the Clinical Monograph Database
               </h2>
               <p className="text-emerald-100/85 text-xs sm:text-sm leading-relaxed mb-8">
-                Search over 1,420 peer-reviewed trials, therapeutic dosing ranges, and safety screens
-                for 384+ dietary supplement compounds.
+                Search peer-reviewed trials, therapeutic dosing ranges, and safety screens
+                across our dietary supplement research monographs.
               </p>
 
               <div className="flex flex-wrap items-center justify-center gap-3">

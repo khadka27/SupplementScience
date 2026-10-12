@@ -10,11 +10,23 @@ const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
   "https://www.supplementdecoded.com") as string;
 
 export const metadata: Metadata = {
-  title: "Editorial Independence & Disclosure | SupplementDecoded",
+  title: "Editorial Independence & Disclosure",
   description:
     "Learn about how SupplementDecoded maintains editorial independence, ensures transparency, evaluates evidence, and manages conflicts of interest.",
   alternates: {
     canonical: `${baseUrl}/editorial-independence`,
+  },
+  openGraph: {
+    title: "Editorial Independence & Disclosure | SupplementDecoded",
+    description: "How SupplementDecoded maintains editorial independence and evaluates evidence.",
+    url: `${baseUrl}/editorial-independence`,
+    images: [{ url: `${baseUrl}/og-default.jpg`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Editorial Independence & Disclosure | SupplementDecoded",
+    description: "How SupplementDecoded maintains editorial independence and evaluates evidence.",
+    images: [`${baseUrl}/og-default.jpg`],
   },
   robots: {
     index: true,
@@ -330,24 +342,20 @@ export default function EditorialIndependencePage() {
 
               <h2>Editorial Funding and Financial Model</h2>
               <p>
-                SupplementDecoded currently operates as a non-commercial
-                educational publication.
+                SupplementDecoded maintains complete financial separation between editorial research
+                and operational funding. To help offset hosting and indexing costs, the site may
+                host automated third-party network advertisements (e.g. Google AdSense).
               </p>
-              <p>We do not generate revenue through:</p>
+              <p>We strictly do not accept revenue from:</p>
               <ul>
-                <li>Affiliate programs</li>
-                <li>Sponsored content</li>
-                <li>Product promotion</li>
-                <li>Advertising partnerships related to supplement products</li>
+                <li>Affiliate links or commission-based referral sales</li>
+                <li>Sponsored reviews or paid article placements</li>
+                <li>Manufacturer endorsements or direct product promotion</li>
+                <li>Direct advertising relationships with supplement manufacturers</li>
               </ul>
               <p>
                 Content is created solely for educational and informational
-                purposes.
-              </p>
-              <p>
-                If this model changes in the future, appropriate disclosure will
-                be provided, and editorial independence policies will remain in
-                place.
+                purposes with strict editorial independence.
               </p>
 
               <h2>Relationship to Editorial Policy and Disclaimer</h2>
@@ -392,7 +400,7 @@ export default function EditorialIndependencePage() {
 
               <hr className="my-10 border-stone-200/90 dark:border-stone-800" />
               <p className="text-sm text-slate-500 dark:text-slate-400 italic text-center">
-                Last reviewed and updated: March 2026
+                Last reviewed and updated: October 2026
               </p>
             </div>
           </div>

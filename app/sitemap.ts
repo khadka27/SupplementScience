@@ -15,42 +15,80 @@ function absoluteImageUrl(url: string | null | undefined): string | undefined {
 export const revalidate = 3600; // revalidate every hour
 export const dynamic = "force-dynamic";
 
+const REVISION_DATE = new Date("2026-10-04T12:00:00.000Z");
+
 const staticPages: MetadataRoute.Sitemap = [
   {
     url: baseUrl,
-    lastModified: new Date(),
+    lastModified: REVISION_DATE,
     changeFrequency: "daily",
     priority: 1.0,
   },
   {
-    url: `${baseUrl}/category`,
-    lastModified: new Date(),
+    url: `${baseUrl}/ingredients`,
+    lastModified: REVISION_DATE,
+    changeFrequency: "daily",
+    priority: 0.9,
+  },
+  {
+    url: `${baseUrl}/guides`,
+    lastModified: REVISION_DATE,
     changeFrequency: "weekly",
     priority: 0.9,
   },
   {
+    url: `${baseUrl}/category`,
+    lastModified: REVISION_DATE,
+    changeFrequency: "weekly",
+    priority: 0.8,
+  },
+  {
     url: `${baseUrl}/about`,
-    lastModified: new Date(),
+    lastModified: REVISION_DATE,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  },
+  {
+    url: `${baseUrl}/contact`,
+    lastModified: REVISION_DATE,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  },
+  {
+    url: `${baseUrl}/editorial-policy`,
+    lastModified: REVISION_DATE,
     changeFrequency: "monthly",
     priority: 0.6,
   },
   {
-    url: `${baseUrl}/contact`,
-    lastModified: new Date(),
+    url: `${baseUrl}/medical-disclaimer`,
+    lastModified: REVISION_DATE,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  },
+  {
+    url: `${baseUrl}/editorial-independence`,
+    lastModified: REVISION_DATE,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  },
+  {
+    url: `${baseUrl}/fact-checking`,
+    lastModified: REVISION_DATE,
     changeFrequency: "monthly",
     priority: 0.6,
   },
   {
     url: `${baseUrl}/privacy`,
-    lastModified: new Date(),
+    lastModified: REVISION_DATE,
     changeFrequency: "monthly",
-    priority: 0.4,
+    priority: 0.5,
   },
   {
     url: `${baseUrl}/terms`,
-    lastModified: new Date(),
+    lastModified: REVISION_DATE,
     changeFrequency: "monthly",
-    priority: 0.4,
+    priority: 0.5,
   },
 ];
 
@@ -84,33 +122,45 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       take: 1000,
     });
 
-    const postUrls = posts.map((post: (typeof posts)[number]) => {
-      const categorySlug = post.category?.slug?.toLowerCase();
-      const isHub = post.category?.isHub;
-      let url: string;
+    const postUrls = posts
+      .map((post: (typeof posts)[number]) => {
+        const categorySlug = post.category?.slug?.toLowerCase();
+        const isHub = post.category?.isHub;
+        let url: string;
 
-      if (post.postType === "ingredient") {
-        url = `${baseUrl}/ingredients/${post.slug}`;
-      } else if (isHub && categorySlug) {
-        url = `${baseUrl}/${categorySlug}/${post.slug}`;
-      } else if (categorySlug) {
-        url =
-          post.slug === categorySlug
-            ? `${baseUrl}/category/${categorySlug}`
-            : `${baseUrl}/${categorySlug}/${post.slug}`;
-      } else {
-        url = `${baseUrl}/${post.slug}`;
-      }
+        if (post.postType === "ingredient") {
+          url = `${baseUrl}/ingredients/${post.slug}`;
+        } else if (post.postType === "guide") {
+          url = `${baseUrl}/guides/${post.slug}`;
+        } else if (isHub && categorySlug) {
+          url = `${baseUrl}/${categorySlug}/${post.slug}`;
+        } else if (categorySlug) {
+          url =
+            post.slug === categorySlug
+              ? `${baseUrl}/category/${categorySlug}`
+              : `${baseUrl}/${categorySlug}/${post.slug}`;
+        } else {
+          url = `${baseUrl}/${post.slug}`;
+        }
 
-      const absImage = absoluteImageUrl(post.featuredImageUrl);
-      return {
-        url,
-        lastModified: post.updatedAt,
-        changeFrequency: "monthly" as const,
-        priority: 0.8,
-        ...(absImage && { images: [absImage] }),
-      };
-    });
+        const absImage = absoluteImageUrl(post.featuredImageUrl);
+        return {
+          url,
+          lastModified: post.updatedAt,
+          changeFrequency: "monthly" as const,
+          priority: 0.8,
+          ...(absImage && { images: [absImage] }),
+        };
+      })
+      .filter((entry) => {
+        const decoded = decodeURIComponent(entry.url).toLowerCase();
+        // Remove dead/unencoded space URLs and redirected paths
+        return (
+          !decoded.includes("omega 3 fatty acids") &&
+          !decoded.includes("how-to-choose-the-best-joint-pain-supplement-safely") &&
+          !entry.url.includes(" ")
+        );
+      });
 
     const categoryUrls = categories.map(
       (category: (typeof categories)[number]) => {

@@ -2,7 +2,11 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import prisma from "@/lib/prisma";
 import BlogPostContent from "@/components/blog/BlogPostContent";
-import { generateBlogPostSchema, generateBreadcrumbSchema } from "@/lib/schema";
+import {
+  generateBlogPostSchema,
+  generateBreadcrumbSchema,
+  generateEditorialTeamSchema,
+} from "@/lib/schema";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 10;
@@ -39,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!post) return { title: "Guide Not Found" };
 
   return {
-    title: post.metaTitle || `${post.title} | SupplementDecoded`,
+    title: (post.metaTitle || post.title).replace(/\s*\|\s*SupplementDecoded$/i, ""),
     description: post.metaDescription || post.excerpt || "",
     alternates: { canonical: `${baseUrl}/guides/${post.slug}` },
   };
@@ -64,12 +68,16 @@ export default async function GuidePage({ params }: Props) {
 
   if (!post) notFound();
 
+  const editorialTeamSchema = generateEditorialTeamSchema(baseUrl);
   const blogPostSchema = generateBlogPostSchema(post as any, baseUrl);
-  const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: "Home", url: baseUrl },
-    { name: "Guides", url: "/guides" },
-    { name: post.title, url: `/guides/${post.slug}` },
-  ]);
+  const breadcrumbSchema = generateBreadcrumbSchema(
+    [
+      { name: "Home", url: `${baseUrl}/` },
+      { name: "Guides", url: `${baseUrl}/guides` },
+      { name: post.title, url: `${baseUrl}/guides/${post.slug}` },
+    ],
+    baseUrl,
+  );
 
   const formattedPost = {
     ...post,
@@ -78,6 +86,12 @@ export default async function GuidePage({ params }: Props) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(editorialTeamSchema),
+        }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostSchema) }}

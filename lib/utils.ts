@@ -66,8 +66,11 @@ export function getPostHref(post: {
   return `/${post.slug}`;
 }
 
-export function getCategoryHref(category: { slug: string }) {
-  return `/${category.slug}`;
+export function getCategoryHref(category: { slug: string; isHub?: boolean | null }) {
+  if (category.slug === "ingredients") {
+    return "/ingredients";
+  }
+  return category.isHub ? `/${category.slug}` : `/category/${category.slug}`;
 }
 
 export function isValidImageUrl(url: string | null | undefined): boolean {

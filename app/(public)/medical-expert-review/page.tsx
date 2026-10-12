@@ -10,7 +10,7 @@ const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
   "https://www.supplementdecoded.com") as string;
 
 export const metadata: Metadata = {
-  title: "Medical / Expert Review Policy | SupplementDecoded",
+  title: "Medical / Expert Review Policy",
   description:
     "Learn how our medical and expert review process ensures accurate, balanced, and responsible health information. Understand our standards for scientific accuracy and transparency.",
   alternates: {

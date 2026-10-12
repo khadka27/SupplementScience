@@ -6,11 +6,23 @@ const baseUrl =
   (((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || "https://www.supplementdecoded.com") as string);
 
 export const metadata: Metadata = {
-  title: "Terms of Use | SupplementDecoded",
+  title: "Terms of Use",
   description:
     "Please read these Terms of Use carefully before using our website. By accessing or using the site, you agree to be bound by these terms.",
   alternates: {
     canonical: `${baseUrl}/terms`,
+  },
+  openGraph: {
+    title: "Terms of Use | SupplementDecoded",
+    description: "Please read these Terms of Use carefully before using our website.",
+    url: `${baseUrl}/terms`,
+    images: [{ url: `${baseUrl}/og-default.jpg`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Terms of Use | SupplementDecoded",
+    description: "Please read these Terms of Use carefully before using our website.",
+    images: [`${baseUrl}/og-default.jpg`],
   },
   robots: {
     index: true,
@@ -36,7 +48,7 @@ export default function TermsPage() {
             Please read these terms carefully before using our website.
           </p>
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0D1217] border border-stone-200/90 dark:border-stone-800 text-xs font-medium text-slate-600 dark:text-slate-400 shadow-xs">
-            <span>Last Updated: February 25, 2026</span>
+            <span>Last Updated: October 4, 2026</span>
           </div>
         </div>
       </section>

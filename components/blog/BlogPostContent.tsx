@@ -24,6 +24,11 @@ import {
   AlertTriangle,
   CheckCircle2,
   XCircle,
+  ShieldCheck,
+  Scale,
+  Sparkles,
+  Activity,
+  ArrowDown,
 } from "lucide-react";
 
 import { Post, Source } from "@/lib/types";
@@ -73,6 +78,29 @@ export default function BlogPostContent({
   const sanitizedContent = useMemo(() => {
     return DOMPurify.sanitize(prepareContent(post.content));
   }, [post.content]);
+
+  const displayExcerpt = useMemo(() => {
+    if (!post.excerpt) return null;
+    const raw = post.excerpt.trim();
+    const cleanTitle = post.title.trim();
+    if (
+      raw === cleanTitle ||
+      raw.replaceAll(cleanTitle, "").trim() === "" ||
+      raw.length < 10
+    ) {
+      return `Comprehensive evidence-based evaluation of ${cleanTitle}, analyzing published human clinical research, comparative metrics, and safety profiles.`;
+    }
+    return raw;
+  }, [post.excerpt, post.title]);
+
+  const factCheckedLabel = useMemo(() => {
+    const defaultTeam = "SupplementDecoded Research Editorial Team";
+    const raw = (post.factCheckedBy || defaultTeam).trim();
+    if (/^the\s+/i.test(raw)) {
+      return `Fact-checked by ${raw}`;
+    }
+    return `Fact-checked by the ${raw}`;
+  }, [post.factCheckedBy]);
 
   const getSummaryLinks = (articleUrl: string) => {
     const promptText = `Summarize this article and key takeaways: ${articleUrl}`;
@@ -191,18 +219,27 @@ export default function BlogPostContent({
 
   const summaryLinks = getSummaryLinks(currentArticleUrl || getPostHref(post));
 
+  const categoryUrl =
+    post.postType === "ingredient" || post.category?.slug === "ingredients"
+      ? "/ingredients"
+      : post.postType === "guide"
+        ? "/guides"
+        : post.category
+          ? (post.category.isHub ? `/${post.category.slug}` : `/category/${post.category.slug}`)
+          : null;
+
+  const categoryName =
+    post.postType === "ingredient" || post.category?.slug === "ingredients"
+      ? "Ingredients"
+      : post.postType === "guide"
+        ? "Guides"
+        : post.category?.name;
+
   const breadcrumbItems = [
     { name: "Home", url: "/" },
-    ...(post.category?.slug === "ingredients"
-      ? [{ name: "Ingredients", url: "/ingredients" }]
-      : post.category
-        ? [
-            {
-              name: post.category.name,
-              url: `/${post.category.slug}`,
-            },
-          ]
-        : []),
+    ...(categoryUrl && categoryName
+      ? [{ name: categoryName, url: categoryUrl }]
+      : []),
     { name: post.title, url: getPostHref(post) },
   ];
 
@@ -276,9 +313,7 @@ export default function BlogPostContent({
                 {/* Editorial Fact-Checked Badge */}
                 <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full bg-stone-100 dark:bg-stone-900 border border-stone-200/90 dark:border-stone-800 shadow-2xs text-[10px] sm:text-xs font-semibold text-stone-800 dark:text-stone-200 whitespace-nowrap shrink-0">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                  <span>
-                    Fact-checked by {post.factCheckedBy || "Research Editorial Team"}
-                  </span>
+                  <span>{factCheckedLabel}</span>
                 </div>
               </div>
 
@@ -343,9 +378,9 @@ export default function BlogPostContent({
                       {format(
                         new Date(
                           post.reviewedAt ||
-                            post.updatedAt ||
-                            post.publishedAt ||
-                            new Date(),
+                          post.updatedAt ||
+                          post.publishedAt ||
+                          new Date(),
                         ),
                         "MMM d, yyyy",
                       )}
@@ -356,6 +391,11 @@ export default function BlogPostContent({
                     <Clock className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                     <span>{post.readTimeMinutes} min read</span>
                   </div>
+                  <span className="text-black/20">·</span>
+                  <span className="flex items-center gap-1 text-[11px] sm:text-xs font-bold text-emerald-700 bg-emerald-50 dark:text-emerald-300 dark:bg-emerald-900/30 px-2.5 py-0.5 rounded-full whitespace-nowrap">
+                    <CheckCircle2 className="w-3.5 h-3.5 shrink-0" />
+                    <span>{factCheckedLabel}</span>
+                  </span>
                   {post.reviewedBy && (
                     <>
                       <span className="text-black/20">·</span>
@@ -502,9 +542,9 @@ export default function BlogPostContent({
                         .map((s) => s.trim())
                         .filter((s) => s.length > 10).length > 0
                         ? post.excerpt
-                            .split(/(?<=[.?!])\s+/)
-                            .map((s) => s.trim())
-                            .filter((s) => s.length > 10)
+                          .split(/(?<=[.?!])\s+/)
+                          .map((s) => s.trim())
+                          .filter((s) => s.length > 10)
                         : [post.excerpt]
                     }
                   />

@@ -23,7 +23,7 @@ const baseUrl = (
 ) as string;
 
 export const metadata: Metadata = {
-  title: "Contact & Research Triage Desk | SupplementDecoded",
+  title: "Contact & Research Triage Desk",
   description:
     "Direct editorial intake for clinical researchers, whistleblowers reporting tainted supplements, journalists, and readers. Confidential, independent editorial review.",
   alternates: {
@@ -35,6 +35,21 @@ export const metadata: Metadata = {
       "Direct editorial intake for clinical researchers, whistleblowers reporting tainted supplements, journalists, and readers. Confidential, independent editorial review.",
     url: `${baseUrl}/contact`,
     type: "website",
+    images: [
+      {
+        url: `${baseUrl}/og-default.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "SupplementDecoded Contact Desk",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact & Research Triage Desk | SupplementDecoded",
+    description:
+      "Direct editorial intake for clinical researchers, whistleblowers reporting tainted supplements, journalists, and readers.",
+    images: [`${baseUrl}/og-default.jpg`],
   },
 };
 
@@ -131,6 +146,10 @@ export default function ContactPage() {
               <div className="flex items-center gap-1.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
                 <span>Zero Sponsor Access</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                <span>Last Updated: October 4, 2026</span>
               </div>
             </div>
 
@@ -298,7 +317,7 @@ export default function ContactPage() {
             
             <div className="relative z-10 max-w-2xl mx-auto">
               <span className="text-[11px] font-mono uppercase tracking-widest text-emerald-300 font-bold block mb-2">
-                1,420+ HUMAN CLINICAL RCTS INDEXED
+                PEER-REVIEWED CLINICAL RESEARCH MONOGRAPHS
               </span>
               <h2 className="font-serif text-3xl sm:text-4xl font-black text-white tracking-tight mb-4">
                 Looking for Evidence-Based Monograph Data?

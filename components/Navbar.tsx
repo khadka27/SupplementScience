@@ -42,7 +42,7 @@ const navItems = [
 ];
 
 const trustBadges = [
-  "1,420+ RCTs Analyzed",
+  "Peer-Reviewed Clinical Research",
   "Zero Sponsor Bias",
 ];
 
@@ -370,7 +370,7 @@ export function Navbar() {
             </div>
 
             <div className="px-5 py-3 border-t border-slate-100 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/40 flex items-center justify-between text-[11px] text-slate-400">
-              <span>1,420+ clinical monographs indexed</span>
+              <span>Clinical monographs & evidence evaluations</span>
               <span className="font-mono">Zero sponsor influence</span>
             </div>
           </div>

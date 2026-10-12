@@ -95,6 +95,26 @@ const nextConfig = {
         destination: "https://www.supplementdecoded.com/:path*",
         permanent: true,
       },
+      {
+        source: "/ingredients/omega 3 fatty acids",
+        destination: "/ingredients/omega-3",
+        permanent: true,
+      },
+      {
+        source: "/ingredients/omega%203%20fatty%20acids",
+        destination: "/ingredients/omega-3",
+        permanent: true,
+      },
+      {
+        source: "/ingredients/omega-3-fatty-acids",
+        destination: "/ingredients/omega-3",
+        permanent: true,
+      },
+      {
+        source: "/how-to-choose-the-best-joint-pain-supplement-safely",
+        destination: "/joint-pain/joint-pain-management-guide",
+        permanent: true,
+      },
     ];
   },
   async rewrites() {
@@ -108,4 +128,3 @@ const nextConfig = {
 };
 
 export default nextConfig;
-

@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import {
   generateOrganizationSchema,
-  generateWebsiteSchema,
 } from "@/lib/schema";
 import Script from "next/script";
 
@@ -86,7 +85,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const organizationSchema = generateOrganizationSchema(baseUrl);
-  const websiteSchema = generateWebsiteSchema(baseUrl);
 
   return (
     <html lang="en" suppressHydrationWarning>
@@ -98,10 +96,6 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(organizationSchema),
           }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
         <link
           rel="apple-touch-icon"

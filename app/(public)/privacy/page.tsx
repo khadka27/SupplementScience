@@ -6,11 +6,23 @@ const baseUrl =
   (((process.env.NEXT_PUBLIC_BASE_URL && process.env.NEXT_PUBLIC_BASE_URL.replace(/^https?:\/\/supplementdecoded\.com/i, "https://www.supplementdecoded.com")) || "https://www.supplementdecoded.com") as string);
 
 export const metadata: Metadata = {
-  title: "Privacy Policy | SupplementDecoded",
+  title: "Privacy Policy",
   description:
     "Our privacy policy explains how we collect, use, and protect your personal information when you visit or interact with our content.",
   alternates: {
     canonical: `${baseUrl}/privacy`,
+  },
+  openGraph: {
+    title: "Privacy Policy | SupplementDecoded",
+    description: "Our privacy policy explains how we collect, use, and protect your personal information.",
+    url: `${baseUrl}/privacy`,
+    images: [{ url: `${baseUrl}/og-default.jpg`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy | SupplementDecoded",
+    description: "Our privacy policy explains how we collect, use, and protect your personal information.",
+    images: [`${baseUrl}/og-default.jpg`],
   },
   robots: {
     index: true,
@@ -36,7 +48,7 @@ export default function PrivacyPage() {
             We are committed to transparency and the responsible handling of your data.
           </p>
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0D1217] border border-stone-200/90 dark:border-stone-800 text-xs font-medium text-slate-600 dark:text-slate-400 shadow-xs">
-            <span>Last Updated: February 25, 2026</span>
+            <span>Last Updated: October 4, 2026</span>
           </div>
         </div>
       </section>
