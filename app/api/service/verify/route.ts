@@ -13,11 +13,32 @@ export async function GET(req: NextRequest) {
   const token = extractServiceToken(req);
 
   if (!token) {
+    // If an administrator is currently logged in via browser cookie, return helpful diagnostics
+    const authResult = await authenticateApiRequest(req);
+    if (authResult.authenticated && authResult.type === "session") {
+      return NextResponse.json({
+        valid: true,
+        authType: "admin_session",
+        message: "You are authenticated via your Administrator browser session.",
+        instructions:
+          "To test a specific Service Token, append ?token=sd_live_... to the URL, or use the header 'Authorization: Bearer sd_live_...'.",
+        adminUser: {
+          name: authResult.user?.name,
+          email: authResult.user?.email,
+          role: authResult.user?.role,
+        },
+      });
+    }
+
     return NextResponse.json(
       {
         valid: false,
-        error: "Missing service token. Provide it via 'Authorization: Bearer <token>' or 'X-Service-Token: <token>' header.",
-        usageTip: "Example: curl -H 'Authorization: Bearer sd_live_xxx' https://www.supplementdecoded.com/api/service/verify",
+        error:
+          "Missing service token. Provide it via header 'Authorization: Bearer <token>', header 'X-Service-Token: <token>', or query parameter '?token=<token>'.",
+        usageTip:
+          "CLI: curl -H 'Authorization: Bearer sd_live_xxx' http://localhost:3000/api/service/verify",
+        browserTip:
+          "Browser URL: http://localhost:3000/api/service/verify?token=sd_live_xxx",
       },
       { status: 401 },
     );

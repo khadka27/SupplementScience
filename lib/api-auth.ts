@@ -41,6 +41,16 @@ export function extractServiceToken(req: Request | NextRequest): string | null {
     if (token) return token;
   }
 
+  // Also check URL query params for easy browser address-bar verification
+  try {
+    const url = new URL(req.url);
+    const queryToken =
+      url.searchParams.get("token") || url.searchParams.get("api_key");
+    if (queryToken) return queryToken.trim();
+  } catch {
+    // Ignore URL parse error
+  }
+
   return null;
 }
 
