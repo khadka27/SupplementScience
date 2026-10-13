@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { authenticateApiRequest } from "@/lib/api-auth";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
@@ -8,9 +8,12 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const authResult = await authenticateApiRequest(request);
+    if (!authResult.authenticated) {
+      return NextResponse.json(
+        { error: authResult.error || "Unauthorized" },
+        { status: 401 },
+      );
     }
 
     const { id } = await params;

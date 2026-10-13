@@ -637,28 +637,58 @@ curl -X GET "https://www.supplementdecoded.com/api/service/verify" \\
 curl -X GET "https://www.supplementdecoded.com/api/admin/dashboard" \\
   -H "Authorization: Bearer YOUR_SERVICE_TOKEN"
 
-# 3. Publish an article via API
+# 3. Create / Publish an article via API
 curl -X POST "https://www.supplementdecoded.com/api/blog/posts" \\
   -H "Authorization: Bearer YOUR_SERVICE_TOKEN" \\
   -H "Content-Type: application/json" \\
-  -d '{"title":"New Monograph","slug":"new-monograph","content":"Article body..."}'`}</pre>
+  -d '{"title":"New Monograph","slug":"new-monograph","content":"Article body..."}'
+
+# 4. Update an existing article via API (by slug or ID)
+curl -X PUT "https://www.supplementdecoded.com/api/blog/posts" \\
+  -H "Authorization: Bearer YOUR_SERVICE_TOKEN" \\
+  -H "Content-Type: application/json" \\
+  -d '{"slug":"new-monograph","title":"Updated Monograph Title","content":"Updated article body..."}'
+
+# Or update directly via URL path:
+# curl -X PUT "https://www.supplementdecoded.com/api/blog/posts/new-monograph" \\
+#   -H "Authorization: Bearer YOUR_SERVICE_TOKEN" \\
+#   -H "Content-Type: application/json" \\
+#   -d '{"title":"Updated Title"}'`}</pre>
               </div>
             </TabsContent>
 
             {/* JavaScript */}
             <TabsContent value="js">
               <div className="relative rounded-lg bg-stone-900 text-stone-100 p-4 font-mono text-xs overflow-x-auto">
-                <pre>{`// Fetch verified data with service token
-const response = await fetch("https://www.supplementdecoded.com/api/service/verify", {
-  method: "GET",
+                <pre>{`// 1. Create a new article
+const createRes = await fetch("https://www.supplementdecoded.com/api/blog/posts", {
+  method: "POST",
   headers: {
     "Authorization": \`Bearer \${process.env.SUPPLEMENT_SERVICE_TOKEN}\`,
     "Content-Type": "application/json",
   },
+  body: JSON.stringify({
+    title: "New Monograph",
+    slug: "new-monograph",
+    content: "<p>Article body...</p>",
+  }),
 });
 
-const data = await response.json();
-console.log("Token authenticated:", data.valid);`}</pre>
+// 2. Update an existing article (by slug or ID)
+const updateRes = await fetch("https://www.supplementdecoded.com/api/blog/posts", {
+  method: "PUT",
+  headers: {
+    "Authorization": \`Bearer \${process.env.SUPPLEMENT_SERVICE_TOKEN}\`,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    slug: "new-monograph",
+    title: "Updated Monograph Title",
+    content: "<p>Updated body...</p>",
+  }),
+});
+const updatedPost = await updateRes.json();
+console.log("Post updated:", updatedPost.id);`}</pre>
               </div>
             </TabsContent>
 
@@ -674,8 +704,20 @@ headers = {
     "Content-Type": "application/json"
 }
 
-response = requests.get("https://www.supplementdecoded.com/api/service/verify", headers=headers)
-print(response.json())`}</pre>
+# 1. Create a new post
+create_res = requests.post(
+    "https://www.supplementdecoded.com/api/blog/posts",
+    headers=headers,
+    json={"title": "New Monograph", "slug": "new-monograph", "content": "Article body..."}
+)
+
+# 2. Update an existing post (by slug or ID)
+update_res = requests.put(
+    "https://www.supplementdecoded.com/api/blog/posts",
+    headers=headers,
+    json={"slug": "new-monograph", "title": "Updated Title", "content": "Updated content..."}
+)
+print("Updated post:", update_res.json())`}</pre>
               </div>
             </TabsContent>
           </Tabs>

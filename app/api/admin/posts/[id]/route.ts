@@ -1,39 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
-import prisma from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
+import { authenticateApiRequest } from "@/lib/api-auth";
+import {
+  findPostByIdOrSlug,
+  updatePostRecord,
+  deletePostRecord,
+} from "@/lib/post-service";
 
-/** Recalculate and persist the published post count for a category. */
-async function syncCategoryPostCount(categoryId: string | null | undefined) {
-  if (!categoryId) return;
-  const count = await prisma.post.count({
-    where: { categoryId, status: "PUBLISHED" },
-  });
-  await prisma.category.update({
-    where: { id: categoryId },
-    data: { postCount: count },
-  });
-}
+export const dynamic = "force-dynamic";
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const authResult = await authenticateApiRequest(request);
+    if (!authResult.authenticated) {
+      return NextResponse.json(
+        { error: authResult.error || "Unauthorized" },
+        { status: 401 },
+      );
     }
 
     const { id } = await params;
-    const post = await prisma.post.findUnique({
-      where: { id },
-      include: {
-        author: true,
-        category: true,
-        tags: true,
-      },
-    });
+    const post = await findPostByIdOrSlug(id, { includeRelations: true });
 
     if (!post) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
@@ -54,177 +43,26 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const authResult = await authenticateApiRequest(request);
+    if (!authResult.authenticated) {
+      return NextResponse.json(
+        { error: authResult.error || "Unauthorized" },
+        { status: 401 },
+      );
     }
 
     const { id } = await params;
     const body = await request.json();
-    const {
-      title,
-      slug,
-      excerpt,
-      metaTitle,
-      metaDescription,
-      content,
-      featuredImageUrl,
-      featuredImageAlt,
-      cardImageUrl,
-      authorId,
-      factCheckedBy,
-      reviewedBy,
-      categoryId,
-      tagIds,
-      status,
-      readTimeMinutes,
-      postType,
-    } = body;
 
-    // Check if slug is being changed and if it already exists
-    if (slug) {
-      const existingPost = await prisma.post.findUnique({
-        where: { slug },
-      });
-
-      if (existingPost && existingPost.id !== id) {
-        return NextResponse.json(
-          { error: "Slug already exists. Please use a different slug." },
-          { status: 400 },
-        );
-      }
-    }
-
-    // Get current post to check status
-    const currentPost = await prisma.post.findUnique({
-      where: { id },
-    });
-
-    if (!currentPost) {
-      return NextResponse.json({ error: "Post not found" }, { status: 404 });
-    }
-
-    const isNowPublished = status?.toUpperCase() === "PUBLISHED";
-    const wasPublished = currentPost.status === "PUBLISHED";
-
-    const authorName = authorId
-      ? (
-          await prisma.author.findUnique({
-            where: { id: authorId },
-            select: { name: true },
-          })
-        )?.name
-      : null;
-
-    const defaultReviewer = "SupplementDecoded Research Editorial Team";
-    const finalFactCheckedBy =
-      factCheckedBy !== undefined
-        ? factCheckedBy || defaultReviewer
-        : currentPost.factCheckedBy || defaultReviewer;
-    const finalReviewedBy =
-      reviewedBy !== undefined
-        ? reviewedBy || defaultReviewer
-        : currentPost.reviewedBy || defaultReviewer;
-
-    // Set publishedAt only if it's being published for the first time
-    // or keep the existing publishedAt if it's already published
-    let publishedAtData = currentPost.publishedAt;
-    if (isNowPublished && !wasPublished) {
-      publishedAtData = new Date();
-    } else if (!isNowPublished) {
-      publishedAtData = null;
-    }
-
-    const normalizedMetaTitle =
-      typeof metaTitle === "string" && metaTitle.trim().length > 0
-        ? metaTitle.trim()
-        : title;
-    const normalizedMetaDescription =
-      typeof metaDescription === "string" && metaDescription.trim().length > 0
-        ? metaDescription.trim()
-        : excerpt ||
-          content.substring(0, 155).replaceAll(/<[^>]*>/g, "") + "...";
-
-    // Update the post
-    const post = await prisma.post.update({
-      where: { id },
-      data: {
-        title,
-        slug,
-        excerpt: excerpt || null,
-        metaTitle: normalizedMetaTitle,
-        metaDescription: normalizedMetaDescription,
-        content,
-        featuredImageUrl: featuredImageUrl || null,
-        featuredImageAlt: featuredImageAlt || null,
-        cardImageUrl: cardImageUrl || null,
-        status: status?.toUpperCase() || "DRAFT",
-        publishedAt: publishedAtData,
-        readTimeMinutes: readTimeMinutes || 5,
-        postType: postType !== undefined ? postType : currentPost.postType,
-        factCheckedBy: finalFactCheckedBy,
-        reviewedBy: finalReviewedBy,
-        ...(authorId
-          ? {
-              author: {
-                connect: { id: authorId },
-              },
-            }
-          : {
-              author: {
-                disconnect: true,
-              },
-            }),
-        ...(categoryId
-          ? {
-              category: {
-                connect: { id: categoryId },
-              },
-            }
-          : {
-              category: {
-                disconnect: true,
-              },
-            }),
-        ...(tagIds &&
-          Array.isArray(tagIds) && {
-            tags: {
-              deleteMany: {},
-              create: tagIds.map((tagId: string) => ({
-                tag: {
-                  connect: { id: tagId },
-                },
-              })),
-            },
-          }),
-      },
-      include: {
-        author: true,
-        category: true,
-        tags: true,
-      },
-    });
-
-    // Keep postCount in sync:
-    // If the category changed, sync both old and new category counts
-    const oldCategoryId = currentPost.categoryId;
-    const newCategoryId = categoryId || null;
-    const categoryChanged = oldCategoryId !== newCategoryId;
-
-    if (categoryChanged) {
-      await Promise.all([
-        syncCategoryPostCount(oldCategoryId),
-        syncCategoryPostCount(newCategoryId),
-      ]);
-    } else if (isNowPublished !== wasPublished) {
-      // Status toggled — just update this category's count
-      await syncCategoryPostCount(newCategoryId);
-    }
-
-    revalidatePath("/sitemap.xml");
-    revalidatePath("/category");
+    const post = await updatePostRecord(id, body);
     return NextResponse.json(post);
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.code === "NOT_FOUND") {
+      return NextResponse.json({ error: error.message }, { status: 404 });
+    }
+    if (error?.code === "CONFLICT") {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
     console.error("Error updating post:", error);
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error occurred";
@@ -235,37 +73,36 @@ export async function PUT(
   }
 }
 
+export async function PATCH(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> },
+) {
+  return PUT(request, context);
+}
+
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const authResult = await authenticateApiRequest(request);
+    if (!authResult.authenticated) {
+      return NextResponse.json(
+        { error: authResult.error || "Unauthorized" },
+        { status: 401 },
+      );
     }
 
     const { id } = await params;
-
-    // Get category before deleting so we can sync the count after
-    const toDelete = await prisma.post.findUnique({
-      where: { id },
-      select: { categoryId: true },
+    const result = await deletePostRecord(id);
+    return NextResponse.json({
+      message: "Post deleted successfully",
+      ...result,
     });
-
-    await prisma.post.delete({
-      where: { id },
-    });
-
-    // Sync the count for the category this post belonged to
-    if (toDelete?.categoryId) {
-      await syncCategoryPostCount(toDelete.categoryId);
+  } catch (error: any) {
+    if (error?.code === "NOT_FOUND") {
+      return NextResponse.json({ error: error.message }, { status: 404 });
     }
-
-    revalidatePath("/sitemap.xml");
-    revalidatePath("/category");
-    return NextResponse.json({ message: "Post deleted successfully" });
-  } catch (error) {
     console.error("Error deleting post:", error);
     return NextResponse.json(
       { error: "Failed to delete post" },

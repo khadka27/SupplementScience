@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { authenticateApiRequest } from "@/lib/api-auth";
+import { updatePostRecord, syncCategoryPostCount } from "@/lib/post-service";
 
 export async function GET(req: Request) {
   try {
@@ -193,7 +194,17 @@ export async function POST(req: Request) {
     });
 
     console.log("Post created successfully:", post.id);
+
+    if (post.status === "PUBLISHED" && post.categoryId) {
+      await syncCategoryPostCount(post.categoryId);
+    }
+
     revalidatePath("/sitemap.xml");
+    revalidatePath("/category");
+    if (post.slug) {
+      revalidatePath(`/blog/${post.slug}`);
+    }
+
     return NextResponse.json(post);
   } catch (error) {
     console.error("[POSTS_POST] Error:", error);
@@ -204,4 +215,68 @@ export async function POST(req: Request) {
       { status: 500, headers: { "Content-Type": "application/json" } },
     );
   }
+}
+
+/**
+ * PUT /api/blog/posts
+ * Update an existing post using Service Token or Admin Session.
+ * Accepts 'id' or 'slug' in request body or URL search params (?id= or ?slug=).
+ */
+export async function PUT(req: Request) {
+  try {
+    const authResult = await authenticateApiRequest(req);
+    if (!authResult.authenticated) {
+      return NextResponse.json(
+        { error: authResult.error || "Unauthorized" },
+        { status: 401 },
+      );
+    }
+
+    const body = await req.json();
+    const { searchParams } = new URL(req.url);
+
+    // Identify post to update
+    const identifier =
+      body.id ||
+      searchParams.get("id") ||
+      body.currentSlug ||
+      body.slug ||
+      searchParams.get("slug");
+
+    if (!identifier) {
+      return NextResponse.json(
+        {
+          error:
+            "Missing post identifier. Please provide 'id' or 'slug' in request body or URL query parameter.",
+        },
+        { status: 400 },
+      );
+    }
+
+    const updatedPost = await updatePostRecord(identifier, body);
+    return NextResponse.json(updatedPost);
+  } catch (error: any) {
+    if (error?.code === "NOT_FOUND") {
+      return NextResponse.json({ error: error.message }, { status: 404 });
+    }
+    if (error?.code === "CONFLICT") {
+      return NextResponse.json({ error: error.message }, { status: 400 });
+    }
+    console.error("[POSTS_PUT] Error:", error);
+    return NextResponse.json(
+      {
+        error: "Failed to update post",
+        details: error?.message || "Internal server error",
+      },
+      { status: 500 },
+    );
+  }
+}
+
+/**
+ * PATCH /api/blog/posts
+ * Partial update for an existing post using Service Token or Admin Session.
+ */
+export async function PATCH(req: Request) {
+  return PUT(req);
 }

@@ -56,6 +56,8 @@ export async function GET(req: NextRequest) {
       capabilities: [
         "read_content",
         "publish_articles",
+        "update_articles",
+        "delete_articles",
         "upload_media",
         "view_metrics",
         "automated_sync",
