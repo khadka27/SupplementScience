@@ -145,10 +145,12 @@ function getPostTypeBadge(postType: string) {
 
 function BlogsManagementContent() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string; slug: string }[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [categoryFilter, setCategoryFilter] = useState("all");
   const [activeTypeTab, setActiveTypeTab] = useState<string>("all");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [postToDelete, setPostToDelete] = useState<Post | null>(null);
@@ -156,12 +158,28 @@ function BlogsManagementContent() {
   const [changingType, setChangingType] = useState<string | null>(null);
 
   useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch("/api/admin/categories");
+      if (res.ok) {
+        const data = await res.json();
+        setCategories(data || []);
+      }
+    } catch (err) {
+      console.error("Failed to fetch categories:", err);
+    }
+  };
+
+  useEffect(() => {
     fetchPosts();
   }, [activeTypeTab]);
 
   useEffect(() => {
     filterPosts();
-  }, [posts, searchQuery, statusFilter]);
+  }, [posts, searchQuery, statusFilter, categoryFilter]);
 
   const fetchPosts = async () => {
     try {
@@ -189,6 +207,15 @@ function BlogsManagementContent() {
     if (statusFilter !== "all") {
       filtered = filtered.filter(
         (post) => post.status?.toLowerCase() === statusFilter
+      );
+    }
+
+    // Category filter
+    if (categoryFilter !== "all") {
+      filtered = filtered.filter(
+        (post) =>
+          post.category?.slug?.toLowerCase() === categoryFilter.toLowerCase() ||
+          post.category?.name?.toLowerCase() === categoryFilter.toLowerCase()
       );
     }
 
@@ -481,6 +508,22 @@ function BlogsManagementContent() {
               </div>
 
               <div className="w-full sm:w-48">
+                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                  <SelectTrigger className="bg-slate-50/50 dark:bg-slate-950/50 border-slate-200 dark:border-slate-800">
+                    <SelectValue placeholder="Category" />
+                  </SelectTrigger>
+                  <SelectContent className="max-h-72">
+                    <SelectItem value="all">All Categories</SelectItem>
+                    {categories.map((c) => (
+                      <SelectItem key={c.id} value={c.slug}>
+                        {c.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="w-full sm:w-44">
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
                   <SelectTrigger className="bg-slate-50/50 dark:bg-slate-950/50 border-slate-200 dark:border-slate-800">
                     <SelectValue placeholder="Status" />

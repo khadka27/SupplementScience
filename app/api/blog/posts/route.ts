@@ -12,30 +12,58 @@ export async function GET(req: Request) {
     const status = searchParams.get("status");
     const search = searchParams.get("search");
     const postType = searchParams.get("postType");
+    const category = searchParams.get("category");
+    const categoryId = searchParams.get("categoryId");
 
     // Unauthenticated callers cannot query drafts or request all statuses.
     if (!isAuthenticated && status && status.toUpperCase() !== "PUBLISHED") {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const where: any = {};
+    const conditions: any[] = [];
 
     if (!isAuthenticated) {
-      where.status = "PUBLISHED";
+      conditions.push({ status: "PUBLISHED" });
     } else if (status && status !== "all") {
-      where.status = status.toUpperCase();
+      conditions.push({ status: status.toUpperCase() });
     }
 
     if (search) {
-      where.OR = [
-        { title: { contains: search, mode: "insensitive" } },
-        { excerpt: { contains: search, mode: "insensitive" } },
-      ];
+      conditions.push({
+        OR: [
+          { title: { contains: search, mode: "insensitive" } },
+          { excerpt: { contains: search, mode: "insensitive" } },
+          { category: { name: { contains: search, mode: "insensitive" } } },
+        ],
+      });
     }
 
     if (postType) {
-      where.postType = postType;
+      if (postType === "ingredient") {
+        conditions.push({
+          OR: [
+            { postType: "ingredient" },
+            { category: { slug: "ingredients" } },
+            { category: { slug: { contains: "ingredient", mode: "insensitive" } } },
+          ],
+        });
+      } else {
+        conditions.push({ postType });
+      }
     }
+
+    if (categoryId && categoryId !== "all") {
+      conditions.push({ categoryId });
+    } else if (category && category !== "all") {
+      conditions.push({
+        OR: [
+          { category: { slug: category } },
+          { categoryId: category },
+        ],
+      });
+    }
+
+    const where: any = conditions.length > 0 ? { AND: conditions } : {};
 
     const posts = await prisma.post.findMany({
       where,
@@ -48,6 +76,7 @@ export async function GET(req: Request) {
         },
         category: {
           select: {
+            id: true,
             name: true,
             slug: true,
           },
