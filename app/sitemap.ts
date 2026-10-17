@@ -128,7 +128,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         const isHub = post.category?.isHub;
         let url: string;
 
-        if (post.postType === "ingredient") {
+        if (post.postType === "ingredient" || categorySlug === "ingredients") {
           url = `${baseUrl}/ingredients/${post.slug}`;
         } else if (post.postType === "guide") {
           url = `${baseUrl}/guides/${post.slug}`;

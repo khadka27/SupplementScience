@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { NextRequest, NextResponse } from "next/server";
+import { authenticateApiRequest } from "@/lib/api-auth";
 import prisma from "@/lib/prisma";
 
 /**
@@ -7,10 +7,13 @@ import prisma from "@/lib/prisma";
  * Recalculates and persists the correct postCount for every category.
  * Safe to call repeatedly. Protected by admin auth.
  */
-export async function POST() {
-  const session = await auth();
-  if (!session) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+export async function POST(request: NextRequest) {
+  const authResult = await authenticateApiRequest(request);
+  if (!authResult.authenticated) {
+    return NextResponse.json(
+      { error: authResult.error || "Unauthorized" },
+      { status: 401 },
+    );
   }
 
   try {

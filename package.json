@@ -18,7 +18,8 @@
     "db:migrate:reset": "prisma migrate reset",
     "db:seed": "tsx prisma/seed.ts",
     "db:studio": "prisma studio",
-    "db:setup": "prisma db push && prisma generate && tsx prisma/seed.ts"
+    "db:setup": "prisma db push && prisma generate && tsx prisma/seed.ts",
+    "postman:generate": "tsx scripts/generate_postman_collection.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

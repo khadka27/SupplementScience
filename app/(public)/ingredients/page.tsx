@@ -46,11 +46,16 @@ export const metadata: Metadata = {
 };
 
 export default async function IngredientsPage() {
-  // Query all published ingredient posts from the database
+  // Query all published ingredient posts and blog posts in the ingredients category
   const posts = await prisma.post.findMany({
     where: {
       status: "PUBLISHED",
-      postType: "ingredient",
+      OR: [
+        { category: { slug: "ingredients" } },
+        { category: { slug: { contains: "ingredient", mode: "insensitive" } } },
+        { category: { name: { equals: "Ingredients", mode: "insensitive" } } },
+        { postType: "ingredient" },
+      ],
     },
     include: {
       author: {
@@ -174,12 +179,12 @@ export default async function IngredientsPage() {
               </div>
             </div>
 
-            <div className="bg-[#FAFAF8] dark:bg-[#070A0E] rounded-2xl p-4 border border-stone-200/90 dark:border-stone-800/90 text-center">
-              <div className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400 font-mono">
-                1,200+
+            <div className="bg-[#FAFAF8] dark:bg-[#070A0E] rounded-2xl p-4 border border-stone-200/90 dark:border-stone-800/90 text-center flex flex-col justify-center">
+              <div className="text-base sm:text-lg font-bold text-emerald-600 dark:text-emerald-400 leading-tight">
+                Human RCTs
               </div>
-              <div className="text-xs font-medium text-slate-500 dark:text-stone-400 mt-1">
-                Human RCTs Synthesized
+              <div className="text-xs font-medium text-slate-500 dark:text-stone-400 mt-1 leading-snug">
+                Evidence drawn from published human clinical trials
               </div>
             </div>
 

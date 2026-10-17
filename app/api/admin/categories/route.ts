@@ -1,10 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
+import { authenticateApiRequest } from "@/lib/api-auth";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const authResult = await authenticateApiRequest(request);
+    if (!authResult.authenticated) {
+      return NextResponse.json(
+        { error: authResult.error || "Unauthorized" },
+        { status: 401 },
+      );
+    }
+
     const categories = await prisma.category.findMany({
       orderBy: { createdAt: "desc" },
     });
@@ -20,9 +28,12 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth();
-    if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    const authResult = await authenticateApiRequest(request);
+    if (!authResult.authenticated) {
+      return NextResponse.json(
+        { error: authResult.error || "Unauthorized" },
+        { status: 401 },
+      );
     }
 
     const body = await request.json();

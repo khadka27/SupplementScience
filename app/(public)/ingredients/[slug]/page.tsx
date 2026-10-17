@@ -22,7 +22,12 @@ async function getData(slug: string) {
       where: {
         slug,
         status: "PUBLISHED",
-        postType: "ingredient",
+        OR: [
+          { postType: "ingredient" },
+          { category: { slug: "ingredients" } },
+          { category: { slug: { contains: "ingredient", mode: "insensitive" } } },
+          { category: { name: { equals: "Ingredients", mode: "insensitive" } } },
+        ],
       },
       include: {
         author: true,
@@ -120,7 +125,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export async function generateStaticParams() {
   try {
     const ingredients = await prisma.post.findMany({
-      where: { postType: "ingredient", status: "PUBLISHED" },
+      where: {
+        status: "PUBLISHED",
+        OR: [
+          { postType: "ingredient" },
+          { category: { slug: "ingredients" } },
+          { category: { slug: { contains: "ingredient", mode: "insensitive" } } },
+          { category: { name: { equals: "Ingredients", mode: "insensitive" } } },
+        ],
+      },
       select: { slug: true },
     });
     const paths = ingredients.map((i) => ({ slug: i.slug }));
