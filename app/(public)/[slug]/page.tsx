@@ -131,21 +131,88 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (data.type === "category") {
     const { category } = data;
+    const title = (category.metaTitle || category.name).replace(/\s*\|\s*SupplementDecoded$/i, "");
+    const ogTitle = category.metaTitle || category.name;
+    const ogDescription =
+      category.metaDescription ||
+      category.description ||
+      `Browse articles in ${category.name}`;
+    const canonicalUrl = `${baseUrl}/${category.slug}`;
+    const imageUrl = category.imageUrl
+      ? (category.imageUrl.startsWith("http://") || category.imageUrl.startsWith("https://")
+          ? category.imageUrl
+          : `${baseUrl}${category.imageUrl.startsWith("/") ? "" : "/"}${category.imageUrl}`)
+      : `${baseUrl}/og-default.jpg`;
+
     return {
-      title: (category.metaTitle || category.name).replace(/\s*\|\s*SupplementDecoded$/i, ""),
-      description:
-        category.metaDescription ||
-        category.description ||
-        `Browse articles in ${category.name}`,
-      alternates: { canonical: `${baseUrl}/${category.slug}` },
+      title,
+      description: ogDescription,
+      alternates: { canonical: canonicalUrl },
+      openGraph: {
+        title: ogTitle,
+        description: ogDescription,
+        url: canonicalUrl,
+        siteName: "SupplementDecoded",
+        locale: "en_US",
+        type: "website",
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 630,
+            alt: category.name,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: ogTitle,
+        description: ogDescription,
+        images: [imageUrl],
+      },
     };
   } else {
     const { post } = data;
+    const title = (post.metaTitle || post.title).replace(/\s*\|\s*SupplementDecoded$/i, "");
+    const ogTitle = post.metaTitle || post.title;
+    const ogDescription = post.metaDescription || post.excerpt || "";
+    const canonicalUrl = `${baseUrl}/${post.slug}`;
+    const imageUrl = post.featuredImageUrl
+      ? (post.featuredImageUrl.startsWith("http://") || post.featuredImageUrl.startsWith("https://")
+          ? post.featuredImageUrl
+          : `${baseUrl}${post.featuredImageUrl.startsWith("/") ? "" : "/"}${post.featuredImageUrl}`)
+      : `${baseUrl}/og-default.jpg`;
+
     return {
-      title: (post.metaTitle || post.title).replace(/\s*\|\s*SupplementDecoded$/i, ""),
-      description: post.metaDescription || post.excerpt || "",
+      title,
+      description: ogDescription,
       keywords: post.tags?.map((t: any) => t.name) || [],
-      alternates: { canonical: `${baseUrl}/${post.slug}` },
+      alternates: { canonical: canonicalUrl },
+      openGraph: {
+        title: ogTitle,
+        description: ogDescription,
+        url: canonicalUrl,
+        siteName: "SupplementDecoded",
+        locale: "en_US",
+        type: "article",
+        publishedTime: post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined,
+        modifiedTime: post.updatedAt ? new Date(post.updatedAt).toISOString() : undefined,
+        authors: post.author?.name ? [post.author.name] : undefined,
+        images: [
+          {
+            url: imageUrl,
+            width: 1200,
+            height: 630,
+            alt: post.featuredImageAlt || post.title,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: ogTitle,
+        description: ogDescription,
+        images: [imageUrl],
+      },
     };
   }
 }

@@ -42,10 +42,45 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!post) return { title: "Guide Not Found" };
 
+  const title = (post.metaTitle || post.title).replace(/\s*\|\s*SupplementDecoded$/i, "");
+  const ogTitle = post.metaTitle || post.title;
+  const ogDescription = post.metaDescription || post.excerpt || "";
+  const canonicalUrl = `${baseUrl}/guides/${post.slug}`;
+  const imageUrl = post.featuredImageUrl
+    ? (post.featuredImageUrl.startsWith("http://") || post.featuredImageUrl.startsWith("https://")
+        ? post.featuredImageUrl
+        : `${baseUrl}${post.featuredImageUrl.startsWith("/") ? "" : "/"}${post.featuredImageUrl}`)
+    : `${baseUrl}/og-default.jpg`;
+
   return {
-    title: (post.metaTitle || post.title).replace(/\s*\|\s*SupplementDecoded$/i, ""),
-    description: post.metaDescription || post.excerpt || "",
-    alternates: { canonical: `${baseUrl}/guides/${post.slug}` },
+    title,
+    description: ogDescription,
+    alternates: { canonical: canonicalUrl },
+    openGraph: {
+      title: ogTitle,
+      description: ogDescription,
+      url: canonicalUrl,
+      siteName: "SupplementDecoded",
+      locale: "en_US",
+      type: "article",
+      publishedTime: post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined,
+      modifiedTime: post.updatedAt ? new Date(post.updatedAt).toISOString() : undefined,
+      authors: post.author?.name ? [post.author.name] : undefined,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.featuredImageAlt || post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: ogTitle,
+      description: ogDescription,
+      images: [imageUrl],
+    },
   };
 }
 

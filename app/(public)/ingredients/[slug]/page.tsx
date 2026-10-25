@@ -98,7 +98,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     /\s*\|\s*SupplementDecoded$/i,
     ""
   );
+  const ogTitle = post.metaTitle || title;
   const description = post.metaDescription || post.excerpt || "";
+  const canonicalUrl = `${baseUrl}/ingredients/${post.slug}`;
   const imageUrl = post.featuredImageUrl
     ? (post.featuredImageUrl.startsWith("http") ? post.featuredImageUrl : `${baseUrl}${post.featuredImageUrl.startsWith("/") ? "" : "/"}${post.featuredImageUrl}`)
     : `${baseUrl}/og-default.jpg`;
@@ -106,16 +108,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title,
     description,
-    alternates: { canonical: `${baseUrl}/ingredients/${post.slug}` },
+    alternates: { canonical: canonicalUrl },
     openGraph: {
-      title,
+      title: ogTitle,
       description,
-      url: `${baseUrl}/ingredients/${post.slug}`,
-      images: [{ url: imageUrl, width: 1200, height: 630, alt: post.title }],
+      url: canonicalUrl,
+      siteName: "SupplementDecoded",
+      locale: "en_US",
+      type: "article",
+      publishedTime: post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined,
+      modifiedTime: post.updatedAt ? new Date(post.updatedAt).toISOString() : undefined,
+      authors: post.author?.name ? [post.author.name] : undefined,
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: post.featuredImageAlt || post.title }],
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: ogTitle,
       description,
       images: [imageUrl],
     },
