@@ -67,6 +67,7 @@ async function getData(categorySlug: string, postSlug: string) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const raw = await params;
+  if (raw.slug.includes(".") || raw.postSlug.includes(".")) return { title: "Not Found" };
   const slug = normalizeSlug(raw.slug);
   const postSlug = normalizeSlug(raw.postSlug);
   const data = await getData(slug, postSlug);
@@ -167,6 +168,12 @@ export async function generateStaticParams() {
 
 export default async function CategorizedPostPage({ params }: Props) {
   const raw = await params;
+
+  // Requests containing dots (e.g. non-existent static files) should 404 directly, not redirect
+  if (raw.slug.includes(".") || raw.postSlug.includes(".")) {
+    notFound();
+  }
+
   const slug = normalizeSlug(raw.slug);
   const postSlug = normalizeSlug(raw.postSlug);
 

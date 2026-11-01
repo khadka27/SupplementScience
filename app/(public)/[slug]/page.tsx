@@ -122,6 +122,7 @@ async function getData(slug: string) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  if (slug.includes(".")) return { title: "Not Found" };
   const data = await getData(slug);
 
   if (!data) return { title: "Not Found" };
@@ -244,6 +245,12 @@ export async function generateStaticParams() {
 
 export default async function GenericSlugPage({ params }: Props) {
   const rawSlug = (await params).slug;
+
+  // Requests containing dots (e.g. non-existent static files) should 404 directly, not redirect
+  if (rawSlug.includes(".")) {
+    notFound();
+  }
+
   const slug = normalizeSlug(rawSlug);
 
   // Redirect broken space-encoded URLs to clean canonical form

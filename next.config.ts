@@ -28,8 +28,8 @@ const nextConfig = {
         ],
       },
       {
-        // Short cache for public static files (favicon, images, fonts)
-        source: "/:file((?:favicon.*|.*\\.(?:png|jpg|jpeg|webp|svg|ico|woff2?|webmanifest)))",
+        // Short cache for public static files (favicon, images, fonts, txt)
+        source: "/:file((?:favicon.*|.*\\.(?:png|jpg|jpeg|webp|svg|ico|woff2?|webmanifest|txt)))",
         headers: [
           {
             key: "Cache-Control",
