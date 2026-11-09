@@ -21,8 +21,8 @@ import {
 const TRUST_PILLARS = [
   {
     icon: FlaskConical,
-    title: "Peer-Reviewed Clinical Trials",
-    desc: "Double-blind, placebo-controlled human trial evidence only.",
+    title: "Evidence From Trusted Sources",
+    desc: "FDA, NIH, and peer-reviewed research, cited on every page.",
   },
   {
     icon: ShieldCheck,
@@ -31,8 +31,8 @@ const TRUST_PILLARS = [
   },
   {
     icon: Lock,
-    title: "Whistleblower Protection",
-    desc: "Confidential triage for reporting tainted or spiked batches.",
+    title: "Report a Suspicious Product",
+    desc: "Confidential contact for reporting tainted or mislabeled products.",
   },
 ];
 
@@ -212,7 +212,7 @@ export function Footer() {
                   href="/ingredients"
                   className="text-stone-400 hover:text-emerald-300 transition-colors block py-0.5"
                 >
-                  All 384 Compounds
+                  All Ingredient Monographs
                 </Link>
               </li>
             </ul>
@@ -245,7 +245,7 @@ export function Footer() {
                   href="/medical-expert-review"
                   className="text-stone-400 hover:text-emerald-300 transition-colors block py-0.5"
                 >
-                  Editorial Review Board
+                  Medical Review Policy
                 </Link>
               </li>
               <li>
@@ -261,7 +261,7 @@ export function Footer() {
                   href="/contact"
                   className="text-stone-400 hover:text-emerald-300 transition-colors block py-0.5"
                 >
-                  Whistleblower Intake
+                  Report a Suspicious Product
                 </Link>
               </li>
             </ul>

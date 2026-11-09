@@ -134,8 +134,8 @@ export function ContactForm() {
         </h3>
 
         <p className="text-stone-600 dark:text-stone-300 text-sm leading-relaxed mb-6 font-sans">
-          Your inquiry has been safely routed to our independent research and editorial board.
-          All whistleblower submissions are strictly compartmentalized and stripped of IP identifiers.
+          Your inquiry has been safely routed to our independent research and editorial team.
+          Anonymous submissions are handled confidentially and reviewed solely by our editorial staff.
         </p>
 
         {/* Ticket Box */}

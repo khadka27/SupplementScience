@@ -42,7 +42,7 @@ const navItems = [
 ];
 
 const trustBadges = [
-  "Peer-Reviewed Clinical Research",
+  "Evidence-Based, Sources Cited",
   "Zero Sponsor Bias",
 ];
 

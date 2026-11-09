@@ -94,8 +94,8 @@ const FAQS = [
     a: "No. Absolutely not. SupplementDecoded operates under a strict Zero-Sponsor charter. We accept zero manufacturer sponsorship, zero affiliate commissions, and zero pay-to-play review fees. Every monograph is funded entirely independently.",
   },
   {
-    q: "How do you protect whistleblowers reporting adulterated products?",
-    a: "All whistleblower submissions are scrubbed of metadata and IP logs. If you are reporting contaminated supplements or forged lab tests, your identity remains strictly confidential under investigative journalist privilege.",
+    q: "How do you handle reports of tainted or mislabeled products?",
+    a: "If you submit anonymously, you are not required to provide your name or email address. Reports are reviewed confidentially by our editorial team solely for investigative reporting, and we never share submitter information with supplement manufacturers.",
   },
   {
     q: "What evidence is required to update an existing monograph?",
