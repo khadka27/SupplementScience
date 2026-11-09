@@ -16,6 +16,18 @@ export const metadata: Metadata = {
   alternates: {
     canonical: `${baseUrl}/medical-expert-review`,
   },
+  openGraph: {
+    title: "Medical / Expert Review Policy | SupplementDecoded",
+    description: "Learn how our medical and expert review process ensures accurate, balanced, and responsible health information.",
+    url: `${baseUrl}/medical-expert-review`,
+    images: [{ url: `${baseUrl}/og-default.jpg`, width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Medical / Expert Review Policy | SupplementDecoded",
+    description: "Learn how our medical and expert review process ensures accurate, balanced, and responsible health information.",
+    images: [`${baseUrl}/og-default.jpg`],
+  },
   robots: {
     index: true,
     follow: true,
@@ -40,7 +52,7 @@ export default function MedicalExpertReviewPage() {
             How we ensure accuracy, balance, and responsible health communication through expert review.
           </p>
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0D1217] border border-stone-200/90 dark:border-stone-800 text-xs font-medium text-slate-600 dark:text-slate-400 shadow-xs">
-            <span>Last Updated: October 4, 2026</span>
+            <span>Last Updated: October 26, 2026</span>
           </div>
         </div>
       </section>
@@ -54,16 +66,10 @@ export default function MedicalExpertReviewPage() {
                 Purpose of Medical and Expert Review
               </h2>
               <p>
-                Health and supplement information can directly affect how people
-                make decisions about their well-being. For that reason, certain
-                content on this site undergoes medical or subject-matter review
-                to help ensure accuracy, balance, and responsible communication.
+                Health and supplement information can directly affect how people make decisions about their well-being. For that reason, certain content on this site undergoes medical or subject-matter review to help ensure accuracy, balance, and responsible communication.
               </p>
               <p>
-                The goal of medical or expert review is not to provide medical
-                advice, but to verify that information is presented in a way
-                that reflects current scientific understanding and clearly
-                communicates limitations and uncertainty.
+                The goal of medical or expert review is not to provide medical advice, but to verify that information is presented in a way that reflects current scientific understanding and clearly communicates limitations and uncertainty.
               </p>
 
               <h2>What Medical / Expert Review Means on This Site</h2>
@@ -72,31 +78,25 @@ export default function MedicalExpertReviewPage() {
               </p>
               <ul>
                 <li>
-                  Scientific explanations have been checked for accuracy and
-                  context
+                  Scientific explanations have been checked for accuracy and context
                 </li>
                 <li>
-                  Language has been reviewed to avoid absolute or misleading
-                  claims
+                  Language has been reviewed to avoid absolute or misleading claims
                 </li>
                 <li>
-                  Potential risks, limitations, and safety considerations are
-                  clearly disclosed
+                  Potential risks, limitations, and safety considerations are clearly disclosed
                 </li>
                 <li>
-                  Evidence is represented fairly, including mixed or
-                  inconclusive findings
+                  Evidence is represented fairly, including mixed or inconclusive findings
                 </li>
               </ul>
               <p>
-                Medical or expert review does not mean endorsement of a product,
-                supplement, or intervention.
+                Medical or expert review does not mean endorsement of a product, supplement, or intervention.
               </p>
 
               <h2>Who Reviews Our Content</h2>
               <p>
-                Medical or expert review may involve individuals with
-                backgrounds in areas such as:
+                Medical or expert review may involve individuals with backgrounds in areas such as:
               </p>
               <ul>
                 <li>Nutrition science</li>
@@ -106,31 +106,30 @@ export default function MedicalExpertReviewPage() {
                 <li>Related life or health sciences</li>
               </ul>
               <p>
-                Reviewers are selected based on relevant subject-matter
-                knowledge, not commercial affiliation.
+                Reviewers are selected based on relevant subject-matter knowledge, not commercial affiliation.
               </p>
 
               <h2>Independence of Review</h2>
               <p>
-                All medical and expert reviews are conducted with full
-                independence.
+                All medical and expert reviews are conducted with full independence.
               </p>
               <ul>
                 <li>
                   Reviewers are not compensated by supplement manufacturers
                 </li>
                 <li>
-                  No brand, company, or third party influences review
-                  conclusions
+                  No brand, company, or third party influences review conclusions
                 </li>
                 <li>
                   Reviews are not promotional and do not recommend products
                 </li>
                 <li>
-                  This site does not maintain financial relationships with
-                  supplement companies or advertisers
+                  This site does not maintain financial relationships with supplement companies
                 </li>
               </ul>
+              <p>
+                SupplementDecoded may display contextual third-party network advertising, such as Google AdSense, to support hosting, technological infrastructure, and ongoing research. Advertising relationships are separate from the review process. Advertisers and advertising networks do not select reviewers, access content before publication, request favorable treatment, or influence review conclusions.
+              </p>
 
               <h2>What Content May Be Reviewed</h2>
               <p>Medical or expert review may apply to:</p>
@@ -144,123 +143,79 @@ export default function MedicalExpertReviewPage() {
                 <li>Category-level health guides</li>
               </ul>
               <p>
-                Not all content requires medical review. General educational or
-                descriptive content may undergo editorial review only.
+                Not all content requires medical review. General educational or descriptive content may undergo editorial review only.
               </p>
 
               <h2>When Medical / Expert Review Occurs</h2>
               <p>
-                Medical or expert review is applied after initial editorial
-                drafting and fact-checking, and before content is finalized or
-                substantially updated.
+                Medical or expert review is applied after initial editorial drafting and fact-checking, and before content is finalized or substantially updated.
               </p>
               <p>
-                Not all content on this site requires medical or expert review.
-                Review is prioritized for pages that:
+                Not all content on this site requires medical or expert review. Review is prioritized for pages that:
               </p>
               <ul>
-                <li>
-                  Discuss health outcomes, safety considerations, or potential
-                  risks
-                </li>
-                <li>
-                  Interpret or summarize scientific, clinical, or observational
-                  research
-                </li>
-                <li>
-                  Analyze supplement ingredients, formulations, or mechanisms of
-                  action
-                </li>
-                <li>
-                  Address health-related topics where misunderstanding could
-                  pose risk
-                </li>
+                <li>Discuss health outcomes, safety considerations, or potential risks</li>
+                <li>Interpret or summarize scientific, clinical, or observational research</li>
+                <li>Analyze supplement ingredients, formulations, or mechanisms of action</li>
+                <li>Address health-related topics where misunderstanding could pose risk</li>
               </ul>
               <p>
-                General educational or descriptive content may undergo editorial
-                review only.
+                General educational or descriptive content may undergo editorial review only.
               </p>
 
               <h2>What Medical / Expert Review Does Not Do</h2>
               <p>
-                To protect readers and maintain trust, our medical or expert
-                review process does not:
+                To protect readers and maintain trust, our medical or expert review process does not:
               </p>
               <ul>
                 <li>Provide medical diagnoses or treatment recommendations</li>
                 <li>Replace advice from licensed healthcare professionals</li>
                 <li>Approve, endorse, or certify supplements or products</li>
-                <li>
-                  Guarantee accuracy beyond the limits of available evidence
-                </li>
-                <li>
-                  Eliminate uncertainty where scientific consensus does not
-                  exist
-                </li>
+                <li>Guarantee accuracy beyond the limits of available evidence</li>
+                <li>Eliminate uncertainty where scientific consensus does not exist</li>
               </ul>
               <p>
-                Readers should always consult qualified healthcare professionals
-                for personal medical decisions.
+                Readers should always consult qualified healthcare professionals for personal medical decisions.
               </p>
 
               <h2>How Reviewed Content Is Identified</h2>
-              <p>Where applicable, reviewed content may include:</p>
+              <p>
+                Where applicable, reviewed content may include:
+              </p>
               <ul>
-                <li>
-                  A note indicating that the content has been medically or
-                  expert reviewed
-                </li>
-                <li>
-                  The general role or background of the reviewer (without
-                  promotional framing)
-                </li>
+                <li>A note indicating that the content has been medically or expert reviewed</li>
+                <li>The general role or background of the reviewer, without promotional framing</li>
                 <li>The most recent review or update date</li>
               </ul>
               <p>
-                This information is provided to support transparency, not
-                authority claims.
+                This information is provided to support transparency, not authority claims.
               </p>
 
               <h2>Handling New Evidence and Updates</h2>
-              <p>Health research evolves. To remain accurate:</p>
+              <p>
+                Health research evolves. To remain accurate:
+              </p>
               <ul>
-                <li>
-                  Reviewed content is periodically re-evaluated, typically every
-                  6–12 months
-                </li>
-                <li>
-                  Articles may be updated when new, credible evidence becomes
-                  available
-                </li>
-                <li>
-                  Significant changes are incorporated to reflect current
-                  understanding
-                </li>
-                <li>
-                  If important errors are identified, corrections are made
-                  promptly
-                </li>
+                <li>Reviewed content is periodically re-evaluated, typically every 6 to 12 months</li>
+                <li>Articles may be updated when new, credible evidence becomes available</li>
+                <li>Significant changes are incorporated to reflect current understanding</li>
+                <li>If important errors are identified, corrections are made promptly</li>
               </ul>
 
               <h2>Limitations of Medical / Expert Review</h2>
               <p>
-                Medical and expert review reflects knowledge available at the
-                time of review. Scientific understanding may change, and
-                individual health circumstances vary.
+                Medical and expert review reflects knowledge available at the time of review. Scientific understanding may change, and individual health circumstances vary.
               </p>
               <p>For this reason:</p>
               <ul>
-                <li>
-                  Reviewed content should be used for educational purposes only
-                </li>
+                <li>Reviewed content should be used for educational purposes only</li>
                 <li>It should not be used to self-diagnose or self-treat</li>
                 <li>Professional medical advice should always take priority</li>
               </ul>
 
               <h2>Transparency and Accountability</h2>
               <p>
-                We are committed to transparency in how medical and expert
-                review is conducted.
+                We are committed to transparency in how medical and expert review is conducted.
               </p>
               <p>
                 You can learn more about our standards on the following pages:
@@ -277,8 +232,7 @@ export default function MedicalExpertReviewPage() {
                 </li>
               </ul>
               <p>
-                Questions or concerns about reviewed content are welcome and can
-                be submitted through our{" "}
+                Questions or concerns about reviewed content are welcome and can be submitted through our{" "}
                 <Link href="/contact">Contact page</Link>.
               </p>
             </div>

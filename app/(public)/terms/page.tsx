@@ -48,7 +48,7 @@ export default function TermsPage() {
             Please read these terms carefully before using our website.
           </p>
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0D1217] border border-stone-200/90 dark:border-stone-800 text-xs font-medium text-slate-600 dark:text-slate-400 shadow-xs">
-            <span>Last Updated: October 4, 2026</span>
+            <span>Last Updated: October 26, 2026</span>
           </div>
         </div>
       </section>
@@ -60,33 +60,26 @@ export default function TermsPage() {
             <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-emerald-600 dark:prose-a:text-emerald-400 hover:prose-a:underline prose-a:font-medium">
               <h2 className="text-3xl mt-0">Acceptance of Terms</h2>
               <p>
-                By accessing and using this website, you agree to comply with
-                and be bound by these Terms of Use.
+                By accessing and using this website, you agree to comply with and be bound by these Terms of Use.
               </p>
               <p>
-                If you do not agree with any part of these terms, you should
-                discontinue use of the website.
+                If you do not agree with any part of these terms, you should discontinue use of the website.
               </p>
               <p>
-                These Terms of Use apply to all visitors, users, and others who
-                access the site.
+                These Terms of Use apply to all visitors, users, and others who access the site.
               </p>
 
               <h2>Who Operates This Website</h2>
               <p>
-                This website is operated under the name Supplement Decoded by a
-                group of publishers based.
+                This website is operated under the name SupplementDecoded by a group of publishers based in Nepal.
               </p>
               <p>
-                The site provides educational health information to a general
-                audience and is not affiliated with any supplement manufacturer,
-                distributor, advertiser, or commercial entity.
+                The site provides educational health information to a general audience. It is not owned or controlled by any supplement manufacturer, distributor, or product seller.
               </p>
 
               <h2>Educational Purpose Only</h2>
               <p>
-                All content on this website is provided for educational and
-                informational purposes only.
+                All content on this website is provided for educational and informational purposes only.
               </p>
               <p>The information presented:</p>
               <ul>
@@ -95,8 +88,7 @@ export default function TermsPage() {
                 <li>Does not replace professional healthcare guidance</li>
               </ul>
               <p>
-                Always consult a qualified healthcare professional regarding
-                health-related decisions.
+                Always consult a qualified healthcare professional regarding health-related decisions.
               </p>
 
               <h2>No Emergency Services</h2>
@@ -104,54 +96,51 @@ export default function TermsPage() {
                 This website is not intended for use in medical emergencies.
               </p>
               <p>
-                If you are experiencing a medical emergency or urgent health
-                concern, contact a qualified healthcare professional or local
-                emergency services immediately.
+                If you are experiencing a medical emergency or urgent health concern, contact a qualified healthcare professional or local emergency services immediately.
               </p>
 
               <h2>No Endorsements or Recommendations</h2>
               <p>This website:</p>
               <ul>
-                <li>
-                  Does not recommend or endorse specific supplements or products
-                </li>
-                <li>Does not publish “best supplement” rankings</li>
+                <li>Does not recommend or endorse specific supplements or products</li>
+                <li>Does not publish &ldquo;best supplement&rdquo; rankings</li>
                 <li>Does not provide personalized recommendations</li>
                 <li>Does not guarantee outcomes or results</li>
               </ul>
               <p>
-                Product discussions are presented solely for educational
-                analysis.
+                Product discussions are presented solely for educational analysis.
               </p>
 
               <h2>No Commercial Influence</h2>
               <p>
-                This website does not operate advertising programs, affiliate
-                partnerships, sponsored placements, or referral arrangements
-                that influence content decisions.
+                SupplementDecoded is editorially independent.
               </p>
               <p>
-                Content is published independently for educational purposes
-                only.
+                This website does not operate affiliate partnerships, sponsored placements, paid brand partnerships, referral arrangements, product commission programs, or manufacturer compensation arrangements.
+              </p>
+              <p>
+                SupplementDecoded does not accept payment or other benefits in exchange for publishing, altering, ranking, promoting, or removing editorial content.
+              </p>
+              <p>
+                To support hosting, technological infrastructure, editorial maintenance, and ongoing research, the website may display contextual third-party network advertising, such as Google AdSense. Advertising is separate from editorial content. Advertisers and advertising networks do not select topics, review content before publication, influence analysis, affect conclusions, or determine whether a product or company is criticized or covered.
+              </p>
+              <p>
+                Content is published independently for educational purposes only.
               </p>
 
               <h2>User Responsibilities</h2>
               <p>By using this website, you agree that:</p>
               <ul>
-                <li>
-                  You are responsible for how you interpret and use the
-                  information
-                </li>
-                <li>
-                  You will not rely solely on website content for medical
-                  decisions
-                </li>
+                <li>You are responsible for how you interpret and use the information</li>
+                <li>You will not rely solely on website content for medical decisions</li>
                 <li>You will seek professional guidance when appropriate</li>
               </ul>
               <p>Use of this website is at your own discretion.</p>
 
               <h2>Intellectual Property</h2>
-              <p>All original content on this website, including:</p>
+              <p>
+                All original content on this website, including:
+              </p>
               <ul>
                 <li>Text</li>
                 <li>Structure</li>
@@ -160,8 +149,7 @@ export default function TermsPage() {
                 <li>Design</li>
               </ul>
               <p>
-                is the intellectual property of Supplement Decoded unless
-                otherwise stated.
+                is the intellectual property of SupplementDecoded unless otherwise stated.
               </p>
               <p>You may:</p>
               <ul>
@@ -175,36 +163,23 @@ export default function TermsPage() {
                 <li>Misrepresent content as your own</li>
               </ul>
               <p>
-                Proper citation with link-back is required for limited
-                quotations.
+                Proper citation with link-back is required for limited quotations.
               </p>
 
               <h2>External Links</h2>
               <p>
-                This website may link to external resources for educational
-                context.
+                This website may link to external resources for educational context.
               </p>
               <p>
-                We do not control or guarantee the accuracy, reliability, or
-                practices of external websites and are not responsible for their
-                content.
+                We do not control or guarantee the accuracy, reliability, or practices of external websites and are not responsible for their content.
               </p>
 
               <h2>Limitation of Liability</h2>
               <p>To the fullest extent permitted by applicable law:</p>
               <ul>
-                <li>
-                  This website is provided on an “as is” and “as available”
-                  basis
-                </li>
-                <li>
-                  We make no warranties regarding accuracy, completeness, or
-                  suitability
-                </li>
-                <li>
-                  We are not liable for any direct, indirect, incidental, or
-                  consequential damages arising from use of the site
-                </li>
+                <li>This website is provided on an &ldquo;as is&rdquo; and &ldquo;as available&rdquo; basis</li>
+                <li>We make no warranties regarding accuracy, completeness, or suitability</li>
+                <li>We are not liable for any direct, indirect, incidental, or consequential damages arising from use of the site</li>
               </ul>
               <p>Use of the site is at your own risk.</p>
 
@@ -216,47 +191,32 @@ export default function TermsPage() {
                 <li>The site will be uninterrupted or secure</li>
               </ul>
               <p>
-                While we strive for accuracy and reliability, no guarantees are
-                made.
+                While we strive for accuracy and reliability, no guarantees are made.
               </p>
 
               <h2>User Conduct</h2>
               <p>Users agree not to:</p>
               <ul>
                 <li>Use the website for unlawful purposes</li>
-                <li>
-                  Attempt to interfere with site security or functionality
-                </li>
+                <li>Attempt to interfere with site security or functionality</li>
                 <li>Attempt to access restricted areas of the website</li>
                 <li>Submit false or malicious information</li>
               </ul>
 
               <h2>User Submissions</h2>
               <p>
-                If you submit inquiries, reports, or other communications
-                through the Contact page, you agree that:
+                If you submit inquiries, reports, or other communications through the <Link href="/contact">Contact page</Link>, you agree that:
               </p>
               <ul>
-                <li>
-                  The information provided is accurate to the best of your
-                  knowledge
-                </li>
-                <li>
-                  The submission does not contain unlawful, abusive, defamatory,
-                  or misleading content
-                </li>
-                <li>
-                  The submission does not violate the rights of any third party
-                </li>
+                <li>The information provided is accurate to the best of your knowledge</li>
+                <li>The submission does not contain unlawful, abusive, defamatory, or misleading content</li>
+                <li>The submission does not violate the rights of any third party</li>
               </ul>
               <p>
-                Submission of a message does not create a professional, medical,
-                advisory, or confidential relationship.
+                Submission of a message does not create a professional, medical, advisory, or confidential relationship.
               </p>
               <p>
-                We reserve the right to disregard or remove submissions that are
-                inappropriate, unlawful, or unrelated to the website’s
-                educational purpose.
+                We reserve the right to disregard or remove submissions that are inappropriate, unlawful, or unrelated to the website&apos;s educational purpose.
               </p>
 
               <h2>International Use</h2>
@@ -264,46 +224,36 @@ export default function TermsPage() {
                 This website is operated from Nepal but is accessible worldwide.
               </p>
               <p>
-                Users accessing the site from other jurisdictions are
-                responsible for compliance with local laws.
+                Users accessing the site from other jurisdictions are responsible for compliance with local laws.
               </p>
 
               <h2>Right to Modify Content</h2>
               <p>
-                We reserve the right to update, modify, remove, or discontinue
-                any content on this website at any time without prior notice.
+                We reserve the right to update, modify, remove, or discontinue any content on this website at any time without prior notice.
               </p>
               <p>
-                We are not obligated to maintain or update specific content
-                unless required by applicable law.
+                We are not obligated to maintain or update specific content unless required by applicable law.
               </p>
 
               <h2>Modifications to Terms</h2>
               <p>
-                We reserve the right to update or modify these Terms of Use at
-                any time.
+                We reserve the right to update or modify these Terms of Use at any time.
               </p>
               <p>
-                Updated terms will be posted on this page with a revised
-                effective date.
+                Updated terms will be posted on this page with a revised effective date.
               </p>
               <p>
-                Continued use of the site after changes constitutes acceptance
-                of the updated terms.
+                Continued use of the site after changes constitutes acceptance of the updated terms.
               </p>
 
               <h2>Governing Law</h2>
               <p>
-                These Terms of Use are governed by and interpreted in accordance
-                with the laws of Nepal, without regard to conflict-of-law
-                principles.
+                These Terms of Use are governed by and interpreted in accordance with the laws of Nepal, without regard to conflict-of-law principles.
               </p>
 
               <h2>Contact</h2>
               <p>
-                If you have questions regarding these Terms of Use, you may
-                contact us through the <Link href="/contact">Contact page</Link>
-                .
+                If you have questions regarding these Terms of Use, you may contact us through the <Link href="/contact">Contact page</Link>.
               </p>
             </div>
           </div>

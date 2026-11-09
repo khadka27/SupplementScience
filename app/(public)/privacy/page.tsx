@@ -48,7 +48,7 @@ export default function PrivacyPage() {
             We are committed to transparency and the responsible handling of your data.
           </p>
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white dark:bg-[#0D1217] border border-stone-200/90 dark:border-stone-800 text-xs font-medium text-slate-600 dark:text-slate-400 shadow-xs">
-            <span>Last Updated: October 4, 2026</span>
+            <span>Last Updated: October 26, 2026</span>
           </div>
         </div>
       </section>
@@ -60,55 +60,40 @@ export default function PrivacyPage() {
             <div className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-emerald-600 dark:prose-a:text-emerald-400 hover:prose-a:underline prose-a:font-medium">
               <h2 className="text-3xl mt-0">Introduction</h2>
               <p>
-                This Privacy Policy explains how this website collects, uses,
-                and protects information when you visit or interact with our
-                content.
+                This Privacy Policy explains how this website collects, uses, and protects information when you visit or interact with our content.
               </p>
               <p>
-                We are committed to transparency and responsible handling of
-                data. This website is designed primarily for educational
-                purposes and does not sell products or operate commercial
-                advertising programs.
+                We are committed to transparency and responsible handling of data. This website is designed primarily for educational purposes. It does not sell products, operate affiliate programs, accept sponsored content, or receive manufacturer compensation. The site may display contextual third-party network advertising, such as Google AdSense, to support hosting, technological infrastructure, and ongoing research. Advertising does not influence our editorial content.
               </p>
               <p>
-                By using this site, you agree to the terms outlined in this
-                Privacy Policy.
+                By using this site, you agree to the terms outlined in this Privacy Policy.
               </p>
 
               <h2>Who We Are</h2>
               <p>
-                This website is operated under the name Supplement Decoded by a
-                group of independent publishers.
+                This website is operated under the name SupplementDecoded by a group of independent publishers.
               </p>
               <p>
-                The site provides evidence-based educational health information
-                to a global audience and is not affiliated with any supplement
-                manufacturer, distributor, advertiser, or commercial entity.
+                The site provides evidence-based educational health information to a global audience. It is not owned or controlled by any supplement manufacturer, distributor, or product seller. Advertising networks that serve advertisements on the site do not direct its editorial operations.
               </p>
               <p>
-                For privacy-related inquiries, you may contact us through the{" "}
-                <Link href="/contact">Contact page</Link>.
+                For privacy-related inquiries, you may contact us through the <Link href="/contact">Contact page</Link>.
               </p>
 
               <h2>Health Information Notice</h2>
               <p>
-                This website provides general educational information about
-                supplements, nutrition, safety considerations, and related
-                research.
+                This website provides general educational information about supplements, nutrition, safety considerations, and related research.
               </p>
               <p className="font-semibold">
                 It does not provide medical advice, diagnosis, or treatment.
               </p>
               <p>
-                If you are experiencing a medical emergency or urgent health
-                concern, contact a qualified healthcare professional or your
-                local emergency services immediately.
+                If you are experiencing a medical emergency or urgent health concern, contact a qualified healthcare professional or your local emergency services immediately.
               </p>
 
               <h2>Information We Collect</h2>
               <p>
-                We may collect limited types of information in the following
-                ways:
+                We may collect limited types of information in the following ways:
               </p>
 
               <h3>1. Information You Provide Voluntarily</h3>
@@ -125,14 +110,12 @@ export default function PrivacyPage() {
                 <li>The content of your message</li>
               </ul>
               <p>
-                We collect only the information necessary to respond to your
-                inquiry.
+                We collect only the information necessary to respond to your inquiry.
               </p>
 
               <h3>2. Automatically Collected Information</h3>
               <p>
-                Like most websites, certain information may be collected
-                automatically through standard technologies, including:
+                Like most websites, certain information may be collected automatically through standard technologies, including:
               </p>
               <ul>
                 <li>IP address</li>
@@ -143,72 +126,76 @@ export default function PrivacyPage() {
                 <li>Referring websites</li>
               </ul>
               <p>
-                This data is used in aggregated form for analytical and site
-                performance purposes.
+                This data is used in aggregated or pseudonymous form for analytical, security, site performance, and advertising delivery purposes.
               </p>
 
               <h2>Analytics and Cookie Choices</h2>
               <p>
-                This website uses limited analytics tools, such as Google
-                Analytics, to understand how visitors interact with content and
-                to improve clarity and usability.
+                This website uses limited analytics tools, such as Google Analytics, to understand how visitors interact with content and to improve clarity and usability.
               </p>
               <p>We do not use:</p>
               <ul>
-                <li>Advertising cookies</li>
-                <li>Behavioral tracking for marketing</li>
                 <li>Affiliate tracking technologies</li>
                 <li>Sponsored data collection systems</li>
+                <li>Technologies intended to sell personal information to third parties</li>
               </ul>
-              <p>Cookies may be used for:</p>
+              <p>Cookies and similar technologies may be used for:</p>
               <ul>
                 <li>Basic site functionality</li>
-                <li>Anonymous traffic analysis</li>
+                <li>Anonymous or aggregated traffic analysis</li>
+                <li>Serving advertisements</li>
+                <li>Measuring advertising performance</li>
+                <li>Limiting how often the same advertisement is shown</li>
               </ul>
               <p>
-                You may control or disable cookies through your browser
-                settings. Disabling cookies may affect certain site
-                functionality.
+                Third-party vendors, including Google, use cookies to serve ads based on a visitor&apos;s prior visits to this website and other websites. Google&apos;s use of advertising cookies enables it and its partners to serve ads based on visits to this site and other sites on the Internet.
               </p>
               <p>
-                Google provides tools that allow users to opt out of certain
-                data collection practices. You may review Google’s privacy and
-                opt-out resources for more information.
+                Visitors may opt out of personalized advertising by visiting Google Ads Settings at{" "}
+                <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer">
+                  https://adssettings.google.com
+                </a>{" "}
+                or by visiting{" "}
+                <a href="https://www.aboutads.info" target="_blank" rel="noopener noreferrer">
+                  https://www.aboutads.info
+                </a>.
+              </p>
+              <p>
+                You may also control or disable cookies through your browser settings. Disabling cookies may affect certain site functionality and may not stop advertisements from appearing, although the advertisements may be less relevant.
               </p>
 
               <h2>Use of Analytics</h2>
               <p>We may use analytics tools such as:</p>
               <ul>
                 <li>Google Analytics</li>
-                <li>Search Console</li>
+                <li>Google Search Console</li>
               </ul>
               <p>
-                These services help us understand how visitors use the site so
-                we can improve clarity, usability, and content quality.
+                These services help us understand how visitors use the site so we can improve clarity, usability, and content quality.
               </p>
               <p>
-                Analytics services may collect anonymized usage data. We do not
-                use analytics data to personally identify visitors.
+                Analytics services may collect pseudonymous usage data. We do not use analytics data to personally identify visitors.
               </p>
               <p>
-                You can learn more about how Google collects and processes data
-                by visiting Google’s privacy documentation.
+                You can learn more about how Google collects and processes data by visiting{" "}
+                <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">
+                  https://policies.google.com/technologies/partner-sites
+                </a>.
               </p>
 
               <h2>Cookies</h2>
-              <p>This website may use cookies or similar technologies to:</p>
+              <p>This website may use first-party and third-party cookies or similar technologies to:</p>
               <ul>
                 <li>Improve user experience</li>
                 <li>Analyze site traffic</li>
                 <li>Maintain basic site functionality</li>
+                <li>Serve and measure advertising</li>
               </ul>
               <p>
-                Cookies are small data files stored on your device. You may
-                disable cookies through your browser settings, though some site
-                features may not function properly.
+                Cookies are small data files stored on your device. You may disable cookies through your browser settings, though some site features may not function properly.
               </p>
-              <p className="font-semibold">
-                We do not use cookies for advertising or behavioral tracking.
+              <p>
+                We do not use cookies for affiliate tracking. Advertising cookies are placed by third-party advertising vendors, including Google, as described in the Analytics and Cookie Choices section above. SupplementDecoded does not use its own cookies to build marketing profiles of individual visitors.
               </p>
 
               <h2>How We Use Information</h2>
@@ -218,61 +205,54 @@ export default function PrivacyPage() {
                 <li>Improve content quality and accuracy</li>
                 <li>Monitor site performance and usage trends</li>
                 <li>Maintain website security</li>
+                <li>Deliver and measure advertising that supports operation of the website</li>
               </ul>
-              <p className="font-semibold">
-                We do not sell, rent, trade, or share personal information for
-                commercial purposes.
+              <p>
+                We do not sell, rent, trade, or share personal information that you submit to us for commercial purposes.
               </p>
 
               <h2>Data Sharing</h2>
               <p>
-                We do not sell or distribute personal information to third
-                parties.
+                We do not sell personal information.
               </p>
               <p>
-                Limited data may be processed by trusted third-party service
-                providers (such as hosting providers or analytics platforms)
-                solely for technical operation of the website.
+                Limited technical data may be processed by trusted third-party service providers, such as hosting, security, analytics, and advertising providers, solely for the technical operation, measurement, security, and support of the website.
               </p>
               <p>
-                These providers are responsible for safeguarding data according
-                to their own privacy policies.
+                Information submitted through the Contact form is not provided to advertisers for their own marketing purposes.
+              </p>
+              <p>
+                Third-party advertising vendors may collect information through cookies or similar technologies when advertisements are displayed. That collection is governed by the privacy policies of those vendors.
+              </p>
+              <p>
+                Service providers are responsible for safeguarding data according to their own privacy policies and applicable contractual requirements.
               </p>
 
               <h2>International Data Transfers</h2>
               <p>This website serves a global audience.</p>
               <p>
-                Certain technical service providers, including analytics or
-                hosting services, may process data outside your country of
-                residence.
+                Certain technical service providers, including analytics, hosting, security, or advertising services, may process data outside your country of residence.
               </p>
               <p>
-                By using this site, you acknowledge that data may be transferred
-                and processed in jurisdictions that may have data protection
-                laws different from those in your country.
+                By using this site, you acknowledge that data may be transferred and processed in jurisdictions that may have data protection laws different from those in your country.
               </p>
               <p>
-                We take reasonable steps to work with reputable service
-                providers that maintain appropriate data protection standards.
+                We take reasonable steps to work with reputable service providers that maintain appropriate data protection standards.
               </p>
 
               <h2>Data Retention</h2>
               <p>
-                We retain personal information only for as long as necessary to
-                fulfill the purposes outlined in this policy.
+                We retain personal information only for as long as necessary to fulfill the purposes outlined in this policy.
               </p>
               <ul>
                 <li>
-                  Contact form submissions are retained for up to 12 months,
-                  unless needed for correction records or legal obligations.
+                  Contact form submissions are retained for up to 12 months, unless needed for correction records or legal obligations.
                 </li>
                 <li>
-                  Aggregated analytics data is retained according to the
-                  policies of the analytics provider.
+                  Aggregated analytics data is retained according to the policies of the analytics provider.
                 </li>
                 <li>
-                  Safety-related inquiries may be retained longer if necessary
-                  to maintain transparency or correction records.
+                  Safety-related inquiries may be retained longer if necessary to maintain transparency or correction records.
                 </li>
               </ul>
               <p>
@@ -281,18 +261,15 @@ export default function PrivacyPage() {
 
               <h2>Data Security</h2>
               <p>
-                We take reasonable measures to protect information from
-                unauthorized access, misuse, or disclosure.
+                We take reasonable measures to protect information from unauthorized access, misuse, or disclosure.
               </p>
               <p>
-                However, no method of data transmission over the internet is
-                completely secure. Use of this site is at your own discretion.
+                However, no method of data transmission over the Internet is completely secure. Use of this site is at your own discretion.
               </p>
 
               <h2>Safety Reports and Sensitive Information</h2>
               <p>
-                Users may report factual errors, safety concerns, or potentially
-                misleading claims through the{" "}
+                Users may report factual errors, safety concerns, or potentially misleading claims through the{" "}
                 <Link href="/contact">Contact page</Link>.
               </p>
               <p>However, please do not submit:</p>
@@ -304,18 +281,15 @@ export default function PrivacyPage() {
                 <li>Government identification numbers</li>
               </ul>
               <p>
-                We do not provide medical case review services and cannot
-                respond to personal medical inquiries.
+                We do not provide medical case review services and cannot respond to personal medical inquiries.
               </p>
               <p>
-                Any safety-related concerns submitted are reviewed for factual
-                accuracy only and do not constitute medical advice.
+                Any safety-related concerns submitted are reviewed for factual accuracy only and do not constitute medical advice.
               </p>
 
-              <h2>Children’s Privacy</h2>
+              <h2>Children&apos;s Privacy</h2>
               <p>
-                This website is intended for a general audience and is not
-                directed toward children under the age of 13.
+                This website is intended for a general audience and is not directed toward children under the age of 13.
               </p>
               <p>
                 We do not knowingly collect personal information from children.
@@ -323,44 +297,37 @@ export default function PrivacyPage() {
 
               <h2>External Links</h2>
               <p>
-                This website may link to external websites for research or
-                reference purposes.
+                This website may link to external websites for research or reference purposes.
               </p>
               <p>
-                We are not responsible for the privacy practices or content of
-                external websites. Users should review the privacy policies of
-                those sites independently.
+                We are not responsible for the privacy practices or content of external websites. Users should review the privacy policies of those sites independently.
               </p>
 
               <h2>Your Rights</h2>
               <p>
-                Depending on your jurisdiction, you have rights regarding
-                personal data, including:
+                Depending on your jurisdiction, you may have rights regarding personal data, including:
               </p>
               <ul>
                 <li>Requesting access to information you have submitted</li>
                 <li>Requesting correction or deletion of personal data</li>
-                <li>Withdrawing consent for data processing</li>
+                <li>Withdrawing consent for data processing where consent is the basis for processing</li>
+                <li>Opting out of personalized advertising through the controls described in this policy</li>
               </ul>
               <p>
-                Requests can be submitted through our{" "}
-                <Link href="/contact">Contact page</Link>.
+                Requests can be submitted through our <Link href="/contact">Contact page</Link>.
               </p>
 
               <h2>Changes to This Privacy Policy</h2>
               <p>
-                This Privacy Policy may be updated periodically to reflect
-                operational, legal, or regulatory changes.
+                This Privacy Policy may be updated periodically to reflect operational, legal, or regulatory changes.
               </p>
               <p>
-                The updated version will be posted on this page with a revised
-                effective date.
+                The updated version will be posted on this page with a revised effective date.
               </p>
 
               <h2>Contact</h2>
               <p>
-                If you have questions about this Privacy Policy or your data,
-                please contact us through the{" "}
+                If you have questions about this Privacy Policy or your data, please contact us through the{" "}
                 <Link href="/contact">Contact page</Link>.
               </p>
             </div>

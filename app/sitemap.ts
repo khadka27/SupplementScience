@@ -67,6 +67,12 @@ const staticPages: MetadataRoute.Sitemap = [
     priority: 0.6,
   },
   {
+    url: `${baseUrl}/medical-expert-review`,
+    lastModified: REVISION_DATE,
+    changeFrequency: "monthly",
+    priority: 0.6,
+  },
+  {
     url: `${baseUrl}/editorial-independence`,
     lastModified: REVISION_DATE,
     changeFrequency: "monthly",
