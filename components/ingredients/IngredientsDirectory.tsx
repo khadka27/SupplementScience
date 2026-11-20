@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
+import { SYNONYMS } from "@/lib/fuzzy-search";
 import {
   Search,
   SlidersHorizontal,
@@ -52,6 +53,7 @@ export interface IngredientItem {
 
 interface IngredientsDirectoryProps {
   ingredients: IngredientItem[];
+  initialSearch?: string;
 }
 
 // Helper to extract common name and scientific/chemical specification
@@ -220,13 +222,19 @@ function getIngredientClinicalMeta(slug: string, categoryName?: string | null) {
 
 type SortField = "name-asc" | "name-desc" | "category" | "trials-desc" | "grade";
 
-export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps) {
-  const [searchQuery, setSearchQuery] = useState("");
+export function IngredientsDirectory({ ingredients, initialSearch = "" }: IngredientsDirectoryProps) {
+  const [searchQuery, setSearchQuery] = useState(initialSearch);
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
   const [selectedLetter, setSelectedLetter] = useState<string>("ALL");
   const [sortBy, setSortBy] = useState<SortField>("name-asc");
   const [viewMode, setViewMode] = useState<"grid" | "table">("grid");
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (initialSearch !== undefined) {
+      setSearchQuery(initialSearch);
+    }
+  }, [initialSearch]);
 
   // Extract unique categories and their counts
   const categoriesWithCounts = useMemo(() => {
@@ -258,16 +266,24 @@ export function IngredientsDirectory({ ingredients }: IngredientsDirectoryProps)
         const { commonName, scientificName } = parseIngredientTitle(item.title);
         const query = searchQuery.trim().toLowerCase();
 
-        // 1. Search filter
+        // 1. Search filter with direct and clinical synonym matching
         if (query) {
           const matchTitle = item.title.toLowerCase().includes(query);
           const matchCommon = commonName.toLowerCase().includes(query);
-          const matchSci = scientificName?.toLowerCase().includes(query);
-          const matchCat = item.category?.name.toLowerCase().includes(query);
-          const matchExcerpt = item.excerpt?.toLowerCase().includes(query);
-          const matchContent = item.content?.toLowerCase().includes(query);
+          const matchSci = scientificName?.toLowerCase().includes(query) ?? false;
+          const matchCat = item.category?.name.toLowerCase().includes(query) ?? false;
+          const matchExcerpt = item.excerpt?.toLowerCase().includes(query) ?? false;
+          const matchContent = item.content?.toLowerCase().includes(query) ?? false;
 
-          if (!matchTitle && !matchCommon && !matchSci && !matchCat && !matchExcerpt && !matchContent) {
+          const syns = SYNONYMS[query] || [];
+          const matchSyn = syns.some(
+            (syn) =>
+              item.title.toLowerCase().includes(syn) ||
+              item.slug.toLowerCase().includes(syn) ||
+              (item.category?.name && item.category.name.toLowerCase().includes(syn))
+          );
+
+          if (!matchTitle && !matchCommon && !matchSci && !matchCat && !matchExcerpt && !matchContent && !matchSyn) {
             return false;
           }
         }

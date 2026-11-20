@@ -45,7 +45,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function IngredientsPage() {
+export default async function IngredientsPage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const sp = searchParams ? await searchParams : {};
+  const searchParam = typeof sp.search === "string" ? sp.search : typeof sp.q === "string" ? sp.q : "";
+
   // Query all published ingredient posts and blog posts in the ingredients category
   const posts = await prisma.post.findMany({
     where: {
@@ -229,7 +236,10 @@ export default async function IngredientsPage() {
           </div>
 
           {/* Interactive Client Component */}
-          <IngredientsDirectory ingredients={serializedIngredients} />
+          <IngredientsDirectory
+            ingredients={serializedIngredients}
+            initialSearch={searchParam}
+          />
         </div>
       </section>
 

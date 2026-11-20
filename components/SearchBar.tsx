@@ -6,12 +6,13 @@ import Link from "next/link";
 import { Search, Loader2, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { cn } from "@/lib/utils";
+import { cn, getPostHref } from "@/lib/utils";
 
 interface SearchResult {
   id: string;
   title: string;
   slug: string;
+  postType?: string;
   excerpt: string | null;
   featuredImageUrl: string | null;
   matchPercentage: number;
@@ -77,13 +78,11 @@ export function SearchBar() {
   };
 
   const getMatchColor = (percentage: number) => {
-    if (percentage >= 90)
-      return "bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800/60";
-    if (percentage >= 70)
-      return "bg-teal-50 dark:bg-teal-950/50 text-teal-800 dark:text-teal-300 border border-teal-200 dark:border-teal-800/60";
-    if (percentage >= 60)
-      return "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700";
-    return "bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400";
+    if (percentage >= 88)
+      return "bg-emerald-50 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800";
+    if (percentage >= 68)
+      return "bg-teal-50 dark:bg-teal-950/70 text-teal-800 dark:text-teal-300 border border-teal-300 dark:border-teal-800";
+    return "bg-amber-50 dark:bg-amber-950/70 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-800";
   };
 
   return (
@@ -119,11 +118,7 @@ export function SearchBar() {
             {results.map((result) => (
               <Link
                 key={result.id}
-                href={
-                  result.category?.slug
-                    ? `/${result.category.slug}/${result.slug}`
-                    : `/${result.slug}`
-                }
+                href={getPostHref(result)}
                 onClick={() => {
                   setIsOpen(false);
                   setQuery("");
@@ -139,11 +134,15 @@ export function SearchBar() {
                       <Badge
                         variant="secondary"
                         className={cn(
-                          "text-xs shrink-0",
+                          "text-[10px] font-bold uppercase tracking-wider shrink-0",
                           getMatchColor(result.matchPercentage),
                         )}
                       >
-                        {result.matchPercentage}% match
+                        {result.matchPercentage >= 88
+                          ? "100% MATCH"
+                          : result.matchPercentage >= 68
+                          ? "70% MATCH"
+                          : "50% MATCH"}
                       </Badge>
                     </div>
                     {result.category && (

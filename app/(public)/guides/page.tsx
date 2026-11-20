@@ -1,16 +1,49 @@
 import prisma from "@/lib/prisma";
 import BlogList from "@/components/blog/BlogList";
 import { Metadata } from "next";
+import PaginationControls from "@/components/PaginationControls";
 
 export const dynamic = "force-dynamic";
-export const revalidate = 10;
+export const revalidate = 21600;
+
+const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
+  process.env.NEXT_PUBLIC_BASE_URL.replace(
+    /^https?:\/\/supplementdecoded\.com/i,
+    "https://www.supplementdecoded.com",
+  )) ||
+  "https://www.supplementdecoded.com") as string;
 
 export const metadata: Metadata = {
-  title: "Guides | Supplement Science",
-  description: "Browse our comprehensive guides and expert reviews.",
+  title: "Evidence-Based Supplement Guides",
+  description:
+    "Comprehensive, science-backed supplement guides. Learn safe dosages, dangerous interactions, and clinical efficacy verified by human trials.",
+  alternates: {
+    canonical: `${baseUrl}/guides`,
+  },
 };
 
-export default async function GuidesPage() {
+const PAGE_SIZE = 50;
+
+type Props = {
+  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export default async function GuidesPage({ searchParams }: Props) {
+  const sp = searchParams ? await searchParams : {};
+  const pageParam = typeof sp.page === "string" ? parseInt(sp.page, 10) : 1;
+  const requestedPage = Math.max(1, isNaN(pageParam) ? 1 : pageParam);
+
+  const totalGuides = await prisma.post.count({
+    where: {
+      status: "PUBLISHED",
+      postType: "guide",
+    },
+  });
+
+  const totalPages = Math.max(1, Math.ceil(totalGuides / PAGE_SIZE));
+  const currentPage = Math.max(1, Math.min(requestedPage, totalPages));
+  const skip = (currentPage - 1) * PAGE_SIZE;
+
   const posts = await prisma.post.findMany({
     where: {
       status: "PUBLISHED",
@@ -44,7 +77,8 @@ export default async function GuidesPage() {
     orderBy: {
       publishedAt: "desc",
     },
-    take: 50,
+    skip,
+    take: PAGE_SIZE,
   });
 
   const formattedPosts = (posts || []).map((p: (typeof posts)[number]) => ({
@@ -68,15 +102,26 @@ export default async function GuidesPage() {
         </div>
 
         <div className="mb-16">
-          <div className="flex items-center justify-between mb-8 border-b border-stone-200/90 dark:border-stone-800 pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 border-b border-stone-200/90 dark:border-stone-800 pb-4 gap-2">
             <h2 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
               Latest Guides
             </h2>
             <span className="text-sm text-emerald-700 dark:text-emerald-400 font-medium">
-              Evidence-verified content
+              Showing {totalGuides === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1}–{Math.min(currentPage * PAGE_SIZE, totalGuides)} of {totalGuides} guides
             </span>
           </div>
-          <BlogList posts={formattedPosts as any} />
+
+          <BlogList posts={formattedPosts as any} showFeatured={false} />
+
+          {totalPages > 1 && (
+            <div className="pt-8 border-t border-stone-200/90 dark:border-stone-800">
+              <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                baseUrl="/guides"
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>

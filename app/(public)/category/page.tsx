@@ -1,5 +1,4 @@
 import prisma from "@/lib/prisma";
-import BlogList from "@/components/blog/BlogList";
 import { Metadata } from "next";
 
 export const dynamic = "force-dynamic";

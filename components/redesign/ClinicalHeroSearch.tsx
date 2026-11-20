@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Search, Loader2 } from "lucide-react";
+import { getPostHref } from "@/lib/utils";
 
 interface RealSearchResult {
   id: string;
@@ -264,10 +265,7 @@ export function ClinicalHeroSearch({
   }, []);
 
   const handleSelect = (item: RealSearchResult) => {
-    const targetUrl =
-      item.postType === "ingredient"
-        ? `/ingredients/${item.slug}`
-        : `/blog/${item.slug}`;
+    const targetUrl = getPostHref(item);
     router.push(targetUrl);
     setIsOpen(false);
   };
@@ -496,16 +494,22 @@ export function ClinicalHeroSearch({
                                       {isMonograph ? "Monograph" : "Guide"}
                                     </span>
 
-                                    {/* Fuzzy Match Percentage */}
+                                    {/* Fuzzy Match Tier */}
                                     {item.matchPercentage !== undefined && query.trim() && (
                                       <span
-                                        className={`px-1.5 py-0.5 rounded text-[9px] font-mono font-semibold shrink-0 ${
-                                          item.matchPercentage >= 75
-                                            ? "text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200/60 dark:border-emerald-800/40"
-                                            : "text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50 border border-amber-200/60 dark:border-amber-800/40"
+                                        className={`px-1.5 py-0.5 rounded text-[9px] font-mono font-bold shrink-0 ${
+                                          item.matchPercentage >= 88
+                                            ? "text-emerald-800 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/70 border border-emerald-300 dark:border-emerald-800"
+                                            : item.matchPercentage >= 68
+                                            ? "text-teal-800 dark:text-teal-300 bg-teal-100 dark:bg-teal-950/70 border border-teal-300 dark:border-teal-800"
+                                            : "text-amber-800 dark:text-amber-300 bg-amber-100 dark:bg-amber-950/70 border border-amber-300 dark:border-amber-800"
                                         }`}
                                       >
-                                        {item.matchPercentage}% match
+                                        {item.matchPercentage >= 88
+                                          ? "100% MATCH"
+                                          : item.matchPercentage >= 68
+                                          ? "70% MATCH"
+                                          : "50% MATCH"}
                                       </span>
                                     )}
                                   </div>

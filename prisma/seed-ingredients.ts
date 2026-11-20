@@ -169,6 +169,20 @@ const REAL_INGREDIENTS = [
     dosage: "100–200 mg ubiquinol with lipid meal",
     readTimeMinutes: 7,
   },
+  {
+    title: "Green Tea Extract (EGCG / Camellia sinensis)",
+    slug: "green-tea-extract",
+    categoryName: "Metabolic Health",
+    categorySlug: "metabolic-health",
+    excerpt: "Clinical evaluation of Epigallocatechin gallate (EGCG) catechins, resting fat oxidation kinetics, and thermogenic synergy with caffeine across 38 RCTs.",
+    content: "Comprehensive clinical monograph analyzing 38 human randomized controlled trials of Green Tea Extract standardized to 45–50% EGCG. Demonstrates statistically significant enhancements in 24-hour energy expenditure (+3.5–4.8%) and substrate oxidation. Optimal clinical dosage window: 400–800 mg standardized extract containing 200–400 mg bioavailable EGCG taken with meals.",
+    factCheckedBy: "SupplementDecoded Research Editorial Team",
+    reviewedBy: "SupplementDecoded Research Editorial Team",
+    evidenceGrade: "A",
+    trialsCount: 38,
+    dosage: "400–800 mg/day (std. 45–50% EGCG)",
+    readTimeMinutes: 7,
+  },
 ];
 
 async function seedIngredients() {

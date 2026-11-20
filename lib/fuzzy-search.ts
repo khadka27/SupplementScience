@@ -1,7 +1,45 @@
 /**
  * High-performance, zero-dependency fuzzy search engine
  * Designed for clinical monographs, ingredients, and supplement research.
+ * Calibrated for exact (100% MATCH), strong (70% MATCH), and partial/fuzzy (50% MATCH).
  */
+
+export type MatchTier = "100% MATCH" | "70% MATCH" | "50% MATCH";
+
+export function getMatchTier(percentage: number): MatchTier {
+  if (percentage >= 88) return "100% MATCH";
+  if (percentage >= 68) return "70% MATCH";
+  return "50% MATCH";
+}
+
+// Common supplement and clinical synonyms / aliases
+export const SYNONYMS: Record<string, string[]> = {
+  green: ["green tea", "green tea extract", "egcg", "camellia sinensis", "greens"],
+  "green tea": ["egcg", "camellia sinensis", "catechins", "green tea extract"],
+  egcg: ["green tea", "green tea extract", "camellia sinensis", "epigallocatechin gallate"],
+  tea: ["green tea", "green tea extract", "camellia sinensis", "l-theanine"],
+  nac: ["n-acetyl cysteine", "n-acetylcysteine", "acetylcysteine"],
+  coq10: ["coenzyme q10", "ubiquinol", "ubiquinone"],
+  "vitamin d": ["vitamin d3", "cholecalciferol", "d3"],
+  d3: ["vitamin d3", "cholecalciferol", "vitamin d"],
+  omega: ["omega-3", "fish oil", "epa", "dha"],
+  "omega 3": ["omega-3", "fish oil", "epa", "dha"],
+  "fish oil": ["omega-3", "epa", "dha", "marine triglyceride"],
+  turmeric: ["curcumin", "curcuma longa", "piperine"],
+  curcumin: ["turmeric", "curcuma longa", "piperine"],
+  ashwa: ["ashwagandha", "withania somnifera", "ksm-66", "sensoril"],
+  ashwaganda: ["ashwagandha", "withania somnifera", "ksm-66"],
+  ashwagandha: ["withania somnifera", "ksm-66", "sensoril"],
+  mag: ["magnesium", "magnesium glycinate", "magnesium bisglycinate"],
+  magnesium: ["magnesium glycinate", "magnesium bisglycinate", "chelated"],
+  sleep: ["sleep-relaxation", "melatonin", "magnesium", "l-theanine"],
+  anxiety: ["stress-cortisol", "ashwagandha", "l-theanine", "cortisol"],
+  stress: ["stress-cortisol", "ashwagandha", "rhodiola", "cortisol"],
+  joint: ["joint-pain", "arthritis", "curcumin", "turmeric"],
+  brain: ["cognitive-health", "lion's mane", "l-theanine", "rhodiola"],
+  creatine: ["creatine monohydrate", "creapure"],
+  zinc: ["zinc picolinate", "elemental zinc"],
+};
 
 // Calculate Levenshtein distance between two strings
 export function levenshteinDistance(a: string, b: string): number {
@@ -40,59 +78,79 @@ export function levenshteinSimilarity(a: string, b: string): number {
   return Math.max(0, 1 - distance / maxLen);
 }
 
-// Check if query is a subsequence of target (e.g. "nac" in "n-acetyl-cysteine")
-export function isSubsequence(query: string, target: string): boolean {
-  let qIdx = 0;
-  let tIdx = 0;
-  while (qIdx < query.length && tIdx < target.length) {
-    if (query[qIdx] === target[tIdx]) {
-      qIdx++;
-    }
-    tIdx++;
-  }
-  return qIdx === query.length;
+// Check if query is an acronym matching initials of words (e.g. "nac" -> "n-acetyl cysteine", "egcg" -> "epigallocatechin gallate")
+export function isAcronym(query: string, text: string): boolean {
+  const words = text.toLowerCase().split(/[\s,()\-–/:]+/).filter(Boolean);
+  if (words.length < query.length) return false;
+  const initials = words.map((w) => w[0]).join("");
+  return initials.includes(query);
 }
 
 // Score a single string field against a query
-export function scoreField(query: string, text: string): number {
+export function scoreField(query: string, text: string, isLongText = false): number {
   if (!text || !query) return 0;
 
   const q = query.toLowerCase().trim();
   const t = text.toLowerCase().trim();
 
-  // Exact match
+  // 1. Exact match
   if (t === q) return 1.0;
 
-  // Starts with query
-  if (t.startsWith(q)) return 0.95;
+  // 2. Clean alphanumeric exact match
+  const cleanT = t.replace(/[^\w\s]/g, "");
+  const cleanQ = q.replace(/[^\w\s]/g, "");
+  if (cleanT === cleanQ) return 1.0;
 
-  // Query starts with target (for short abbreviations)
-  if (q.startsWith(t) && t.length >= 3) return 0.85;
+  // 3. Text starts with query
+  if (t.startsWith(q)) return 0.96;
 
-  // Word boundary match (e.g. "somnifera" in "Withania somnifera")
-  const words = t.split(/[\s,()\-–/]+/);
+  // 4. Query starts with text (short target)
+  if (!isLongText && q.startsWith(t) && t.length >= 3) return 0.88;
+
+  // 5. Word-by-word token analysis
+  const words = t.split(/[\s,()\-–/:]+/).filter(Boolean);
+  let bestScore = 0;
+
   for (const word of words) {
-    if (word === q) return 0.92;
-    if (word.startsWith(q)) return 0.88;
-    // Word typo match
-    if (q.length >= 4 && word.length >= 4) {
+    if (word === q) {
+      bestScore = Math.max(bestScore, 0.95);
+    } else if (word.startsWith(q)) {
+      bestScore = Math.max(bestScore, 0.90);
+    } else if (!isLongText && q.startsWith(word) && word.length >= 3) {
+      bestScore = Math.max(bestScore, 0.82);
+    } else if (q.length >= 4 && word.length >= 4) {
       const sim = levenshteinSimilarity(q, word);
-      if (sim >= 0.75) return sim * 0.85;
+      if (sim >= 0.8) {
+        bestScore = Math.max(bestScore, sim * 0.92);
+      } else if (sim >= 0.65) {
+        bestScore = Math.max(bestScore, sim * 0.78);
+      }
     }
   }
 
-  // Substring match
-  if (t.includes(q)) return 0.8;
+  if (bestScore > 0) return bestScore;
 
-  // Acronym / Subsequence match
-  if (q.length >= 2 && isSubsequence(q, t)) {
-    return 0.65;
+  // 6. Substring match
+  if (t.includes(q)) {
+    // For very short queries (length <= 3), avoid matching arbitrary middle of unrelated words
+    if (q.length <= 3) {
+      const hasWordPrefix = words.some((w) => w.startsWith(q));
+      if (hasWordPrefix) return 0.85;
+      return 0;
+    }
+    return isLongText ? 0.65 : 0.75;
   }
 
-  // Fuzzy Levenshtein on full phrase
-  if (q.length >= 4) {
+  // 7. Clinical acronym match (e.g. nac, egcg)
+  if (!isLongText && q.length >= 2 && q.length <= 5 && isAcronym(q, t)) {
+    return 0.92;
+  }
+
+  // 8. Overall Levenshtein similarity on short string
+  if (!isLongText && q.length >= 4 && t.length <= 60) {
     const sim = levenshteinSimilarity(q, t);
-    if (sim >= 0.7) return sim * 0.75;
+    if (sim >= 0.75) return sim * 0.82;
+    if (sim >= 0.60) return sim * 0.70;
   }
 
   return 0;
@@ -104,6 +162,7 @@ export interface FuzzySearchOptions {
     slug?: number;
     category?: number;
     excerpt?: number;
+    content?: number;
   };
   minScoreThreshold?: number;
   maxResults?: number;
@@ -115,6 +174,8 @@ export interface SearchableItem {
   slug: string;
   postType?: string;
   excerpt?: string | null;
+  content?: string | null;
+  cardImageUrl?: string | null;
   featuredImageUrl?: string | null;
   category?: {
     name: string;
@@ -125,6 +186,7 @@ export interface SearchableItem {
 
 export interface FuzzySearchResult extends SearchableItem {
   matchPercentage: number;
+  matchTier: MatchTier;
   score: number;
 }
 
@@ -138,46 +200,79 @@ export function fuzzySearch(
 
   const weights = {
     title: options.weights?.title ?? 1.0,
-    slug: options.weights?.slug ?? 0.85,
-    category: options.weights?.category ?? 0.7,
-    excerpt: options.weights?.excerpt ?? 0.4,
+    slug: options.weights?.slug ?? 0.9,
+    category: options.weights?.category ?? 0.8,
+    excerpt: options.weights?.excerpt ?? 0.65,
+    content: options.weights?.content ?? 0.55,
   };
 
-    const threshold = options.minScoreThreshold ?? 0.42;
-    const maxResults = options.maxResults ?? 8;
+  const threshold = options.minScoreThreshold ?? 0.35;
+  const maxResults = options.maxResults ?? 15;
 
-    const results: FuzzySearchResult[] = [];
+  const results: FuzzySearchResult[] = [];
 
-    for (const item of items) {
-      // Score each field
-      const titleScore = scoreField(q, item.title) * weights.title;
-      const slugScore = scoreField(q, item.slug.replace(/-/g, " ")) * weights.slug;
-      const categoryScore = item.category?.name
-        ? scoreField(q, item.category.name) * weights.category
-        : 0;
-      const excerptScore = item.excerpt
-        ? scoreField(q, item.excerpt) * weights.excerpt
-        : 0;
+  for (const item of items) {
+    // 1. Score short metadata fields
+    const titleScore = scoreField(q, item.title, false) * weights.title;
+    const slugScore = scoreField(q, (item.slug || "").replace(/-/g, " "), false) * weights.slug;
+    const categoryScore = item.category?.name
+      ? scoreField(q, item.category.name, false) * weights.category
+      : 0;
 
-      const highestScore = Math.max(titleScore, slugScore, categoryScore, excerptScore);
+    // 2. Score longer narrative fields
+    const excerptScore = item.excerpt
+      ? scoreField(q, item.excerpt, true) * weights.excerpt
+      : 0;
+    const contentScore = item.content
+      ? scoreField(q, item.content.slice(0, 1500), true) * weights.content
+      : 0;
 
-      if (highestScore >= threshold) {
-        results.push({
-          ...item,
-          score: highestScore,
-          matchPercentage: Math.round(highestScore * 100),
-        });
+    // 3. Check synonyms / aliases
+    let synonymScore = 0;
+    const syns = SYNONYMS[q] || [];
+    for (const syn of syns) {
+      const sTitle = scoreField(syn, item.title, false) * 0.92;
+      const sCat = item.category?.name ? scoreField(syn, item.category.name, false) * 0.8 : 0;
+      const sExc = item.excerpt ? scoreField(syn, item.excerpt, true) * 0.65 : 0;
+      synonymScore = Math.max(synonymScore, sTitle, sCat, sExc);
+    }
+
+    const rawHighest = Math.max(
+      titleScore,
+      slugScore,
+      categoryScore,
+      excerptScore,
+      contentScore,
+      synonymScore
+    );
+
+    if (rawHighest >= threshold) {
+      const rawPct = Math.round(rawHighest * 100);
+      let matchTier: MatchTier = "50% MATCH";
+      let matchPercentage = 50;
+
+      if (rawPct >= 85) {
+        matchTier = "100% MATCH";
+        matchPercentage = 100;
+      } else if (rawPct >= 65) {
+        matchTier = "70% MATCH";
+        matchPercentage = Math.min(85, Math.max(70, rawPct));
+      } else {
+        matchTier = "50% MATCH";
+        matchPercentage = Math.min(65, Math.max(50, rawPct));
       }
+
+      results.push({
+        ...item,
+        score: rawHighest,
+        matchPercentage,
+        matchTier,
+      });
     }
+  }
 
-    // Sort descending by score
-    results.sort((a, b) => b.score - a.score);
+  // Sort descending by score
+  results.sort((a, b) => b.score - a.score);
 
-    // If top match is strong (>= 0.6), filter out any results that are far behind (< 0.45)
-    if (results.length > 0 && results[0].score >= 0.6) {
-      const topScore = results[0].score;
-      return results.filter((r) => r.score >= Math.max(0.45, topScore - 0.35)).slice(0, maxResults);
-    }
-
-    return results.slice(0, maxResults);
+  return results.slice(0, maxResults);
 }

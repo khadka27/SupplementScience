@@ -777,7 +777,7 @@ export default async function Home() {
 
           {postsToShow.length > 0 && (
             <>
-              <BlogList posts={postsToShow} />
+              <BlogList posts={postsToShow} showFeatured={false} />
               <div className="text-center mt-14">
                 <Link href="/category">
                   <Button
