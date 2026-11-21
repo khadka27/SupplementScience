@@ -15,7 +15,7 @@ function absoluteImageUrl(url: string | null | undefined): string | undefined {
 export const revalidate = 3600; // revalidate every hour
 export const dynamic = "force-dynamic";
 
-const REVISION_DATE = new Date("2026-10-04T12:00:00.000Z");
+const REVISION_DATE = new Date("2026-11-21T00:00:00.000Z");
 
 const staticPages: MetadataRoute.Sitemap = [
   {
@@ -41,6 +41,12 @@ const staticPages: MetadataRoute.Sitemap = [
     lastModified: REVISION_DATE,
     changeFrequency: "weekly",
     priority: 0.8,
+  },
+  {
+    url: `${baseUrl}/author`,
+    lastModified: REVISION_DATE,
+    changeFrequency: "monthly",
+    priority: 0.7,
   },
   {
     url: `${baseUrl}/about`,
@@ -128,6 +134,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       take: 1000,
     });
 
+    const authors = await prisma.author.findMany({
+      where: { posts: { some: { status: "PUBLISHED" } } },
+      select: { slug: true, updatedAt: true },
+      take: 500,
+    });
+
     const postUrls = posts
       .map((post: (typeof posts)[number]) => {
         const categorySlug = post.category?.slug?.toLowerCase();
@@ -190,7 +202,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.5,
     }));
 
-    return [...staticPages, ...postUrls, ...categoryUrls, ...tagUrls];
+    const authorUrls = authors.map((author: (typeof authors)[number]) => ({
+      url: `${baseUrl}/author/${author.slug}`,
+      lastModified: author.updatedAt,
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }));
+
+    return [...staticPages, ...postUrls, ...categoryUrls, ...tagUrls, ...authorUrls];
   } catch {
     // Return static pages only if DB is unavailable at build time
     return staticPages;

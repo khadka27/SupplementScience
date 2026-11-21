@@ -158,20 +158,15 @@ export default function MedicalDisclaimerPage() {
                 policies.
               </p>
 
-              <h2>Monetization and Advertising Policy</h2>
+              <h2>Monetization and Independence Policy</h2>
               <p>
-                This website does not participate in affiliate commission programs, sponsored
-                product placements, paid brand partnerships, or manufacturer referral schemes.
+                This website operates with complete financial and editorial independence. We do not participate in affiliate commission programs, sponsored product placements, paid brand partnerships, manufacturer referral schemes, or commercial display advertising.
               </p>
               <p>
-                To support site infrastructure and editorial maintenance, this website may display
-                automated, non-personalized third-party network advertisements (such as Google AdSense).
-                Advertisements are clearly demarcated from editorial content, and advertisers have
-                zero input into or influence on our clinical evaluations, ratings, or research findings.
+                No commercial entity, advertiser, or supplement manufacturer exercises input into or influence over our research syntheses, clinical trial evaluations, or regulatory safety reports.
               </p>
               <p>
-                Any external links are provided solely for educational context
-                and reference purposes.
+                Any external links are provided solely for scientific context and reference purposes.
               </p>
 
               <h2>Use at Your Own Discretion</h2>

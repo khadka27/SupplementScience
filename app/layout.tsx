@@ -17,28 +17,31 @@ const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "SupplementDecoded | Evidence-Based Supplement Information",
+    default: "Supplement Research & Ingredient Safety | SupplementDecoded",
     template: "%s | SupplementDecoded",
   },
   description:
-    "Discover evidence-based information about supplements, nutrition, and health. Expert articles backed by scientific research.",
+    "Explore evidence-based supplement research, ingredient analysis, clinical trials, dosage information and safety concerns. Independent research without sponsored recommendations.",
   keywords: [
     "supplements",
-    "nutrition",
-    "health",
-    "wellness",
+    "dietary supplements",
+    "clinical trials",
+    "ingredient analysis",
+    "safety warnings",
     "evidence-based",
-    "science",
+    "bioavailability",
   ],
-  authors: [{ name: "SupplementDecoded Team" }],
+  authors: [{ name: "SupplementDecoded Research Editorial Team" }],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "en_US",
     url: baseUrl,
     siteName: "SupplementDecoded",
-    title: "SupplementDecoded | Evidence-Based Supplement Information",
-    description:
-      "Discover evidence-based information about supplements, nutrition, and health.",
+    title: "Supplement Research & Ingredient Safety",
+    description: "Independent supplement research and clinical evidence.",
     images: [
       {
         url: `${baseUrl}/og-default.jpg`,
@@ -50,9 +53,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "SupplementDecoded | Evidence-Based Supplement Information",
-    description:
-      "Discover evidence-based information about supplements, nutrition, and health.",
+    title: "Supplement Research & Ingredient Safety | SupplementDecoded",
+    description: "Independent supplement research and clinical evidence.",
     images: [`${baseUrl}/og-default.jpg`],
     creator: "@supplementdecoded",
   },
@@ -62,14 +64,13 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
       "max-image-preview": "large",
       "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
   verification: {
-    // TODO: Replace with your actual code from Google Search Console
-    // google: "paste-your-verification-code-here",
+    // Replace with Google Search Console verification token when available
   },
 };
 

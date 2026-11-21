@@ -6,6 +6,7 @@ import Image from "next/image";
 import { format } from "date-fns";
 import { Globe, Mail, Link2, BadgeInfo } from "lucide-react";
 import PaginationControls from "@/components/PaginationControls";
+import { generateAuthorSchema } from "@/lib/schema";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 43200;
@@ -124,6 +125,13 @@ export default async function AuthorPage({ params, searchParams }: Props) {
 
   const { author, posts, totalPosts, totalPages, currentPage, pageSize } = data;
 
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL?.replace(
+      /^https?:\/\/supplementdecoded\.com/i,
+      "https://www.supplementdecoded.com",
+    ) || "https://www.supplementdecoded.com";
+  const authorSchema = generateAuthorSchema(author, baseUrl);
+
   const socialLinks = (author.socialLinks as Record<string, string>) || {};
   const authorDetails = [
     { label: "Slug", value: author.slug },
@@ -149,7 +157,14 @@ export default async function AuthorPage({ params, searchParams }: Props) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#070A0E] text-slate-900 dark:text-slate-100 pt-20 sm:pt-[84px] pb-20">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(authorSchema),
+        }}
+      />
+      <div className="min-h-screen bg-[#FAFAF8] dark:bg-[#070A0E] text-slate-900 dark:text-slate-100 pt-20 sm:pt-[84px] pb-20">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="bg-white dark:bg-[#0D1217] rounded-3xl border border-stone-200/90 dark:border-stone-800 p-8 sm:p-12 shadow-sm">
           <div className="flex flex-col md:flex-row gap-8 items-center md:items-start text-center md:text-left">
@@ -278,5 +293,6 @@ export default async function AuthorPage({ params, searchParams }: Props) {
         </div>
       </div>
     </div>
+    </>
   );
 }

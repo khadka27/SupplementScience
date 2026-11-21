@@ -79,8 +79,17 @@ export function generateWebsiteSchema(
     "@id": `${cleanBaseUrl}/#website`,
     name: "SupplementDecoded",
     url: `${cleanBaseUrl}/`,
+    description: "Independent supplement research and clinical evidence.",
     publisher: {
       "@id": `${cleanBaseUrl}/#organization`,
+    },
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${cleanBaseUrl}/ingredients?search={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
     },
   };
 }

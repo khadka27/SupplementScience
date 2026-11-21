@@ -47,17 +47,17 @@ const baseUrl = ((process.env.NEXT_PUBLIC_BASE_URL &&
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Independent Supplement Research & Scam Analysis | SupplementDecoded",
+    absolute: "Supplement Research & Ingredient Safety | SupplementDecoded",
   },
   description:
-    "Transparent ingredient research, clinical evaluations, and scam exposure based on published evidence. Independent, evidence-first health monographs.",
+    "Explore evidence-based supplement research, ingredient analysis, clinical trials, dosage information and safety concerns. Independent research without sponsored recommendations.",
   alternates: {
     canonical: baseUrl,
   },
   openGraph: {
-    title: "Independent Supplement Research & Scam Analysis | SupplementDecoded",
+    title: "Supplement Research & Ingredient Safety | SupplementDecoded",
     description:
-      "Transparent ingredient research, clinical evaluations, and scam exposure based on published evidence. Independent, evidence-first health monographs.",
+      "Explore evidence-based supplement research, ingredient analysis, clinical trials, dosage information and safety concerns. Independent research without sponsored recommendations.",
     url: baseUrl,
     images: [
       {
@@ -70,9 +70,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Independent Supplement Research & Scam Analysis | SupplementDecoded",
+    title: "Supplement Research & Ingredient Safety | SupplementDecoded",
     description:
-      "Transparent ingredient research, clinical evaluations, and scam exposure based on published evidence.",
+      "Explore evidence-based supplement research, ingredient analysis, clinical trials, dosage information and safety concerns. Independent research without sponsored recommendations.",
     images: [`${baseUrl}/og-default.jpg`],
   },
 };
